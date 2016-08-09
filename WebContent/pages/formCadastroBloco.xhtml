@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<f:metadata>
+			<f:event type="preRenderView" listener="#{blocoMB.abreSessao}" />
+		</f:metadata>
+		<h:form id="idFormCadastroBloco" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.cadastroBloco}" />
+				</f:facet>
+				<h:panelGrid id="idPanelGridSelectCadastroBlocos" columns="2">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg.condominio}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['bloco.nomeTipo']}:" for="idNomeTipo2" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:selectOneMenu id="idCondominio" value="#{blocoMB.condominio.id}"
+						defaultLabel="#{msg['condominio.DefaultLabel']}" required="true"
+						label="#{msg['condominio.label']}">
+						<f:selectItems value="#{blocoMB.listaCondominios}" />
+					</h:selectOneMenu>
+					<h:inputText id="idNomeTipo2" value="#{blocoMB.nomeBlocoTipo}"
+						required="true" label="#{msg['bloco.label']}"
+						validatorMessage="#{msg['msg.bloco.nome']}"
+						binding="#{blocoMB.componenteNomeBloco}">
+						<f:validateLength minimum="1" maximum="150" />
+					</h:inputText>
+				</h:panelGrid>
+				<!--  Nessa primeira verão a aplicação não vai contemplar o cadastro em lote dos blocos. Observar a demanda para ver se existe necessidade  -->
+				<h:panelGrid id="idPanelGridCadastroBlocos" columns="2"
+					rendered="false">
+					<h:outputLabel value="#{msg.cadastroLoteBloco}:"
+						for="idCadastroEmLote" />
+					<h:selectOneRadio id="idCadastroEmLote"
+						value="#{blocoMB.cadastroEmLote}">
+						<f:selectItem itemLabel="#{msg.sim}" itemValue="1" />
+						<f:selectItem itemLabel="#{msg.nao}" itemValue="0" />
+						<f:ajax render="idPanelGridCadastroBlocos" />
+					</h:selectOneRadio>
+					<h:panelGroup rendered="#{blocoMB.cadastroEmLote == 0}">
+						<h:outputLabel value="#{msg['bloco.nomeTipo']}:" for="idNomeTipo" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:inputText id="idNomeTipo" value="#{blocoMB.nomeBlocoTipo}"
+						rendered="#{blocoMB.cadastroEmLote == 0}" />
+					<h:outputLabel value="#{msg['bloco.nomeSequencia']}:"
+						rendered="#{blocoMB.cadastroEmLote == 1}" for="idTipoSequencia" />
+					<h:selectOneRadio id="idTipoSequencia"
+						value="#{blocoMB.tipoSequencia}"
+						rendered="#{blocoMB.cadastroEmLote == 1}"
+						required="#{blocoMB.cadastroEmLote == 1}">
+						<f:selectItem itemLabel="#{msg['bloco.nomeSequencia.alfabetica']}"
+							itemValue="A" />
+						<f:selectItem itemLabel="#{msg['bloco.nomeSequencia.numerica']}"
+							itemValue="N" />
+						<f:ajax listener="#{blocoMB.popularListaSequencia}"
+							render="idSelectSequenciaInicial idSelectSequenciaFinal"></f:ajax>
+					</h:selectOneRadio>
+					<h:panelGroup rendered="#{blocoMB.cadastroEmLote == 1}">
+						<h:outputLabel value="#{msg['bloco.nomeSequenciaInicial']}:"
+							for="idSelectSequenciaInicial" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:selectOneMenu value="#{blocoMB.sequenciaInicial}"
+						id="idSelectSequenciaInicial"
+						defaultLabel="#{msg['bloco.nomeSequenciaInicial.DefaultLabel']}"
+						rendered="#{blocoMB.cadastroEmLote == 1}"
+						required="#{blocoMB.cadastroEmLote == 1}">
+						<f:selectItems value="#{blocoMB.listaSequencia}" />
+					</h:selectOneMenu>
+					<h:panelGroup rendered="#{blocoMB.cadastroEmLote == 1}">
+						<h:outputLabel value="#{msg['bloco.nomeSequenciaFinal']}:"
+							for="idSelectSequenciaFinal" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:selectOneMenu value="#{blocoMB.sequenciaFinal}"
+						id="idSelectSequenciaFinal"
+						defaultLabel="#{msg['bloco.nomeSequenciaFinal.DefaultLabel']}"
+						rendered="#{blocoMB.cadastroEmLote == 1}"
+						required="#{blocoMB.cadastroEmLote == 1}">
+						<f:selectItems value="#{blocoMB.listaSequencia}" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>
+			</rich:panel>
+
+			<h:panelGrid columns="3">
+				<h:commandButton value="#{msg.botaoSalvar}"
+					action="#{blocoMB.salvarBloco}" />
+				<h:commandButton value="#{msg.botaoLimpar}"
+					actionListener="#{blocoMB.limparFiltroBloco}" immediate="true" />
+				<h:commandButton value="#{msg.botaoCancelar}"
+					action="#{blocoMB.cancelarCadastroBloco}" immediate="true" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

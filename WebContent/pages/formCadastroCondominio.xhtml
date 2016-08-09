@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormCadastroCondominio" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.cadastroCondominio}" />
+				</f:facet>
+				<h:panelGrid columns="2">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio.nome']}:" for="idNome" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio.cnpj']}:" for="idCnpj" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:inputText id="idNome" value="#{condominioMB.condominio.nome}"
+						label="#{msg['condominio.nome.label']}" required="true" size="35"
+						binding="#{condominioMB.componenteNomeCondominio}">
+						<f:validateLength minimum="1" maximum="150" />
+					</h:inputText>
+					<h:panelGroup>
+						<h:inputText id="idCnpj" value="#{condominioMB.condominio.cnpj}"
+							label="#{msg['condominio.cnpj.label']}" required="true" size="25"
+							binding="#{condominioMB.componenteCnpjCondominio}">
+							<f:validateLength minimum="1" maximum="50" />
+						</h:inputText>
+						<h:outputLabel value="#{msg['somenteNumeros']}"
+							styleClass="confFontRotuloAjuda" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msg['condominio.telefoneFixo']}:" for="idTelefoneFixo" />
+					<h:outputLabel value="#{msg['condominio.telefoneCelular']}:" for="idTelefoneCelular" />
+					<h:panelGroup>
+						<h:inputText id="idTelefoneFixo"
+							value="#{condominioMB.condominio.telefoneFixo}" size="15" binding="#{condominioMB.componenteTelefoneFixoCondominio}"
+							maxlength="15" label="#{msg['condominio.telefoneFixo.label']}" />
+						<h:outputLabel value="#{msg['somenteNumeros']}"
+							styleClass="confFontRotuloAjuda" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:inputText id="idTelefoneCelular"
+							value="#{condominioMB.condominio.telefoneCelular}" size="15"
+							maxlength="15" binding="#{condominioMB.componenteTelefoneCelularCondominio}"
+							label="#{msg['condominio.telefoneCelular.label']}" />
+						<h:outputLabel value="#{msg['somenteNumeros']}"
+							styleClass="confFontRotuloAjuda" />
+					</h:panelGroup>					
+										
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio.endereco.endereco']}:"
+							for="idEndereco" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio.endereco.numero']}:"
+							for="idNumero" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:inputText id="idEndereco"
+						value="#{condominioMB.condominio.endereco.endereco}"
+						binding="#{condominioMB.componenteEnderecoCondominio}"
+						label="#{msg['condominio.endereco.endereco.label']}"
+						required="true" size="50"
+						validatorMessage="#{msg['msg.condominio.endereco.endereco']}">
+						<f:validateLength minimum="1" maximum="100" />
+					</h:inputText>
+					<h:inputText id="idNumero"
+						value="#{condominioMB.condominio.endereco.numero}"
+						label="#{msg['condominio.endereco.numero.label']}" required="true"
+						validatorMessage="#{msg['msg.condominio.endereco.numero']}"
+						size="12"
+						binding="#{condominioMB.componenteEnderecoNumeroCondominio}">
+						<f:validateLength minimum="1" maximum="12" />
+					</h:inputText>
+					<h:outputLabel value="#{msg['condominio.endereco.complemento']}:"
+						for="idComplemento" />
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio.endereco.CEP']}:"
+							for="idCep" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:inputText id="idComplemento"
+						value="#{condominioMB.condominio.endereco.complemento}" size="50"
+						binding="#{condominioMB.componenteEnderecoComplementoCondominio}"
+						validatorMessage="#{msg['msg.condominio.endereco.complemento']}">
+						<f:validateLength minimum="1" maximum="150" />
+					</h:inputText>
+					<h:panelGroup>
+						<h:inputText id="idCep"
+							value="#{condominioMB.condominio.endereco.cep}"
+							validatorMessage="#{msg['msg.condominio.endereco.cep']}"
+							label="#{msg['condominio.endereco.CEP.label']}" required="true"
+							size="10"
+							binding="#{condominioMB.componenteEnderecoCepCondominio}">
+							<f:validateLength minimum="6" maximum="8" for="idCep" />
+						</h:inputText>
+						<h:outputLabel value="#{msg['somenteNumeros']}"
+							styleClass="confFontRotuloAjuda" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio.endereco.bairro']}:"
+							for="idBairro" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio.endereco.cidade']}:"
+							for="idCidade" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:inputText id="idBairro"
+						value="#{condominioMB.condominio.endereco.bairro}"
+						binding="#{condominioMB.componenteEnderecoBairroCondominio}"
+						label="#{msg['condominio.endereco.bairro.label']}" required="true"
+						validatorMessage="#{msg['msg.condominio.endereco.bairro']}">
+						<f:validateLength minimum="1" maximum="100" />
+					</h:inputText>
+					<h:inputText id="idCidade"
+						value="#{condominioMB.condominio.endereco.cidade}"
+						binding="#{condominioMB.componenteEnderecoCidadeCondominio}"
+						label="#{msg['condominio.endereco.cidade.label']}" required="true"
+						validatorMessage="#{msg['msg.condominio.endereco.cidade']}">
+						<f:validateLength minimum="1" maximum="100" />
+					</h:inputText>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio.endereco.UF']}" for="idUf" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio.endereco.pais']}:"
+							for="idPais" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:inputText id="idUf"
+						value="#{condominioMB.condominio.endereco.uf}"
+						binding="#{condominioMB.componenteEnderecoUfCondominio}"
+						label="#{msg['condominio.endereco.UF.label']}" required="true"
+						size="2" validatorMessage="#{msg['msg.condominio.endereco.uf']}">
+						<f:validateRegex pattern="[a-zA-Z]{1,2}" for="idUf" />
+					</h:inputText>
+					<h:inputText id="idPais"
+						value="#{condominioMB.condominio.endereco.pais}"
+						binding="#{condominioMB.componenteEnderecoPaisCondominio}"
+						label="#{msg['condominio.endereco.pais.label']}" required="true"
+						size="10"
+						validatorMessage="#{msg['msg.condominio.endereco.pais']}">
+						<f:validateRegex pattern="[a-zA-Z]{1,10}" for="idPais" />
+					</h:inputText>
+				</h:panelGrid>
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>
+			</rich:panel>
+			<h:panelGrid columns="3">
+				<h:commandButton value="#{msg.botaoSalvar}"
+					action="#{condominioMB.salvarCondominio}" />
+				<h:commandButton value="#{msg.botaoLimpar}"
+					actionListener="#{condominioMB.limparCadastroCondominio}"
+					immediate="true" />
+				<h:commandButton value="#{msg.botaoCancelar}"
+					action="#{condominioMB.cancelarCadastroCondominio}"					                       
+					immediate="true" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

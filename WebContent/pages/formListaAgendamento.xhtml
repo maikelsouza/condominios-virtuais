@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jstl/core"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormListaAgendamento" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.listarAgendamento}" />
+				</f:facet>
+				<h:panelGrid columns="1">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio']}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:selectOneMenu value="#{agendamentoMB.condominio.id}"
+						defaultLabel="#{msg['condominio.DefaultLabel']}" id="idCondominio"
+						label="#{msg['condominio.label']}" required="true">
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{agendamentoMB.listaSICondominios}" />
+					</h:selectOneMenu>
+					</h:panelGrid>
+					<h:panelGrid columns="2">					
+						<h:commandButton value="#{msg.botaoPesquisar}" actionListener="#{agendamentoMB.popularListaAgendamentos}" />					
+						<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{agendamentoMB.limparListarAgendamento}" immediate="true" />
+				    </h:panelGrid>
+
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>
+
+			</rich:panel>
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.listarAgendamento}" />
+				</f:facet>
+				<div>
+					<rich:dataTable value="#{agendamentoMB.listaDeAgendamentoVOs}"
+						var="agendamentoVO" rowClasses="odd-row, even-row" styleClass="stable"
+						id="tableAgendamentoVO" style="width:100%;" rows="10"
+						rendered="#{agendamentoMB.listaDeAgendamentoVOs.rowCount > 0}">
+						<rich:column sortBy="#{agendamentoVO.bloco}"
+							sortOrder="#{ordenaAgendamentoMB.bloco}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['bloco']}" render="tableAgendamentoVO"
+									action="#{ordenaAgendamentoMB.ordenarPorBloco}" />
+							</f:facet>
+							<h:outputText value="#{agendamentoVO.bloco.nome}" />
+						</rich:column>
+						<rich:column sortBy="#{agendamentoVO.unidade}"
+							sortOrder="#{ordenaAgendamentoMB.unidade}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['unidade']}"
+									render="tableAgendamentoVO"
+									action="#{ordenaAgendamentoMB.ordenarPorUnidade}" />
+							</f:facet>
+							<h:outputText value="#{agendamentoVO.unidade.numero}" />
+						</rich:column>
+						<rich:column sortBy="#{agendamentoVO.condomino.nome}"
+							sortOrder="#{ordenaAgendamentoMB.condomino}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['condomino']}"
+									render="tableAgendamentoVO"
+									action="#{ordenaAgendamentoMB.ordenarPorCondomino}" />
+							</f:facet>
+							<h:outputText value="#{agendamentoVO.condomino.nome}" />
+						</rich:column>
+						<rich:column sortBy="#{agendamentoVO.data}"
+							sortOrder="#{ordenaAgendamentoMB.data}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['agendamentoMudança.data']}"
+									render="tableAgendamentoVO"
+									action="#{ordenaAgendamentoMB.ordenarPorData}" />
+							</f:facet>
+							<h:outputText value="#{agendamentoVO.data}">
+								<f:convertDateTime pattern="#{msg.formatoData}" />
+							</h:outputText>
+						</rich:column>
+						<rich:column sortBy="#{agendamentoVO.horaInicial}"
+							sortOrder="#{ordenaAgendamentoMB.horaInicial}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['agendamentoMudança.horaInicial']}"
+									render="tableAgendamentoVO"
+									action="#{ordenaAgendamentoMB.ordenarPorHoraInicial}" />
+							</f:facet>
+							<h:outputText value="#{agendamentoVO.horaInicial}h"/>
+						</rich:column>
+						<rich:column sortBy="#{agendamentoVO.horaFinal}"
+							sortOrder="#{ordenaAgendamentoMB.horaFinal}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['agendamentoMudança.horaFinal']}"
+									render="tableAgendamentoVO"
+									action="#{ordenaAgendamentoMB.ordenarPorHoraFinal}" />
+							</f:facet>
+							<h:outputText value="#{agendamentoVO.horaFinal}h"/>								
+						</rich:column>						
+						<rich:column sortBy="#{agendamentoVO.situacao}"
+							sortOrder="#{ordenaAgendamentoMB.situacao}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['agendamentoMudança.situacao']}"
+									render="tableAgendamentoVO"
+									action="#{ordenaAgendamentoMB.ordenarPorSituacao}" />
+							</f:facet>
+							<h:outputText value="#{agendamentoVO.situacao}" />
+						</rich:column>	
+						<rich:column sortBy="#{agendamentoVO.motivoReprovacao}"
+							sortOrder="#{ordenaAgendamentoMB.motivoReprovacao}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['agendamentoMudança.motivoReprovacao']}"
+									render="tableAgendamentoVO"
+									action="#{ordenaAgendamentoMB.ordenarPorMotivoReprovacao}" />
+							</f:facet>
+							<h:outputText value="#{agendamentoVO.motivoReprovacao}" />
+						</rich:column>	
+						 <f:facet name="footer">
+              				  <rich:dataScroller for="tableAgendamentoVO"  fastControls="hide" renderIfSinglePage="false" />
+           				 </f:facet>					
+					</rich:dataTable>
+				</div>
+			</rich:panel>
+		</h:form>
+
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseover"
+			query="jQuery(this).addClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseout"
+			query="jQuery(this).removeClass('active-row')" />
+	</ui:define>
+
+</ui:composition>

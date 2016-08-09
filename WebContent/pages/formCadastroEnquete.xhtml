@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<f:metadata>
+			<f:event type="preRenderView" listener="#{enqueteMB.abreSessao}" />
+		</f:metadata>
+		<h:form id="idFormCadastroEnquete" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText
+						value="#{msg.cadastroEnquete} - #{msg['desc.enquete.umVotoPorUnidade']}" />
+				</f:facet>
+				<h:panelGrid id="idPanelGridSelectCadastroEnquete" columns="2">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg.condominio}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<div></div>
+					<h:selectOneMenu id="idCondominio"
+						value="#{enqueteMB.enquete.idCondominio}"
+						defaultLabel="#{msg['condominio.DefaultLabel']}" required="true"
+						label="#{msg['condominio.label']}">
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{enqueteMB.listaCondominios}" />
+					</h:selectOneMenu>
+					<div></div>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['enquete.pergunta']}:"
+							for="idPergunta" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['enquete.dataFim']}:"
+							for="idDataFimEnquete" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:inputText id="idPergunta" value="#{enqueteMB.enquete.pergunta}"
+						required="true" label="#{msg['enquete.pergunta.label']}"
+						validatorMessage="#{msg['msg.mensagem.pergunta']}" size="50"
+						binding="#{enqueteMB.componentePerguntaEnquete}">
+						<f:validateLength minimum="1" maximum="100" />
+					</h:inputText>
+					<rich:calendar value="#{enqueteMB.enquete.dataFim}"
+						id="idDataFimEnquete" locale="pt_BR" popup="true"
+						boundaryDatesMode="scroll" showFooter="false" required="true"
+						datePattern="#{msg['formatoData']}"
+						dataModel="#{calendarioEnqueteMB}" cellWidth="24px"
+						cellHeight="22px" style="width:200px" mode="ajax"
+						label="#{msg['enquete.dataFim.label']}">
+					</rich:calendar>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['enquete.alternativa1']}:"
+							for="idAlternativa1Enquete" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['enquete.alternativa2']}:"
+							for="idAlternativa2Enquete" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:inputText id="idAlternativa1Enquete"
+						value="#{enqueteMB.enquete.listaAlternativaEnquetes[0].alternativa}"
+						required="true" label="#{msg['enquete.alternativa1.label']}"
+						validatorMessage="#{msg['msg.enquete.alternativa1']}" size="50"
+						binding="#{enqueteMB.componenteAlternativa1Enquete}">
+						<f:validateLength minimum="1" maximum="100" />
+					</h:inputText>
+					<h:inputText id="idAlternativa2Enquete"
+						value="#{enqueteMB.enquete.listaAlternativaEnquetes[1].alternativa}"
+						required="true" label="#{msg['enquete.alternativa2.label']}"
+						validatorMessage="#{msg['msg.enquete.alternativa2']}" size="50"
+						binding="#{enqueteMB.componenteAlternativa2Enquete}">
+						<f:validateLength minimum="1" maximum="100" />
+					</h:inputText>
+					<h:outputLabel value="#{msg['enquete.alternativa3']}:"
+						for="idAlternativa3Enquete" />
+					<h:outputLabel value="#{msg['enquete.alternativa4']}:"
+						for="idAlternativa4Enquete" />
+					<h:inputText id="idAlternativa3Enquete"
+						value="#{enqueteMB.enquete.listaAlternativaEnquetes[2].alternativa}"
+						label="#{msg['enquete.alternativa3.label']}"
+						validatorMessage="#{msg['msg.enquete.alternativa3']}" size="50"
+						binding="#{enqueteMB.componenteAlternativa3Enquete}">
+						<f:validateLength minimum="1" maximum="100" />
+					</h:inputText>
+					<h:inputText id="idAlternativa4Enquete"
+						value="#{enqueteMB.enquete.listaAlternativaEnquetes[3].alternativa}"
+						label="#{msg['enquete.alternativa4.label']}"
+						validatorMessage="#{msg['msg.enquete.alternativa4']}" size="50"
+						binding="#{enqueteMB.componenteAlternativa4Enquete}">
+						<f:validateLength minimum="1" maximum="100" />
+					</h:inputText>
+					<h:outputLabel value="#{msg['enquete.alternativa5']}:"
+						for="idAlternativa5Enquete" />
+					<div></div>
+					<h:inputText id="idAlternativa5Enquete"
+						value="#{enqueteMB.enquete.listaAlternativaEnquetes[4].alternativa}"
+						label="#{msg['enquete.alternativa5.label']}"
+						validatorMessage="#{msg['msg.enquete.alternativa5']}" size="50"
+						binding="#{enqueteMB.componenteAlternativa5Enquete}">
+						<f:validateLength minimum="1" maximum="100" />
+					</h:inputText>
+					<div></div>
+				</h:panelGrid>
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>
+			</rich:panel>
+
+			<h:panelGrid columns="3">
+				<h:commandButton value="#{msg.botaoSalvar}"
+					action="#{enqueteMB.salvarEnquete}" />
+				<h:commandButton value="#{msg.botaoLimpar}"
+					actionListener="#{enqueteMB.limparFiltroEnquete}" immediate="true" />
+				<h:commandButton value="#{msg.botaoCancelar}"
+					action="#{enqueteMB.cancelarCadastroEnquete}" immediate="true" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

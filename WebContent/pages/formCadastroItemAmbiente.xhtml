@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<f:metadata>
+			<f:event type="preRenderView"
+				listener="#{itemAmbienteMB.popularListaItemAmbiente}" />
+		</f:metadata>
+		<h:form id="idFormCadastroItemAmbiente" styleClass="content" >
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.cadastroItemAmbiente}" />
+				</f:facet>
+				<h:panelGrid columns="2">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['itemAmbiente.nome']}:" for="idNome" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['itemAmbiente.quantidade']}:"
+							for="idQuantidade" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:inputText id="idNome"
+						value="#{itemAmbienteMB.itemAmbiente.nome}" size="30"
+						required="true" label="#{msg['itemAmbiente.nome.label']}"
+						validatorMessage="#{msg['msg.itemAmbiente.nome']}"
+						binding="#{itemAmbienteMB.componenteNomeItemAmbiente}">
+						<f:validateLength minimum="1" maximum="30" />
+					</h:inputText>
+
+					<h:inputText id="idQuantidade"
+						value="#{itemAmbienteMB.itemAmbiente.quantidade}" size="5"
+						required="true" label="#{msg['itemAmbiente.quantidade.label']}"
+						validatorMessage="#{msg['msg.itemAmbiente.quantidade']}"
+						binding="#{itemAmbienteMB.componenteQuantidadeItemAmbiente}">
+						<f:validateLength minimum="1" maximum="5" />
+					</h:inputText>
+				</h:panelGrid>
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio" 
+						styleClass="asterisco" />
+				</h:panelGrid>
+			</rich:panel>
+			<div>
+				<h:panelGrid columns="3">
+					<h:commandButton value="#{msg.botaoSalvar}"
+						actionListener="#{itemAmbienteMB.salvarItemAmbiente}" />
+					<h:commandButton value="#{msg.botaoLimpar}"
+						actionListener="#{itemAmbienteMB.limparItemAmbiente}"
+						immediate="true" />
+					<h:commandButton value="#{msg.botaoVoltar}"
+						action="#{itemAmbienteMB.voltarCadastroItemAmbiente}"
+						immediate="true" />
+				</h:panelGrid>
+			</div>
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.listaItensAmbiente}" />
+				</f:facet>
+				<div>
+					<rich:dataTable value="#{itemAmbienteMB.listaItemAmbiente}"
+						var="itemAmbiente" rowClasses="odd-row, even-row"
+						styleClass="stable" id="tableItemAmbiente" style="width:100%;"
+						rendered="#{itemAmbienteMB.listaItemAmbiente.rowCount > 0}">
+						<rich:column sortBy="#{itemAmbiente.nome}"
+							sortOrder="#{ordenaItemAmbienteMB.nomeItemAmbiente}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['itemAmbiente.nome']}"
+									render="tableItemAmbiente"
+									action="#{ordenaItemAmbienteMB.ordenarPorNome}"
+									immediate="true" />
+							</f:facet>
+							<h:outputText value="#{itemAmbiente.nome}" />
+						</rich:column>
+						<rich:column sortBy="#{itemAmbiente.quantidade}"
+							sortOrder="#{ordenaItemAmbienteMB.quantidadeItemAmbiente}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['itemAmbiente.quantidade']}"
+									render="tableItemAmbiente"
+									action="#{ordenaItemAmbienteMB.ordenarPorQuantidade}"
+									immediate="true" />
+							</f:facet>
+							<h:outputText value="#{itemAmbiente.quantidade}" />
+						</rich:column>
+						<rich:column style="width:5%;">
+							<f:facet name="header">
+								<h:outputText value="#{msg.rotuloAcao}" />
+							</f:facet>
+							<a4j:commandLink value="#{msg.linkEditar}"
+								render="tableItemAmbiente"
+								action="#{itemAmbienteMB.editarItemAmbiente}" immediate="true" />
+						</rich:column>
+					</rich:dataTable>
+				</div>
+			</rich:panel>
+		</h:form>
+
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseover"
+			query="jQuery(this).addClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseout"
+			query="jQuery(this).removeClass('active-row')" />
+	</ui:define>
+
+</ui:composition>

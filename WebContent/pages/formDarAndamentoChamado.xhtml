@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormDarAndamentoChamado" styleClass="content formView">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.darAndamentoChamado}" />
+				</f:facet>
+					<h:panelGrid columns="2" styleClass="formEdit">
+						<h:outputLabel value="#{msg.bloco}:" for="idBloco" />
+						<h:outputText value="#{chamadoMB.chamadoVO.nomeBloco}" id="idBloco" />
+						<h:outputLabel value="#{msg.unidade}:" for="idUnidade" />
+						<h:outputText value="#{chamadoMB.chamadoVO.numeroUnidade}" id="idUnidade" />
+						<h:outputLabel value="#{msg['chamado.usuario']}:" for="idUsuario" />					
+						<h:outputText value="#{chamadoMB.chamadoVO.nomeUsuario}" id="idUsuario" />
+						<h:outputLabel value="#{msg['chamado.nome']}:" for="idNome" />					
+						<h:outputText value="#{chamadoMB.chamadoVO.nome}" id="idNome" />
+						<h:outputLabel value="#{msg['chamado.tipo']}:" for="idTipo" />
+						<h:outputText value="#{chamadoMB.chamadoVO.tipoChamado != msg['chamado.outros'] ? chamadoMB.chamadoVO.tipoChamado : chamadoMB.chamadoVO.outros}" id="idTipo" />
+						<h:outputLabel value="#{msg['chamado.status']}:" for="idStatus" />
+						<h:outputText value="#{chamadoMB.chamadoVO.status}" id="idStatus" />
+						<h:outputLabel value="#{msg['chamado.dataAbertura']}:" for="idDataAbertura" />
+						<h:outputText value="#{chamadoMB.chamadoVO.dataAbertura}" id="idDataAbertura" >
+							<f:convertDateTime pattern="#{msg.formatoDataHora}" timeZone="#{msg.timeZone}"/>
+						</h:outputText>
+						<h:outputLabel value="#{msg['chamado.descricao']}:" for="idDescricao" />
+						<h:outputText value="#{chamadoMB.chamadoVO.descricao}" id="idDescricao" />
+						<h:outputLabel value="#{msg['chamado.comentario']}:" for="idComentario" />
+						<h:inputTextarea value="#{chamadoMB.chamadoVO.comentario}" id="idComentario" rows="5" cols="50" validatorMessage="#{msg['msg.chamado.comentarioTamanhoMaximo']}">
+							<f:validateLength maximum="240" />
+						</h:inputTextarea>
+				 </h:panelGrid>		
+			</rich:panel>
+			<h:panelGrid columns="2">
+				<h:commandButton value="#{msg.botaoFechar}" action="#{chamadoMB.fecharChamado}" />				
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{chamadoMB.cancelarDarAndamentoChamado}"/>
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

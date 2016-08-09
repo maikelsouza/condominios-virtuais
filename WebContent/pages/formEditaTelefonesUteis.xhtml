@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormEditaTelefonesUteis" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.editaTelefonesUteis}" />
+				</f:facet>
+				<h:panelGrid id="idPanelGridSelectEditaTelefonesUteis" columns="1">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg.condominio}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:selectOneMenu id="idCondominio"
+						value="#{telefonesUteisMB.telefonesUteis.idCondominio}"
+						defaultLabel="#{msg['condominio.DefaultLabel']}" required="true"
+						label="#{msg['condominio.label']}">
+						<f:selectItems value="#{telefonesUteisMB.listaSICondominios}" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+				<h:panelGrid id="idPanelGridTelefonesTelefonesUteis" columns="2">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['telefonesUteis.nome']}:"
+							for="idTelefonesUteisNome" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<div></div>
+					<h:inputText id="idTelefonesUteisNome"
+						value="#{telefonesUteisMB.telefonesUteis.nome}"
+						label="#{msg['telefonesUteis.nome.label']}" required="true"
+						validatorMessage="#{msg['msg.telefonesUteis.nome']}"
+						binding="#{telefonesUteisMB.componenteNomeTelefonesUteis}"
+						size="50">
+						<f:validateLength minimum="1" maximum="150" />
+					</h:inputText>
+					<div></div>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['telefonesUteis.telefone1']}:"
+							for="idTelefonesUteisTelefone1" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:outputLabel value="#{msg['telefonesUteis.telefone2']}:"
+						for="idTelefonesUteisTelefone2" />
+					<h:panelGroup>
+						<h:inputText id="idTelefonesUteisTelefone1"
+							value="#{telefonesUteisMB.telefonesUteis.telefone1}"
+							label="#{msg['telefonesUteis.telefone1.label']}" required="true"
+							validatorMessage="#{msg['msg.telefonesUteis.telefone1']}"
+							binding="#{telefonesUteisMB.componenteTelefone1TelefonesUteis}">
+							<f:validateLongRange minimum="0" for="idTelefonesUteisTelefone1" />
+						</h:inputText>
+						<h:outputLabel value="#{msg['somenteNumeros']}"
+							styleClass="confFontRotuloAjuda" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:inputText id="idTelefonesUteisTelefone2"
+							value="#{telefonesUteisMB.telefonesUteis.telefone2}"
+							label="#{msg['telefonesUteis.telefone2.label']}"
+							validatorMessage="#{msg['msg.telefonesUteis.telefone2']}"
+							binding="#{telefonesUteisMB.componenteTelefone2TelefonesUteis}">
+							<f:validateLongRange minimum="0" for="idTelefonesUteisTelefone2" />
+						</h:inputText>
+						<h:outputLabel value="#{msg['somenteNumeros']}"
+							styleClass="confFontRotuloAjuda" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msg['telefonesUteis.email']}:"
+						for="idTelefonesUteisEmail" />
+					<h:outputLabel value="#{msg['telefonesUteis.site']}:"
+						for="idTelefonesUteisSite" />
+					<h:inputText id="idTelefonesUteisEmail"
+						value="#{telefonesUteisMB.telefonesUteis.email}"
+						label="#{msg['telefonesUteis.email.label']}"
+						validatorMessage="#{msg['msg.telefonesUteis.email']}"
+						binding="#{telefonesUteisMB.componenteEmailTelefonesUteis}"
+						size="50">
+						<f:validateLength minimum="1" maximum="150" />
+					</h:inputText>
+					<h:inputText id="idTelefonesUteisSite"
+						value="#{telefonesUteisMB.telefonesUteis.site}"
+						label="#{msg['telefonesUteis.site.label']}"
+						validatorMessage="#{msg['msg.telefonesUteis.Site']}"
+						binding="#{telefonesUteisMB.componenteSiteTelefonesUteis}"
+						size="50">
+						<f:validateLength minimum="1" maximum="150" />
+					</h:inputText>
+					<h:outputLabel value="#{msg['telefonesUteis.descricao']}:"
+						for="idTelefonesUteisDescricao" />
+					<div></div>
+					<h:inputTextarea id="idTelefonesUteisDescricao"
+						value="#{telefonesUteisMB.telefonesUteis.descricao}"
+						label="#{msg['telefonesUteis.descricao.label']}"
+						validatorMessage="#{msg['msg.telefonesUteis.descricao']}"
+						required="false"
+						binding="#{telefonesUteisMB.componenteDescricaoTelefonesUteis}"
+						cols="48" rows="3">
+						<f:validateLength minimum="0" maximum="350" />
+					</h:inputTextarea>
+					<div></div>
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>
+
+				<rich:popupPanel id="confirmaExcluirTelefonesUteis" autosized="true">
+         			#{msg['msg.telefonesUteis.confirmacaoExcluir']}
+         			<h:panelGrid columns="2">           	 		
+						<h:commandButton value="#{msg.botaoExcluir}" action="#{telefonesUteisMB.excluirTelefonesUteis}"
+							onclick=" #{rich:component('confirmaExcluirTelefonesUteis')}.hide();  return true;" />
+						<h:commandButton value="#{msg.botaoCancelar}" onclick="#{rich:component('confirmaExcluirTelefonesUteis')}.hide(); return false;" />	
+					</h:panelGrid>
+				</rich:popupPanel>
+			</rich:panel>
+			<h:panelGrid columns="3">
+				<h:commandButton value="#{msg.botaoAtualizar}"
+					action="#{telefonesUteisMB.atualizarTelefonesUteis}" />
+				<h:commandButton value="#{msg.botaoExcluir}" immediate="true">
+					<rich:componentControl target="confirmaExcluirTelefonesUteis"
+						operation="show" />
+				</h:commandButton>
+				<h:commandButton value="#{msg.botaoCancelar}"
+					action="#{telefonesUteisMB.cancelarCadastroTelefonesUteis}"
+					immediate="true" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

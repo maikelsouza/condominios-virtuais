@@ -1,0 +1,255 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">	
+		<h:form id="idFormListaDespesasCondominio" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.filtroCondominos}" />
+				</f:facet>
+				<h:panelGrid columns="2">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio']}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>					 
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['despesas.mesAnoReferencia']}:"
+							for="idDespesasMesAnoReferencia" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:selectOneMenu id="idCondominio" 
+						value="#{despesasMB.despesas.condominio.id}"
+						defaultLabel="#{msg['condominio.DefaultLabel']}" required="true"
+						label="#{msg['condominio.label']}" >
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{despesasMB.listaSICondominios}" />						
+					</h:selectOneMenu>
+					<h:panelGroup id="idDespesasMesAnoReferencia">				
+						<h:selectOneMenu id="idMesReferencia" value="#{despesasMB.mesReferencia}"
+							defaultLabel="#{msg['despesas.mesReferencia.label.DefaultLabel']}"
+							required="true" label="#{msg['despesas.mesReferencia.label']}">
+							<f:selectItems value="#{despesasMB.listaSIMesReferencia}" />
+						</h:selectOneMenu>					
+						<h:selectOneMenu id="idSIAnoReferencia" value="#{despesasMB.anoReferencia}"
+							defaultLabel="#{msg['despesas.anoReferencia.label.DefaultLabel']}"
+							required="true" label="#{msg['despesas.anoReferencia.label']}">
+							<f:selectItems value="#{despesasMB.listaSIAnoReferencia}" />
+						</h:selectOneMenu>
+					</h:panelGroup>			
+					
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>
+
+			</rich:panel>
+			<div>
+				<h:panelGrid columns="2">
+					<h:commandButton value="#{msg.botaoPesquisar}"
+						actionListener="#{despesasMB.pesquisarDespesasCondominio}" />
+					<h:commandButton value="#{msg.botaoLimpar}"
+						actionListener="#{despesasMB.limparFiltroDespesasCondominio}"
+						immediate="true" />
+
+				</h:panelGrid>
+			</div>
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.listaDespesasCondominios}" />
+				</f:facet>
+				<div>
+					<rich:dataTable value="#{despesasMB.listaDespesasCondominio}"
+							var="despesas" rowClasses="odd-row, even-row" rows="20" styleClass="stable" id="tableDespesas" style="width:100%;"
+						rendered="#{despesasMB.listaDespesasCondominio.rowCount > 0}">
+						<rich:column>
+							<f:facet name="header">							
+								<h:outputLabel value="#{msg['condominio']}" />													
+							</f:facet>
+								<h:outputText value="#{despesas.condominio.nome}" />
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:outputLabel value="#{msg['despesas.mesAnoReferencia']}"/>
+							</f:facet>
+							<h:outputText value="#{despesas.mesAnoReferencia}" >
+								<f:convertDateTime pattern="#{msg.formatoMesAno}" />
+							</h:outputText>
+						</rich:column>
+						<rich:column sortBy="#{despesas.descricao}"
+							sortOrder="#{ordenaDespesasMB.descricaoDespesas}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['despesas.descricao']}" render="tableDespesas"
+									action="#{ordenaDespesasMB.ordenarPorDescricao}" />
+							</f:facet>
+							<h:outputText value="#{despesas.descricao}" />
+						</rich:column>
+						<rich:column sortBy="#{despesas.tipo}"
+							sortOrder="#{ordenaDespesasMB.tipoDespesas}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['despesas.tipo']}" render="tableDespesas"
+									action="#{ordenaDespesasMB.ordenarPorTipo}" />
+							</f:facet>
+							<h:outputText value="#{despesas.tipoI18n}" />
+						</rich:column>
+						<rich:column sortBy="#{despesas.valor}"
+							sortOrder="#{ordenaDespesasMB.valorDespesas}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['despesas.valor']}" render="tableDespesas"
+									action="#{ordenaDespesasMB.ordenarPorValor}" />
+							</f:facet>
+							<h:outputText value="#{despesas.valor}" >
+								<f:convertNumber currencySymbol="#{msg.moeda}" type="currency" />
+							</h:outputText>
+						</rich:column>						
+						<rich:column
+							style="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1') == false ? 'width:5%;' : 'width:10%;'}">
+							<f:facet name="header">
+								<h:outputText value="#{msg.rotuloAcao}" />
+							</f:facet>
+							<a4j:commandLink value="#{msg.linkEditar}"
+								render="tableDespesas"
+								action="#{despesasMB.editarDespesaCondominio}" immediate="true" />	
+				 			#{' '}                                                                           
+ 							<a4j:commandLink value="#{msg.linkExcluir}">
+									<rich:componentControl target="confirmaExcluirDespesas"
+									operation="show" />
+							</a4j:commandLink>
+							
+							<rich:popupPanel id="confirmaExcluirDespesas" autosized="true">
+	         					#{msg['msg.despesas.confirmacaoExcluir']}	
+	         				 <h:panelGrid columns="2">	         
+	         					<a4j:commandButton value="#{msg.botaoExcluir}" onclick="#{rich:component('confirmaExcluirDespesas')}.hide(); return true;"
+									actionListener="#{despesasMB.excluirDespesa}" render="IdMessages idFormListaDespesasCondominio" />
+								<a4j:commandButton value="#{msg.botaoCancelar}" onclick="#{rich:component('confirmaExcluirDespesas')}.hide(); return false;" />	
+							 </h:panelGrid>	
+							</rich:popupPanel>
+						</rich:column>
+						
+						<f:facet name="footer">
+              				 <rich:columnGroup>
+               					 <rich:column colspan="4">
+               					 	<h:outputLabel value="#{msg['totalDespesas']}" />
+               					 </rich:column>
+              					  <rich:column>
+              					      <h:outputText value="#{despesasMB.totalDespesasCondominio}">
+              					     	 <f:convertNumber currencySymbol="#{msg.moeda}" type="currency" />
+              					      </h:outputText>
+                				</rich:column>
+                			</rich:columnGroup>
+           				</f:facet>	
+					</rich:dataTable>					
+				</div>
+			</rich:panel>			
+			
+			<rich:panel>
+			<f:facet name="header">
+					<h:outputText value="#{msg.listaDespesasCondominos}" />
+				</f:facet>
+				<div>
+			
+			<rich:dataTable  style="width:100%;" styleClass="stable" var="unidade" value="#{despesasMB.listaDespesasUnidade}" 
+				rowClasses="odd-row, even-row" rendered="#{despesasMB.listaDespesasUnidade.rowCount > 0}" id="tableDespesasCondomino">
+        <f:facet name="header">
+            <rich:columnGroup>                          
+                <rich:column>
+                    <h:outputLabel value="#{msg['despesas.mesAnoReferencia']}" />
+                </rich:column>
+                <rich:column>
+                 	<h:outputLabel value="#{msg['despesas.descricao']}" />	        
+                </rich:column>
+                <rich:column>
+                    <h:outputLabel value="#{msg['despesas.tipo']}" />
+                </rich:column>
+                <rich:column>
+                    <h:outputLabel value="#{msg['despesas.valor']}" />
+                </rich:column>
+                 <rich:column>
+                   <h:outputLabel value="#{msg.rotuloAcao}" />
+                </rich:column>
+            </rich:columnGroup>
+        </f:facet>
+ 
+        <rich:column colspan="6">
+            <h:outputText value="#{msg['unidade']}: #{unidade.numero}" />
+        </rich:column>
+ 
+        <rich:collapsibleSubTable var="despesas" value="#{despesasMB.listaDespesasUnidadeCondomino}"  rowClasses="odd-row, even-row" style="width:100%;">          
+            <rich:column>
+                <h:outputText value="#{despesas.mesAnoReferencia}" >
+					<f:convertDateTime pattern="#{msg.formatoMesAno}" />
+				</h:outputText>                
+            </rich:column>
+            <rich:column>
+            	<h:outputText value="#{despesas.descricao}" />
+            </rich:column>
+            <rich:column>
+               <h:outputText value="#{despesas.tipoI18n}" />
+            </rich:column>
+             <rich:column>
+               <h:outputText value="#{despesas.valor}" >
+               		<f:convertNumber currencySymbol="#{msg.moeda}" type="currency" />
+               </h:outputText>
+            </rich:column>
+            <rich:column style="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1') == false ? 'width:5%;' : 'width:10%;'}">				
+				<a4j:commandLink value="#{msg.linkEditar}"
+					render="tableDespesas"
+					action="#{despesasMB.editarDespesaCondominio}" immediate="true" />	
+	 			#{' '}                                                                           
+					<a4j:commandLink value="#{msg.linkExcluir}">
+						<rich:componentControl target="confirmaExcluirDespesas"
+						operation="show" />
+				</a4j:commandLink>
+				
+				<rich:popupPanel id="confirmaExcluirDespesas" autosized="true">
+       					#{msg['msg.despesas.confirmacaoExcluir']}	
+       				 <h:panelGrid columns="2">	         
+       					<a4j:commandButton value="#{msg.botaoExcluir}" onclick="#{rich:component('confirmaExcluirDespesas')}.hide(); return true;"
+						actionListener="#{despesasMB.excluirDespesa}" render="IdMessages idFormListaDespesasCondominio" />
+					<a4j:commandButton value="#{msg.botaoCancelar}" onclick="#{rich:component('confirmaExcluirDespesas')}.hide(); return false;" />	
+				 </h:panelGrid>	
+				</rich:popupPanel>				
+			</rich:column>
+			<f:facet name="footer">
+              				 <rich:columnGroup>
+               					 <rich:column colspan="3">
+               					 	<h:outputLabel value="#{msg['totalDespesas']}" />
+               					 </rich:column>
+              					  <rich:column>
+              					      <h:outputText value="#{despesasMB.totalDespesasCondominio}">
+              					     	 <f:convertNumber currencySymbol="#{msg.moeda}" type="currency" />
+              					      </h:outputText>
+                				</rich:column>
+                			</rich:columnGroup>
+           				</f:facet>	
+            
+        </rich:collapsibleSubTable>
+ 
+       
+ 
+    </rich:dataTable>
+    </div>
+    </rich:panel>
+			
+			<h:commandButton value="#{msg.botaoCriarNovo}"
+				action="#{condominoMB.cadastroCondomino}" immediate="true"></h:commandButton>
+		</h:form>
+
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseover" query="jQuery(this).addClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseout" query="jQuery(this).removeClass('active-row')" />
+	</ui:define>
+
+</ui:composition>

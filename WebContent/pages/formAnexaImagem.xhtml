@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+	
+	<ui:define name="conteudo">			
+		<h:form id="idFormAnexoImagemCondominio" styleClass="content">
+				
+			<rich:popupPanel id="validaMimeType" autosized="true" >
+  				#{msg['msg.arquivo.imagem.validaMimeType']}
+    	 		<h:commandButton value="#{msg.botaoOK}" onclick="#{rich:component('validaMimeType')}.hide(); return false;" />      		
+        	</rich:popupPanel>
+        	 	
+			<rich:panel>
+			  	<f:facet name="header">
+			   		<h:outputText value="#{msg.filtroImagens}"  />
+			   	</f:facet>
+				<h:panelGrid columns="1">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio']}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					 <h:selectOneMenu id="idCondominio" value="#{arquivoMB.condominio.id}" defaultLabel="#{msg['condominio.DefaultLabel']}" label="#{msg['condominio.label']}" required="true">
+					 	<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" itemValue="0" noSelectionOption="true" />
+		               	<f:selectItems value="#{arquivoMB.listaCondominios}"/>  
+		               	 <f:ajax event="change" render="idFormAnexoImagemCondominio" execute="@this" />                   
+		            </h:selectOneMenu>
+				</h:panelGrid>
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>				
+				</rich:panel>					
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg['arquivo.imagem.anexar']}" />
+				</f:facet>
+				<h:panelGrid columns="2" columnClasses="top,top">
+					<rich:fileUpload fileUploadListener="#{arquivoMB.listener}" id="upload" acceptedTypes="jpg, jpeg, png"  ontyperejected="#{rich:component('validaMimeType')}.show();" clearLabel="#{msg['arquivo.imagem.apagar']}" 
+							addLabel="#{msg['arquivo.imagem.adcionar']}" uploadLabel="#{msg['arquivo.imagem.upload']}" clearAllLabel="#{msg['arquivo.imagem.apagarTodos']}"  
+							 sizeExceededLabel="#{msg['arquivo.imagem.tamanhoArquivo']}"  styleClass="upload"                 			   
+	               			 deleteLabel="#{msg['arquivo.imagem.excluir']}" doneLabel="#{msg['arquivo.imagem.completo']}">                		  
+	               		<a4j:ajax event="uploadcomplete" execute="@none" render="info"  />                			
+	           		</rich:fileUpload>
+					<h:panelGroup id="info" layout="block">
+						<rich:panel bodyClass="infoBodyClass" styleClass="infoStyleClass">            
+	                       	<f:facet name="header"> 
+	                        	<h:outputLabel value="#{msg['arquivo.imagem']}" />
+	   	                	</f:facet>
+	    	                <rich:dataGrid columns="1" value="#{arquivoMB.arquivos}" var="file" rowKeyVar="row" >
+	    	                	<rich:panel bodyClass="rich-laguna-panel-no-header">														
+	             	            	<h:panelGrid columns="1">
+										<a4j:mediaOutput element="img" mimeType="image/jpeg" createContent="#{arquivoMB.paintImagemAnexo}"
+		                                    value="#{row}" cacheable="false" style="height:75px;" >
+		                    			</a4j:mediaOutput>										
+									</h:panelGrid>	                                   	          									
+								</rich:panel>	                                
+							</rich:dataGrid>
+						</rich:panel>
+						<br />					 	
+				
+				   </h:panelGroup> 
+				</h:panelGrid>
+                <h:commandButton value="#{msg.botaoAnexar}" action="#{arquivoMB.anexarImagem}"/>					
+			</rich:panel>
+		</h:form>
+	</ui:define>
+	
+</ui:composition>

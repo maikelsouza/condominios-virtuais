@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormVisualizarAmbienteCondominio" styleClass="content formView">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.visualizarAmbiente}" />
+				</f:facet>
+				<h:panelGrid columns="2">
+					<h:outputLabel value="#{msg.condominio}:" for="idNomeCondominio" />
+					<h:outputText id="idNomeCondominio"
+						value="#{ambienteMB.condominio.nome}" />
+					<h:outputLabel value="#{msg.ambiente}:" for="idNome" />
+					<h:outputText id="idNome" value="#{ambienteMB.ambiente.nome}" />
+				</h:panelGrid>
+				<rich:panel
+					rendered="#{ambienteMB.ambiente.listaItensAmbiente.size() > 0}">
+					<f:facet name="header">
+						<h:outputText value="#{msg.listaItensAmbiente}" />
+					</f:facet>
+					<div>
+						<rich:dataTable value="#{ambienteMB.ambiente.listaItensAmbiente}"
+							var="itemAmbiente" rowClasses="odd-row, even-row"
+							styleClass="stable" id="tableItemAmbiente" style="width:100%;">
+							<rich:column sortBy="#{itemAmbiente.nome}" sortOrder="#{ordenaItemAmbienteMB.nomeItemAmbiente}">
+							 <f:facet name="header">
+								<a4j:commandLink value="#{msg['itemAmbiente.nome']}"
+									render="tableItemAmbiente"
+									action="#{ordenaItemAmbienteMB.ordenarPorNome}"
+									immediate="true" />
+								</f:facet>	
+								<h:outputText value="#{itemAmbiente.nome}" />
+							</rich:column>
+							<rich:column sortBy="#{itemAmbiente.quantidade}" sortOrder="#{ordenaItemAmbienteMB.quantidadeItemAmbiente}">
+								<f:facet name="header">
+									<a4j:commandLink value="#{msg['itemAmbiente.quantidade']}"
+									render="tableItemAmbiente"
+									action="#{ordenaItemAmbienteMB.ordenarPorQuantidade}"
+									immediate="true" />
+								</f:facet>
+								<h:outputText value="#{itemAmbiente.quantidade}" />
+							</rich:column>
+						</rich:dataTable>
+					</div>
+				</rich:panel>
+			</rich:panel>
+			<h:panelGrid columns="1">
+				<h:commandButton value="#{msg.botaoVoltar}"
+					action="#{ambienteMB.voltarVizualizarAmbienteCondominio}" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

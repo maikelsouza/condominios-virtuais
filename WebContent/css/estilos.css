@@ -1,0 +1,582 @@
+@CHARSET "ISO-8859-1";
+
+
+/*** CONFIGURAÇÕES GERAIS *****************************************************************/
+* {
+	margin: 0 !important;
+	padding: 0 !important;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px !important;
+	color: #53585B !important;
+}
+
+body {
+	background: #DADADA;
+	min-width: 1024px;
+	font-size: 62.5%;
+}
+
+/*** LINKS *****************************************************************/
+a {
+	color: #5881C0 !important;
+	text-decoration: none;
+	outline: none;
+	font-size: 14px !important;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+/*** IMAGENS *****************************************************************/
+img {
+	border: none;
+	outline: none;
+}
+
+/*** LISTAS *****************************************************************/
+ul {
+	list-style: none;
+}
+
+/*** FORMULÁRIOS *****************************************************************/
+textarea,input[type="text"],input[type="password"],select {
+	margin: 0 1em 0.5em 0 !important;
+	padding: 0.25em 0.35em !important;
+	border-radius: 3px;
+	background: #FFFFFF !important;
+	outline: none;
+}
+
+input[type="reset"],input[type="submit"],input[type="button"] {
+	color: #FFFFFF !important;
+	margin-left: 0.5em !important;
+	padding: 0.7em 3em !important;
+	display: block;
+	border: none !important;
+	border-radius: 5px !important;
+	background: #5882C1 !important;
+	outline: none;
+}
+
+input[type="reset"]:hover,input[type="submit"]:hover,input[type="button"]:hover
+	{
+	background: #385F98 !important;
+	border: none !important;
+	outline: none;
+}
+
+input[type="reset"]:active,input[type="submit"]:active,input[type="button"]:active
+	{
+	background: #385F98 !important;
+	border: none !important;
+	outline: none;
+}
+
+/*** TABELAS *****************************************************************/
+table tr td {
+	vertical-align: top !important;
+}
+
+/*** LOGIN *****************************************************************/
+.logoLogin {
+	width: 100%;
+	display: block;
+	overflow: hidden;
+	margin: 4em 0 !important;
+	text-align: center;
+}
+
+.formLogin {
+	width: 450px;
+	background: #E9E9E9;
+	margin: 0 auto 4em auto !important;
+	padding: 2em 3em !important;
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+.formLogin h1 {
+	font-size: 24px !important;
+	font-weight: normal;
+	margin-bottom: 1em !important;
+	color: #52575A !important;
+}
+
+.formLogin input[type="text"] {
+	width: 280px;
+	margin-bottom: 2em !important;
+}
+
+.formLogin input[type="password"] {
+	width: 150px;
+	margin-bottom: 2em !important;
+}
+
+.formSenha input[type="text"] {
+	width: 450px;
+	margin-bottom: 2em !important;
+}
+
+.formPesquisaCondominio input[type="text"] {
+	width: 450px;
+	margin-bottom: 2em !important;
+}
+
+.formLogin input[type="submit"] {
+	float: right;
+}
+
+.formLogin a {
+	float: left;
+}
+
+/*** CABECALHO *****************************************************************/
+.cabecalho {
+	width: 100%;
+	background: #FFFFFF;
+	border-bottom: 2px solid #525859 !important;
+}
+
+.cabecalho img {
+	margin: 1em !important;
+	float: left;
+	width: 521px;
+	height: 102px;
+}
+
+/*** RODAPE *****************************************************************/
+.rodape {
+	background: #525859 !important;
+	padding: 1em 0 !important;
+	width: 100%;
+	display: block;
+	overflow: hidden;
+	clear: both;
+	margin-top: 2em !important;
+}
+
+.rodape p {
+	float: left;
+	margin: 0.9em 0 0 3em !important;
+	color: #FFFFFF !important;
+	font-size: 11px !important;
+}
+
+.rodape img {
+	float: right;
+	margin-right: 3em !important;
+}
+
+/*** MENU PESSOAL *****************************************************************/
+.menuPessoal {
+	font-weight: normal;
+	background: none !important;
+	border: none !important;
+	width: 30em !important;
+	float: right !important;
+	display: inline-block;
+	overflow: hidden;
+	line-height: 4em;
+	margin-top: 3em !important;
+}
+
+.menuPessoal .rf-tb-itm {
+	vertical-align: middle !important;
+	padding-right: 0.7em !important;
+}
+
+.menuPessoal .rf-ddm-lbl-dis a {
+	background: #DEE6F3 !important;
+	color: #5882C1 !important;
+	padding: 0.8em 2.5em !important;
+	border-radius: 0.4em !important;
+	font-weight: normal;
+}
+
+.menuPessoal .rf-ddm-lbl-dis a:hover {
+	background: #5882C1 !important;
+	color: #FFF !important;
+	text-decoration: none;
+}
+
+/*** MENU PRINCIPAL *****************************************************************/
+.menuPrincipal {
+	background: #ECECEC;
+	border: none !important;
+	clear: both;
+	width: 100%;
+	height: 60px !important;
+	display: block;
+}
+
+.menuPrincipal .rf-tb-itm {
+	padding: 0.8em 0 0.8em 0.8em !important;
+}
+
+.menuPrincipal .rf-ddm-unsel,.menuPrincipal .rf-ddm-lbl-dis {
+	background: #F7F7F7;
+	padding: 0.6em 1.4em !important;
+	border-radius: 5px !important;
+	display: inline-block;
+}
+
+.menuPrincipal .rf-ddm-dis a,.menuPrincipal .rf-ddm-lbl-dec {
+	color: #000 !important;
+	font-weight: normal !important;
+	text-decoration: none !important;
+	font-weight: normal !important;
+}
+
+.menuPrincipal .rf-ddm-sel,.menuPrincipal .rf-ddm-lbl-dis:hover {
+	padding: 0.6em 1.9em !important;
+	margin-right: 0.2em !important;
+	border-radius: 5px !important;
+	display: inline-block;
+	background: #54585C !important;
+	color: #FFF !important;
+}
+
+.menuPrincipal .rf-ddm-sel .rf-ddm-lbl-dec,.menuPrincipal .rf-ddm-lbl-dis:hover a
+	{
+	color: #FFF !important;
+}
+
+.rf-ddm-lst-bg {
+	background: #54585C !important;
+}
+
+.menuPrincipal .rf-ddm-lst-bg .rf-ddm-itm-unsel .rf-ddm-itm-lbl,.rf-ddm-sublst .rf-ddm-lst-bg .rf-ddm-itm-unsel .rf-ddm-itm-lbl
+	{
+	color: #FFF !important;
+	font-weight: normal;
+	padding: 0.5em 0 !important;
+}
+
+.menuPrincipal .rf-ddm-lst-bg .rf-ddm-itm-sel .rf-ddm-itm-lbl {
+	font-weight: normal;
+	padding: 0.5em 0 !important;
+	font-size: 14px !important;
+}
+
+.menuPrincipal .rf-ddm-emptyIcon {
+	width: 10px !important;
+	display: block;
+}
+
+.menuPrincipal .rf-ddm-lst {
+	outline: none !important;
+	min-width: 180px !important;
+}
+
+/*** MENU ATALHOS *****************************************************************/
+.menuAtalho a {
+	border: 2px solid #5882C1;
+	border-radius: 5px;
+	width: 180px;
+	height: 155px !important;
+	display: block;
+	float: left;
+	text-align: center;
+	margin: 1.6em 1.6em 0 0 !important;
+	background: #F0F0F0;
+}
+
+.menuAtalho a:hover {
+	text-decoration: none;
+}
+
+.menuAtalho a img {
+	margin-bottom: 0.4em !important;
+}
+
+.menuAtalho a label {
+	display: block;
+	background: #DEE6F3;
+	color: #5882C1 !important;
+	padding: 1em 0 !important;
+}
+
+.menuAtalho a:hover label {
+	background: #5882C1;
+	color: #FFF !important;
+}
+
+/*** CONTEUDO PRINCIPAL *****************************************************************/
+.content {
+	padding: 0 1em !important;
+	display: block;
+	overflow: hidden;
+	clear: both;
+}
+
+.content .rf-p {
+	background: #E9E9E9;
+	padding: 1em !important;
+	border: none;
+	border-radius: 0.6em;
+	margin: 1em 0 !important;
+}
+
+.content .rf-p .rf-p-hdr {
+	font-size: 24px !important;
+	background: none;
+	border: none;
+	border-bottom: 0.05em solid #C3C4C5;
+	padding-bottom: 0.2em !important;
+	margin-bottom: 1em !important;
+	font-weight: normal;
+	color: #52575A !important;
+}
+
+.camposObrigatorios {
+	color: #00B3AC !important;
+	clear: both;
+}
+
+.asterisco {
+	color: #00B3AC !important;
+}
+
+.msgAsterisco {
+	clear: both;
+	display: block;
+	overflow: hidden;
+	padding-top: 0.2em !important;
+}
+
+.msgErro,.msgInfo,.msgWarm {
+	margin: 0.5em 1em !important;
+	border-radius: 0.4em;
+	padding: 1em !important;
+}
+
+.msgErro {
+	color: #F15755 !important;
+	border: 0.05em solid #F15755;
+	background: #FFF2F2;
+}
+
+.msgInfo {
+	color: #5882C1 !important;
+	border: 0.05em solid #5882C1;
+	background: #DEE6F3;
+}
+
+.msgWarn {
+	color: #999682 !important;
+	border: 0.05em solid #E5DDC3;
+	background: #FDFAE8;
+}
+
+.confFontRotuloAjuda {
+	font-family: verdana !important;
+	font-size: 10px !important;
+	margin-left: -10px !important;
+	margin-right: 20px !important;
+}
+
+.rf-pp-cnt-scrlr {
+	padding: 2em !important;
+}
+
+/*** AUTOCOMPLETE **************************************************************/
+*.rf-au-shdw-t,*.rf-au-shdw-l,*.rf-au-shdw-r,*.rf-au-shdw-b {
+	background-image: none !important;
+}
+
+*.rf-au-shdw {
+	left: 0 !important;
+}
+
+*.rf-au-lst-scrl {
+	padding: 5px !important; 
+	width: 100%; 
+}
+
+*.rf-au-btn{
+	background-color: #000000;
+}
+/*** UPLOAD *****************************************************************/
+.upload {
+	width: 350px;
+	margin-bottom: 10px !important;
+	margin-right: 20px !important;
+}
+
+.infoStyleClass {
+	height: 120px;
+	width: 400px;
+}
+
+.rf-tab-cnt .infoStyleClass {
+	background: none !important;
+}
+
+.infoBodyClass {
+	height: 120px;
+	width: 400px;
+	overflow: auto;
+	background: none !important;
+}
+
+.rf-fu-lst {
+	height: 120px !important;
+}
+
+.rf-p-b .rf-p {
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+.rf-fu-btn-add,.rf-fu-btn-upl,.rf-fu-btn-clr {
+	padding: 5px 10px !important;
+}
+
+.rf-fu-btn-cnt-add,.rf-fu-btn-cnt-upl,.rf-fu-btn-cnt-clr {
+	padding-left: 20px !important;
+}
+
+.rf-fu-itm-rgh {
+	text-align: center !important;
+}
+
+.rf-dg,.rf-dg-c {
+	border: none !important;
+	background: none;
+}
+
+.rf-dg .rf-p {
+	background: #FFF !important;
+	padding: 10px !important;
+	border: 1px solid #DDD;
+}
+
+.rf-pick-opt {
+	padding: 3px !important;
+}
+
+.rf-pick-c {
+	padding: 3px !important;
+}
+
+.rf-pick-btn {
+	padding: 1px 10px !important;
+	text-align: center;
+}
+
+/*** FORMULARIOS INTERNOS *****************************************************************/
+.rf-au {
+	background-image: none !important;
+}
+
+.formEdit td {
+	text-align: right !important;
+	padding-right: 5px !important;
+}
+
+.formEdit td label {
+	font-weight: bold;
+}
+
+.formEdit td span {
+	text-align: left !important;
+}
+
+/*** TABELAS *****************************************************************/
+.rf-dt {
+	border-color: #E9E9E9 !important;
+}
+
+.rf-dt-shdr-c,.rf-dt-hdr-c {
+	background: #DEE6F3 !important;
+	background-image: none !important;
+	padding: 5px !important;
+	color: #5881C0 !important;
+	border-color: #E9E9E9 !important;
+	font-weight: normal;
+}
+
+.rf-dt-shdr-c a {
+	color: #5881C0 !important;
+	text-decoration: underline !important;
+	font-weight: normal;
+}
+
+.rf-dt-shdr-c a:hover {
+	color: #0B356C !important;
+}
+ 
+.rf-dt-c,.rf-cst-c{
+	padding: 5px !important;
+	color: #52575A !important;
+	border-color: #E9E9E9 !important;
+}
+ 
+.even-row,.odd-row {
+	background-color: #FFFFFF;
+}
+
+.active-row {
+	background-color: #FFFFC9 !important;
+	cursor: pointer;
+}
+
+/*** ABAS *****************************************************************/
+.rf-tab-hdr-act.rf-tab-hdr-top,.rf-tab-hdr-inact.rf-tab-hdr-top {
+	vertical-align: middle !important;
+}
+
+.rf-tab-cnt {
+	padding: 40px !important;
+	margin-bottom: 10px !important;
+	background-color: #F1EFEB;
+}
+.rf-tab-cnt .rf-p {
+	background: none !important;
+	padding: 0 !important;
+	margin: 0 0 20px 0 !important;
+	
+}
+.rf-tab-lbl {
+	padding: 5px 15px !important;
+}
+
+.rf-tab-cnt input,.rf-tab-cnt textarea,.rf-tab-cnt select {
+	border: 1px solid #c4c0b9 !important;
+	
+}
+
+.rf-sel {
+	margin-right: 10px !important;
+}
+
+/*** VISUALIZACAO *****************************************************************/
+.formView label {
+	display: block;
+	text-align: right !important;
+	font-weight: bold;
+	padding-right: 5px !important;
+	padding-bottom: 3px !important;
+}
+
+.formView th label {
+	text-align: center !important;
+}
+
+.formView span {
+	display: block;
+	padding-bottom: 3px !important;
+}
+
+/*** PICKLIST *****************************************************************/
+.rf-pick-sel {
+	background: #DEE6F3;
+}
+
+/*** CALENDÁRIO *****************************************************************/
+
+.diaDesabilitado {
+	background-color: #DCDCDC;
+}
+

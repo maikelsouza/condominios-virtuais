@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<f:metadata>
+			<f:event type="preRenderComponent" listener="#{blocoMB.abreSessao}" />
+		</f:metadata>
+		<h:form id="idFormEditaBloco" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.editarBloco}" />
+				</f:facet>
+				<h:panelGrid columns="2">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio']}:"
+							for="idNomeCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['bloco.nome']}:" for="idNomeBloco" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:selectOneMenu value="#{blocoMB.condominio.id}" id="idNomeCondominio"
+						defaultLabel="#{msg['condominio.DefaultLabel']}" required="true">
+						<f:selectItems value="#{blocoMB.listaCondominios}" />
+					</h:selectOneMenu>
+					<h:inputText id="idNomeBloco" value="#{blocoMB.bloco.nome}"
+						required="true" label="#{msg['bloco.label']}"
+						validatorMessage="#{msg['msg.bloco.nome']}">
+						<f:validateLength minimum="1" maximum="150" />
+					</h:inputText>
+
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['bloco.sindico']}:"
+							for="buscarNomeSindico" />
+						<a4j:jsFunction name="buscarIdSindico" execute="buscarNomeSindico"
+							action="#{blocoMB.popularIdSindico}"
+							render="idSindicoHidden buscarNomeSindico" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['bloco.subsindico']}:"
+							for="buscarNomeSubSindico" />
+						<a4j:jsFunction name="buscarIdSubSindico"
+							execute="buscarNomeSubSindico"
+							action="#{blocoMB.popularIdSubSindico}"
+							render="idSubSindicoHidden buscarNomeSubSindico" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<rich:autocomplete id="buscarNomeSindico"
+							autocompleteMethod="#{blocoMB.buscarListaCondominoVO}"
+							var="condominoVO" minChars="3" onselectitem="buscarIdSindico()"
+							fetchValue="#{condominoVO.id}"
+							value="#{blocoMB.nomeSindico}"
+							disabled="#{!blocoMB.blocoPossuiCondominos}">
+							#{condominoVO.numeroUnidade} - #{condominoVO.nomeCondomino}
+						</rich:autocomplete>
+						<h:inputHidden id="idSindicoHidden" value="#{blocoMB.idSindico}" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<rich:autocomplete id="buscarNomeSubSindico"
+							autocompleteMethod="#{blocoMB.buscarListaCondominoVO}"
+							var="condominoVO" onselectitem="buscarIdSubSindico()"
+							minChars="3" fetchValue="#{condominoVO.id}"
+							value="#{blocoMB.nomeSubSindico}"
+							disabled="#{!blocoMB.blocoPossuiCondominos}">
+							#{condominoVO.numeroUnidade} - 	#{condominoVO.nomeCondomino}
+						</rich:autocomplete>
+						<h:inputHidden id="idSubSindicoHidden"
+							value="#{blocoMB.idSubSindico}" />
+					</h:panelGroup>
+				</h:panelGrid>	
+				<h:panelGrid columns="1">
+					<h:outputLabel value="#{msg['bloco.conselheiros']}:"
+						for="idConselheiros" />
+					<div></div>
+					<rich:pickList id="idConselheiros"
+						listWidth="300px"
+						addAllText="#{msg.adicionarTodos}" addText="#{msg.adicionar}"
+						var="condominoVO" converter="condominoVOConversor"
+						removeAllText="#{msg.removerTodos}" removeText="#{msg.remover}"
+						value="#{blocoMB.listaDeConselheirosVOs}">
+						<f:selectItems value="#{blocoMB.listaDeCondominosVOs}" />
+						<rich:column>
+							<f:facet name="header">#{msg.unidade}</f:facet>
+			        		#{condominoVO.numeroUnidade}
+			        	</rich:column>
+						<rich:column>
+							<f:facet name="header">#{msg.condomino}</f:facet>
+			        		#{condominoVO.nomeCondomino}
+			        	</rich:column>
+					</rich:pickList>
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>
+
+				<rich:popupPanel id="confirmaExcluirBloco" autosized="true">
+         			#{msg['msg.bloco.confirmacaoExcluir']}
+         			  <h:panelGrid columns="2">         			  
+						<h:commandButton value="#{msg.botaoExcluir}" action="#{blocoMB.excluirBloco}" onclick=" #{rich:component('confirmaExcluirBloco')}.hide();  return true;" />
+						<h:commandButton value="#{msg.botaoCancelar}" onclick="#{rich:component('confirmaExcluirBloco')}.hide(); return false;" />
+					</h:panelGrid>	
+				</rich:popupPanel>
+			</rich:panel>
+
+			<h:panelGrid columns="3">
+				<h:commandButton value="#{msg.botaoAtualizar}"
+					action="#{blocoMB.atualizarBloco}" />
+				<h:commandButton value="#{msg.botaoExcluir}" immediate="true">
+					<rich:componentControl target="confirmaExcluirBloco"
+						operation="show" />
+				</h:commandButton>
+				<h:commandButton value="#{msg.botaoCancelar}"
+					action="#{blocoMB.cancelarCadastroBloco}" immediate="true" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

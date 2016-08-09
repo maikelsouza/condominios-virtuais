@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<f:metadata>
+			<f:event type="preRenderView" listener="#{ambienteMB.abreSessao}" />
+		</f:metadata>
+		<h:form id="idFormListaAmbienteCondominio" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.filtroAmbientesCondominio}" />
+				</f:facet>
+				<h:panelGrid columns="2">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg.condominio}:" for="idSICondominios" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:outputLabel value="#{msg['ambiente.nome']}:" for="idNome" />
+					<h:selectOneMenu id="idSICondominios"
+						value="#{ambienteMB.condominio.id}"
+						defaultLabel="#{msg['condominio.DefaultLabel']}" required="true"
+						label="#{msg['condominio.label']}">
+						<f:selectItems value="#{ambienteMB.listaSICondominios}" />
+					</h:selectOneMenu>
+					<h:inputText id="idNome" value="#{ambienteMB.ambiente.nome}"
+						size="15" binding="#{ambienteMB.componenteNomeAmbiente}"
+						required="false" />
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>
+				
+			</rich:panel>
+			<div>
+				<h:panelGrid columns="2">
+					<h:commandButton value="#{msg.botaoPesquisar}"
+						actionListener="#{ambienteMB.pesquisarAmbienteCondominio}" />
+					<h:commandButton value="#{msg.botaoLimpar}"
+						actionListener="#{ambienteMB.limparFiltroAmbienteCondominio}"
+						immediate="true" />
+				</h:panelGrid>
+			</div>
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.listaAmbientes}" />
+				</f:facet>
+				<div>
+					<rich:dataTable value="#{ambienteMB.listaAmbientes}" var="ambiente"
+						rowClasses="odd-row, even-row" styleClass="stable"
+						id="tableAmbiente" style="width:100%;" rows="10"
+						rendered="#{ambienteMB.listaAmbientes.rowCount > 0}">
+						<rich:column>
+							<f:facet name="header">
+								<h:outputLabel value="#{msg.condominio}" />
+							</f:facet>
+							<h:outputText value="#{ambienteMB.condominio.nome}" />
+						</rich:column>
+						<rich:column sortBy="#{ambiente.nome}"
+							sortOrder="#{ordenaAmbienteMB.nomeAmbiente}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg.ambiente}" render="tableAmbiente"
+									action="#{ordenaAmbienteMB.ordenarPorNomeAmbiente}" />
+							</f:facet>
+							<h:outputText value="#{ambiente.nome}" />
+						</rich:column>
+						<rich:column style="width:10%;">
+							<f:facet name="header">
+								<h:outputText value="#{msg.rotuloAcao}" />
+							</f:facet>
+							<a4j:commandLink value="#{msg.linkVisualizar}"
+								render="tableAmbiente"
+								action="#{ambienteMB.visualizarAmbienteCondominio}"
+								immediate="true" />
+				 				#{' '}
+ 							<a4j:commandLink value="#{msg.linkEditar}" render="tableAmbiente"
+								action="#{ambienteMB.editarAmbienteCondominio}" immediate="true" />
+						</rich:column>
+						<f:facet name="footer">
+              				  <rich:dataScroller for="tableAmbiente"  fastControls="hide" renderIfSinglePage="false" />
+           				</f:facet>
+					</rich:dataTable>
+				</div>
+			</rich:panel>
+			<h:commandButton value="#{msg.botaoCriarNovo}"
+				action="#{ambienteMB.cadastroAmbienteCondominio}" immediate="true" />
+		</h:form>
+
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseover"
+			query="jQuery(this).addClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseout"
+			query="jQuery(this).removeClass('active-row')" />
+	</ui:define>
+
+</ui:composition>

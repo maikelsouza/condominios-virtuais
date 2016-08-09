@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormVisualizaFuncionarioCondominio"
+			styleClass="content formView">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.visualizarFuncionario}" />
+				</f:facet>
+				<h:panelGrid columns="2" styleClass="formEdit">
+					<h:outputLabel value="#{msg['funcionario.imagem']}:" for="idUpload" />
+					<a4j:mediaOutput id="idUpload" element="img" mimeType="image/jpeg"
+						createContent="#{funcionarioMB.getImagem}" cacheable="false"
+						style="height:100px;" />
+					<h:outputLabel value="#{msg.condominio}:" for="idNomeCondominio" />
+					<h:outputText id="idNomeCondominio"
+						value="#{funcionarioMB.condominio.nome}" />
+					<h:outputLabel value="#{msg['funcionario.nome']}:" for="idNome" />
+					<h:outputText id="idNome" value="#{funcionarioMB.funcionario.nome}" />
+					<h:outputLabel value="#{msg['funcionario.situacao']}:"
+						for="idSituacao" />
+					<h:outputText id="idSituacao"
+						value="#{funcionarioMB.funcionario.situacao == 0 ? msg['funcionario.situacao.itemLabel.0'] : msg['funcionario.situacao.itemLabel.1']}" />
+					<h:outputLabel value="#{msg['funcionario.funcao']}:" for="idFuncao" />
+					<h:outputText id="idFuncao"
+						value="#{funcionarioMB.funcionario.funcao}" />
+					<h:outputLabel value="#{msg['funcionario.sexo']}:" for="idSexo" />
+					<h:outputText id="idSexo"
+						value="#{funcionarioMB.funcionario.sexo == 0 ? msg['funcionario.sexo.0'] : msg['funcionario.sexo.1']}" />
+					<h:outputLabel value="#{msg['funcionario.email']}:" for="idEmail" />
+					<h:outputText id="idEmail"
+						value="#{funcionarioMB.funcionario.email.email}" />
+					<h:outputLabel value="#{msg['funcionario.dataNascimento']}:"
+						for="idDataNascimento"
+						rendered="#{funcionarioMB.funcionario.dataNascimento != null}" />
+					<h:outputText id="idDataNascimento"
+						value="#{funcionarioMB.funcionario.dataNascimento}"
+						rendered="#{funcionarioMB.funcionario.dataNascimento != null}">
+						<f:convertDateTime pattern="#{msg['formatoData']}" type="date" />
+					</h:outputText>
+					<h:outputLabel value="#{msg['funcionario.telefoneCelular']}:"
+						for="idTelefoneCelular"
+						rendered="#{funcionarioMB.funcionario.telefoneCelular != 0}" />
+					<h:outputText id="idTelefoneCelular"
+						value="#{funcionarioMB.funcionario.telefoneCelular}"
+						rendered="#{funcionarioMB.funcionario.telefoneCelular != 0}" />
+					<h:outputLabel value="#{msg['funcionario.telefoneResidencial']}:"
+						for="idTelefoneResidencial"
+						rendered="#{funcionarioMB.funcionario.telefoneResidencial != 0}" />
+					<h:outputText id="idTelefoneResidencial"
+						value="#{funcionarioMB.funcionario.telefoneResidencial}"
+						rendered="#{funcionarioMB.funcionario.telefoneResidencial != 0}" />				
+				</h:panelGrid>
+			</rich:panel>
+			<h:panelGrid columns="1">
+				<h:commandButton value="#{msg.botaoVoltar}"
+					action="#{funcionarioMB.voltarVisualizarFuncionarioCondominio}" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

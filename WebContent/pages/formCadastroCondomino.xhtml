@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormCadastroCondomino" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.cadastroCondomino}" />
+				</f:facet>
+				<h:panelGrid columns="3">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg.condominio}:" for="idSICondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg.bloco}:" for="idListaSIBlocos" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg.unidades}:" for="idListaSIUnidades" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:selectOneMenu id="idSICondominio"
+						value="#{condominoMB.condominio.id}"
+						defaultLabel="#{msg['condominio.DefaultLabel']}"
+						label="#{msg['condominio.label']}" required="true">
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{condominoMB.listaSICondominios}" />
+						<f:ajax listener="#{condominoMB.popularListaBlocos}"
+							render="idListaSIBlocos idListaSIUnidades"></f:ajax>
+					</h:selectOneMenu>
+					<h:selectOneMenu value="#{condominoMB.bloco.id}"
+						defaultLabel="#{msg['bloco.DefaultLabel']}" id="idListaSIBlocos"
+						label="#{msg['bloco.label']}" required="true">
+						<f:selectItem itemLabel="#{msg['bloco.DefaultLabel']}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{condominoMB.listaSIBlocos}" />
+						<f:param name="cid" value="#{condominoMB.conversationId}" />
+						<f:ajax listener="#{condominoMB.popularListaUnidades}"
+							render="idListaSIUnidades" execute="@this" />
+					</h:selectOneMenu>
+					<h:selectOneMenu id="idListaSIUnidades"
+						value="#{condominoMB.unidade.id}"
+						defaultLabel="#{msg['unidade.tipo.label.DefaultLabel']}"
+						label="#{msg['unidade.label']}" required="true">
+						<f:selectItem
+							itemLabel="#{msg['unidade.tipo.label.DefaultLabel']}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{condominoMB.listaSIUnidades}" />
+					</h:selectOneMenu>
+
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condomino.nome']}:" for="idNome" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condomino.sexo']}:" for="idSexo" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:outputLabel value="#{msg['condomino.dataNascimento']}:"
+						for="idDataNascimento" />
+					<h:inputText id="idNome" value="#{condominoMB.condomino.nome}"
+						required="true" size="40" label="#{msg['condomino.nome.label']}"
+						validatorMessage="#{msg['msg.condomino.nome']}">
+						<f:validateLength minimum="1" maximum="150" />
+					</h:inputText>
+					<h:selectOneRadio id="idSexo" value="#{condominoMB.condomino.sexo}"
+						required="true" label="#{msg['condomino.sexo.label']}">
+						<f:selectItem itemLabel="#{msg['condomino.sexo.0']}" itemValue="0" />
+						<f:selectItem itemLabel="#{msg['condomino.sexo.1']}" itemValue="1" />
+					</h:selectOneRadio>
+					<h:panelGroup id="idDataNascimento">
+						<h:selectOneMenu
+							value="#{condominoMB.condomino.dataNascimentoDia}"
+							defaultLabel="#{msg['condomino.dataNascimento.dia']}">
+							<f:selectItem itemLabel="#{msg['condomino.dataNascimento.dia']}"
+								noSelectionOption="false" />
+							<f:selectItems value="#{condominoMB.listaSIDias}" />
+						</h:selectOneMenu>
+						<h:selectOneMenu
+							value="#{condominoMB.condomino.dataNascimentoMes}"
+							defaultLabel="#{msg['condomino.dataNascimento.mes']}">
+							<f:selectItem itemLabel="#{msg['condomino.dataNascimento.mes']}"
+								noSelectionOption="false" />
+							<f:selectItems value="#{condominoMB.listaSIMeses}" />
+						</h:selectOneMenu>
+						<h:selectOneMenu
+							value="#{condominoMB.condomino.dataNascimentoAno}"
+							defaultLabel="#{msg['condomino.dataNascimento.ano']}">
+							<f:selectItem itemLabel="#{msg['condomino.dataNascimento.ano']}"
+								noSelectionOption="false" />
+							<f:selectItems value="#{condominoMB.listaSIAnos}" />
+						</h:selectOneMenu>
+					</h:panelGroup>
+
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condomino.email']}:" for="idEmail" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condomino.proprietario']}:"
+							for="idProprietario" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<div></div>
+					<h:inputText id="idEmail"
+						value="#{condominoMB.condomino.email.email}" required="true"
+						size="40" label="#{msg['condomino.email.label']}">
+					</h:inputText>
+					<h:selectOneRadio id="idProprietario"
+						value="#{condominoMB.condomino.proprietario}"
+						defaultLabel="#{msg['condomino.proprietario.DefaultLabel']}"
+						required="true" label="#{msg['condomino.proprietario.label']}">
+						<f:selectItem itemLabel="#{msg.sim}" itemValue="#{true}" />
+						<f:selectItem itemLabel="#{msg.nao}" itemValue="#{false}" />
+					</h:selectOneRadio>
+
+					<div></div>
+					<h:outputLabel value="#{msg['condomino.telefoneResidencial']}:"
+						for="idTelefoneResidencial" />
+					<h:outputLabel for="idTelefoneCelular"
+						value="#{msg['condomino.telefoneCelular']}:" />
+					<h:outputLabel value="#{msg['condomino.telefoneComercial']}:"
+						for="idTelefoneComercial" />
+					<h:panelGroup>
+						<h:inputText id="idTelefoneResidencial"
+							value="#{condominoMB.condomino.telefoneResidencial}" size="15"
+							maxlength="15"
+							label="#{msg['condomino.telefoneResidencial.label']}" />
+						<h:outputLabel value="#{msg['somenteNumeros']}"
+							styleClass="confFontRotuloAjuda" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:inputText id="idTelefoneCelular"
+							value="#{condominoMB.condomino.telefoneCelular}" size="15"
+							maxlength="15" label="#{msg['condomino.telefoneCelular.label']}" />
+						<h:outputLabel value="#{msg['somenteNumeros']}"
+							styleClass="confFontRotuloAjuda" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:inputText id="idTelefoneComercial"
+							value="#{condominoMB.condomino.telefoneComercial}" size="15"
+							maxlength="15"
+							label="#{msg['condomino.telefoneComercial.label']}" />
+						<h:outputLabel value="#{msg['somenteNumeros']}"
+							styleClass="confFontRotuloAjuda" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condomino.senha']}:" for="idSenha" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condomino.confirmarSenha']}:"
+							for="idConfirmarSenha" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<div></div>
+					<h:panelGroup>
+						<h:inputSecret id="idSenha" value="#{condominoMB.condomino.senha}"
+							required="true" label="#{msg['condomino.senha.label']}"
+							validatorMessage="#{msg['msg.condomino.senha']}">
+							<f:validateLength minimum="6" maximum="15" />
+						</h:inputSecret>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:inputSecret id="idConfirmarSenha"
+							value="#{condominoMB.condomino.confirmarSenha}" required="true"
+							label="#{msg['condomino.confirmarSenha.label']}"
+							validatorMessage="#{msg['msg.condomino.ConfirmarSenha']}">
+							<f:validateLength minimum="6" maximum="15" />
+						</h:inputSecret>
+
+					</h:panelGroup>
+					<div></div>
+				</h:panelGrid>
+				<h:panelGrid columns="1" styleClass="msgAsterisco">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['regraSenha']}"
+							for="idRegraSenhaCondomino" styleClass="camposObrigatorios" />
+						<h:outputLabel value="*" id="idRegraSenhaCondomino"
+							styleClass="asterisco" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+							for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+						<h:outputLabel value="*" id="idCampoObrigatorio"
+							styleClass="asterisco" />
+					</h:panelGroup>
+				</h:panelGrid>
+			</rich:panel>
+			<h:panelGrid columns="3">
+				<h:commandButton value="#{msg.botaoSalvar}"
+					action="#{condominoMB.salvarCondomino}" />
+				<h:commandButton value="#{msg.botaoLimpar}"
+					actionListener="#{condominoMB.limparFiltroCondomino}"
+					immediate="true" />
+				<h:commandButton value="#{msg.botaoCancelar}"
+					action="#{condominoMB.cancelarCadastroCondomino}" immediate="true" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

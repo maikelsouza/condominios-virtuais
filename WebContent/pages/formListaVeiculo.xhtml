@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<f:metadata>
+			<f:event type="preRenderView" listener="#{veiculoMB.abreSessao}" />
+		</f:metadata>
+		<h:form id="idFormListaVeiculo" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.filtroVeiculo}" />
+				</f:facet>
+				<h:panelGrid columns="2">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio']}:"
+							for="idNomeCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+									
+					<h:selectOneMenu value="#{veiculoMB.condominio.id}"
+						id="idNomeCondominio"
+						defaultLabel="#{msg['condominio.DefaultLabel']}" required="true"
+						label="#{msg['condominio.label']}"
+						binding="#{veiculoMB.componenteItensCondominio}">
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}"
+							noSelectionOption="false" />
+						<f:selectItems value="#{veiculoMB.listaSICondominios}" />						
+					</h:selectOneMenu>			
+				</h:panelGrid>
+			
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>
+
+			</rich:panel>
+			<div>
+				<h:panelGrid columns="2">
+					<h:commandButton value="#{msg.botaoPesquisar}"
+						action="#{veiculoMB.pesquisar}" />
+					<h:commandButton value="#{msg.botaoLimpar}"
+						actionListener="#{veiculoMB.limparFiltroVeiculo}" immediate="true" />
+				</h:panelGrid>
+			</div>
+			<rich:panel>
+
+				<f:facet name="header">
+					<h:outputText value="#{msg.listaVeiculo}" />
+				</f:facet>
+				<div>
+					<rich:dataTable value="#{veiculoMB.listaDMVeiculo}" var="veiculo"
+						rowClasses="odd-row, even-row" styleClass="stable" rows="10"
+						id="tableVeiculo" style="width:100%;"
+						rendered="#{veiculoMB.listaDMVeiculo.rowCount > 0}">
+						<rich:column sortBy="#{veiculo.bloco.nome}"
+							sortOrder="#{ordenaVeiculoMB.blocoCondominoVeiculo}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['veiculo.bloco.nome']}"
+									render="tableVeiculo"
+									action="#{ordenaVeiculoMB.ordenarPorBlocoCondominoVeiculo}"
+									immediate="true" />
+							</f:facet>
+							<h:outputText value="#{veiculo.bloco.nome}" />
+						</rich:column>
+						<rich:column sortBy="#{veiculo.unidade.numero}"
+							sortOrder="#{ordenaVeiculoMB.unidadeCondominoVeiculo}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['veiculo.unidade.numero']}"
+									render="tableVeiculo"
+									action="#{ordenaVeiculoMB.ordenarPorUnidadeCondominoVeiculo}"
+									immediate="true" />
+							</f:facet>
+							<h:outputText value="#{veiculo.unidade.numero}" />
+						</rich:column>
+						<rich:column sortBy="#{veiculo.condomino.nome}"
+							sortOrder="#{ordenaVeiculoMB.nomeCondominoVeiculo}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['veiculo.condomino.nome']}"
+									render="tableVeiculo"
+									action="#{ordenaVeiculoMB.ordenarPorNomeCondominoVeiculo}"
+									immediate="true" />
+							</f:facet>
+							<h:outputText value="#{veiculo.condomino.nome}" />
+						</rich:column>
+						<rich:column sortBy="#{veiculo.nome}"
+							sortOrder="#{ordenaVeiculoMB.nomeVeiculo}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['veiculo.nomeVeiculo']}"
+									render="tableVeiculo"
+									action="#{ordenaVeiculoMB.ordenarPorNomeVeiculo}"
+									immediate="true" />
+							</f:facet>
+							<h:outputText value="#{veiculo.nome}" />
+						</rich:column>
+						<rich:column sortBy="#{veiculo.placa}"
+							sortOrder="#{ordenaVeiculoMB.placaVeiculo}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['veiculo.placa']}"
+									render="tableVeiculo"
+									action="#{ordenaVeiculoMB.ordenarPorPlacaVeiculo}"
+									immediate="true" />
+							</f:facet>
+							<h:outputText value="#{veiculo.placa}" />
+						</rich:column>
+						<rich:column sortBy="#{veiculo.tipo}"
+							sortOrder="#{ordenaVeiculoMB.tipoVeiculo}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['veiculo.tipo']}"
+									render="tableVeiculo"
+									action="#{ordenaVeiculoMB.ordenarPorTipoVeiculo}"
+									immediate="true" />
+							</f:facet>
+							<h:outputText
+								value="#{veiculo.tipo == 1 ? msg['meuPainel.veiculo.tipo.1'] : msg['meuPainel.veiculo.tipo.2']}" />
+						</rich:column>
+						<rich:column sortBy="#{veiculo.garagem.numero}"
+							sortOrder="#{ordenaVeiculoMB.garagemVeiculo}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['veiculo.garagem.numero']}"
+									render="tableVeiculo"
+									action="#{ordenaVeiculoMB.ordenarPorGaragemVeiculo}"
+									immediate="true" />
+							</f:facet>
+							<h:outputText value="#{veiculo.garagem.numero}" />
+						</rich:column>
+						<f:facet name="footer">
+              				<rich:dataScroller for="tableVeiculo"  fastControls="hide" renderIfSinglePage="false" />
+           				</f:facet>
+					</rich:dataTable>
+				</div>
+			</rich:panel>
+		</h:form>
+
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseover"
+			query="jQuery(this).addClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseout"
+			query="jQuery(this).removeClass('active-row')" />
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormListaClassificados" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.filtroClassificados}" />
+				</f:facet>
+				<h:panelGrid columns="2">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio']}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:outputLabel value="#{msg['classificados.titulo']}:"
+						for="idTitulo" />
+					<h:selectOneMenu id="idCondominio"
+						value="#{classificadosMB.condominio.id}"
+						defaultLabel="#{msg['condominio.DefaultLabel']}"
+						label="#{msg['condominio.label']}" required="true">
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}"
+							noSelectionOption="false" itemValue="0"/>
+						<f:selectItems value="#{classificadosMB.listaCondominios}" />
+					</h:selectOneMenu>
+					<h:inputText id="idTitulo"
+						value="#{classificadosMB.classificados.titulo}" />
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>
+
+			</rich:panel>
+			<h:commandButton value="#{msg.botaoPesquisar}"
+				actionListener="#{classificadosMB.pesquisar}" />
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg['classificados.listaClassificados']}" />
+				</f:facet>
+				<rich:dataGrid value="#{classificadosMB.listaClassificados}" 
+					columns="#{classificadosMB.listaClassificados.rowCount >= 5 ? 5 : classificadosMB.listaClassificados.rowCount}"
+					elements="15" width="1000px" border="0" var="classificados" 
+					id="gridClassificados" rowKeyVar="row">
+					<a4j:mediaOutput element="img" mimeType="image/jpeg"
+						createContent="#{classificadosMB.paintListagemClassificados}"
+						value="#{row}" cacheable="false" alt="#{classificados.titulo}" session="true"
+						style="width:250px; height:200px;" />
+					<h:panelGrid columns="2">
+						<h:outputLabel value="#{msg['classificados.titulo']}:"
+							for="idTitulo" />
+						<h:outputText id="idTitulo" value="#{classificados.titulo}"
+							style="font-weight:bold; font-size:small;" />
+						<h:outputLabel value="#{msg['classificados.telefone1']}:"
+							for="idTelefone1" />
+						<h:outputText id="idTelefone1"
+							value="#{classificados.telefone1 == 0 ? msg['naoInformado'] : classificados.telefone1}" />
+						<h:outputLabel value="#{msg['classificados.telefone2']}:"
+							for="idTelefone2" />
+						<h:outputText id="idTelefone2"
+							value="#{classificados.telefone2 == 0 ? msg['naoInformado'] : classificados.telefone2}" />
+						<h:outputLabel value="#{msg['classificados.valor']}:"
+							for="idValor" />
+						<h:outputText id="idValor"
+							value="#{classificados.valor == 0.0 ? msg['naoInformado'] : classificados.valor}">
+							<f:convertNumber currencySymbol="#{msg.moeda}" type="currency" />
+						</h:outputText>
+						<h:outputLabel value="#{msg['classificados.dataExpira']}:"
+							for="idDataExpira" />
+						<h:outputText id="idDataExpira"
+							value="#{classificados.dataExpira}">
+							<f:convertDateTime pattern="#{msg['formatoData']}" />
+						</h:outputText>
+						<h:outputLabel value="#{msg['classificados.descricao']}:"
+							for="idDescricao" />
+						<h:inputTextarea id="idDescricao"
+							value="#{classificados.descricao}" readonly="true"
+							style="height: 150px; width:170px;" />
+					</h:panelGrid>
+					<a4j:commandLink value="#{msg.linkEditar}"
+						render="gridClassificados"
+						action="#{classificadosMB.editarClassificados}" immediate="true"
+						rendered="#{classificadosMB.classificadosPertenceAoUsuarioLogado()}" />
+					<f:facet name="footer">
+              			<rich:dataScroller for="gridClassificados"  fastControls="hide" renderIfSinglePage="false" />
+           			</f:facet>	
+				</rich:dataGrid>
+			</rich:panel>
+			<h:commandButton value="#{msg.botaoCadastrarClassificados}"
+				action="#{classificadosMB.abrirTelaCadastrarClassificados}"
+				immediate="true"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,6')}" />
+		</h:form>
+	</ui:define>
+
+</ui:composition>

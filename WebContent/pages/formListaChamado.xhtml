@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormListaChamado" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.filtroChamado}" />
+				</f:facet>
+				<h:panelGrid columns="2">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio']}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['chamado.status']}:" for="idStatus" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:selectOneMenu id="idCondominio"  value="#{chamadoMB.chamado.condominio.id}"
+						defaultLabel="#{msg['condominio.DefaultLabel']}" required="true" label="#{msg['condominio.label']}" >						
+						<f:selectItems value="#{chamadoMB.listaSICondominios}" />
+					</h:selectOneMenu>					
+					<h:selectOneMenu id="idStatus" value="#{chamadoMB.chamado.status}" label="#{msg['chamado.status.label']}">
+						<f:selectItems value="#{chamadoMB.listaSIStatus}" />						
+					</h:selectOneMenu>
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
+				</h:panelGrid>
+
+			</rich:panel>
+			<div>
+				<h:panelGrid columns="2">
+					<h:commandButton value="#{msg.botaoPesquisar}" actionListener="#{chamadoMB.pesquisarChamado}" />
+					<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{chamadoMB.limparFiltroChamado}" />
+				</h:panelGrid>
+			</div>
+			<rich:panel>
+
+				<f:facet name="header">
+					<h:outputText value="#{msg.listaChamados}" />
+				</f:facet>
+				<div>
+					<rich:dataTable value="#{chamadoMB.listaChamadosVOs}"
+						var="chamadoVO" rowClasses="odd-row, even-row" rows="10"
+						styleClass="stable" id="tableChamado" style="width:100%;"
+						rendered="#{chamadoMB.listaChamadosVOs.rowCount > 0}">
+						<rich:column sortBy="#{chamadoVO.nomeBloco}" sortOrder="#{ordenaChamadoMB.nomeBloco}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['bloco']}" render="tableChamado" action="#{ordenaChamadoMB.ordenarPorNomeBloco}" />
+							</f:facet>
+							<h:outputText value="#{chamadoVO.nomeBloco}" />
+						</rich:column>
+						<rich:column sortBy="#{chamadoVO.numeroUnidade}" sortOrder="#{ordenaChamadoMB.numeroUnidade}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['unidade']}" render="tableChamado" action="#{ordenaChamadoMB.ordenarPorNumeroUnidade}" />
+							</f:facet>
+							<h:outputText value="#{chamadoVO.numeroUnidade}" />
+						</rich:column>
+						<rich:column sortBy="#{chamadoVO.nomeUsuario}" sortOrder="#{ordenaChamadoMB.nomeUsuario}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['chamado.usuario']}" render="tableChamado" action="#{ordenaChamadoMB.ordenarPorNomeUsuario}" />
+							</f:facet>
+							<h:outputText value="#{chamadoVO.nomeUsuario}" />
+						</rich:column>
+						<rich:column sortBy="#{chamadoVO.nome}" sortOrder="#{ordenaChamadoMB.nomeChamado}">
+							<f:facet name="header">								
+								<a4j:commandLink value="#{msg['chamado.nome']}" render="tableChamado" action="#{ordenaChamadoMB.ordenarPorNomeChamado}" />
+							</f:facet>
+							<h:outputText value="#{chamadoVO.nome}" />
+						</rich:column>
+						<rich:column sortBy="#{chamadoVO.tipoChamado}" sortOrder="#{ordenaChamadoMB.tipoChamado}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['chamado.tipo']}" render="tableChamado" action="#{ordenaChamadoMB.ordenarPorTipoChamado}" />
+							</f:facet>
+							<h:outputText value="#{chamadoVO.tipoChamado != msg['chamado.outros'] ? chamadoVO.tipoChamado : chamadoVO.outros}" />
+						</rich:column>						
+						<rich:column sortBy="#{chamadoVO.status}" sortOrder="#{ordenaChamadoMB.statusChamado}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['chamado.status']}" render="tableChamado" action="#{ordenaChamadoMB.ordenarPorStatusChamado}" />
+							</f:facet>
+							<h:outputText value="#{chamadoVO.status}" />
+						</rich:column>
+						<rich:column sortBy="#{chamadoVO.descricao}" sortOrder="#{ordenaChamadoMB.descricaoChamado}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['chamado.descricao']}" render="tableChamado" action="#{ordenaChamadoMB.ordenarPorDescricaoChamado}" />
+							</f:facet>
+							<h:outputText value="#{chamadoVO.descricao}" />
+						</rich:column>						
+						<rich:column sortBy="#{chamadoVO.dataAbertura}" sortOrder="#{ordenaChamadoMB.dataAberturaChamado}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['chamado.dataAbertura']}" render="tableChamado" action="#{ordenaChamadoMB.ordenarPorDataAberturaChamado}" />
+							</f:facet>
+							<h:outputText value="#{chamadoVO.dataAbertura}" >
+								<f:convertDateTime pattern="#{msg.formatoDataHora}" timeZone="#{msg.timeZone}"/>
+							</h:outputText>
+						</rich:column>
+						<rich:column sortBy="#{chamadoVO.dataFechamento}" sortOrder="#{ordenaChamadoMB.dataFechamentoChamado}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['chamado.dataFechamento']}" render="tableChamado" action="#{ordenaChamadoMB.ordenarPorDataFechamentoChamado}" />
+							</f:facet>
+							<h:outputText value="#{chamadoVO.dataFechamento}" >
+								<f:convertDateTime pattern="#{msg.formatoDataHora}" timeZone="#{msg.timeZone}"/>
+							</h:outputText>
+						</rich:column>
+						<rich:column sortBy="#{chamadoVO.comentario}" sortOrder="#{ordenaChamadoMB.comentarioChamado}">
+							<f:facet name="header">                                                                                          
+								<a4j:commandLink value="#{msg['chamado.comentario']}" render="tableChamado" action="#{ordenaChamadoMB.ordenarPorComentarioChamado}" />
+							</f:facet>
+							<h:outputText value="#{chamadoVO.comentario == 'null' ? '' : chamadoVO.comentario}" />
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="#{msg.rotuloAcao}" />
+							</f:facet>
+							<a4j:commandLink value="#{chamadoVO.status == msg['chamado.status.0'] ? msg['linkDesabilitado'] : msg['linkDarAndamento']}" disabled="#{chamadoVO.status == msg['chamado.status.0']}" render="tableChamado" action="#{chamadoMB.darAndamentoChamado}" immediate="true" />
+						</rich:column>
+						<f:facet name="footer">
+              				<rich:dataScroller for="tableChamado"  fastControls="hide" renderIfSinglePage="false" />
+           				</f:facet>	
+					</rich:dataTable>
+				</div>
+			</rich:panel>		
+		</h:form>
+
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseover" query="jQuery(this).addClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseout" query="jQuery(this).removeClass('active-row')" />
+	</ui:define>
+
+</ui:composition>

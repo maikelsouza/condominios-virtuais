@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormEditaAmbienteBloco" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.editarAmbiente}" />
+				</f:facet>
+				<h:panelGrid id="idPanelGridSelectCadastroAmbiente" columns="1">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['ambiente.nome']}:" for="idNome" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:inputText id="idNome" value="#{ambienteMB.ambiente.nome}"
+						label="#{msg['ambiente.nome.label']}" required="true" size="30"
+						validatorMessage="#{msg['msg.ambienteCondominioOuBloco.nome']}">
+						<f:validateLength minimum="1" maximum="50" />
+					</h:inputText>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg.bloco}:" for="idListaBlocos" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<rich:pickList addAllText="#{msg.adicionarTodos}"
+						listWidth="300px"
+						addText="#{msg.adicionar}" var="bloco" id="idListaBlocos"
+						converter="blocoConversor" removeAllText="#{msg.removerTodos}"
+						removeText="#{msg.remover}" requiredMessage="#{msg['msg.ambienteCondominio.blocoObrigatorio']}"
+						value="#{ambienteMB.listaAmbienteBlocos}" required="true"
+						label="#{msg['bloco.label']}">
+						<f:selectItems value="#{ambienteMB.listaBlocos}" />
+						<rich:column>
+							<f:facet name="header">#{msg.bloco}</f:facet>
+							#{bloco.nome} 
+						</rich:column>
+					</rich:pickList>					
+				</h:panelGrid>
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>
+
+				<rich:popupPanel id="confirmaExcluirAmbienteBloco" autosized="true">
+	         		 #{msg['msg.ambienteBloco.confirmacaoExcluir']}
+	         		 <h:panelGrid columns="2">
+	           	 		<h:commandButton value="#{msg.botaoExcluir}" action="#{ambienteMB.excluirAmbienteBloco}"
+						onclick=" #{rich:component('confirmaExcluirAmbienteBloco')}.hide();  return true;" />
+					 <h:commandButton value="#{msg.botaoCancelar}"
+						onclick="#{rich:component('confirmaExcluirAmbienteBloco')}.hide(); return false;" />						
+					</h:panelGrid>
+				</rich:popupPanel>
+
+			</rich:panel>
+
+			<h:panelGrid columns="4">
+				<h:commandButton value="#{msg.botaoAtualizar}"
+					action="#{ambienteMB.atualizarAmbienteBloco}" />
+				<h:commandButton value="#{msg.botaoExcluir}" immediate="true">
+					<rich:componentControl target="confirmaExcluirAmbienteBloco"
+						operation="show" />
+				</h:commandButton>
+				<h:commandButton value="#{msg.botaoCancelar}"
+					action="#{ambienteMB.cancelarCadastroAmbienteBloco}"
+					immediate="true" />
+				<h:commandButton value="#{msg.botaoCadastrarItemAmbiente}"
+					action="#{ambienteMB.cadastroItemAmbiente}" immediate="true" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

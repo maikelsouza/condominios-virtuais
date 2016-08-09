@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<f:metadata>
+			<f:event type="preRenderView"
+				listener="#{garagemMB.popularListaGaragem}" />
+		</f:metadata>
+		<h:form id="idFormCadastroGaragem" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.cadastroGaragem}" />
+				</f:facet>
+				<h:panelGrid columns="1">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['garagem.numero']}:" for="idNumero" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:inputText id="idNumero" value="#{garagemMB.garagem.numero}"
+						size="10" required="true" label="#{msg['garagem.numero.label']}"
+						validatorMessage="#{msg['msg.garagem.numero']}"
+						binding="#{garagemMB.componenteNumeroGaragem}">
+						<f:validateLength minimum="1" maximum="10" />
+					</h:inputText>
+				</h:panelGrid>
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>
+			</rich:panel>
+			<div>
+				<h:panelGrid columns="3">
+					<h:commandButton value="#{msg.botaoSalvar}"
+						actionListener="#{garagemMB.salvarGaragem}" />
+					<h:commandButton value="#{msg.botaoLimpar}"
+						actionListener="#{garagemMB.limparGaragem}" immediate="true" />
+					<h:commandButton value="#{msg.botaoVoltar}"
+						action="#{garagemMB.voltarCadastroGaragem}" immediate="true" />
+				</h:panelGrid>
+			</div>
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.listaGaragem}" />
+				</f:facet>
+				<div>
+					<rich:dataTable value="#{garagemMB.listaGaragem}" var="garagem"
+						rowClasses="odd-row, even-row" styleClass="stable"
+						id="tableGaragem" style="width:100%;"
+						rendered="#{garagemMB.listaGaragem.rowCount > 0}">
+						<rich:column sortBy="#{garagem.numero}"
+							sortOrder="#{ordenaGaragemMB.numeroGaragem}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['garagem.numero']}"
+									render="tableGaragem"
+									action="#{ordenaGaragemMB.ordenarPorNumeroGaragem}"
+									immediate="true" />
+							</f:facet>
+							<h:outputText value="#{garagem.numero}" />
+						</rich:column>
+						<rich:column style="width:5%;">
+							<f:facet name="header">
+								<h:outputText value="#{msg.rotuloAcao}" />
+							</f:facet>
+							<a4j:commandLink value="#{msg.linkEditar}" render="tableGaragem"
+								action="#{garagemMB.editarGaragem}" immediate="true" />
+						</rich:column>
+					</rich:dataTable>
+				</div>
+			</rich:panel>
+		</h:form>
+
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseover"
+			query="jQuery(this).addClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseout"
+			query="jQuery(this).removeClass('active-row')" />
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormFaleComSindico" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg['mensagen.faleComSindico']}" />
+				</f:facet>
+				<h:panelGrid columns="1">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg.condominio}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:selectOneMenu id="idCondominio" value="#{mensagemMB.condominio.id}"
+						defaultLabel="#{msg['condominio.DefaultLabel']}" required="true"
+						label="#{msg['condominio.label']}">
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" itemValue="0" noSelectionOption="true" />
+						<f:selectItems value="#{mensagemMB.listaSICondominio}" />
+					</h:selectOneMenu>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['mensagemRecebida.assunto']}:"
+							for="idAssunto" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:inputText id="idAssunto" value="#{mensagemMB.mensagem.assunto}"
+						required="true" label="#{msg['mensagemRecebida.assunto.label']}"
+						binding="#{mensagemMB.componenteAssuntoMensagem}" size="79"
+						validatorMessage="#{msg['msg.mensagem.assunto']}">
+						<f:validateLength minimum="1" maximum="50" />
+					</h:inputText>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['mensagemRecebida.texto']}:"
+							for="idMensagem" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:inputTextarea id="idMensagem"
+						value="#{mensagemMB.mensagem.texto}" required="true"
+						label="#{msg['mensagemRecebida.texto.label']}"
+						binding="#{mensagemMB.componenteTextoMensagem}" rows="8" cols="80" />
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['enviaParaMimTambem']}:"
+							for="idEnviaParaMimTambem" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:selectOneRadio id="idEnviaParaMimTambem"
+						value="#{mensagemMB.enviarParaMimTambem}">
+						<f:selectItem itemValue="#{true}" itemLabel="#{msg['sim']}" />
+						<f:selectItem itemValue="#{false}" itemLabel="#{msg['nao']}" />
+					</h:selectOneRadio>
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>
+
+			</rich:panel>
+
+			<h:panelGrid columns="2">
+				<h:commandButton value="#{msg.botaoEnviarMensagem}"
+					action="#{mensagemMB.enviarMensagem}" />
+				<h:commandButton value="#{msg.botaoLimpar}"
+					actionListener="#{mensagemMB.limparMensagem}" immediate="true" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

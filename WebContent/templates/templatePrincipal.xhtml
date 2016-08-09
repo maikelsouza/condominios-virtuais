@@ -1,0 +1,28 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>#{msg.menuPrincipal}</title>
+	<link rel="StyleSheet" type="text/css" href="../css/estilos.css"
+		media="screen" />
+</h:head>
+<f:loadBundle basename="Messages_pt_BR" var="msg" />
+<h:body>
+	<ui:insert name="cabecalho">
+		<ui:include src="/snippet/formMenuPrincipal.xhtml"></ui:include>
+		<h:messages infoClass="msgInfo" errorClass="msgErro"
+			warnClass="msgWarn" id="IdMessages"  />
+	</ui:insert>
+	<ui:insert name="conteudo">
+		<ui:include src="/pages/formConteudoTelaPrincipal.xhtml"></ui:include>
+	</ui:insert>
+	<ui:insert name="rodape">
+		<div class="rodape">
+			<p>#{msg['copyright']}</p>
+			<h:graphicImage alt="logo" url="/imagens/logo_rodape.png" />
+		</div>
+	</ui:insert>
+</h:body>
+</html>

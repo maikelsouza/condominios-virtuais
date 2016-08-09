@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormListaTelefonesUteis" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.filtroTelefonesUteis}" />
+				</f:facet>
+				<h:panelGrid columns="1">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio']}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:selectOneMenu id="idCondominio"
+						value="#{telefonesUteisMB.condominio.id}"
+						defaultLabel="#{msg['condominio.DefaultLabel']}"
+						label="#{msg['condominio.label']}" required="true">
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" itemValue="0" noSelectionOption="true" />
+						<f:selectItems value="#{telefonesUteisMB.listaSICondominios}" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>
+				
+			</rich:panel>
+			<div>
+				<h:panelGrid columns="2">
+					<h:commandButton value="#{msg.botaoPesquisar}"
+						actionListener="#{telefonesUteisMB.pesquisar}" />
+					<h:commandButton value="#{msg.botaoLimpar}"
+						actionListener="#{telefonesUteisMB.limparFiltroTelefonesUteis}"
+						immediate="true" />
+				</h:panelGrid>
+			</div>
+			<rich:panel>
+
+				<f:facet name="header">
+					<h:outputText value="#{msg.listarTelefonesUteis}" />
+				</f:facet>
+				<div>
+					<rich:dataTable value="#{telefonesUteisMB.listaTelefonesUteis}"
+						var="telefonesUteis" rowClasses="odd-row, even-row" rows="10"
+						styleClass="stable" id="tableTelefonesUteis" style="width:100%;"
+						rendered="#{telefonesUteisMB.listaTelefonesUteis.rowCount > 0}">
+						<rich:column sortBy="#{telefonesUteis.nome}"
+							sortOrder="#{ordenaTelefonesUteisMB.nomeTelefonesUteis}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['telefonesUteis.nome']}"
+									render="tableTelefonesUteis"
+									action="#{ordenaTelefonesUteisMB.ordenarPorNome}" />
+							</f:facet>
+							<h:outputText value="#{telefonesUteis.nome}" />
+						</rich:column>
+						<rich:column sortBy="#{telefonesUteis.telefone1}"
+							sortOrder="#{ordenaTelefonesUteisMB.telefone1TelefonesUteis}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['telefonesUteis.telefone1']}"
+									render="tableTelefonesUteis"
+									action="#{ordenaTelefonesUteisMB.ordenarPorTelefone1}" />
+							</f:facet>
+							<h:outputText value="#{telefonesUteis.telefone1}" />
+						</rich:column>
+						<rich:column sortBy="#{telefonesUteis.telefone2}"
+							sortOrder="#{ordenaTelefonesUteisMB.telefone2TelefonesUteis}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['telefonesUteis.telefone2']}"
+									render="tableTelefonesUteis"
+									action="#{ordenaTelefonesUteisMB.ordenarPorTelefone2}" />
+							</f:facet>
+							<h:outputText value="#{telefonesUteis.telefone2}" />
+						</rich:column>
+						<rich:column sortBy="#{telefonesUteis.email}"
+							sortOrder="#{ordenaTelefonesUteisMB.emailTelefonesUteis}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['telefonesUteis.email']}"
+									render="tableTelefonesUteis"
+									action="#{ordenaTelefonesUteisMB.ordenarPorEmail}" />
+							</f:facet>
+							<h:outputText value="#{telefonesUteis.email}" />
+						</rich:column>
+						<rich:column sortBy="#{telefonesUteis.site}"
+							sortOrder="#{ordenaTelefonesUteisMB.siteTelefonesUteis}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['telefonesUteis.site']}"
+									render="tableTelefonesUteis"
+									action="#{ordenaTelefonesUteisMB.ordenarPorSite}" />
+							</f:facet>
+							<h:outputLink value="#{telefonesUteis.site}" target="_blank">
+								<h:outputText value="#{telefonesUteis.site}" />
+							</h:outputLink>
+						</rich:column>
+						<rich:column sortBy="#{telefonesUteis.descricao}"
+							sortOrder="#{ordenaTelefonesUteisMB.descricaoTelefonesUteis}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['telefonesUteis.descricao']}"
+									render="tableTelefonesUteis"
+									action="#{ordenaTelefonesUteisMB.ordenarPorDescricao}" />
+							</f:facet>
+							<h:outputText value="#{telefonesUteis.descricao}" />
+						</rich:column>
+						<rich:column style="width:5%;"
+							rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}">
+							<f:facet name="header">
+								<h:outputText value="#{msg.rotuloAcao}" />
+							</f:facet>
+							<a4j:commandLink value="#{msg.linkEditar}"
+								render="tableTelefonesUteis"
+								action="#{telefonesUteisMB.editarTelefonesUteis}"
+								immediate="true" />
+						</rich:column>
+						<f:facet name="footer">
+              				<rich:dataScroller for="tableTelefonesUteis"  fastControls="hide" renderIfSinglePage="false" />
+           				</f:facet>
+					</rich:dataTable>
+				</div>
+			</rich:panel>
+			<h:commandButton value="#{msg.botaoCriarNovo}"
+				action="#{telefonesUteisMB.cadastrarTelefonesUteis}"
+				immediate="true"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}" />
+		</h:form>
+
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseover"
+			query="jQuery(this).addClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseout"
+			query="jQuery(this).removeClass('active-row')" />
+	</ui:define>
+
+</ui:composition>

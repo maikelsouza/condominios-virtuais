@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormListaCondomino" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.filtroCondominos}" />
+				</f:facet>
+				<h:panelGrid columns="3">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio']}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					 <h:outputLabel value="#{msg['bloco']}:" for="idListaSIBlocos"  />
+					<h:outputLabel value="#{msg.unidades}:" for="idListaSIUnidades" />
+					<h:selectOneMenu id="idCondominio" 
+						value="#{condominoMB.condominio.id}"
+						defaultLabel="#{msg['condominio.DefaultLabel']}" required="true"
+						label="#{msg['condominio.label']}" >
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{condominoMB.listaSICondominios}" />
+						<f:ajax listener="#{condominoMB.popularListaBlocos}"
+							render="idListaSIBlocos" execute="@this" />
+					</h:selectOneMenu>
+					<h:selectOneMenu value="#{condominoMB.bloco.id}" 
+						defaultLabel="#{msg['bloco.DefaultLabel']}" id="idListaSIBlocos"
+						label="#{msg['bloco.label']}" >						
+						<f:selectItem itemValue="0"  itemLabel="#{msg['todos']}" />
+						<f:selectItems value="#{condominoMB.listaSIBlocos}" />
+						<f:ajax listener="#{condominoMB.popularListaUnidades}"
+							render="idListaSIUnidades" execute="@this" />
+					</h:selectOneMenu>
+					<h:selectOneMenu value="#{condominoMB.unidade.id}"
+						defaultLabel="#{msg['unidade.DefaultLabel']}"
+						id="idListaSIUnidades">
+						<f:selectItem itemValue="0" itemLabel="#{msg['todas']}" />
+						<f:selectItems value="#{condominoMB.listaSIUnidades}" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>
+
+			</rich:panel>
+			<div>
+				<h:panelGrid columns="2">
+					<h:commandButton value="#{msg.botaoPesquisar}"
+						actionListener="#{condominoMB.pesquisar}" />
+					<h:commandButton value="#{msg.botaoLimpar}"
+						actionListener="#{condominoMB.limparFiltroCondomino}"
+						immediate="true" />
+
+				</h:panelGrid>
+			</div>
+			<rich:panel>
+
+				<f:facet name="header">
+					<h:outputText value="#{msg.listaCondominos}" />
+				</f:facet>
+				<div>
+					<rich:dataTable value="#{condominoMB.listaCondominosVO}"
+						var="condominoVO" rowClasses="odd-row, even-row" rows="10"
+						styleClass="stable" id="tableCondomino" style="width:100%;"
+						rendered="#{condominoMB.listaCondominosVO.rowCount > 0}">
+						<rich:column>
+							<f:facet name="header">
+								<h:outputLabel value="#{msg['condominio']}" />
+							</f:facet>
+							<h:outputText value="#{condominoVO.nomeCondominio}" />
+						</rich:column>
+						<rich:column sortBy="#{condominoVO.nomeBloco}"
+							sortOrder="#{ordenaCondominoMB.blocoCondomino}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['bloco']}" render="tableCondomino"
+									action="#{ordenaCondominoMB.ordenarPorBloco}" />
+							</f:facet>
+							<h:outputText value="#{condominoVO.nomeBloco}" />
+						</rich:column>
+						<rich:column sortBy="#{condominoVO.numeroUnidade}"
+							sortOrder="#{ordenaCondominoMB.unidadeCondomino}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['unidade']}"
+									render="tableCondomino"
+									action="#{ordenaCondominoMB.ordenarPorUnidade}" />
+							</f:facet>
+							<h:outputText value="#{condominoVO.numeroUnidade}" />
+						</rich:column>
+						<rich:column sortBy="#{condominoVO.nomeCondomino}"
+							sortOrder="#{ordenaCondominoMB.nomeCondomino}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['condomino']}"
+									render="tableCondomino"
+									action="#{ordenaCondominoMB.ordenarPorNome}" />
+							</f:facet>
+							<h:outputText value="#{condominoVO.nomeCondomino}" />
+						</rich:column>
+						<rich:column
+							style="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1') == false ? 'width:5%;' : 'width:10%;'}">
+							<f:facet name="header">
+								<h:outputText value="#{msg.rotuloAcao}" />
+							</f:facet>
+							<a4j:commandLink value="#{msg.linkVisualizar}"
+								render="tableCondomino"
+								action="#{condominoMB.visualizarCondomino}" immediate="true" />	
+				 			#{' '}                                                                           
+ 							<a4j:commandLink value="#{msg.linkEditar}"
+								render="tableCondomino" action="#{condominoMB.editarCondomino}"
+								immediate="true"
+								rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1')}" />
+						</rich:column>
+						<f:facet name="footer">
+              				<rich:dataScroller for="tableCondomino"  fastControls="hide" renderIfSinglePage="false" />
+           				</f:facet>	
+					</rich:dataTable>
+				</div>
+			</rich:panel>
+			<h:commandButton value="#{msg.botaoCriarNovo}"
+				action="#{condominoMB.cadastroCondomino}" immediate="true"></h:commandButton>
+		</h:form>
+
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseover"
+			query="jQuery(this).addClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseout"
+			query="jQuery(this).removeClass('active-row')" />
+	</ui:define>
+
+</ui:composition>

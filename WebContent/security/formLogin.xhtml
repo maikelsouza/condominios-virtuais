@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+	<ui:define name="conteudo">
+		<div class="logoLogin">
+			<h:graphicImage alt="logo" url="/imagens/logo_login.png" />
+		</div>
+		<h:form styleClass="formLogin">
+			<h1>#{msg['bemVindoAoPortal']}</h1>
+			<h:panelGrid columns="2">
+				<h:outputLabel value="#{msg['usuario.email']}:" for="idEmail" />
+				<h:outputLabel value="#{msg['usuario.senha']}:" for="idSenha" />
+				<h:inputText id="idEmail" value="#{loginMB.email}" required="true"
+					label="#{msg['usuario.email.label']}" />
+				<h:inputSecret id="idSenha" value="#{loginMB.senha}" required="true"
+					label="#{msg['usuario.senha.label']}" />
+			</h:panelGrid>
+			<h:commandButton value="Login" action="#{loginMB.login}" />
+			<h:panelGrid>
+				<a4j:commandLink value="#{msg['linkEsqueciMinhaSenha']}"
+					action="#{loginMB.esqueciMinhaSenha}" immediate="true" />			
+				<a4j:commandLink value="#{msg['linkNaoTenhoCadastro']}"
+					action="#{loginMB.pesquisaCondominio}" immediate="true" />
+ 			</h:panelGrid>
+ 		</h:form>
+	</ui:define>
+</ui:composition>

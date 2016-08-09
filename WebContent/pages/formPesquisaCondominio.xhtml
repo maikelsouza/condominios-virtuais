@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<div class="logoLogin">
+			<h:graphicImage alt="logo" url="/imagens/logo_login.png" />
+		</div>
+		<h:form id="idFormPesquisaCondominio" styleClass="formLogin formPesquisaCondominio">			
+				<h1>#{msg['codigoDoCondominio']}</h1>	
+				<h:panelGrid columns="1">					
+					<h:outputLabel value="#{msg['condominio.codigo']}:" for="idCodigoCondominio" />
+					<h:inputText id="idCodigoCondominio"
+						value="#{condominioMB.condominio.codigo}" label="#{msg['condominio.codigo.label']}" size="4" required="true">						
+					</h:inputText>
+				</h:panelGrid>
+			<div>
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{condominioMB.cancelarPesquisaCondominio}" immediate="true" />
+				<h:commandButton value="#{msg.botaoPesquisar}" action="#{condominioMB.pesquisarPorCodigo}" />
+			</div>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

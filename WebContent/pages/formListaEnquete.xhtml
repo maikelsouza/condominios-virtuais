@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<f:metadata>
+			<f:event type="preRenderView" listener="#{enqueteMB.abreSessao}" />
+		</f:metadata>
+		<h:form id="idFormListaEnquete" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.filtroEnquete}" />
+				</f:facet>
+				<h:panelGrid columns="2">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio']}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:outputLabel value="#{msg['enquete.pergunta']}:" for="idPergunta" />
+					<h:selectOneMenu id="idCondominio"
+						value="#{enqueteMB.enquete.idCondominio}"
+						label="#{msg['condominio.label']}" required="true">
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{enqueteMB.listaCondominios}" />
+					</h:selectOneMenu>
+					<h:inputText id="idPergunta" value="#{enqueteMB.enquete.pergunta}"
+						size="30" binding="#{enqueteMB.componentePerguntaEnquete}"
+						required="false" />
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>
+
+			</rich:panel>
+			<div>
+				<h:panelGrid columns="2">
+					<h:commandButton value="#{msg.botaoPesquisar}"
+						actionListener="#{enqueteMB.pesquisar}" />
+					<h:commandButton value="#{msg.botaoLimpar}"
+						actionListener="#{enqueteMB.limparFiltroEnquete}" immediate="true" />
+				</h:panelGrid>
+			</div>
+			<rich:panel>
+
+				<f:facet name="header">
+					<h:outputText value="#{msg.listaEnquete}" />
+				</f:facet>
+				<div>
+					<rich:dataTable value="#{enqueteMB.listaEnquetes}" var="enquete"
+						rowClasses="odd-row, even-row" styleClass="stable"
+						id="tableEnquete" style="width:100%;" rows="10"
+						rendered="#{enqueteMB.listaEnquetes.rowCount > 0}">
+						<rich:column sortBy="#{enquete.pergunta}"
+							sortOrder="#{ordenaEnqueteMB.perguntaEnquete}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['enquete.pergunta']}"
+									render="tableEnquete"
+									action="#{ordenaEnqueteMB.ordenarPorPerguntaEnquete}" />
+							</f:facet>
+							<h:outputText value="#{enquete.pergunta}" />
+						</rich:column>
+						<rich:column
+							sortBy="#{enquete.listaAlternativaEnquetes[0].alternativa}"
+							sortOrder="#{ordenaEnqueteMB.alternativa1Enquete}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['enquete.alternativa1']}"
+									render="tableEnquete"
+									action="#{ordenaEnqueteMB.ordenarPorAlternativa1Enquete}" />
+							</f:facet>
+							<h:outputText
+								value="#{enquete.listaAlternativaEnquetes[0].alternativa}" />
+						</rich:column>
+						<rich:column
+							sortBy="#{enquete.listaAlternativaEnquetes[1].alternativa}"
+							sortOrder="#{ordenaEnqueteMB.alternativa2Enquete}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['enquete.alternativa2']}"
+									render="tableEnquete"
+									action="#{ordenaEnqueteMB.ordenarPorAlternativa2Enquete}" />
+							</f:facet>
+							<h:outputText
+								value="#{enquete.listaAlternativaEnquetes[1].alternativa}" />
+						</rich:column>
+						<rich:column
+							sortBy="#{enquete.listaAlternativaEnquetes[2].alternativa}"
+							sortOrder="#{ordenaEnqueteMB.alternativa3Enquete}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['enquete.alternativa3']}"
+									render="tableEnquete"
+									action="#{ordenaEnqueteMB.ordenarPorAlternativa3Enquete}" />
+							</f:facet>
+							<h:outputText
+								value="#{enquete.listaAlternativaEnquetes[2].alternativa}" />
+						</rich:column>
+						<rich:column
+							sortBy="#{enquete.listaAlternativaEnquetes[3].alternativa}"
+							sortOrder="#{ordenaEnqueteMB.alternativa4Enquete}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['enquete.alternativa4']}"
+									render="tableEnquete"
+									action="#{ordenaEnqueteMB.ordenarPorAlternativa4Enquete}" />
+							</f:facet>
+							<h:outputText
+								value="#{enquete.listaAlternativaEnquetes[3].alternativa}" />
+						</rich:column>
+						<rich:column
+							sortBy="#{enquete.listaAlternativaEnquetes[4].alternativa}"
+							sortOrder="#{ordenaEnqueteMB.alternativa5Enquete}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['enquete.alternativa5']}"
+									render="tableEnquete"
+									action="#{ordenaEnqueteMB.ordenarPorAlternativa5Enquete}" />
+							</f:facet>
+							<h:outputText
+								value="#{enquete.listaAlternativaEnquetes[4].alternativa}" />
+						</rich:column>
+						<rich:column sortBy="#{enquete.dataCriacao}"
+							sortOrder="#{ordenaEnqueteMB.dataFimEnquete}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['enquete.dataCriacao']}"
+									render="tableEnquete"
+									action="#{ordenaEnqueteMB.ordenarPorDataFimEnquete}" />
+							</f:facet>
+							<h:outputText value="#{enquete.dataCriacao}">
+								<f:convertDateTime pattern="#{msg['formatoData']}" />
+							</h:outputText>
+						</rich:column>
+						<rich:column sortBy="#{enquete.dataFim}"
+							sortOrder="#{ordenaEnqueteMB.dataFimEnquete}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['enquete.dataFim']}"
+									render="tableEnquete"
+									action="#{ordenaEnqueteMB.ordenarPorDataFimEnquete}" />
+							</f:facet>
+							<h:outputText value="#{enquete.dataFim}">
+								<f:convertDateTime pattern="#{msg['formatoData']}" />
+							</h:outputText>
+						</rich:column>
+						<rich:column
+							style="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4') == false ? 'width:5%;' : 'width:10%;'};">
+							<f:facet name="header">
+								<h:outputText value="#{msg.rotuloAcao}" />
+							</f:facet>
+							<a4j:commandLink value="#{msg.linkVisualizar}"
+								render="tableEnquete" action="#{enqueteMB.visualizarEnquete}"
+								immediate="true" />
+				 				#{' '}
+ 							<h:commandLink value="#{msg.linkExcluir}"
+								rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}">
+								<rich:componentControl target="confirmaExcluirEnquete"
+									operation="show" />
+							</h:commandLink>
+
+							<rich:popupPanel id="confirmaExcluirEnquete" autosized="true">
+	         					#{msg['msg.enquete.confirmacaoExcluir']}	
+	         				 <h:panelGrid columns="2">	         
+	         					<a4j:commandButton value="#{msg.botaoExcluir}" onclick="#{rich:component('confirmaExcluirEnquete')}.hide(); return true;"
+									actionListener="#{enqueteMB.excluirEnquete}" render="IdMessages idFormListaEnquete" />
+								<a4j:commandButton value="#{msg.botaoCancelar}" onclick="#{rich:component('confirmaExcluirEnquete')}.hide(); return false;" />	
+							 </h:panelGrid>	
+							</rich:popupPanel>
+							<f:facet name="footer">
+              					<rich:dataScroller for="tableEnquete"  fastControls="hide" renderIfSinglePage="false" />
+           					</f:facet>
+						</rich:column>
+
+					</rich:dataTable>
+					<rich:popupPanel id="confirmaExcluirEnquete" autosized="true">
+	    				#{msg['msg.enquete.confirmacaoExcluir']}
+						<h:panelGrid columns="2">   					         
+							<a4j:commandButton value="#{msg.botaoExcluir}" onclick="excluirEnquete(); #{rich:component('confirmaExcluirEnquete')}.hide(); return false;" />
+							<a4j:commandButton value="#{msg.botaoCancelar}" onclick="#{rich:component('confirmaExcluirEnquete')}.hide(); return false;" />
+						</h:panelGrid>	
+					</rich:popupPanel>
+				</div>
+			</rich:panel>
+			<h:commandButton value="#{msg.botaoCriarNovo}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4')}"
+				action="#{enqueteMB.cadastroEnquete}" immediate="true" />
+		</h:form>
+
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseover"
+			query="jQuery(this).addClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseout"
+			query="jQuery(this).removeClass('active-row')" />
+	</ui:define>
+
+</ui:composition>

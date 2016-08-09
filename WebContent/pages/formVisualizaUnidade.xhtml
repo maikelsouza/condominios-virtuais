@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormVisualizarUnidade" styleClass="content formView">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.visualizarUnidade}" />
+				</f:facet>
+				<h:panelGrid columns="2" styleClass="formEdit">
+					<h:outputLabel value="#{msg['condominio']}:" for="idNomeCondominio" />
+					<h:outputText id="idNomeCondominio"
+						value="#{unidadeMB.unidadeVO.nomeCondominio}" />
+					<h:outputLabel value="#{msg['bloco']}:" for="idNomeBloco" />
+					<h:outputText id="idNomeBloco"
+						value="#{unidadeMB.unidadeVO.nomeBloco}" />
+					<h:outputLabel value="#{msg['unidade.tipo']}:" for="idTipoUnidade" />
+					<h:outputText id="idTipoUnidade"
+						value="#{unidadeMB.unidadeVO.tipoUnidade == 0 ? msg['unidade.tipo.label.0'] : msg['unidade.tipo.label.1']}" />
+					<h:outputLabel value="#{msg['unidade.numero']}:"
+						for="idNumeroUnidade" />
+					<h:outputText id="idNumeroUnidade"
+						value="#{unidadeMB.unidadeVO.numeroUnidade}" />
+				</h:panelGrid>
+				<div></div>
+			</rich:panel>
+			<h:commandButton value="#{msg.botaoVoltar}"
+				action="#{unidadeMB.voltarVizualizarUnidade}" />
+		</h:form>
+	</ui:define>
+
+</ui:composition>

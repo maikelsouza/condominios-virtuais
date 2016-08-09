@@ -1,0 +1,21 @@
+package br.com.condominiosvirtuais.service;
+
+import java.sql.SQLException;
+
+import br.com.condominiosvirtuais.entity.Usuario;
+
+public interface UsuarioService {
+	
+	public abstract Usuario buscarPorEmailPrincipal(String emailPrincipal) throws SQLException, Exception;
+	
+	public abstract void atualizar(Usuario usuario) throws SQLException, Exception;
+	
+	public abstract void atualizarSenha(Usuario usuario) throws SQLException, Exception;
+	
+	public abstract Usuario buscarPorId(Integer idUsuario) throws SQLException, Exception;
+	
+	public abstract void salvarDataHoraLogin(Usuario usuario) throws SQLException, Exception;
+	
+	public abstract void salvarDataHoraLogout(Usuario usuario) throws SQLException, Exception;	
+
+}

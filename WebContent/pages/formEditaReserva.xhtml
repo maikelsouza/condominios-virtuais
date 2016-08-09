@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<ui:define name="conteudo">
+	
+		<h:form id="idFormEditaReserva" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.atualizaReserva}" />
+				</f:facet>
+				<h:outputLabel value="Valor do salão de festas: R$ 88,00" style="color: red !important;" rendered="#{reservaMB.reserva.ambiente.id == 3 || reservaMB.reserva.ambiente.id == 4  ? true: false}"/>
+				<h:outputLabel value="Valor da churrasqueira: R$ 44,00" style="color: red !important;" rendered="#{reservaMB.reserva.ambiente.id == 5 || reservaMB.reserva.ambiente.id == 6 || reservaMB.reserva.ambiente.id == 7 ? true: false}"/>
+				<!-- Os campos condomínio e data soh serão habilitados caso a reserva esteja com status de pendente, ou seja, caso tenha sido aprovada/reprovada nao altera mais-->
+				<h:panelGrid columns="2">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['reserva.ambiente']}:"
+							for="idAmbiente" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup rendered="#{reservaMB.idAmbiente != null}">
+						<h:outputLabel value="#{msg['reserva.data']}:" for="idCalendar" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>		
+					
+					<h:selectOneMenu value="#{reservaMB.reserva.ambiente.id}"
+						defaultLabel="#{msg['reserva.ambiente.DefaultLabel']}"
+						label="#{msg['reserva.ambiente.label']}" required="true"
+						id="idAmbiente" disabled="#{reservaMB.reserva.situacao != 'reserva.situacao.2'}">						
+						<f:selectItem itemLabel="#{msg['reserva.ambiente.DefaultLabel']}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{reservaMB.listaMeusAmbientes}" />
+						<f:ajax render="@form" listener="#{reservaMB.populaIdAmbiente}" />
+					</h:selectOneMenu>
+					<rich:calendar value="#{reservaMB.reserva.data}" id="idCalendar"
+						locale="pt_BR" popup="true" datePattern="#{msg['formatoData']}"
+						rendered="#{reservaMB.idAmbiente != null}" cellWidth="24px"
+						cellHeight="22px" style="width:200px" required="true"
+						dataModel="#{calendarioReservaMB}" mode="ajax" 
+						boundaryDatesMode="scroll" showFooter="false" disabled="#{reservaMB.reserva.situacao != 'reserva.situacao.2'}"
+						label="#{msg['reserva.data.label']}">
+					</rich:calendar>
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>
+				
+				<rich:popupPanel id="confirmaExcluirReserva" autosized="true">
+		         #{msg['msg.reserva.confirmacaoExcluir']}
+		         <h:panelGrid columns="2">		         	
+					<h:commandButton value="#{msg.botaoExcluir}"
+						action="#{reservaMB.excluirReserva}"
+						onclick=" #{rich:component('confirmaExcluirReserva')}.hide();  return true;" />
+					<h:commandButton value="#{msg.botaoCancelar}"
+							onclick="#{rich:component('confirmaExcluirReserva')}.hide(); return false;" />	
+				</h:panelGrid>
+				</rich:popupPanel>
+
+			</rich:panel>
+			<div>
+				<!-- Soh eh possivel atualizar uma reserva se essa estah com status de pendente, ou seja, caso tenha sido aprovada/reprovada nao altera mais-->
+				<h:panelGrid columns="3">
+					<h:commandButton value="#{msg.botaoAtualizar}"
+						action="#{reservaMB.atualizarReserva}"
+						rendered="#{reservaMB.reserva.situacao == 'reserva.situacao.2' }" />
+					<h:commandButton value="#{msg.botaoExcluir}">
+						<rich:componentControl target="confirmaExcluirReserva"
+							operation="show" />
+					</h:commandButton>					
+					<h:commandButton value="#{msg.botaoVoltar}"
+						action="#{reservaMB.voltarListaReserva}" immediate="true" />
+				</h:panelGrid>
+			</div>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

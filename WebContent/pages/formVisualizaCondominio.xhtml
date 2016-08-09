@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormVisualizaCondominio" styleClass="content formView">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.visualizarCondominio}" />
+				</f:facet>
+				<h:inputHidden value="#{condominioMB.condominio.id}" />
+				<h:panelGrid columns="2">
+					<h:outputLabel value="#{msg['condominio.nome']}:" for="idNome" />
+					<h:outputText id="idNome" value="#{condominioMB.condominio.nome}" />
+					<h:outputLabel value="#{msg['condominio.cnpj']}:" for="idCnpj" />
+					<h:outputText id="idCnpj" value="#{condominioMB.condominio.cnpj}" />
+					<h:outputLabel value="#{msg['condominio.telefoneFixo']}:" for="idTelefoneFixo" rendered="#{condominioMB.condominio.telefoneFixo != 0}" />
+					<h:outputText id="idTelefoneFixo" value="#{condominioMB.condominio.telefoneFixo}"  rendered="#{condominioMB.condominio.telefoneFixo != 0}"/>
+					<h:outputLabel value="#{msg['condominio.telefoneCelular']}:" for="idTelefoneCelular" rendered="#{condominioMB.condominio.telefoneCelular != 0}"/>
+					<h:outputText id="idTelefoneCelular" value="#{condominioMB.condominio.telefoneCelular}" rendered="#{condominioMB.condominio.telefoneCelular != 0}"/>
+					<h:outputLabel value="#{msg['condominio.situacao']}:"
+						for="idSituacao" />
+					<h:outputText id="idSituacao"
+						value="#{condominioMB.condominio.situacao == 0 ? msg['condominio.situacao.itemLabel.0'] : msg['condominio.situacao.itemLabel.1']}" />
+					<h:outputLabel value="#{msg['condominio.sindicoGeral']}:"
+						rendered="#{!condominioMB.nomeSindicoGeral.trim().isEmpty()}"
+						for="idNomeSindicoGeral" />
+					<h:outputText id="idNomeSindicoGeral"
+						value="#{condominioMB.nomeSindicoGeral}"
+						rendered="#{!condominioMB.nomeSindicoGeral.trim().isEmpty()}" />
+					<h:outputLabel value="#{msg['condominio.subsindicoGeral']}:"
+						rendered="#{!condominioMB.nomeSubSindicoGeral.trim().isEmpty()}"
+						for="idSubSindicoGeral" />
+					<h:outputText id="idSubSindicoGeral"
+						value="#{condominioMB.nomeSubSindicoGeral}"
+						rendered="#{!condominioMB.nomeSubSindicoGeral.trim().isEmpty()}" />
+					<h:outputLabel value="#{msg['condominio.conselheiros']}:"
+						rendered="#{condominioMB.listaDeConselheirosVOs.size() > 0}"
+						for="idListaConselheirosVO" />
+					<rich:dataTable id="idListaConselheirosVO" var="condominoVO"
+						converter="condominoVOConversor"
+						value="#{condominioMB.listaDeConselheirosVOs}"
+						rendered="#{condominioMB.listaDeConselheirosVOs.size() > 0}">
+						<rich:column>
+							<f:facet name="header">#{msg.bloco}</f:facet>
+					#{condominoVO.nomeBloco} 
+				</rich:column>
+						<rich:column>
+							<f:facet name="header">#{msg.unidade}</f:facet>
+	        		#{condominoVO.numeroUnidade}
+	        	</rich:column>
+						<rich:column>
+							<f:facet name="header">#{msg.condomino}</f:facet>
+	        		#{condominoVO.nomeCondomino}
+	        	</rich:column>
+					</rich:dataTable>
+						<h:outputLabel value="#{msg['condominio.endereco']}:"
+							for="idEndereco" />
+						<h:outputText id="idEndereco"
+							value="#{condominioMB.condominio.endereco.endereco}" />
+						<h:outputLabel value="#{msg['condominio.endereco.numero']}:"
+							for="idNumero" />
+						<h:outputText id="idNumero"
+							value="#{condominioMB.condominio.endereco.numero}" />
+						<h:outputLabel value="#{msg['condominio.endereco.complemento']}:"
+							for="idComplemento"
+							rendered="#{!condominioMB.condominio.endereco.complemento.isEmpty()}" />
+						<h:outputText id="idComplemento"
+							value="#{condominioMB.condominio.endereco.complemento}"
+							rendered="#{!condominioMB.condominio.endereco.complemento.isEmpty()}" />
+						<h:outputLabel value="#{msg['condominio.endereco.CEP']}:"
+							for="idCep" />
+						<h:outputText id="idCep"
+							value="#{condominioMB.condominio.endereco.cep}" />
+						<h:outputLabel value="#{msg['condominio.endereco.bairro']}:"
+							for="idBairro" />
+						<h:outputText id="idBairro"
+							value="#{condominioMB.condominio.endereco.bairro}" />
+						<h:outputLabel value="#{msg['condominio.endereco.cidade']}:"
+							for="idCidade" />
+						<h:outputText id="idCidade"
+							value="#{condominioMB.condominio.endereco.cidade}" />
+						<h:outputLabel value="#{msg['condominio.endereco.UF']}:"
+							for="idUf" />
+						<h:outputText id="idUf"
+							value="#{condominioMB.condominio.endereco.uf}" />
+						<h:outputLabel value="#{msg['condominio.endereco.pais']}:"
+							for="idPais" />
+						<h:outputText id="idPais"
+							value="#{condominioMB.condominio.endereco.pais}" />
+					</h:panelGrid>
+				</rich:panel>
+			<h:panelGrid columns="1">
+				<h:commandButton value="#{msg.botaoVoltar}"
+					action="#{condominioMB.voltarVizualizarCondominio}" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

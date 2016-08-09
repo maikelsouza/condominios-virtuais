@@ -1,0 +1,823 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+	    <f:metadata>
+			<f:event type="preRenderView" listener="#{meuPainelMB.carregarGaragens}" />
+		</f:metadata>
+		<rich:popupPanel id="validaMimeType" autosized="true">
+  			#{msg['msg.meuPainel.condomino.imagem.validaMimeType']}
+    	 	<h:commandButton value="#{msg.botaoOK}"
+				onclick="#{rich:component('validaMimeType')}.hide(); return false;" />
+		</rich:popupPanel>
+		<br />
+		<rich:tabPanel styleClass="content"  
+			rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('4,5')}"
+			switchType="client" activeItem="#{meuPainelMB.tabSelecionada}">
+			<rich:tab header="#{msg['meuPainel.condomino.dadosPessoais']}"
+				id="idTabDadosPessoais">
+				<h:form id="idFormDadosPessoais">
+					<h:panelGrid columns="3">
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.condomino.nome']}:"
+								for="idNomeCondomino" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.condomino.sexo']}:"
+								for="idSexoCondomino" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:outputLabel
+							value="#{msg['meuPainel.condomino.dataNascimento']}:"
+							for="idDataNascimentoCondomino" />
+						<h:inputText id="idNomeCondomino"
+							value="#{meuPainelMB.condomino.nome}" size="40" />
+						<h:selectOneRadio id="idSexoCondomino"
+							value="#{meuPainelMB.condomino.sexo}"
+							defaultLabel="#{msg['meuPainel.condomino.sexo.DefaultLabel']}">
+							<f:selectItems value="#{meuPainelMB.listaSexo}" />
+						</h:selectOneRadio>
+						<h:panelGroup id="idDataNascimentoCondomino">
+							<h:selectOneMenu
+								value="#{meuPainelMB.condomino.dataNascimentoDia}"
+								defaultLabel="#{msg['meuPainel.condomino.dataNascimento.dia']}">
+								<f:selectItem
+									itemLabel="#{msg['meuPainel.condomino.dataNascimento.dia']}"
+									noSelectionOption="false" />
+								<f:selectItems value="#{condominoMB.listaSIDias}" />
+							</h:selectOneMenu>
+							<h:selectOneMenu
+								value="#{meuPainelMB.condomino.dataNascimentoMes}"
+								defaultLabel="#{msg['meuPainel.condomino.dataNascimento.mes']}">
+								<f:selectItem
+									itemLabel="#{msg['meuPainel.condomino.dataNascimento.mes']}"
+									noSelectionOption="false" />
+								<f:selectItems value="#{condominoMB.listaSIMeses}" />
+							</h:selectOneMenu>
+							<h:selectOneMenu
+								value="#{meuPainelMB.condomino.dataNascimentoAno}"
+								defaultLabel="#{msg['meuPainel.condomino.dataNascimento.ano']}">
+								<f:selectItem
+									itemLabel="#{msg['meuPainel.condomino.dataNascimento.ano']}"
+									noSelectionOption="false" />
+								<f:selectItems value="#{condominoMB.listaSIAnos}" />
+							</h:selectOneMenu>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.condomino.email']}:"
+								for="idEmailCondomino" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputLabel
+								value="#{msg['meuPainel.condomino.proprietario']}:"
+								for="idProprietarioCondomino" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<div></div>
+						<h:inputText id="idEmailCondomino"
+							value="#{meuPainelMB.condomino.email.email}" size="40" />
+						<h:selectOneRadio id="idProprietarioCondomino"
+							value="#{meuPainelMB.condomino.proprietario}"
+							defaultLabel="#{msg['meuPainel.condomino.proprietario.DefaultLabel']}">
+							<f:selectItem itemLabel="#{msg.sim}" itemValue="#{true}" />
+							<f:selectItem itemLabel="#{msg.nao}" itemValue="#{false}" />
+						</h:selectOneRadio>
+						<div></div>
+						<h:outputLabel
+							value="#{msg['meuPainel.condomino.telefoneResidencial']}:"
+							for="idTelefoneResidencial" />
+						<h:outputLabel
+							value="#{msg['meuPainel.condomino.telefoneCelular']}:"
+							for="idTelefoneCelular" />
+						<h:outputLabel
+							value="#{msg['meuPainel.condomino.telefoneComercial']}:"
+							for="idTelefoneComercial" />
+						<h:panelGroup>
+							<h:inputText id="idTelefoneResidencial"
+								value="#{meuPainelMB.telefoneResidencialCondomino}" size="15"
+								maxlength="15" />
+							<h:outputLabel value="#{msg['somenteNumeros']}"
+								styleClass="confFontRotuloAjuda" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:inputText id="idTelefoneCelular"
+								value="#{meuPainelMB.telefoneCelularCondomino}" size="15"
+								maxlength="15" />
+							<h:outputLabel value="#{msg['somenteNumeros']}"
+								styleClass="confFontRotuloAjuda" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:inputText id="idTelefoneComercial"
+								value="#{meuPainelMB.telefoneComercialCondomino}" size="15"
+								maxlength="15" />
+							<h:outputLabel value="#{msg['somenteNumeros']}"
+								styleClass="confFontRotuloAjuda" />
+						</h:panelGroup>
+					</h:panelGrid>
+					<h:panelGrid columns="2" styleClass="msgAsterisco">
+						<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+							for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+						<h:outputLabel value="*" id="idCampoObrigatorio"
+							styleClass="asterisco" />
+					</h:panelGrid>
+					<br />
+					<h:commandButton value="#{msg.botaoAtualizar}"
+						action="#{meuPainelMB.atualizarDadosPessoais}" />
+				</h:form>
+			</rich:tab>
+
+			<rich:tab header="#{msg['meuPainel.condomino.alterarImagem']}"
+				id="idTabAlterarImagemCondomino">
+				<h:form id="idFormAlterarImagemCondomino">
+					<h:panelGrid columns="2" columnClasses="top,top">
+						<rich:fileUpload
+							fileUploadListener="#{meuPainelMB.listenerCondomino}" id="upload"
+							acceptedTypes="jpg, jpeg"
+							clearLabel="#{msg['meuPainel.condomino.imagem.apagar']}"
+							addLabel="#{msg['meuPainel.condomino.imagem.adcionar']}"
+							uploadLabel="#{msg['meuPainel.condomino.imagem.upload']}"
+							clearAllLabel="#{msg['meuPainel.condomino.imagem.apagarTodos']}"
+							sizeExceededLabel="#{msg['meuPainel.condomino.imagem.tamanhoArquivo']}"
+							styleClass="upload"
+							ontyperejected="#{rich:component('validaMimeType')}.show();"
+							deleteLabel="#{msg['meuPainel.condomino.imagem.excluir']}"
+							doneLabel="#{msg['meuPainel.condomino.imagem.completo']}">
+							<a4j:ajax event="uploadcomplete" execute="@none" render="info" />
+						</rich:fileUpload>
+						<h:panelGroup id="info" layout="block">
+							<rich:panel bodyClass="infoBodyClass" styleClass="infoStyleClass">
+								<f:facet name="header">
+									<h:outputLabel
+										value="#{msg['meuPainel.condomino.imagem.imagemPerfil']}" />
+								</f:facet>
+								<rich:dataGrid columns="1" value="#{meuPainelMB.arquivos}"
+									var="file" rowKeyVar="row">
+									<rich:panel bodyClass="rich-laguna-panel-no-header">
+										<h:panelGrid columns="1">
+											<a4j:mediaOutput element="img" mimeType="image/jpeg"
+												createContent="#{meuPainelMB.paintCondomino}" value="#{row}"
+												cacheable="false" style="height:75px;">
+												<f:param value="#{meuPainelMB.timeStamp}" name="time" />
+											</a4j:mediaOutput>
+										</h:panelGrid>
+									</rich:panel>
+								</rich:dataGrid>
+							</rich:panel>
+						</h:panelGroup>
+					</h:panelGrid>
+					<h:commandButton value="#{msg.botaoAtualizar}"
+						action="#{meuPainelMB.atualizarImagemCondomino}" />
+				</h:form>
+			</rich:tab>
+
+			<rich:tab header="#{msg['meuPainel.condomino.alterarSenha']}"
+				id="idTabAlterarSenha">
+				<h:form id="idFormAlterarSenha">
+					<h:panelGrid columns="3">
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.condomino.senhaAtual']}:"
+								for="idSenhaAtualCondomino" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.condomino.novaSenha']}:"
+								for="idNovaSenhaCondomino" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputLabel
+								value="#{msg['meuPainel.condomino.confirmarNovaSenha']}:"
+								for="idConfirmarNovaSenhaCondomino" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+
+						<h:inputSecret id="idSenhaAtualCondomino"
+							value="#{meuPainelMB.senhaAtualCondomino}" size="15"
+							maxlength="15" />
+
+						<h:inputSecret id="idNovaSenhaCondomino"
+							value="#{meuPainelMB.senhaCondomino}" size="15" maxlength="15" />
+
+						<h:inputSecret id="idConfirmarNovaSenhaCondomino"
+							value="#{meuPainelMB.confirmarSenhaCondomino}" size="15"
+							maxlength="15" />
+					</h:panelGrid>
+					<h:panelGrid columns="1" styleClass="msgAsterisco">
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['regraSenha']}" for="idRegraSenha"
+								styleClass="camposObrigatorios" />
+							<h:outputLabel value="*" id="idRegraSenha" styleClass="asterisco" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+								for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+							<h:outputLabel value="*" id="idCampoObrigatorio"
+								styleClass="asterisco" />
+						</h:panelGroup>
+					</h:panelGrid>
+					<br />
+					<h:commandButton value="#{msg.botaoAtualizar}"
+						action="#{meuPainelMB.atualizarSenha}" />
+				</h:form>
+			</rich:tab>
+
+			<rich:tab header="#{msg['meuPainel.condomino.novoCondomino']}"
+				id="idTabNovoCondomino">
+				<h:form id="idFormNovoCondomino">
+					<rich:panel>
+			    		#{msg['meuPainel.condomino.novoCondomino.cabecalho1']}<br></br>#{msg['meuPainel.condomino.novoCondomino.cabecalho2']}
+			    		<a href="http://www.condominiosVirtuais.com.br" target="_blank">#{msg['meuPainel.condomino.novoCondomino.cabecalho3']}</a> #{msg['meuPainel.condomino.novoCondomino.cabecalho4']}
+			    	</rich:panel>
+					<h:panelGrid columns="3">
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.novoCondomino.nome']}:"
+								for="idNomeNovoCondomino" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.novoCondomino.sexo']}:"
+								for="idSexoNovoCondomino" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:outputLabel
+							value="#{msg['meuPainel.novoCondomino.dataNascimento']}:"
+							for="idDataNascimentoNovoCondomino" />
+						<h:inputText id="idNomeNovoCondomino"
+							value="#{meuPainelMB.novoCondomino.nome}" size="40" />
+						<h:selectOneRadio id="idSexoNovoCondomino"
+							value="#{meuPainelMB.novoCondomino.sexo}"
+							defaultLabel="#{msg['meuPainel.novoCondomino.sexo.DefaultLabel']}">
+							<f:selectItems value="#{meuPainelMB.listaSexo}" />
+						</h:selectOneRadio>
+						<h:panelGroup id="idDataNascimentoNovoCondomino">
+							<h:selectOneMenu
+								value="#{meuPainelMB.novoCondomino.dataNascimentoDia}"
+								defaultLabel="#{msg['meuPainel.novoCondomino.dataNascimento.dia']}">
+								<f:selectItem
+									itemLabel="#{msg['meuPainel.novoCondomino.dataNascimento.dia']}"
+									noSelectionOption="false" />
+								<f:selectItems value="#{meuPainelMB.listaSIDias}" />
+							</h:selectOneMenu>
+							<h:selectOneMenu
+								value="#{meuPainelMB.novoCondomino.dataNascimentoMes}"
+								defaultLabel="#{msg['meuPainel.novoCondomino.dataNascimento.mes']}">
+								<f:selectItem
+									itemLabel="#{msg['meuPainel.novoCondomino.dataNascimento.mes']}"
+									noSelectionOption="false" />
+								<f:selectItems value="#{meuPainelMB.listaSIMeses}" />
+							</h:selectOneMenu>
+							<h:selectOneMenu
+								value="#{meuPainelMB.novoCondomino.dataNascimentoAno}"
+								defaultLabel="#{msg['meuPainel.novoCondomino.dataNascimento.ano']}">
+								<f:selectItem
+									itemLabel="#{msg['meuPainel.novoCondomino.dataNascimento.ano']}"
+									noSelectionOption="false" />
+								<f:selectItems value="#{meuPainelMB.listaSIAnos}" />
+							</h:selectOneMenu>
+						</h:panelGroup>
+
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.novoCondomino.email']}:"
+								for="idEmailNovoCondomino" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputLabel
+								value="#{msg['meuPainel.novoCondomino.proprietario']}:"
+								for="idProprietarioNovoCondomino" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<div></div>
+						<h:inputText id="idEmailNovoCondomino"
+							value="#{meuPainelMB.novoCondomino.email.email}" size="40" />
+						<h:selectOneRadio id="idProprietarioNovoCondomino"
+							value="#{meuPainelMB.novoCondomino.proprietario}"
+							defaultLabel="#{msg['meuPainel.novoCondomino.proprietario.DefaultLabel']}">
+							<f:selectItem itemLabel="#{msg.sim}" itemValue="#{true}" />
+							<f:selectItem itemLabel="#{msg.nao}" itemValue="#{false}" />
+						</h:selectOneRadio>
+
+						<div></div>
+						<h:outputLabel
+							value="#{msg['meuPainel.novoCondomino.telefoneResidencial']}:"
+							for="idTelefoneResidencialNovoCondomino" />
+						<h:outputLabel for="idTelefoneCelularNovoCondomino"
+							value="#{msg['meuPainel.novoCondomino.telefoneCelular']}:" />
+						<h:outputLabel
+							value="#{msg['meuPainel.novoCondomino.telefoneComercial']}:"
+							for="idTelefoneComercialNovoCondomino" />
+						<h:panelGroup>
+							<h:inputText id="idTelefoneResidencialNovoCondomino"
+								value="#{meuPainelMB.telefoneResidencialNovoCondomino}"
+								size="15" maxlength="15" />
+							<h:outputLabel value="#{msg['somenteNumeros']}"
+								styleClass="confFontRotuloAjuda" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:inputText id="idTelefoneCelularNovoCondomino"
+								value="#{meuPainelMB.telefoneCelularNovoCondomino}" size="15"
+								maxlength="15" />
+							<h:outputLabel value="#{msg['somenteNumeros']}"
+								styleClass="confFontRotuloAjuda" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:inputText id="idTelefoneComercialNovoCondomino"
+								value="#{meuPainelMB.telefoneComercialNovoCondomino}" size="15"
+								maxlength="15" />
+							<h:outputLabel value="#{msg['somenteNumeros']}"
+								styleClass="confFontRotuloAjuda" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.novoCondomino.senha']}:"
+								for="idSenhaNovoCondomino" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputLabel
+								value="#{msg['meuPainel.novoCondomino.confirmarSenha']}:"
+								for="idConfirmarSenhaNovoCondomino" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<div></div>
+						<h:inputSecret id="idSenhaNovoCondomino"
+							value="#{meuPainelMB.novoCondomino.senha}" />
+						<h:inputSecret id="idConfirmarSenhaNovoCondomino"
+							value="#{meuPainelMB.novoCondomino.confirmarSenha}" />
+
+						<div></div>
+					</h:panelGrid>
+					<h:panelGrid columns="1" styleClass="msgAsterisco">
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['regraSenha']}"
+								for="idRegraSenhaNovoCondomino" styleClass="camposObrigatorios" />
+							<h:outputLabel value="*" id="idRegraSenhaNovoCondomino"
+								styleClass="asterisco" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+								for="idCampoObrigatorioNovoCondomino"
+								styleClass="camposObrigatorios" />
+							<h:outputLabel value="*" id="idCampoObrigatorioNovoCondomino"
+								styleClass="asterisco" />
+						</h:panelGroup>
+					</h:panelGrid>
+					<br />
+					<h:commandButton value="#{msg.botaoSalvar}"
+						actionListener="#{meuPainelMB.salvarNovoCondomino}" />
+				</h:form>
+			</rich:tab>
+
+			<!-- Desabilitado tab que insere uma garagem. Apagar em 90 dias. 19/08/2014 -->
+			<rich:tab header="#{msg['meuPainel.garagem.novaGaragem']}"
+				id="idTabNovaGaragem" rendered="false">
+				<h:form id="idFormNovaGaragem"
+					rendered="#{meuPainelMB.renderedCadastroNovaGaragem}">
+					<rich:panel>
+			    		#{msg['meuPainel.garagem.cabecalho1']}<br></br>#{msg['meuPainel.garagem.cabecalho2']}
+			    		<a href="http://www.condominiosVirtuais.com.br" target="_blank">#{msg['meuPainel.garagem.cabecalho3']}</a> #{msg['meuPainel.garagem.cabecalho4']}
+			    	</rich:panel>
+					<h:panelGrid columns="2">
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.garagem.numero']}:"
+								for="idNumeroGaragem" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:inputText id="idNumeroGaragem"
+							value="#{meuPainelMB.garagem.numero}" size="10" />
+					</h:panelGrid>
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorioNovoCondomino" />
+					<h:outputLabel value="*" id="idCampoObrigatorioNovoCondomino"
+						styleClass="asterisco" />
+					<hr />
+					<h:commandButton value="#{msg.botaoSalvar}"
+						actionListener="#{meuPainelMB.salvarGaragem}" />
+					<div>
+						<rich:dataTable value="#{meuPainelMB.listaDMGaragem}"
+							var="garagem" rowClasses="odd-row, even-row" styleClass="stable"
+							id="tableGaragem" style="width:100%;" rows="10"
+							rendered="#{meuPainelMB.listaDMGaragem.rowCount > 0}">
+							<rich:column sortBy="#{garagem.numero}"
+								sortOrder="#{ordenaGaragemMB.numeroGaragem}">
+								<f:facet name="header">
+									<a4j:commandLink value="#{msg['garagem.numero']}"
+										render="tableGaragem"
+										action="#{ordenaGaragemMB.ordenarPorNumeroGaragem}"
+										immediate="true" />
+								</f:facet>
+								<h:outputText value="#{garagem.numero}" />
+							</rich:column>
+							<rich:column style="width:5%;">
+								<f:facet name="header">
+									<h:outputText value="#{msg.rotuloAcao}" />
+								</f:facet>
+								<h:commandLink value="#{msg.linkEditar}"
+									render="idTabNovaGaragem"
+									actionListener="#{meuPainelMB.editarGaragem}" immediate="true" />
+							</rich:column>
+							<f:facet name="footer">
+              					<rich:dataScroller for="tableGaragem"  fastControls="hide" renderIfSinglePage="false" />
+           					</f:facet>
+						</rich:dataTable>
+					</div>
+				</h:form>
+
+				<h:form id="idFormEditaGaragem"
+					rendered="#{!meuPainelMB.renderedCadastroNovaGaragem}">
+					<h:panelGrid columns="2">
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['garagem.numero']}:" for="idNumero" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:inputText id="idNumero" value="#{meuPainelMB.garagem.numero}"
+							size="10" />
+					</h:panelGrid>
+					<rich:popupPanel id="confirmaExcluirGaragem" autosized="true">
+  						#{msg['msg.garagem.confirmacaoExcluir']} 
+	  					<h:panelGrid columns="2"> 
+	  						<h:commandButton value="#{msg.botaoExcluir}" action="#{garagemMB.excluirGaragem}"
+							onclick=" #{rich:component('confirmaExcluirGaragem')}.hide();  return true;" />
+	    	 				<h:commandButton value="#{msg.botaoCancelar}"
+								onclick="#{rich:component('confirmaExcluirGaragem')}.hide(); return false;" />
+						</h:panelGrid>
+					</rich:popupPanel>					
+					<hr />
+					<div>
+						<h:panelGrid columns="3">
+							<h:commandButton value="#{msg.botaoAtualizar}"
+								actionListener="#{meuPainelMB.atualizarGaragem}"
+								render="idTabNovaGaragem" />
+							<h:commandButton value="#{msg.botaoExcluir}" immediate="true">
+								<rich:componentControl target="confirmaExcluirGaragem"
+									operation="show" />
+							</h:commandButton>
+							<h:commandButton value="#{msg.botaoCancelar}"
+								actionListener="#{meuPainelMB.cancelarEditarGaragem}"
+								immediate="true" render="idTabNovaGaragem" />
+						</h:panelGrid>
+					</div>
+				</h:form>
+			</rich:tab>
+
+			<rich:tab header="#{msg['meuPainel.veiculo.novoVeiculo']}" 
+				id="idTabNovoVeiculo">
+				<h:form id="idFormNovoVeiculo"
+					rendered="#{meuPainelMB.renderedCadastroNovoVeiculo}">
+					<rich:panel>
+			    		#{msg['meuPainel.veiculo.cabecalho1']}<br></br>#{msg['meuPainel.veiculo.cabecalho2']}
+			    		<a href="http://www.condominiosVirtuais.com.br" target="_blank">#{msg['meuPainel.veiculo.cabecalho3']}</a> #{msg['meuPainel.veiculo.cabecalho4']}
+			    	</rich:panel>
+					<h:panelGrid columns="4">
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.veiculo.nomeVeiculo']}:"
+								for="idNomeVeiculo" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.veiculo.placa']}:"
+								for="idPlacaVeiculo" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.veiculo.tipo']}:"
+								for="idTipoVeiculo" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:outputLabel value="#{msg['meuPainel.veiculo.garagem']}:"
+							for="idGaragemVeiculo" />
+						
+						<h:inputText id="idNomeVeiculo"
+							value="#{meuPainelMB.veiculo.nome}" size="30" />
+						<h:inputText id="idPlacaVeiculo"
+							value="#{meuPainelMB.veiculo.placa}" size="10" />
+						<h:selectOneMenu id="idTipoVeiculo"
+							value="#{meuPainelMB.veiculo.tipo}"
+							defaultLabel="#{msg['meuPainel.veiculo.tipo.DefaultLabel']}">
+							<f:selectItems value="#{meuPainelMB.listaTipoVeiculo}" />
+						</h:selectOneMenu>
+						<h:selectOneMenu id="idGaragemVeiculo"
+							value="#{meuPainelMB.veiculo.garagem.id}"
+							defaultLabel="#{msg['meuPainel.veiculo.garagem.DefaultLabel']}">							
+							<f:selectItems value="#{meuPainelMB.listaSIGaragem}" />
+						</h:selectOneMenu>
+					</h:panelGrid>
+					<h:panelGrid columns="2" styleClass="msgAsterisco">
+						<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+							for="idCampoObrigatorioNovoCondomino"
+							styleClass="camposObrigatorios" />
+						<h:outputLabel value="*" id="idCampoObrigatorioNovoCondomino"
+							styleClass="asterisco" />
+					</h:panelGrid>
+					<br />
+					<h:commandButton value="#{msg.botaoSalvar}"
+						actionListener="#{meuPainelMB.salvarVeiculo}" />
+					<br />
+					<br />
+					<rich:dataTable value="#{meuPainelMB.listaDMVeiculo}" var="veiculo"
+						rowClasses="odd-row, even-row" styleClass="stable" rows="10"
+						id="tableVeiculo" style="width:100%;"
+						rendered="#{meuPainelMB.listaDMVeiculo.rowCount > 0}">
+						<rich:column sortBy="#{veiculo.nome}"
+							sortOrder="#{ordenaVeiculoMB.nomeVeiculo}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['meuPainel.veiculo.nomeVeiculo']}"
+									render="tableVeiculo"
+									action="#{ordenaVeiculoMB.ordenarPorNomeVeiculo}"
+									immediate="true" />
+							</f:facet>
+							<h:outputText value="#{veiculo.nome}" />
+						</rich:column>
+						<rich:column sortBy="#{veiculo.placa}"
+							sortOrder="#{ordenaVeiculoMB.placaVeiculo}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['meuPainel.veiculo.placa']}"
+									render="tableVeiculo"
+									action="#{ordenaVeiculoMB.ordenarPorPlacaVeiculo}"
+									immediate="true" />
+							</f:facet>
+							<h:outputText value="#{veiculo.placa}" />
+						</rich:column>
+						<rich:column sortBy="#{veiculo.tipo}"
+							sortOrder="#{ordenaVeiculoMB.tipoVeiculo}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['meuPainel.veiculo.tipo']}"
+									render="tableVeiculo"
+									action="#{ordenaVeiculoMB.ordenarPorTipoVeiculo}"
+									immediate="true" />
+							</f:facet>
+							<h:outputText
+								value="#{veiculo.tipo == 1 ? msg['meuPainel.veiculo.tipo.1'] : msg['meuPainel.veiculo.tipo.2']}" />
+						</rich:column>
+						<rich:column sortBy="#{veiculo.garagem}"
+							sortOrder="#{ordenaVeiculoMB.garagemVeiculo}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['meuPainel.veiculo.garagem']}"
+									render="tableVeiculo"
+									action="#{ordenaVeiculoMB.ordenarPorGaragemVeiculo}"
+									immediate="true" />
+							</f:facet>
+							<h:outputText value="#{veiculo.garagem.numero}" />
+						</rich:column>
+						<rich:column style="width:5%;">
+							<f:facet name="header">
+								<h:outputText value="#{msg.rotuloAcao}" />
+							</f:facet>
+							<h:commandLink value="#{msg.linkEditar}" render="tableVeiculo"
+								actionListener="#{meuPainelMB.editarVeiculo}" immediate="true" />
+						</rich:column>
+						<f:facet name="footer">
+              				<rich:dataScroller for="tableVeiculo"  fastControls="hide" renderIfSinglePage="false" />
+           				</f:facet>
+					</rich:dataTable>
+				</h:form>
+
+				<h:form id="idFormEditaVeiculo"
+					rendered="#{!meuPainelMB.renderedCadastroNovoVeiculo}">
+					<h:panelGrid columns="2">
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.veiculo.nomeVeiculo']}:"
+								for="idNomeVeiculo" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.veiculo.placa']}:"
+								for="idPlacaVeiculo" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:inputText id="idNomeVeiculo"
+							value="#{meuPainelMB.veiculo.nome}" size="10" />
+						<h:inputText id="idPlacaVeiculo"
+							value="#{meuPainelMB.veiculo.placa}" size="15" />
+
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.veiculo.tipo']}:"
+								for="idTipoVeiculo" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:outputLabel value="#{msg['meuPainel.veiculo.garagem']}:"
+							for="idGaragemVeiculo" />
+						<h:selectOneMenu id="idTipoVeiculo"
+							value="#{meuPainelMB.veiculo.tipo}"
+							defaultLabel="#{msg['meuPainel.veiculo.tipo.DefaultLabel']}">
+							<f:selectItems value="#{meuPainelMB.listaTipoVeiculo}" />
+						</h:selectOneMenu>
+
+						<h:selectOneMenu id="idGaragemVeiculo"
+							value="#{meuPainelMB.veiculo.garagem.id}"
+							defaultLabel="#{msg['meuPainel.veiculo.garagem.DefaultLabel']}">
+							<f:selectItems value="#{meuPainelMB.listaSIGaragem}" />
+						</h:selectOneMenu>
+					</h:panelGrid>
+					<rich:popupPanel id="confirmaExcluirVeiculo" autosized="true">
+			 				#{msg['msg.meuPainel.veiculo.confirmacaoExcluir']}
+			 			<h:panelGrid columns="2">
+						<h:commandButton value="#{msg.botaoExcluir}"
+							action="#{meuPainelMB.excluirVeiculo}"
+							onclick=" #{rich:component('confirmaExcluirVeiculo')}.hide();  return true;"
+							render="idTabNovoVeiculo" />
+						<h:commandButton value="#{msg.botaoCancelar}"
+							onclick="#{rich:component('confirmaExcluirVeiculo')}.hide(); return false;" />	
+						</h:panelGrid>	
+					</rich:popupPanel>
+					<br />
+					<div>
+						<h:panelGrid columns="3">
+							<h:commandButton value="#{msg.botaoAtualizar}"
+								actionListener="#{meuPainelMB.atualizarVeiculo}"
+								render="idTabNovoVeiculo" />
+							<h:commandButton value="#{msg.botaoExcluir}" immediate="true">
+								<rich:componentControl target="confirmaExcluirVeiculo"
+									operation="show" />
+							</h:commandButton>
+							<h:commandButton value="#{msg.botaoCancelar}"
+								actionListener="#{meuPainelMB.cancelarEditarVeiculo}"
+								immediate="true" render="idTabNovoVeiculo" />
+						</h:panelGrid>
+					</div>
+				</h:form>
+			</rich:tab>
+
+		</rich:tabPanel>
+		<rich:tabPanel
+			rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('6')}"
+			switchType="client" activeItem="#{meuPainelMB.tabSelecionada}">
+			<rich:tab header="#{msg['meuPainel.funcionario.dadosPessoais']}"
+				id="idTabDadosPessoaisFuncionario">
+				<h:form id="idFormDadosPessoaisFuncionario">
+					<h:panelGrid columns="2">
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.funcionario.nome']}:"
+								for="idNomeFuncionario" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.condomino.sexo']}:"
+								for="idSexoFuncionario" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:inputText id="idNomeFuncionario"
+							value="#{meuPainelMB.funcionario.nome}" size="40" />						
+						<h:selectOneRadio id="idSexoFuncionario"
+							value="#{meuPainelMB.funcionario.sexo}"
+							defaultLabel="#{msg['meuPainel.funcionario.sexo.DefaultLabel']}">
+							<f:selectItems value="#{meuPainelMB.listaSexo}" />
+						</h:selectOneRadio>
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.funcionario.email']}:"
+								for="idEmailFuncionario" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>	
+						<h:outputLabel
+							value="#{msg['meuPainel.funcionario.dataNascimento']}:"
+							for="idDataNascimentoFuncionario" />
+						<h:inputText id="idEmailFuncionario"
+							value="#{meuPainelMB.funcionario.email.email}" size="40" />
+						<h:panelGroup id="idDataNascimentoFuncionario">
+							<h:selectOneMenu
+								value="#{meuPainelMB.funcionario.dataNascimentoDia}"
+								defaultLabel="#{msg['meuPainel.funcionario.dataNascimento.dia']}">
+								<f:selectItem
+									itemLabel="#{msg['meuPainel.funcionario.dataNascimento.dia']}"
+									noSelectionOption="false" />
+								<f:selectItems value="#{meuPainelMB.listaSIDias}" />
+							</h:selectOneMenu>
+							<h:selectOneMenu
+								value="#{meuPainelMB.funcionario.dataNascimentoMes}"
+								defaultLabel="#{msg['meuPainel.funcionario.dataNascimento.mes']}">
+								<f:selectItem
+									itemLabel="#{msg['meuPainel.funcionario.dataNascimento.mes']}"
+									noSelectionOption="false" />
+								<f:selectItems value="#{meuPainelMB.listaSIMeses}" />
+							</h:selectOneMenu>
+							<h:selectOneMenu
+								value="#{meuPainelMB.funcionario.dataNascimentoAno}"
+								defaultLabel="#{msg['meuPainel.funcionario.dataNascimento.ano']}">
+								<f:selectItem
+									itemLabel="#{msg['meuPainel.funcionario.dataNascimento.ano']}"
+									noSelectionOption="false" />
+								<f:selectItems value="#{meuPainelMB.listaSIAnos}" />
+							</h:selectOneMenu>
+						</h:panelGroup>						
+						
+						<h:outputLabel
+							value="#{msg['meuPainel.funcionario.telefoneResidencial']}:"
+							for="idTelefoneResidencialFuncionario" />
+						<h:outputLabel
+							value="#{msg['meuPainel.funcionario.telefoneCelular']}:"
+							for="idTelefoneCelularFuncionario" />	
+						<h:panelGroup>
+							<h:inputText id="idTelefoneResidencialFuncionario"
+								value="#{meuPainelMB.telefoneResidencialFuncionario}" size="15"
+								maxlength="15" />
+							<h:outputLabel value="#{msg['somenteNumeros']}"
+								styleClass="confFontRotuloAjuda" />
+						</h:panelGroup>						
+						<h:panelGroup>
+							<h:inputText id="idTelefoneCelularFuncionario"
+								value="#{meuPainelMB.telefoneCelularFuncionario}" size="15"
+								maxlength="15" />
+							<h:outputLabel value="#{msg['somenteNumeros']}"
+								styleClass="confFontRotuloAjuda" />
+						</h:panelGroup>
+					</h:panelGrid>
+					<h:panelGrid columns="2" styleClass="msgAsterisco">
+						<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorioDadosFuncionarios" styleClass="camposObrigatorios" />
+						<h:outputLabel value="*" id="idCampoObrigatorioDadosFuncionarios" styleClass="asterisco" />						
+					</h:panelGrid>	
+					<br />
+					<h:commandButton value="#{msg.botaoAtualizar}" action="#{meuPainelMB.atualizarDadosPessoaisFuncionario}" />
+				</h:form>
+			</rich:tab>
+			<rich:tab header="#{msg['meuPainel.funcionario.alterarImagem']}"
+				id="idTabAlterarImagemFuncionario">
+				<h:form id="idFormAlterarImagemFuncionario">
+					<h:panelGrid columns="2" columnClasses="top,top">
+						<rich:fileUpload
+							fileUploadListener="#{meuPainelMB.listenerFuncionario}"
+							id="upload" acceptedTypes="jpg, jpeg"
+							clearLabel="#{msg['meuPainel.funcionario.imagem.apagar']}"
+							addLabel="#{msg['meuPainel.funcionario.imagem.adcionar']}"
+							uploadLabel="#{msg['meuPainel.funcionario.imagem.upload']}"
+							clearAllLabel="#{msg['meuPainel.funcionario.imagem.apagarTodos']}"
+							sizeExceededLabel="#{msg['meuPainel.funcionario.imagem.tamanhoArquivo']}"
+							styleClass="upload"
+							ontyperejected="#{rich:component('validaMimeType')}.show();"
+							deleteLabel="#{msg['meuPainel.funcionario.imagem.excluir']}"
+							doneLabel="#{msg['meuPainel.funcionario.imagem.completo']}">
+							<a4j:ajax event="uploadcomplete" execute="@none" render="info" />
+						</rich:fileUpload>
+						<h:panelGroup id="info" layout="block"> 
+							<rich:panel bodyClass="infoBodyClass" styleClass="infoStyleClass">
+								<f:facet name="header">
+									<h:outputLabel
+										value="#{msg['meuPainel.funcionario.imagem.imagemPerfil']}" />
+								</f:facet> 
+								<rich:dataGrid columns="1" value="#{meuPainelMB.arquivos}"
+									var="file" rowKeyVar="row"> 
+									<rich:panel bodyClass="rich-laguna-panel-no-header">
+										<h:panelGrid columns="1"> 
+											<a4j:mediaOutput element="img" mimeType="image/jpeg"
+												createContent="#{meuPainelMB.paintFuncionario}"
+												value="#{row}" cacheable="false" style="height:75px;">
+												<f:param value="#{meuPainelMB.timeStamp}" name="time" />
+											</a4j:mediaOutput>
+										</h:panelGrid>
+									</rich:panel>
+								</rich:dataGrid>
+							</rich:panel>
+							<br />
+						</h:panelGroup>
+					</h:panelGrid>
+					<br />
+					<h:commandButton value="#{msg.botaoAtualizar}"
+						action="#{meuPainelMB.atualizarImagemFuncionario}" />
+				</h:form>
+			</rich:tab>
+			<rich:tab header="#{msg['meuPainel.funcionario.alterarSenha']}"
+				id="idTabAlterarSenhaFuncionario">
+				<h:form id="idFormAlterarSenhaFuncionario">
+					<h:panelGrid columns="3">
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.funcionario.senhaAtual']}:" for="idSenhaAtualFuncionario" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.funcionario.novaSenha']}:" for="idNovaSenhaFuncionario" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.funcionario.confirmarNovaSenha']}:" for="idConfirmarNovaSenhaFuncionario" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:inputSecret id="idSenhaAtualFuncionario" value="#{meuPainelMB.senhaAtualFuncionario}" size="15" maxlength="15" />
+						<h:inputSecret id="idNovaSenhaFuncionario" value="#{meuPainelMB.senhaFuncionario}" size="15" maxlength="15" />
+						<h:inputSecret id="idConfirmarNovaSenhaFuncionario" value="#{meuPainelMB.confirmarSenhaFuncionario}" size="15" maxlength="15" /> 
+					</h:panelGrid>
+					
+					<h:panelGrid columns="1" styleClass="msgAsterisco">
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['regraSenha']}" for="idRegraSenha" styleClass="camposObrigatorios" />
+							<h:outputLabel value="*" id="idRegraSenha" styleClass="asterisco" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+							<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
+						</h:panelGroup>
+					</h:panelGrid>	
+					<br />
+					<h:commandButton value="#{msg.botaoAtualizar}"
+						actionListener="#{meuPainelMB.atualizarSenhaFuncionario}" />
+				</h:form>
+			</rich:tab>
+		</rich:tabPanel>
+	</ui:define>
+
+</ui:composition>

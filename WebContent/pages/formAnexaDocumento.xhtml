@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormAnexoDocumentoCondominio" styleClass="content">
+			<rich:popupPanel id="validaMimeType" autosized="true">
+  				#{msg['msg.arquivo.documento.validaMimeType']}
+    	 		<h:commandButton value="#{msg.botaoOK}"
+					onclick="#{rich:component('validaMimeType')}.hide(); return false;" />
+			</rich:popupPanel>
+			
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.filtroDocumentos}" />
+				</f:facet>
+				<h:panelGrid columns="1">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio']}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:selectOneMenu id="idCondominio" value="#{arquivoMB.condominio.id}"
+						defaultLabel="#{msg['condominio.DefaultLabel']}"
+						label="#{msg['condominio.label']}" required="true">
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" itemValue="0" noSelectionOption="true" />
+						<f:selectItems value="#{arquivoMB.listaCondominios}" />
+						<f:ajax event="change" render="idFormAnexoDocumentoCondominio"
+							execute="@this" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>	
+			</rich:panel>
+			
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg['arquivo.documento.anexar']}" />
+				</f:facet>
+				<h:panelGrid columns="2">
+					<rich:fileUpload fileUploadListener="#{arquivoMB.listener}"
+						id="upload" clearLabel="#{msg['arquivo.documento.apagar']}"
+						acceptedTypes="doc, docx, pdf, xls, xlsx, ppt, pptx, txt"
+						addLabel="#{msg['arquivo.documento.adcionar']}"
+						uploadLabel="#{msg['arquivo.documento.upload']}"
+						clearAllLabel="#{msg['arquivo.documento.apagarTodos']}"
+						sizeExceededLabel="#{msg['arquivo.documento.tamanhoArquivo']}"
+						styleClass="upload"
+						ontyperejected="#{rich:component('validaMimeType')}.show();"
+						deleteLabel="#{msg['arquivo.documento.excluir']}"
+						doneLabel="#{msg['arquivo.documento.completo']}">
+						<a4j:ajax event="uploadcomplete" execute="@none" render="info" />
+					</rich:fileUpload>
+					<h:panelGroup id="info" layout="block">
+						<rich:panel bodyClass="infoBodyClass" styleClass="infoStyleClass">
+							<f:facet name="header">
+								<h:outputLabel value="#{msg['arquivo.documento']}" />
+							</f:facet>
+							<rich:dataGrid columns="1" value="#{arquivoMB.arquivos}"
+								var="file" rowKeyVar="row">
+								<rich:panel bodyClass="rich-laguna-panel-no-header">
+									<h:outputText value="#{file.nome}" />
+								</rich:panel>
+							</rich:dataGrid>
+						</rich:panel>
+					</h:panelGroup>
+				</h:panelGrid>
+				<h:commandButton value="#{msg.botaoAnexar}"
+					action="#{arquivoMB.anexarDocumento}" />
+			</rich:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

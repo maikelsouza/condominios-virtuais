@@ -1,0 +1,49 @@
+@CHARSET "ISO-8859-1";
+
+
+	  p{
+		text-align: justify;		
+	  }	  
+	  h1{
+		text-align: center;
+		font-size: 25px;
+	  }
+	  div#interface{
+		width: 700px;
+		background-color: #ffffff;
+		margin: -20px auto 0px auto;
+		box-shadow: 0px 0px 10px rgba(0,0,0,.5);
+		padding: 10px;
+	  }
+	  span{
+		font-weight: 800;
+	  }
+	  input[type="button"] {
+		color: #FFFFFF;
+		margin-left: 0.0em;
+		padding: 0.7em 3em;
+		display: block;
+		border: none;
+		border-radius: 5px;
+		background: #5882C1;
+		outline: none;
+	}
+	img#logoCabecalho{
+		width:450px;
+		height:100px;
+	}
+	a{
+	  text-decoration: none;	  
+	}	
+	div#contato{
+		padding-top: 20px;		
+	}
+	div#redeSocial{
+		padding: 10px 0px 10px 0px; 
+	}	
+	div#redeSocial a{
+		padding: 10px 8px 10px 0px; 
+	}
+	html { 
+	font-family: Verdana,Geneva,sans-serif; 
+}

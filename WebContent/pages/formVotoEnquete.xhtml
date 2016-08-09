@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<f:metadata>
+			<f:event type="preRenderView" listener="#{enqueteMB.abreSessao}" />
+		</f:metadata>
+		<h:form id="idFormVotoEnquete" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.votarEnquete}" />
+				</f:facet>
+				<h:panelGrid id="idPanelGridSelectVotoEnquete" columns="2">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg.condominio}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<div></div>
+					<h:selectOneMenu id="idCondominio"
+						value="#{enqueteMB.enquete.idCondominio}"
+						defaultLabel="#{msg['condominio.DefaultLabel']}" required="true"
+						label="#{msg['condominio.label']}">
+						<f:selectItem itemLabel="#{msg['reserva.ambiente.DefaultLabel']}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{enqueteMB.listaCondominios}" />
+						<a4j:ajax listener="#{enqueteMB.popularListaEnquetes}"
+							render="idListaEnquete IdMessages" />
+					</h:selectOneMenu>
+					<div></div>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['enquete.pergunta']}:"
+							for="idListaEnquete" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['enquete.alternativaEnquetes']}:"
+							for="idAlternativa" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:selectOneMenu id="idListaEnquete"
+						value="#{enqueteMB.enquete.id}"
+						defaultLabel="#{msg['enquete.pergunta.label.defaultLabel']}"
+						required="true" label="#{msg['enquete.pergunta.label']}">
+						<f:selectItem
+							itemLabel="#{msg['enquete.pergunta.label.defaultLabel']}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{enqueteMB.listaSIEnquetes}" />
+						<f:ajax listener="#{enqueteMB.popularListaAlternativaEnquetes}"
+							render="idAlternativa" />
+					</h:selectOneMenu>
+					<h:selectOneMenu id="idAlternativa"
+						value="#{enqueteMB.alternativaEnquete.id}" required="true"
+						label="#{msg['enquete.alternativaEnquetes.label']}">
+						<f:selectItem itemLabel="#{msg['enquete.alternativaEnquetes.defaultLabel']}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{enqueteMB.listaSIAlternativaEnquetes}" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>
+
+			</rich:panel>
+
+			<h:panelGrid columns="3">
+				<h:commandButton value="#{msg.botaoVotar}"
+					action="#{enqueteMB.votarEnquete}" />
+				<h:commandButton value="#{msg.botaoLimpar}"
+					actionListener="#{enqueteMB.limparFiltroEnquete}" immediate="true" />
+				<h:commandButton value="#{msg.botaoCancelar}"
+					action="#{enqueteMB.cancelarCadastroEnquete}" immediate="true" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jstl/core"
+	template="/templates/templatePrincipal.xhtml">
+	
+	<ui:define name="conteudo">
+		<f:metadata>
+			<f:event type="preRenderView" listener="#{reservaMB.abreSessao}" />
+		</f:metadata>
+		<h:form id="idFormAprovaReserva" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.aprovaReserva}" />
+				</f:facet>
+				<h:panelGrid columns="1">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio']}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:selectOneMenu value="#{reservaMB.condominio.id}"
+						defaultLabel="#{msg['condominio.DefaultLabel']}" id="idCondominio"
+						label="#{msg['condominio.label']}" required="true">
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}"
+							noSelectionOption="true"  />
+						<f:selectItems value="#{reservaMB.listaSICondominios}" />
+						<a4j:ajax listener="#{reservaMB.buscarListaAprovarReserva}"
+							render="idListaReserva IdMessages" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>
+			</rich:panel>
+
+			<rich:panel id="idListaReserva">
+				<f:facet name="header">
+					<h:outputText value="#{msg.listarReservas}" />
+				</f:facet>
+				<div>
+					<rich:dataTable value="#{reservaMB.listaDeReservasVOs}"
+						var="reservaVO" rowClasses="odd-row, even-row" styleClass="stable"
+						id="tableReservaVO" style="width:100%;"
+						rendered="#{reservaMB.listaDeReservasVOs.rowCount > 0}">
+						<rich:column sortBy="#{reservaVO.bloco}"
+							sortOrder="#{ordenaReservaMB.bloco}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['bloco']}" render="tableReservaVO"
+									action="#{ordenaReservaMB.ordenarPorBloco}" />
+							</f:facet>
+							<h:outputText value="#{reservaVO.bloco}" />
+						</rich:column>
+						<rich:column sortBy="#{reservaVO.unidade}"
+							sortOrder="#{ordenaReservaMB.unidade}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['unidade']}"
+									render="tableReservaVO"
+									action="#{ordenaReservaMB.ordenarPorUnidade}" />
+							</f:facet>
+							<h:outputText value="#{reservaVO.unidade}" />
+						</rich:column>
+						<rich:column sortBy="#{reservaVO.ambiente}"
+							sortOrder="#{ordenaReservaMB.nomeAmbiente}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['reserva.ambiente']}"
+									render="tableReservaVO"
+									action="#{ordenaReservaMB.ordenarPorNomeAmbiente}" />
+							</f:facet>
+							<h:outputText value="#{reservaVO.ambiente}" />
+						</rich:column>
+						<rich:column sortBy="#{reservaVO.condomino}"
+							sortOrder="#{ordenaReservaMB.condomino}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['reserva.condomino']}"
+									render="tableReservaVO"
+									action="#{ordenaReservaMB.ordenarPorCondomino}" />
+							</f:facet>
+							<h:outputText value="#{reservaVO.condomino}" />
+						</rich:column>
+						<rich:column sortBy="#{reserva.ambiente.nome}"
+							sortOrder="#{ordenaReservaMB.nomeAmbiente}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['reserva.data']}"
+									render="tableReservaVO"
+									action="#{ordenaReservaMB.ordenarPorNomeAmbiente}" />
+							</f:facet>
+							<h:outputText value="#{reservaVO.data}">
+								<f:convertDateTime pattern="#{msg.formatoData}" />
+							</h:outputText>
+						</rich:column>
+						<rich:column sortBy="#{reservaVO.situacao}"
+							sortOrder="#{ordenaReservaMB.situacao}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['reserva.situacao']}"
+									render="tableReserva"
+									action="#{ordenaReservaMB.ordenarPorSituacao}" />
+							</f:facet>
+							<h:outputText value="#{reservaVO.situacao}" />
+						</rich:column>
+						<rich:column style="width:10%;">
+							<f:facet name="header">
+								<h:outputText value="#{msg.rotuloAcao}" />
+							</f:facet>
+							<h:commandLink value="#{msg.linkAprovar}" render="tableReservaVO"
+								actionListener="#{reservaMB.aprovarReserva}" immediate="true" />				
+							 #{' '}
+				            <h:commandLink value="#{msg.linkReprovar}" render="tableReservaVO"
+								immediate="true">
+								<rich:componentControl target="informaMotivoReprovacao"
+									operation="show" />
+							</h:commandLink>
+
+							<rich:popupPanel id="informaMotivoReprovacao" modal="true"
+								autosized="true" domElementAttachment="form">
+								<f:facet name="header">
+									<h:outputText
+										value="#{msg['msg.reserva.motivoReprovadaReserva']}" />
+								</f:facet>
+
+								<h:panelGrid columns="2" styleClass="confFont">
+									<h:outputLabel value="#{msg['reserva.motivoReprovacao']}:" for="idMotivoReprovacao" />
+								<h:inputTextarea id="idMotivoReprovacao" 
+										value="#{reservaVO.motivoReprovacao}" rows="5" cols="45"
+										label="#{msg['reserva.motivoReprovacao.label']}"
+										validatorMessage="#{msg['msg.reserva.motivoReprovacaoTamanhoMaximo']}">
+										<f:validateLength maximum="150" />
+								</h:inputTextarea>
+									
+								</h:panelGrid>
+								<h:panelGrid columns="2">
+								<a4j:commandButton value="#{msg.botaoOK}"
+									onclick="#{rich:component('informaMotivoReprovacao')}.hide(); return true;"
+									actionListener="#{reservaMB.reprovarReserva}"
+									render="IdMessages idFormAprovaReserva" />
+								<a4j:commandButton value="#{msg.botaoCancelar}"
+							onclick="#{rich:component('informaMotivoReprovacao')}.hide(); return false;" />
+							</h:panelGrid>		
+							</rich:popupPanel>
+						</rich:column>
+					</rich:dataTable>
+
+				</div>
+			</rich:panel>
+		</h:form>
+
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseover"
+			query="jQuery(this).addClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseout"
+			query="jQuery(this).removeClass('active-row')" />
+	</ui:define>
+
+</ui:composition>

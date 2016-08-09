@@ -1,0 +1,1 @@
+alter table email change ASSUNTO ASSUNTO varchar(100) character set latin1 collate latin1_swedish_ci NOT NULL;

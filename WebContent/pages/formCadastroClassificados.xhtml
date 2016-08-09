@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormCadastroClassificados" styleClass="content">
+
+			<rich:popupPanel id="validaMimeType" autosized="true">
+  				#{msg['msg.classifcados.imagem.validaMimeType']}
+    	 		<h:commandButton value="#{msg.botaoOK}"
+					onclick="#{rich:component('validaMimeType')}.hide(); return false;" />
+			</rich:popupPanel>
+
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.filtroClassificados}" />
+				</f:facet>
+				<h:panelGrid columns="1">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio']}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:selectOneMenu id="idCondominio"
+						value="#{classificadosMB.condominio.id}"
+						defaultLabel="#{msg['condominio.DefaultLabel']}"
+						label="#{msg['condominio.label']}" required="true">
+						<f:selectItems value="#{classificadosMB.listaCondominios}" />
+						<f:ajax event="change" render="idFormCadastroClassificados"
+							execute="@this" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+			</rich:panel>
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg['classificados.cadastrar']}" />
+				</f:facet>
+				<rich:tabPanel switchType="client">
+					<rich:tab header="#{msg['classificados.dadosAnuncio']}"
+						id="idTabDadosAnuncio">
+						<h:panelGrid columns="2">
+							<h:panelGroup>
+								<h:outputLabel value="#{msg['classificados.titulo']}:"
+									for="idTituloClassificados" />
+								<span class="asterisco">*</span>
+							</h:panelGroup>
+							<h:outputLabel value="#{msg['classificados.valor']}:"
+								for="idValorClassificados" />
+							<h:inputText id="idTituloClassificados"
+								value="#{classificadosMB.classificados.titulo}"
+								binding="#{classificadosMB.componenteTituloClassificados}"
+								required="true" label="#{msg['classificados.titulo.label']}" />
+							<h:inputText id="idValorClassificados"
+								value="#{classificadosMB.classificados.valor}"
+								binding="#{classificadosMB.componenteValorClassificados}"
+								label="#{msg['classificados.valor.label']}"
+								validatorMessage="#{msg['msg.classificados.valor']}">
+								<f:validateDoubleRange minimum="0" for="idValorClassificados" />
+								<f:convertNumber pattern="#{msg.formatoMoeda}" />
+							</h:inputText>
+							<h:panelGroup>
+								<h:outputLabel value="#{msg['classificados.telefone1']}:"
+									for="idTelefone1Classificados">
+									<span class="asterisco">*</span>
+								</h:outputLabel>
+							</h:panelGroup>
+							<h:outputLabel value="#{msg['classificados.telefone2']}:"
+								for="idTelefone2Classificados" />
+							<h:panelGroup>
+								<h:inputText id="idTelefone1Classificados"
+									value="#{classificadosMB.classificados.telefone1}"
+									binding="#{classificadosMB.componenteTelefone1Classificados}"
+									label="#{msg['classificados.telefone1.label']}"
+									validatorMessage="#{msg['msg.classificados.telefone1']}"
+									required="true">
+									<f:validateLongRange minimum="0" for="idTelefone1Classificados" />
+								</h:inputText>
+								<h:outputLabel value="#{msg['somenteNumeros']}"
+									styleClass="confFontRotuloAjuda" />
+							</h:panelGroup>
+							<h:panelGroup>
+								<h:inputText id="idTelefone2Classificados"
+									value="#{classificadosMB.classificados.telefone2}"
+									binding="#{classificadosMB.componenteTelefone2Classificados}"
+									label="#{msg['classificados.telefone2.label']}"
+									validatorMessage="#{msg['msg.classificados.telefone2']}">
+									<f:validateLongRange minimum="0" for="idTelefone2Classificados" />
+								</h:inputText>
+								<h:outputLabel value="#{msg['somenteNumeros']}"
+									styleClass="confFontRotuloAjuda" />
+							</h:panelGroup>
+							<h:outputLabel value="#{msg['classificados.descricao']}:"
+								for="idDescricaoClassificados" />
+							<h:outputLabel value="#{msg['classificados.dataExpira']}:"
+								for="idDataExpiraClassificados">
+								<span class="asterisco">*</span>
+							</h:outputLabel>
+							<h:inputTextarea id="idDescricaoClassificados"
+								value="#{classificadosMB.classificados.descricao}" rows="5"
+								cols="35"
+								binding="#{classificadosMB.componenteDescricaoClassificados}"
+								validatorMessage="#{msg['msg.classificados.descricao']}">
+								<f:validateLength maximum="350" />
+							</h:inputTextarea>
+							<rich:calendar
+								value="#{classificadosMB.classificados.dataExpira}"
+								id="idDataExpiraClassificados" locale="pt_BR" popup="true"
+								boundaryDatesMode="scroll" showFooter="false"
+								datePattern="#{msg['formatoData']}"
+								dataModel="#{calendarioClassificadosMB}" cellWidth="24px"
+								cellHeight="22px" style="width:200px" mode="ajax">
+							</rich:calendar>
+						</h:panelGrid>
+						<h:panelGrid columns="2" styleClass="msgAsterisco">
+							<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+								for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+							<h:outputLabel value="*" id="idCampoObrigatorio"
+								styleClass="asterisco" />
+						</h:panelGrid>
+					</rich:tab>
+					<rich:tab header="#{msg['classificados.imagemAnuncio']}"
+						id="idTabImagemAnuncio">
+						<h:panelGrid columns="2">
+							<rich:fileUpload
+								fileUploadListener="#{classificadosMB.listenerCadastro}"
+								id="upload" acceptedTypes="jpg, jpeg, png"
+								clearLabel="#{msg['classificados.imagem.apagar']}"
+								addLabel="#{msg['classificados.imagem.adcionar']}"
+								uploadLabel="#{msg['classificados.imagem.upload']}"
+								clearAllLabel="#{msg['classificados.imagem.apagarTodos']}"
+								sizeExceededLabel="#{msg['classificados.imagem.tamanhoArquivo']}"
+								styleClass="upload"
+								ontyperejected="#{rich:component('validaMimeType')}.show();"
+								deleteLabel="#{msg['classificados.imagem.excluir']}"
+								doneLabel="#{msg['classificados.imagem.completo']}">
+								<a4j:ajax event="uploadcomplete" execute="@none" render="info" />
+							</rich:fileUpload>
+							<h:panelGroup id="info" layout="block">
+								<rich:panel bodyClass="infoBodyClass"
+									styleClass="infoStyleClass">
+									<f:facet name="header">
+										<h:outputLabel value="#{msg['classificados.imagem']}" />
+									</f:facet>
+									<rich:dataGrid columns="1" value="#{classificadosMB.arquivos}"
+										var="file" rowKeyVar="row">
+										<rich:panel>
+											<h:panelGrid columns="1">
+												<a4j:mediaOutput element="img" mimeType="image/jpeg"
+													createContent="#{classificadosMB.paintCadastroClassificados}"
+													value="#{row}" cacheable="false" style="height:75px;">
+													<f:param value="#{classificadosMB.timeStamp}" name="time" />
+												</a4j:mediaOutput>
+											</h:panelGrid>
+										</rich:panel>
+									</rich:dataGrid>
+								</rich:panel>
+								<br />
+							</h:panelGroup>
+						</h:panelGrid>
+					</rich:tab>
+				</rich:tabPanel>
+				<h:panelGrid columns="2">
+					<h:commandButton value="#{msg.botaoSalvar}"
+						action="#{classificadosMB.salvarClassificados}" />
+					<h:commandButton value="#{msg.botaoCancelar}"
+						action="#{classificadosMB.cancelarCadastrosClassificados}"
+						immediate="true" />					
+				</h:panelGrid>
+			</rich:panel>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormCadastroDespesas" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.cadastroDespesasCondomino}" />
+				</f:facet>
+				<h:panelGrid columns="3">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg.condominio}:" for="idSICondominios" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg.bloco}:" for="idListaSIBlocos" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg.unidade}:" for="idListaSIUnidades" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					
+					<h:selectOneMenu id="idSICondominios" value="#{despesasMB.despesas.condominio.id}"
+						defaultLabel="#{msg['condominio.DefaultLabel']}" required="true"
+						label="#{msg['condominio.label']}">
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{despesasMB.listaSICondominios}" />		
+						<f:ajax listener="#{despesasMB.popularListaBlocos}" render="idListaSIBlocos idListaSIUnidades"/>	
+					</h:selectOneMenu>	
+					<h:selectOneMenu value="#{despesasMB.bloco.id}" defaultLabel="#{msg['bloco.DefaultLabel']}" id="idListaSIBlocos"
+						label="#{msg['bloco.label']}" required="true">
+						<f:selectItem itemLabel="#{msg['bloco.DefaultLabel']}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{despesasMB.listaSIBlocos}" />						
+						<f:ajax listener="#{despesasMB.popularListaUnidades}"
+							render="idListaSIUnidades" execute="@this" />
+					</h:selectOneMenu>
+					<h:selectOneMenu id="idListaSIUnidades" value="#{despesasMB.despesas.unidade.id}"
+						defaultLabel="#{msg['unidade.tipo.label.DefaultLabel']}"
+						label="#{msg['unidade.label']}" required="true">
+						<f:selectItem itemLabel="#{msg['unidade.tipo.label.DefaultLabel']}" noSelectionOption="true" />
+						<f:selectItems value="#{despesasMB.listaSIUnidades}" />
+						<f:ajax/>
+					</h:selectOneMenu>					
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['despesas.tipo']}:"
+							for="idSITipoDespesas" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['despesas.mesAnoReferencia']}:"
+							for="idDespesasMesAnoReferencia" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+										
+					<h:panelGroup id="idPanelGroupValor" rendered="#{!despesasMB.exibirCampoConsumoGasMesAtual}">
+						<h:outputLabel value="#{msg['despesas.valor']}:"
+							for="idDespesasValor" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					
+					<h:panelGroup id="idPanelGroupConsumoGasMesAtual" rendered="#{despesasMB.exibirCampoConsumoGasMesAtual}">
+						<h:outputLabel value="#{msg['despesas.consumoGasMesAtual']}:"
+							for="idDespesasConsumoGasMesAtual" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					
+					<h:panelGroup rendered="false">
+						<h:outputLabel value="#{msg['despesas.leituraGasMesAtual']}:"
+							for="idDespesasexibirCampoLeituraGasMesAtual" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+				
+					<h:selectOneMenu id="idSITipoDespesas" value="#{despesasMB.despesas.tipo}" 
+						defaultLabel="#{msg['despesas.tipo.label.DefaultLabel']}"
+						required="true" label="#{msg['despesas.tipo.label']}">
+						<f:selectItems value="#{despesasMB.listaSITipos}" />
+						<f:ajax listener="#{despesasMB.exibirCampoConsumoGasMesAtual}"  render="idFormCadastroDespesas" />
+					</h:selectOneMenu>
+					<h:panelGroup id="idDespesasMesAnoReferencia">				
+						<h:selectOneMenu id="idMesReferencia" value="#{despesasMB.mesReferencia}"
+							defaultLabel="#{msg['despesas.mesReferencia.label.DefaultLabel']}"
+							required="true" label="#{msg['despesas.mesReferencia.label']}">
+							<f:selectItems value="#{despesasMB.listaSIMesReferencia}" />
+							<f:ajax/>
+						</h:selectOneMenu>					
+						<h:selectOneMenu id="idSIAnoReferencia" value="#{despesasMB.anoReferencia}"
+							defaultLabel="#{msg['despesas.anoReferencia.label.DefaultLabel']}"
+							required="true" label="#{msg['despesas.anoReferencia.label']}">
+							<f:selectItems value="#{despesasMB.listaSIAnoReferencia}" />
+							<f:ajax/>
+						</h:selectOneMenu>						
+					</h:panelGroup>		
+					<h:inputText id="idDespesasValor" rendered="#{!despesasMB.exibirCampoConsumoGasMesAtual}"
+							value="#{despesasMB.despesas.valor}" size="15"
+							label="#{msg['despesas.valor.label']}" required="#{!despesasMB.exibirCampoConsumoGasMesAtual}"
+							validatorMessage="#{msg['msg.despesas.valor']}">							
+							<f:convertNumber pattern="#{msg.formatoMoeda}" />
+					</h:inputText>
+					<h:inputText id="idDespesasConsumoGasMesAtual" rendered="#{despesasMB.exibirCampoConsumoGasMesAtual}"
+							value="#{despesasMB.despesas.consumoGasDespesas.consumoMesAtual}" size="15"
+							label="#{msg['despesas.consumoGasMesAtual.label']}" required="#{despesasMB.exibirCampoConsumoGasMesAtual}">	
+					</h:inputText>
+					
+					<h:inputText id="idDespesasLeituraGasMesAtual" rendered="false"
+							value="#{despesasMB.despesas.consumoGasDespesas.consumoMesAtual}" size="15"
+							label="#{msg['despesas.leituraGasMesAtual.label']}" required="#{despesasMB.exibirCampoLeituraGasMesAtual}">	
+					</h:inputText>
+					
+					<h:panelGrid columns="1">
+						<h:outputLabel value="#{msg['despesas.descricao']}:" for="idDespesasDescricao" />
+						
+						<h:inputTextarea id="idDespesasDescricao" rows="3" cols="30"
+							value="#{despesasMB.despesas.descricao}" size="50"
+							 validatorMessage="#{msg['msg.despesas.descricao']}">
+								<f:validateLength minimum="1" maximum="250" />
+						</h:inputTextarea>
+						</h:panelGrid>
+												
+					</h:panelGrid>
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>
+			</rich:panel>
+			<h:panelGrid columns="3">
+				<h:commandButton value="#{msg.botaoSalvar}"
+					action="#{despesasMB.cadastrarDespesasCondomino}" />
+				<h:commandButton value="#{msg.botaoLimpar}"
+					actionListener="#{despesasMB.limparCadastrarDespesasCondomino}"  />
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{despesasMB.cancelarCadastrarDespesasCondomino}" immediate="true" />
+				
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

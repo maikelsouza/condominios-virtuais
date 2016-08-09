@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<ui:define name="conteudo">
+		<f:metadata>
+			<f:event type="preRenderView"
+				listener="#{mensagemMB.popularListaMensagensRecebidas}" />
+		</f:metadata>
+		<h:form id="idFormListaMensagensRecebidas" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.listaMensagensRecebidas}" />
+				</f:facet>
+				<div>
+					<rich:dataTable value="#{mensagemMB.listaDeMensagemRecebidasVO}"
+						var="mensagemRecebidaVO" rowClasses="odd-row, even-row" rows="10"
+						styleClass="stable" id="tableMensagemRecebida" style="width:100%;"
+						rendered="#{mensagemMB.listaDeMensagemRecebidasVO.rowCount > 0}">
+						<rich:column sortBy="#{mensagemRecebidaVO.data}"
+							sortOrder="#{ordenaMensagemRecebidaMB.dataMensagemRecebida}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['mensagemRecebida.data']}"
+									render="tableMensagemRecebida"
+									action="#{ordenaMensagemRecebidaMB.ordenarDataMensagemRecebida}" />
+							</f:facet>
+							<h:outputText value="#{mensagemRecebidaVO.data}">
+								<f:convertDateTime pattern="#{msg.formatoDataHora}" timeZone="#{msg.timeZone}" />
+							</h:outputText>
+						</rich:column>
+						<rich:column sortBy="#{mensagemRecebidaVO.blocoRemetente.nome}"
+							sortOrder="#{ordenaMensagemRecebidaMB.blocoRemetenteMensagemRecebida}">
+							<f:facet name="header">
+								<a4j:commandLink
+									value="#{msg['mensagemRecebida.blocoRemetente']}"
+									render="tableMensagemRecebida"
+									action="#{ordenaMensagemRecebidaMB.ordenarBlocoRemetenteMensagemRecebida}" />
+							</f:facet>
+							<h:outputText
+								value="#{mensagemRecebidaVO.blocoRemetente == null? '-' : mensagemRecebidaVO.blocoRemetente.nome}" />
+						</rich:column>
+						<rich:column
+							sortBy="#{mensagemRecebidaVO.unidadeRemetente.numero}"
+							sortOrder="#{ordenaMensagemRecebidaMB.unidadeRemetenteMensagemRecebida}">
+							<f:facet name="header">
+								<a4j:commandLink
+									value="#{msg['mensagemRecebida.unidadeRemetente']}"
+									render="tableMensagemRecebida"
+									action="#{ordenaMensagemRecebidaMB.ordenarUnidadeRemetenteMensagemRecebida}" />
+							</f:facet>
+							<h:outputText
+								value="#{mensagemRecebidaVO.unidadeRemetente == null ? '-' : mensagemRecebidaVO.unidadeRemetente.numero}" />
+						</rich:column>
+						<rich:column sortBy="#{mensagemRecebidaVO.usuarioRemetente.nome}"
+							sortOrder="#{ordenaMensagemRecebidaMB.remetenteMensagemRecebida}">
+							<f:facet name="header">
+								<a4j:commandLink
+									value="#{msg['mensagemRecebida.usuarioRemetente']}"
+									render="tableMensagemRecebida"
+									action="#{ordenaMensagemRecebidaMB.ordenarRemetenteMensagemRecebida}" />
+							</f:facet>
+							<h:outputText value="#{mensagemRecebidaVO.usuarioRemetente.nome}" />
+						</rich:column>
+						<rich:column sortBy="#{mensagemRecebidaVO.assunto}"
+							sortOrder="#{ordenaMensagemRecebidaMB.assuntoMensagemRecebida}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['mensagemRecebida.assunto']}"
+									render="tableMensagemRecebida"
+									action="#{ordenaMensagemRecebidaMB.ordenarAssuntoMensagemRecebida}" />
+							</f:facet>
+							<h:outputText value="#{mensagemRecebidaVO.assunto}" />
+						</rich:column>
+						<rich:column sortBy="#{mensagemRecebidaVO.visualizada}"
+							sortOrder="#{ordenaMensagemRecebidaMB.visualizadaMensagemRecebida}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['mensagemRecebida.visualizada']}"
+									render="tableMensagemRecebida"
+									action="#{ordenaMensagemRecebidaMB.ordenarVisualizadaMensagemRecebida}" />
+							</f:facet>
+							<h:outputText
+								value="#{mensagemRecebidaVO.visualizada == true ? msg['mensagemRecebida.visualizada.true'] : msg['mensagemRecebida.visualizada.false']} " />
+						</rich:column>
+						<rich:column style="width:5%;">
+							<f:facet name="header">
+								<h:outputText value="#{msg.rotuloAcao}" />
+							</f:facet>
+							<a4j:commandLink value="#{msg.linkVisualizar}"
+								render="tableMensagemRecebida"
+								action="#{mensagemMB.verMensagemRecebida}" immediate="true" />
+						</rich:column>
+						<f:facet name="footer">
+              				<rich:dataScroller for="tableMensagemRecebida"  fastControls="hide" renderIfSinglePage="false" />
+           				</f:facet>
+					</rich:dataTable>
+				</div>
+			</rich:panel>
+		</h:form>
+
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseover"
+			query="jQuery(this).addClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseout"
+			query="jQuery(this).removeClass('active-row')" />
+	</ui:define>
+
+</ui:composition>

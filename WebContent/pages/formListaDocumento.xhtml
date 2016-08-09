@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormListaDocumento" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.filtroDocumentos}" />
+				</f:facet>
+				<h:panelGrid columns="1">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio']}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:selectOneMenu id="idCondominio" value="#{arquivoMB.condominio.id}"
+						defaultLabel="#{msg['condominio.DefaultLabel']}"
+						label="#{msg['condominio.label']}" required="true">
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" itemValue="0" noSelectionOption="true" />
+						<f:selectItems value="#{arquivoMB.listaCondominios}" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>
+
+			</rich:panel>
+			<h:commandButton value="#{msg.botaoPesquisar}"
+				actionListener="#{arquivoMB.pesquisarDocumentos}" />
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg['arquivo.listaDocumento']}" />
+				</f:facet>
+				<div>
+					<rich:dataTable value="#{arquivoMB.listaDeDocumentos}"
+						var="documento" rowClasses="odd-row, even-row" styleClass="stable"
+						id="tableDocumento" style="width:100% !important" rows="10"
+						rendered="#{arquivoMB.listaDeDocumentos.rowCount  > 0}">
+						<rich:column sortBy="#{documento.nome}"
+							sortOrder="#{ordenaArquivoMB.nomeArquivo}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['arquivo.documento.nome']}"
+									render="tableDocumento" 
+									action="#{ordenaArquivoMB.ordenarPorNome}" />
+							</f:facet>
+							<h:outputText value="#{documento.nome}" />
+						</rich:column>
+						<rich:column
+							style="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4') == false ? 'width:5%;' : 'width:10%;'}">
+							<f:facet name="header">
+								<h:outputText value="#{msg.rotuloAcao}" />
+							</f:facet>
+							<h:commandLink value="#{msg.linkDownload}"
+								actionListener="#{arquivoMB.downloadDocumento}" immediate="true" />
+							#{' '}					 
+ 							<h:commandLink value="#{msg.linkExcluir}" 
+								rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}">
+								<rich:componentControl target="confirmaExcluirDocumento"
+									operation="show" />
+							</h:commandLink>
+							<rich:popupPanel id="confirmaExcluirDocumento" autosized="true">
+         						#{msg['msg.arquivo.documento.confirmacaoExcluir']}
+         						<h:panelGrid columns="2">               		
+									<a4j:commandButton value="#{msg.botaoExcluir}"
+										onclick="#{rich:component('confirmaExcluirDocumento')}.hide(); return true;"
+										actionListener="#{arquivoMB.excluirDocumento}"
+										render="IdMessages idFormListaDocumento" />
+									<a4j:commandButton value="#{msg.botaoCancelar}" onclick="#{rich:component('confirmaExcluirDocumento')}.hide(); return false;" />	
+								</h:panelGrid>	
+							</rich:popupPanel>
+						</rich:column>
+						<f:facet name="footer">
+              				<rich:dataScroller for="tableDocumento"  fastControls="hide" renderIfSinglePage="false" />
+           				</f:facet>	
+					</rich:dataTable>
+				</div>
+			</rich:panel>
+			<h:commandButton value="#{msg.botaoAnexarDocumento}"
+				action="#{arquivoMB.abrirTelaAnexarDocumento}" immediate="true"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}" />
+		</h:form>
+
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseover"
+			query="jQuery(this).addClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseout"
+			query="jQuery(this).removeClass('active-row')" />
+	</ui:define>
+
+</ui:composition>

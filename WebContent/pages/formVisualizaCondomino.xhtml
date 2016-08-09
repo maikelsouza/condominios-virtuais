@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormVisualizaCondomino" styleClass="content formView">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.visualizarCondomino}" />
+				</f:facet>
+				<h:panelGrid columns="2">
+					<h:outputLabel value="#{msg['condomino.imagem']}:" for="idUpload" />
+					<a4j:mediaOutput id="idUpload" element="img" mimeType="image/jpeg"
+						createContent="#{condominoMB.getImagem}" cacheable="false"
+						session="false" style="height:100px;" />
+					<h:outputLabel value="#{msg.condominio}:" for="idNomeCondominio" />
+					<h:outputText id="idNomeCondominio"
+						value="#{condominoMB.condominoVO.nomeCondominio}" />
+					<h:outputLabel value="#{msg.bloco}:" for="idNomeBloco" />
+					<h:outputText id="idNomeBloco"
+						value="#{condominoMB.condominoVO.nomeBloco}" />
+					<h:outputLabel value="#{msg.unidades}:" for="idNumeroUnidade" />
+					<h:outputText id="idNumeroUnidade"
+						value="#{condominoMB.condominoVO.numeroUnidade}" />
+					<h:outputLabel value="#{msg['condomino.nome']}:"
+						for="idNomeCondomino" />
+					<h:outputText id="idNomeCondomino"
+						value="#{condominoMB.condominoVO.nomeCondomino}" />
+					<h:outputLabel value="#{msg['condomino.sexo']}:"
+						for="idSexoCondomino" />
+					<h:outputText id="idSexoCondomino"
+						value="#{condominoMB.condominoVO.sexoCondomino == 0 ? msg['condomino.sexo.0'] : msg['condomino.sexo.1']}" />
+					<h:outputLabel value="#{msg['condomino.dataNascimento']}:"
+						for="idDataNascimentoCondomino"
+						rendered="#{condominoMB.condominoVO.dataNascimentoCondomino != null}" />
+					<h:outputText id="idDataNascimentoCondomino"
+						value="#{condominoMB.condominoVO.dataNascimentoCondomino}"
+						rendered="#{condominoMB.condominoVO.dataNascimentoCondomino != null}">
+						<f:convertDateTime pattern="#{msg['formatoData']}" />
+					</h:outputText>
+					<h:outputLabel value="#{msg['condomino.proprietario']}:"
+						for="idProprietario" />
+					<h:outputText id="idProprietario"
+						value="#{condominoMB.condominoVO.proprietarioCondomino == true ? msg['sim'] : msg['nao']}" />
+					<h:outputLabel value="#{msg['condomino.situacao']}:"
+						for="idSituacao" />
+					<h:outputText id="idSituacao"
+						value="#{condominoMB.condominoVO.situacaoCondomino == 1 ? msg['condomino.situacao.itemLabel.1'] : msg['condomino.situacao.itemLabel.0']}" />
+					<h:outputLabel value="#{msg['condomino.email']}:" for="idEmail" />
+					<h:outputText id="idEmail"
+						value="#{condominoMB.condominoVO.emailCondomino}" />
+					<h:outputLabel value="#{msg['condomino.telefoneResidencial']}:"
+						for="idTelefoneResidencialCondomino"
+						rendered="#{condominoMB.condominoVO.telefoneResidencialCondomino != 0}" />
+					<h:outputText id="idTelefoneResidencialCondomino"
+						value="#{condominoMB.condominoVO.telefoneResidencialCondomino}"
+						rendered="#{condominoMB.condominoVO.telefoneResidencialCondomino != 0}" />
+					<h:outputLabel value="#{msg['condomino.telefoneCelular']}:"
+						for="idTelefoneCelularCondomino"
+						rendered="#{condominoMB.condominoVO.telefoneCelularCondomino != 0}" />
+					<h:outputText id="idTelefoneCelularCondomino"
+						value="#{condominoMB.condominoVO.telefoneCelularCondomino}"
+						rendered="#{condominoMB.condominoVO.telefoneCelularCondomino != 0}" />
+					<h:outputLabel value="#{msg['condomino.telefoneComercial']}:"
+						for="idTelefoneComercialCondomino"
+						rendered="#{condominoMB.condominoVO.telefoneComercialCondomino != 0}" />
+					<h:outputText id="idTelefoneComercialCondomino"
+						value="#{condominoMB.condominoVO.telefoneComercialCondomino}"
+						rendered="#{condominoMB.condominoVO.telefoneComercialCondomino != 0}" />					
+				</h:panelGrid>
+				<div></div>
+			</rich:panel>
+			<h:commandButton value="#{msg.botaoVoltar}"
+				action="#{condominoMB.voltarVisualizarCondomino}" />
+		</h:form>
+	</ui:define>
+
+</ui:composition>

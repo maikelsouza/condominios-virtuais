@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+<h:form id="idFormMenuPrincipal" styleClass="cabecalho">
+	<h:graphicImage alt="logo" url="/imagens/logo_cabecalho.png"
+		rendered="#{loginMB.autenticado}" />
+	<rich:toolbar rendered="#{loginMB.autenticado}"
+		styleClass="menuPessoal" >
+		<rich:toolbarGroup>
+			<h:outputLabel value="#{loginMB.mensagemBoasVindas}" />
+		</rich:toolbarGroup>
+		<rich:dropDownMenu mode="ajax" disabled="true"
+			rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('4,5,6') and loginMB.sindicoGeralAssociado()}">
+			<f:facet name="label">
+				<h:panelGroup>
+					<h:commandLink action="#{principalMB.meuPainel}"
+						value="#{msg['meuPainel']}" />
+				</h:panelGroup>
+			</f:facet>
+		</rich:dropDownMenu>
+		<rich:dropDownMenu mode="ajax" disabled="true" rendered="true">
+			<f:facet name="label">
+				<h:panelGroup>
+					<h:commandLink action="#{loginMB.logout}" value="#{msg['sair']}" title="#{msg['sair']}" />
+				</h:panelGroup>
+			</f:facet>
+		</rich:dropDownMenu>
+	</rich:toolbar>
+	<rich:toolbar rendered="#{loginMB.autenticado}"
+		styleClass="menuPrincipal">
+		<rich:dropDownMenu mode="ajax" rendered="true" disabled="true">
+			<f:facet name="label">
+				<h:panelGroup>
+					<h:commandLink action="#{principalMB.principal}"
+						value="#{msg['paginaPrincipal']}"
+						title="#{msg['msg.info.menuPrincipal']}" />
+				</h:panelGroup>
+			</f:facet>
+		</rich:dropDownMenu>
+		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5') and loginMB.sindicoGeralAssociado()}">
+			<f:facet name="label">
+				<h:panelGroup
+					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5') and loginMB.sindicoGeralAssociado()}">
+					<h:outputText value="#{msg.arquivo}" />
+				</h:panelGroup>
+			</f:facet>
+			<rich:menuItem label="#{msg['arquivo.documentos']}"
+				action="#{principalMB.listarDocumento}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5')}" />
+			<rich:menuItem label="#{msg['arquivo.documento.anexar']}"
+				action="#{principalMB.anexarDocumento}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}" />
+			<rich:menuItem label="#{msg['arquivo.imagem']}"
+				action="#{principalMB.listarImagem}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5')}" />
+			<rich:menuItem label="#{msg['arquivo.imagem.anexar']}"
+				action="#{principalMB.anexarImagem}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}" />
+		</rich:dropDownMenu>
+		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}">
+			<f:facet name="label">
+				<h:panelGroup
+					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}">
+					<h:outputText value="#{msg.cadastro}" />
+				</h:panelGroup>
+			</f:facet>
+			<rich:menuItem label="#{msg['cadastro.condominio']}"
+				action="#{principalMB.listarCondominio}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}" />
+			<rich:menuItem label="#{msg['cadastro.bloco']}"
+				action="#{principalMB.listarBloco}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}" />
+			<rich:menuItem label="#{msg['cadastro.unidade']}"
+				action="#{principalMB.listarUnidade}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}" />
+			<rich:menuItem label="#{msg['cadastro.condomino']}"
+				action="#{principalMB.listarCondomino}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}" />
+			<rich:menuGroup label="#{msg.ambiente}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4') and loginMB.sindicoGeralAssociado()}">
+				<rich:menuItem label="#{msg['cadastro.ambiente.condominio']}"
+					action="#{principalMB.listarAmbienteCondominio}" title="#{msg['cadastro.ambiente.condominio.title']}"
+					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}" />
+				<rich:menuItem label="#{msg['cadastro.ambiente.bloco']}"
+					action="#{principalMB.listarAmbienteBloco}" title="#{msg['cadastro.ambiente.bloco.title']}"
+					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}" />
+			</rich:menuGroup>
+			<rich:menuGroup label="#{msg.funcionario}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4') and loginMB.sindicoGeralAssociado()}">
+				<rich:menuItem label="#{msg['cadastro.funcionario.condominio']}"
+					action="#{principalMB.listarFuncionarioCondominio}" title="#{msg['cadastro.funcionario.condominio.title']}"
+					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}" />
+				<rich:menuItem label="#{msg['cadastro.funcionario.bloco']}"
+					action="#{principalMB.listarFuncionarioBloco}" title="#{msg['cadastro.funcionario.bloco.title']}"
+					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}" />
+			</rich:menuGroup>
+		</rich:dropDownMenu>
+		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,6') and loginMB.sindicoGeralAssociado()}">
+			<f:facet name="label">
+				<h:panelGroup
+					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,6') and loginMB.sindicoGeralAssociado()}">
+					<h:outputText value="#{msg.veiculo}" />
+				</h:panelGroup>
+			</f:facet>
+			<rich:menuItem label="#{msg['veiculo.listar']}"
+				action="#{principalMB.listarVeiculo}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,6')}" />
+		</rich:dropDownMenu>
+
+		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,3,4,5,6') and loginMB.sindicoGeralAssociado()}">
+			<f:facet name="label">
+				<h:panelGroup
+					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,3,4,5,6') and loginMB.sindicoGeralAssociado()}">
+					<h:outputText value="#{msg.reserva}" />
+				</h:panelGroup>
+			</f:facet>
+			<rich:menuItem label="#{msg['reserva.cadastrar']}"
+				action="#{principalMB.cadastroListarReserva}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('4,5')}" />
+			<rich:menuItem label="#{msg['reserva.listar']}"
+				action="#{principalMB.listarReserva}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,3,4')}" />
+			<rich:menuItem label="#{msg['reserva.cadastrar']}"
+				action="#{principalMB.cadastrarReserva}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('6')}" />
+			<rich:menuItem label="#{msg['reserva.aprovar']}"
+				action="#{principalMB.aprovarReserva}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,3,4')}" />
+		</rich:dropDownMenu>
+		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,3,4,5,6') and loginMB.sindicoGeralAssociado() and !loginMB.exibeMenuFinanceiro()}">
+			<f:facet name="label">
+				<h:panelGroup
+					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,3,4,5,6') and loginMB.sindicoGeralAssociado()}">
+					<h:outputText value="#{msg.agendamentoMudanca}" />
+				</h:panelGroup>
+			</f:facet>
+			<rich:menuItem label="#{msg['agendamentoMudança.solicitar']}"
+				action="#{principalMB.solicitarAgendamento}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('4,5')}" />
+			<rich:menuItem label="#{msg['agendamentoMudança.listar']}"
+				action="#{principalMB.listarAgendamento}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('4')}" />
+			<rich:menuItem label="#{msg['agendamentoMudança.aprovar']}"
+				action="#{principalMB.aprovarAgendamento}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('4')}" />			
+		</rich:dropDownMenu>
+		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,6') and loginMB.sindicoGeralAssociado()}">
+			<f:facet name="label">
+				<h:panelGroup
+					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,6') and loginMB.sindicoGeralAssociado()}">
+					<h:outputText value="#{msg.mensagens}" />
+				</h:panelGroup>
+			</f:facet>
+			<rich:menuItem label="#{msg['mensagen.mensagensRecebidas']}"
+				action="#{principalMB.mensagensRecebidas}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,6')}" />
+			<rich:menuItem label="#{msg['mensagen.mensagensEnviadas']}"
+				action="#{principalMB.mensagensEnviadas}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,6')}" />
+			<rich:menuItem label="#{msg['mensagen.escreverMensagem']}"
+				action="#{principalMB.escreverMensagem}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4,5')}" />
+			<rich:menuItem label="#{msg['mensagen.faleComSindico']}"
+				action="#{principalMB.faleComSindico}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,5,6')}" />
+		</rich:dropDownMenu>
+		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5') and loginMB.sindicoGeralAssociado()}">
+			<f:facet name="label">
+				<h:panelGroup
+					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5') and loginMB.sindicoGeralAssociado()}">
+					<h:outputText value="#{msg.enquete}" />
+				</h:panelGroup>
+			</f:facet>
+			<rich:menuItem label="#{msg['enquete.listarEnquete']}"
+				action="#{principalMB.listarEnquete}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5')}" />
+			<rich:menuItem label="#{msg['enquete.cadastrarEnquete']}"
+				action="#{principalMB.cadastrarEnquete}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4')}" />
+			<rich:menuItem label="#{msg['enquete.votarEnquete']}"
+				action="#{principalMB.votarEnquete}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('4,5')}" />
+		</rich:dropDownMenu>
+		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,6') and loginMB.sindicoGeralAssociado()}">
+			<f:facet name="label">
+				<h:panelGroup
+					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,6') and loginMB.sindicoGeralAssociado()}">
+					<h:outputText value="#{msg.classificados}" />
+				</h:panelGroup>
+			</f:facet>
+			<rich:menuItem label="#{msg['classificados.listarClassificados']}"
+				action="#{principalMB.listarClassificados}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4,5,6')}" />
+			<rich:menuItem label="#{msg['classificados.cadastrarClassificados']}"
+				action="#{principalMB.cadastrarClassificados}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,6')}" />
+		</rich:dropDownMenu>
+		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,6') and loginMB.sindicoGeralAssociado()}">
+			<f:facet name="label">
+				<h:panelGroup
+					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,6') and loginMB.sindicoGeralAssociado()}">
+					<h:outputText value="#{msg.telefonesUteis}" />
+				</h:panelGroup>
+			</f:facet>
+			<rich:menuItem label="#{msg['telefonesUteis.listarTelefonesUteis']}"
+				action="#{principalMB.listarTelefonesUteis}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4,5,6')}" />
+			<rich:menuItem
+				label="#{msg['telefonesUteis.cadastrarTelefonesUteis']}"
+				action="#{principalMB.cadastrarTelefonesUteis}"
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}" />
+		</rich:dropDownMenu>
+		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.exibeMenuFinanceiro()}">
+			<f:facet name="label">
+				<h:panelGroup>
+					<h:outputText value="#{msg.financeiro}" />
+				</h:panelGroup>
+			</f:facet>
+			<rich:menuItem label="#{msg['despesas.cadastrarCondominio']}"
+				action="#{principalMB.cadastrarDespesasCondominio}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4')}"/>
+			<rich:menuItem label="#{msg['despesas.cadastrarCondomino']}"
+				action="#{principalMB.cadastrarDespesasCondomino}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4')}"/>
+			<rich:menuItem label="#{msg['despesas.cadastrarTodosCondominos']}"
+				action="#{principalMB.cadastrarDespesasTodosCondominos}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4')}"/>
+			<rich:menuItem label="#{msg['despesas.listarDespesasCondominio']}"
+				action="#{principalMB.listarDespesasCondominio}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4,5')}"/>					
+		</rich:dropDownMenu>
+		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4,5') and loginMB.sindicoGeralAssociado()}">
+			<f:facet name="label">
+				<h:panelGroup>
+					<h:outputText value="Chamados" />
+				</h:panelGroup>
+			</f:facet>
+			<rich:menuItem label="#{msg['chamado.criarChamado']}" action="#{principalMB.cadastrarChamado}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4,5')}"/>				
+			<rich:menuItem label="#{msg['chamado.listarChamado']}" action="#{principalMB.listarChamado}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4')}"/>
+		</rich:dropDownMenu>
+		
+	</rich:toolbar>
+
+</h:form>
+
+</html>
+
+
+
+

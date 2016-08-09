@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<f:metadata>
+			<f:event type="preRenderView" listener="#{blocoMB.abreSessao}" />
+		</f:metadata>
+		<h:form id="idFormListaBloco" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.filtroBlocos}" />
+				</f:facet>
+				<h:panelGrid columns="2">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio']}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:outputLabel value="#{msg['bloco.nome']}:" for="idNome" />
+					<h:selectOneMenu id="idCondominio" value="#{blocoMB.condominio.id}"
+						defaultLabel="#{msg['condominio.DefaultLabel']}"
+						label="#{msg['condominio.label']}" required="true">
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" 
+							noSelectionOption="true" />
+						<f:selectItems value="#{blocoMB.listaCondominios}" />
+					</h:selectOneMenu>
+					<h:inputText id="idNome" value="#{blocoMB.bloco.nome}" size="10"
+						binding="#{blocoMB.componenteNomeBloco}" required="false" />
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>
+
+			</rich:panel>
+			<div>
+				<h:panelGrid columns="2">
+					<h:commandButton value="#{msg.botaoPesquisar}"
+						actionListener="#{blocoMB.pesquisar}" />
+					<h:commandButton value="#{msg.botaoLimpar}"
+						actionListener="#{blocoMB.limparFiltroBloco}" immediate="true" />
+				</h:panelGrid>
+			</div>
+			<rich:panel>
+
+				<f:facet name="header">
+					<h:outputText value="#{msg.listaBlocos}" />
+				</f:facet>
+				<div>
+					<rich:dataTable value="#{blocoMB.listaBlocos}" var="bloco"
+						rowClasses="odd-row, even-row" styleClass="stable" id="tableBloco" rows="10"
+						style="width:100%;" rendered="#{blocoMB.listaBlocos.rowCount > 0}">
+						<rich:column sortBy="#{bloco.nome}" 
+							sortOrder="#{ordenaBlocoMB.nomeBloco}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['bloco.nome']}"
+									render="tableBloco"
+									action="#{ordenaBlocoMB.ordenarPorNomeBloco}" />
+							</f:facet>
+							<h:outputText value="#{bloco.nome}" />
+						</rich:column>
+						<rich:column sortBy="#{bloco.sindico.nome}"
+							sortOrder="#{ordenaBlocoMB.nomeSindico}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['bloco.sindico.nome']}"
+									render="tableBloco"
+									action="#{ordenaBlocoMB.ordenarPorNomeSindico}" />
+							</f:facet>
+							<h:outputText value="#{bloco.sindico.nome}" />
+						</rich:column>
+						<rich:column sortBy="#{bloco.subSindico.nome}"
+							sortOrder="#{ordenaBlocoMB.nomeSubsindico}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['bloco.subsindico.nome']}"
+									render="tableBloco"
+									action="#{ordenaBlocoMB.ordenarPorNomeSubsindico}" />
+							</f:facet>
+							<h:outputText value="#{bloco.subSindico.nome}" />
+						</rich:column>
+						<rich:column style="width:10%;">
+							<f:facet name="header">
+								<h:outputText value="#{msg.rotuloAcao}" />
+							</f:facet>
+							<h:commandLink value="#{msg.linkVisualizar}" render="tableBloco"
+								action="#{blocoMB.visualizarBloco}" immediate="true" />
+				 			#{' '}
+ 							<h:commandLink value="#{msg.linkEditar}" render="tableBloco"
+								action="#{blocoMB.editarBloco}" immediate="true" />
+						</rich:column>
+						<f:facet name="footer">
+              				  <rich:dataScroller for="tableBloco"  fastControls="hide" renderIfSinglePage="false" />
+           				</f:facet>
+					</rich:dataTable>
+				</div>
+			</rich:panel>
+			<h:commandButton value="#{msg.botaoCriarNovo}"
+				action="#{blocoMB.cadastroBloco}" immediate="true"></h:commandButton>
+		</h:form>
+
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseover"
+			query="jQuery(this).addClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseout"
+			query="jQuery(this).removeClass('active-row')" />
+	</ui:define>
+
+</ui:composition>

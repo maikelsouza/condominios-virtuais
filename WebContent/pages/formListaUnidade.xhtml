@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<f:metadata>
+			<f:event type="preRenderView" listener="#{unidadeMB.abreSessao}" />
+		</f:metadata>
+		<h:form id="idFormListaUnidade" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.filtroUnidades}" />
+				</f:facet>
+				<h:panelGrid columns="3">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio']}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:outputLabel value="#{msg['bloco']}:" for="idBlocos" />
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['unidade.tipo']}:" for="idTipos" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:selectOneMenu id="idCondominio"
+						value="#{unidadeMB.condominio.id}"
+						defaultLabel="#{msg['condominio.DefaultLabel']}" required="true"
+						label="#{msg['condominio.label']}">
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{unidadeMB.listaSICondominios}" />
+						<f:ajax listener="#{unidadeMB.popularListaBlocos}"
+							render="idBlocos" execute="@this" />
+					</h:selectOneMenu>
+					<h:selectOneMenu value="#{unidadeMB.bloco.id}" id="idBlocos"
+						defaultLabel="#{msg['bloco.DefaultLabel']}">
+						<f:selectItem itemValue="0" itemLabel="#{msg['todos']}" />
+						<f:selectItems value="#{unidadeMB.listaSIBlocos}"
+							id="idListaSIBlocos" />
+					</h:selectOneMenu>
+					<h:selectOneMenu id="idTipos" value="#{unidadeMB.unidade.tipo}"
+						defaultLabel="#{msg['unidade.tipo.label.DefaultLabel']}"
+						label="#{msg['unidade.tipo.label']}" required="true">
+						<f:selectItem
+							itemLabel="#{msg['unidade.tipo.label.DefaultLabel']}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{unidadeMB.listaSITipos}" />
+						<f:selectItem itemValue="2"
+							itemLabel="#{msg['unidade.tipo.label.2']}" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>
+
+			</rich:panel>
+			<div>
+				<h:panelGrid columns="2">
+					<h:commandButton value="#{msg.botaoPesquisar}"
+						actionListener="#{unidadeMB.pesquisar}" />
+					<h:commandButton value="#{msg.botaoLimpar}"
+						actionListener="#{unidadeMB.limparFiltroUnidade}" immediate="true" />
+				</h:panelGrid>
+			</div>
+			
+			<rich:panel>
+
+				<f:facet name="header">
+					<h:outputText value="#{msg.listaUnidades}" />
+				</f:facet>
+				<div>
+					<rich:dataTable value="#{unidadeMB.listaUnidadesVO}"
+						var="unidadeVO" rowClasses="odd-row, even-row" styleClass="stable"
+						id="tableUnidade" style="width:100%;" rows="10"
+						rendered="#{unidadeMB.listaUnidadesVO.rowCount > 0}">
+						<rich:column>
+							<f:facet name="header">
+								<h:outputLabel value="#{msg['condominio']}" />
+							</f:facet>
+							<h:outputText value="#{unidadeVO.nomeCondominio}" />
+						</rich:column>
+						<rich:column sortBy="#{unidadeVO.nomeBloco}"
+							sortOrder="#{ordenaUnidadeMB.blocoUnidade}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['bloco']}" render="tableUnidade"
+									action="#{ordenaUnidadeMB.ordenarPorBloco}" />
+							</f:facet>
+							<h:outputText value="#{unidadeVO.nomeBloco}" />
+						</rich:column>
+						<rich:column sortBy="#{unidadeVO.numeroUnidade}"
+							sortOrder="#{ordenaUnidadeMB.numeroUnidade}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['unidade.numero']}"
+									render="tableUnidade"
+									action="#{ordenaUnidadeMB.ordenarPorNumero}" />
+							</f:facet>
+							<h:outputText value="#{unidadeVO.numeroUnidade}" />
+						</rich:column>
+						<rich:column sortBy="#{unidadeVO.tipoUnidade}"
+							sortOrder="#{ordenaUnidadeMB.tipoUnidade}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['unidade.tipo']}"
+									render="tableUnidade"
+									action="#{ordenaUnidadeMB.ordenarPorTipo}" />
+							</f:facet>
+							<h:outputText
+								value="#{unidadeVO.tipoUnidade == 0? msg['unidade.tipo.label.0'] : msg['unidade.tipo.label.1']}" />
+						</rich:column>
+						<rich:column style="width:10%;">
+							<f:facet name="header">
+								<h:outputText value="#{msg.rotuloAcao}" />
+							</f:facet>
+							<h:commandLink value="#{msg.linkVisualizar}"
+								render="tableUnidade" action="#{unidadeMB.visualizarUnidade}"
+								immediate="true">
+								<f:param name="cid"
+									value="#{javax.enterprise.context.conversation.id}" />
+							</h:commandLink>
+				 			#{' '}
+ 							<a4j:commandLink value="#{msg.linkEditar}" render="tableUnidade"
+								action="#{unidadeMB.editarUnidade}" immediate="true" />
+						</rich:column>
+						 <f:facet name="footer">
+              				  <rich:dataScroller for="tableUnidade"  fastControls="hide" renderIfSinglePage="false"  />
+           				 </f:facet>
+					</rich:dataTable>
+				</div>
+			</rich:panel>
+			<h:commandButton value="#{msg.botaoCriarNovo}"
+				action="#{unidadeMB.cadastroUnidade}" immediate="true"></h:commandButton>
+		</h:form>
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseover"
+			query="jQuery(this).addClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseout"
+			query="jQuery(this).removeClass('active-row')" />
+	</ui:define>
+
+</ui:composition>

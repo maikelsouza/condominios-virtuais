@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormEditarUnidade" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.editarUnidade}" />
+				</f:facet>
+				<h:panelGrid columns="2">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg.condominio}:" for="idSICondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg.bloco}:" for="idListaSIBlocos" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:selectOneMenu id="idSICondominio"
+						value="#{unidadeMB.unidadeVO.idCondominio}"
+						defaultLabel="#{msg['condominio.DefaultLabel']}" required="true"
+						label="#{msg['condominio.label']}">
+						<f:selectItems value="#{unidadeMB.listaSICondominios}" />
+						<f:ajax listener="#{unidadeMB.popularListaBlocosEditar}" render="idListaSIBlocos idBlocos" />
+					</h:selectOneMenu>
+					<h:selectOneMenu value="#{unidadeMB.unidadeVO.idBloco}"
+						defaultLabel="#{msg['bloco.DefaultLabel']}" id="idListaSIBlocos"
+						required="true" label="#{msg['bloco.label']}">
+						<f:selectItems value="#{unidadeMB.listaSIBlocos}" id="idBlocos" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+				<h:panelGrid columns="2">	
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['unidade.tipo']}:"
+							for="idSITipoUnidade" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['unidade.numero']}:"
+							for="idNumeroUnidade" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:selectOneMenu id="idSITipoUnidade"
+						value="#{unidadeMB.unidadeVO.tipoUnidade}"
+						defaultLabel="#{msg['unidade.tipo.label.DefaultLabel']}"
+						required="true" label="#{msg['unidade.tipo.label']}">
+						<f:selectItems value="#{unidadeMB.listaSITipos}" />
+					</h:selectOneMenu>
+					<h:inputText id="idNumeroUnidade"
+						value="#{unidadeMB.unidadeVO.numeroUnidade}" required="true"
+						size="5" label="#{msg['unidade.numero.label']}"
+						binding="#{unidadeMB.componenteNumeroUnidade}" />
+				</h:panelGrid>				
+				<div></div>
+
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>
+
+				<rich:popupPanel id="confirmaExcluirUnidade" autosized="true">
+  					#{msg['msg.unidade.confirmacaoExcluir']}
+  					<h:panelGrid columns="2">    	 	
+						<h:commandButton value="#{msg.botaoExcluir}" action="#{unidadeMB.excluirUnidade}" onclick=" #{rich:component('confirmaExcluirUnidade')}.hide();  return true;" />
+						<h:commandButton value="#{msg.botaoCancelar}" onclick="#{rich:component('confirmaExcluirUnidade')}.hide(); return false;" />	
+					</h:panelGrid>	
+				</rich:popupPanel>
+
+			</rich:panel>
+			<h:panelGrid columns="4">
+				<h:commandButton value="#{msg.botaoAtualizar}"
+					action="#{unidadeMB.atualizarUnidade}" />
+				<h:commandButton value="#{msg.botaoExcluir}" immediate="true">
+					<rich:componentControl target="confirmaExcluirUnidade"
+						operation="show" />
+				</h:commandButton>
+				<h:commandButton value="#{msg.botaoCancelar}"
+					action="#{unidadeMB.cancelarCadastroUnidade}" immediate="true" />
+				<h:commandButton value="#{msg.botaoCadastrarGaragem}" rendered="#{loginMB.sindicoGeralAssociado()}"
+					action="#{unidadeMB.cadastroGaragem}" immediate="true" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

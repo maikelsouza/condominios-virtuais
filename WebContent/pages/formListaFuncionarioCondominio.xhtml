@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormListaFuncionarioCondominio" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.filtroFuncionariosCondominio}" />
+				</f:facet>
+				<h:panelGrid columns="2">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg.condominio}:" for="idSICondominios" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:outputLabel value="#{msg['funcionario.nome']}:" for="idNome" />
+					<h:selectOneMenu id="idSICondominios"
+						value="#{funcionarioMB.condominio.id}"
+						defaultLabel="#{msgs['condominio.DefaultLabel']}" required="true"
+						label="#{msg['condominio.label']}">
+						<f:selectItems value="#{funcionarioMB.listaSICondominios}" />
+					</h:selectOneMenu>
+					<h:inputText id="idNome" value="#{funcionarioMB.funcionario.nome}"
+						size="15" binding="#{funcionarioMB.componenteNomeFuncionario}"
+						required="false" />
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>
+
+			</rich:panel>
+			<div>
+				<h:panelGrid columns="2">
+					<h:commandButton value="#{msg.botaoPesquisar}"
+						actionListener="#{funcionarioMB.pesquisarFuncionarioCondominio}" />
+					<h:commandButton value="#{msg.botaoLimpar}"
+						actionListener="#{funcionarioMB.limparFiltroFuncionarioCondominio}"
+						immediate="true" />
+				</h:panelGrid>
+			</div>
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.listaFuncionarios}" />
+				</f:facet>
+				<div>
+					<rich:dataTable
+						value="#{funcionarioMB.listaFuncionariosCondominio}"
+						var="funcionario" rowClasses="odd-row, even-row" rows="10"
+						styleClass="stable" id="tableFuncionario" style="width:100%;"
+						rendered="#{funcionarioMB.listaFuncionariosCondominio.rowCount > 0}">
+						<rich:column>
+							<f:facet name="header">
+								<h:outputLabel value="#{msg.condominio}" />
+							</f:facet>
+							<h:outputText value="#{funcionarioMB.condominio.nome}" />
+						</rich:column>
+						<rich:column sortBy="#{funcionario.nome}"
+							sortOrder="#{ordenaFuncionarioMB.nomeFuncionario}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['funcionario.nome']}"
+									render="tableFuncionario"
+									action="#{ordenaFuncionarioMB.ordenarPorNomeFuncionario}" />
+							</f:facet>
+							<h:outputText value="#{funcionario.nome}" />
+						</rich:column>
+						<rich:column sortBy="#{funcionario.funcao}"
+							sortOrder="#{ordenaFuncionarioMB.funcaoFuncionario}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['funcionario.funcao']}"
+									render="tableFuncionario"
+									action="#{ordenaFuncionarioMB.ordenarPorFuncaoFuncionario}" />
+							</f:facet>
+							<h:outputText value="#{funcionario.funcao}" />
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="#{msg['funcionario.telefoneResidencial']}" />
+							</f:facet>
+							<h:outputText
+								value="#{funcionario.telefoneResidencial !=0 ? funcionario.telefoneResidencial : ''}" />
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="#{msg['funcionario.telefoneCelular']}" />
+							</f:facet>
+							<h:outputText
+								value="#{funcionario.telefoneCelular != 0 ? funcionario.telefoneCelular : ''}" />
+						</rich:column>
+						<rich:column
+							style="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1') == false ? 'width:5%;' : 'width:10%;'}">
+							<f:facet name="header">
+								<h:outputText value="#{msg.rotuloAcao}" />
+							</f:facet>
+							<a4j:commandLink value="#{msg.linkVisualizar}"
+								render="tableFuncionario"
+								action="#{funcionarioMB.visualizarFuncionarioCondominio}"
+								immediate="true" />
+							 #{' '}
+ 							<a4j:commandLink value="#{msg.linkEditar}"
+								render="tableFuncionario"
+								action="#{funcionarioMB.editarFuncionarioCondominio}"
+								immediate="true"
+								rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1')}" />
+						</rich:column>
+						<f:facet name="footer">
+              				<rich:dataScroller for="tableFuncionario"  fastControls="hide" renderIfSinglePage="false" />
+           				</f:facet>
+					</rich:dataTable>
+				</div>
+			</rich:panel>
+			<h:commandButton value="#{msg.botaoCriarNovo}"
+				action="#{funcionarioMB.cadastroFuncionarioCondominio}"
+				immediate="true" />
+		</h:form>
+
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseover"
+			query="jQuery(this).addClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseout"
+			query="jQuery(this).removeClass('active-row')" />
+	</ui:define>
+
+</ui:composition>

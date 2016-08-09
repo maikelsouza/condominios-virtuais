@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<ui:define name="conteudo">
+		<f:metadata>
+			<f:event type="preRenderView"
+				listener="#{mensagemMB.popularListaMensagensEnviadas}" />
+		</f:metadata>
+		<h:form id="idFormListaMensagemEnviadas" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.listaMensagensEnviadas}" />
+				</f:facet>
+				<div>
+					<rich:dataTable value="#{mensagemMB.listaDeMensagemEnviadas}"
+						var="mensagemEnviada" rowClasses="odd-row, even-row" rows="10"
+						styleClass="stable" id="tableMensagemEnviada" style="width:100%;"
+						rendered="#{mensagemMB.listaDeMensagemEnviadas.rowCount > 0}">
+						<rich:column sortBy="#{mensagemEnviada.data}"
+							sortOrder="#{ordenaMensagemEnviadaMB.dataMensagemEnviada}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['mensagemEnviada.data']}"
+									render="tableMensagemEnviada"
+									action="#{ordenaMensagemEnviadaMB.ordenarDataMensagemEnviada}" />
+							</f:facet>
+							<h:outputText value="#{mensagemEnviada.data}">
+								<f:convertDateTime pattern="#{msg.formatoDataHora}" timeZone="#{msg.timeZone}"/>
+							</h:outputText>
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:outputLabel
+									value="#{msg['mensagemEnviada.usuarioRemetente']}" />
+							</f:facet>
+							<h:outputText value="#{mensagemEnviada.usuarioRemetente.nome}" />
+						</rich:column>
+						<rich:column sortBy="#{mensagemEnviada.assunto}"
+							sortOrder="#{ordenaMensagemEnviadaMB.assuntoMensagemEnviada}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['mensagemEnviada.assunto']}"
+									render="tableMensagemEnviada"
+									action="#{ordenaMensagemEnviadaMB.ordenarAssuntoMensagemEnviada}" />
+							</f:facet>
+							<h:outputText value="#{mensagemEnviada.assunto}" />
+						</rich:column>
+						<rich:column style="width:10%;">
+							<f:facet name="header">
+								<h:outputText value="#{msg.rotuloAcao}" />
+							</f:facet>
+							<a4j:commandLink value="#{msg.linkVisualizar}"
+								render="tableMensagemEnviada"
+								action="#{mensagemMB.verMensagemEnviada}" immediate="true" />
+									#{' '}
+								<h:commandLink value="#{msg.linkExcluir}">
+									<rich:componentControl target="confirmaExcluirMensagemEnviada"
+									operation="show" />
+							</h:commandLink>
+
+							<rich:popupPanel id="confirmaExcluirMensagemEnviada"
+								autosized="true">
+	         					#{msg['msg.mensagem.confirmacaoExcluir']}	
+	         					 <h:panelGrid columns="2">
+									<a4j:commandButton value="#{msg.botaoExcluir}" onclick="#{rich:component('confirmaExcluirMensagemEnviada')}.hide(); return true;"
+										actionListener="#{mensagemMB.excluirMensagemEnviada}" render="IdMessages idFormListaMensagemEnviadas" />
+									<a4j:commandButton value="#{msg.botaoCancelar}" onclick="#{rich:component('confirmaExcluirMensagemEnviada')}.hide(); return false;" />
+								</h:panelGrid>	
+							</rich:popupPanel>						
+						</rich:column>
+						<f:facet name="footer">
+              				<rich:dataScroller for="tableMensagemEnviada"  fastControls="hide" renderIfSinglePage="false" />
+           				</f:facet>
+					</rich:dataTable>
+
+				</div>
+			</rich:panel>
+		</h:form>
+
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseover"
+			query="jQuery(this).addClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseout"
+			query="jQuery(this).removeClass('active-row')" />
+	</ui:define>
+
+</ui:composition>

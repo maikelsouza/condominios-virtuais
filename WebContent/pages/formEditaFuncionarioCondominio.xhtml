@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idEditaFuncionarioCondominio" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.editarFuncionario}" />
+				</f:facet>
+				<h:panelGrid columns="2">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg.condominio}:"
+							for="idListaSICondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<div></div>
+					<h:selectOneMenu id="idListaSICondominio"
+						value="#{funcionarioMB.condominio.id}"
+						defaultLabel="#{msg['condominio.DefaultLabel']}" required="true"
+						label="#{msg['condominio.label']}">
+						<f:selectItems value="#{funcionarioMB.listaSICondominios}" />
+					</h:selectOneMenu>
+					<div></div>
+
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['funcionario.nome']}:" for="idNome" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['funcionario.situacao']}:"
+							for="idSituacao" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:inputText id="idNome" value="#{funcionarioMB.funcionario.nome}"
+						label="#{msg['funcionario.nome.label']}" required="true" size="30" />
+					<h:selectOneMenu id="idSituacao"
+						value="#{funcionarioMB.funcionario.situacao}"
+						defaultLabel="#{msg['funcionario.situacao.DefaultLabel']}"
+						label="#{msg['funcionario.situacao.label']}" required="true">
+						<f:selectItems value="#{funcionarioMB.listaSituacoes}" />
+					</h:selectOneMenu>
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['funcionario.funcao']}:"
+							for="idFuncao" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['funcionario.sexo']}:" for="idSexo" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:inputText id="idFuncao"
+						value="#{funcionarioMB.funcionario.funcao}"
+						label="#{msg['funcionario.funcao.label']}" required="true"
+						size="30" />
+					<h:selectOneRadio id="idSexo"
+						value="#{funcionarioMB.funcionario.sexo}" required="true"
+						label="#{msg['funcionario.sexo.label']}">
+						<f:selectItem itemLabel="#{msg['funcionario.sexo.0']}"
+							itemValue="0" />
+						<f:selectItem itemLabel="#{msg['funcionario.sexo.1']}"
+							itemValue="1" />
+					</h:selectOneRadio>
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['funcionario.email']}:" for="idEmail" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:outputLabel value="#{msg['funcionario.dataNascimento']}:"
+						for="idDataNascimento" />
+					<h:inputText id="idEmail"
+						value="#{funcionarioMB.funcionario.email.email}" size="40"
+						label="#{msg['funcionario.email.label']}" required="true"
+						validatorMessage="#{msg['msg.funcionario.email']}">
+						<f:validateLength minimum="1" maximum="150" />
+					</h:inputText>
+					<h:panelGroup id="idDataNascimento">
+						<h:selectOneMenu
+							value="#{funcionarioMB.funcionario.dataNascimentoDia}"
+							defaultLabel="#{msg['funcionario.dataNascimento.dia']}">
+							<f:selectItem
+								itemLabel="#{msg['funcionario.dataNascimento.dia']}"
+								noSelectionOption="false" />
+							<f:selectItems value="#{funcionarioMB.listaSIDias}" />
+						</h:selectOneMenu>
+						<h:selectOneMenu
+							value="#{funcionarioMB.funcionario.dataNascimentoMes}"
+							defaultLabel="#{msg['funcionario.dataNascimento.mes']}">
+							<f:selectItem
+								itemLabel="#{msg['funcionario.dataNascimento.mes']}"
+								noSelectionOption="false" />
+							<f:selectItems value="#{funcionarioMB.listaSIMeses}" />
+						</h:selectOneMenu>
+						<h:selectOneMenu
+							value="#{funcionarioMB.funcionario.dataNascimentoAno}"
+							defaultLabel="#{msg['funcionario.dataNascimento.ano']}">
+							<f:selectItem
+								itemLabel="#{msg['funcionario.dataNascimento.ano']}"
+								noSelectionOption="false" />
+							<f:selectItems value="#{funcionarioMB.listaSIAnos}" />
+						</h:selectOneMenu>
+					</h:panelGroup>
+					
+					<h:outputLabel value="#{msg['funcionario.telefoneResidencial']}:"
+						for="idTelefoneResidencial" />
+					<h:outputLabel value="#{msg['funcionario.telefoneCelular']}:"
+						for="idTelefoneCelular" />
+					<h:panelGroup>
+						<h:inputText id="idTelefoneResidencial"
+							value="#{funcionarioMB.funcionario.telefoneResidencial}"
+							label="#{msg['funcionario.telefoneResidencial.label']}" size="15" />
+						<h:outputLabel value="#{msg['somenteNumeros']}"
+							styleClass="confFontRotuloAjuda" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:inputText id="idTelefoneCelular"
+							value="#{funcionarioMB.funcionario.telefoneCelular}"
+							label="#{msg['funcionario.telefoneCelular.label']}" size="15" />
+						<h:outputLabel value="#{msg['somenteNumeros']}"
+							styleClass="confFontRotuloAjuda" />
+					</h:panelGroup>
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
+						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio"
+						styleClass="asterisco" />
+				</h:panelGrid>
+
+				<rich:popupPanel id="confirmaExcluirFuncionarioCondominio"
+					autosized="true">
+		         	#{msg['msg.funcionarioCondominio.confirmacaoExcluir']}
+		         	<h:panelGrid columns="2">
+		         		<h:commandButton value="#{msg.botaoExcluir}" action="#{funcionarioMB.excluirFuncionarioCondominio}"
+						onclick=" #{rich:component('confirmaExcluirFuncionarioCondominio')}.hide();  return true;" />
+		           		<h:commandButton value="#{msg.botaoCancelar}" onclick="#{rich:component('confirmaExcluirFuncionarioCondominio')}.hide(); return false;" />					
+					</h:panelGrid>
+				</rich:popupPanel>
+
+			</rich:panel>
+			<h:panelGrid columns="3">
+				<h:commandButton value="#{msg.botaoAtualizar}"
+					action="#{funcionarioMB.atualizarFuncionarioCondominio}" />
+				<h:commandButton value="#{msg.botaoExcluir}" immediate="true">
+					<rich:componentControl
+						target="confirmaExcluirFuncionarioCondominio" operation="show" />
+				</h:commandButton>
+				<h:commandButton value="#{msg.botaoCancelar}"
+					action="#{funcionarioMB.cancelarCadastroFuncionarioCondominio}"
+					immediate="true" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
