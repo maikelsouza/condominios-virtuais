@@ -354,8 +354,8 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 		ResultSet resultSet = null;		
 		Condomino condomino = null;
 		try {
-			preparedStatement = con.prepareStatement(query.toString());
-			preparedStatement.setInt(1, idCondomino);
+			preparedStatement = con.prepareStatement(query.toString());			
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1,idCondomino, java.sql.Types.INTEGER);
 			resultSet = preparedStatement.executeQuery();
 			while(resultSet.next()){
 				condomino = new Condomino();				

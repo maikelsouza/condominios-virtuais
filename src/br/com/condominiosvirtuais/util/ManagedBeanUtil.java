@@ -300,6 +300,23 @@ public abstract class ManagedBeanUtil {
 	    return emailValido;  
 	 }
 	
+	/**
+	 * Método que recebe uma string e verifica se existe somente número nela
+	 * @param string
+	 * @return somente número (true) ou existeLetra (false)
+	 *  
+	 */
+	public static Boolean verificaSeExisteSomenteNumeros(String string) {
+		Boolean somenteNumero = Boolean.TRUE;
+	    Pattern p = Pattern.compile("^[0-9]+$");
+	    Matcher m = p.matcher(string); 
+	    if (!m.find()){
+	    	somenteNumero = Boolean.FALSE;
+	    }
+	    return somenteNumero;  
+	 }
+	
+	
 	public static void abreSessao(Conversation conversation){		
 //		if(conversation.isTransient()){
 //			conversation.setTimeout(60000);

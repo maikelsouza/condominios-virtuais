@@ -67,6 +67,9 @@ public class PrincipalMB  implements Serializable{
 	@Inject
 	private ChamadoMB chamadoMB;
 	
+	@Inject
+	private VisitanteMB visitanteMB;
+	
 	@PostConstruct
 	public void init() {
 		logger.info("Inicializa aplicação");
@@ -255,6 +258,14 @@ public class PrincipalMB  implements Serializable{
 	
 	public String listarChamado(){
 		return "listarChamado";
+	}
+	
+	public String cadastrarVisitante(){
+		return "cadastrarVisitante";
+	}
+	
+	public String listarVisitante(){
+		return "listarVisitante";
 	}
 	
 

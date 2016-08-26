@@ -98,7 +98,7 @@
 				<rich:menuItem label="#{msg['cadastro.funcionario.bloco']}"
 					action="#{principalMB.listarFuncionarioBloco}" title="#{msg['cadastro.funcionario.bloco.title']}"
 					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}" />
-			</rich:menuGroup>
+			</rich:menuGroup>									
 		</rich:dropDownMenu>
 		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,6') and loginMB.sindicoGeralAssociado()}">
 			<f:facet name="label">
@@ -132,18 +132,16 @@
 				action="#{principalMB.aprovarReserva}"
 				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,3,4')}" />
 		</rich:dropDownMenu>
-		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,3,4,5,6') and loginMB.sindicoGeralAssociado() and !loginMB.exibeMenuFinanceiro()}">
+		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,3,4,5') and loginMB.sindicoGeralAssociado() and !loginMB.exibeMenuFinanceiro()}">
 			<f:facet name="label">
 				<h:panelGroup
-					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,3,4,5,6') and loginMB.sindicoGeralAssociado()}">
+					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,3,4,5') and loginMB.sindicoGeralAssociado()}">
 					<h:outputText value="#{msg.agendamentoMudanca}" />
 				</h:panelGroup>
 			</f:facet>
-			<rich:menuItem label="#{msg['agendamentoMudança.solicitar']}"
-				action="#{principalMB.solicitarAgendamento}"
+			<rich:menuItem label="#{msg['agendamentoMudança.solicitar']}" action="#{principalMB.solicitarAgendamento}"
 				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('4,5')}" />
-			<rich:menuItem label="#{msg['agendamentoMudança.listar']}"
-				action="#{principalMB.listarAgendamento}"
+			<rich:menuItem label="#{msg['agendamentoMudança.listar']}" action="#{principalMB.listarAgendamento}"
 				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('4')}" />
 			<rich:menuItem label="#{msg['agendamentoMudança.aprovar']}"
 				action="#{principalMB.aprovarAgendamento}"
@@ -233,11 +231,20 @@
 		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4,5') and loginMB.sindicoGeralAssociado()}">
 			<f:facet name="label">
 				<h:panelGroup>
-					<h:outputText value="Chamados" />
+					<h:outputText value="#{msg.chamado}" />
 				</h:panelGroup>
 			</f:facet>
 			<rich:menuItem label="#{msg['chamado.criarChamado']}" action="#{principalMB.cadastrarChamado}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4,5')}"/>				
 			<rich:menuItem label="#{msg['chamado.listarChamado']}" action="#{principalMB.listarChamado}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4')}"/>
+		</rich:dropDownMenu>
+		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,6') and loginMB.sindicoGeralAssociado()}">
+			<f:facet name="label">
+				<h:panelGroup>
+					<h:outputText value="#{msg.visitante}" />
+				</h:panelGroup>
+			</f:facet>
+			<rich:menuItem label="#{msg['visitante.criarVisitante']}" action="#{principalMB.cadastrarVisitante}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,6')}" />
+			<rich:menuItem label="#{msg['visitante.listarVisitante']}" action="#{principalMB.listarVisitante}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,6')}" />
 		</rich:dropDownMenu>
 		
 	</rich:toolbar>

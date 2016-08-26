@@ -397,6 +397,24 @@ public class CondominoMB implements  Serializable{
 		return listaSituacoes;
 	}
 	
+	public List<SelectItem> buscarListaCondominoPorUnidade(Unidade unidade){
+		List<SelectItem> listaSICondomino = new ArrayList<SelectItem>();		
+		List<Condomino> listaCondominos;
+		try {
+			listaCondominos = this.condominoService.buscarPorUnidade(unidade);
+			for (Condomino condomino : listaCondominos) {
+				listaSICondomino.add(new SelectItem(condomino.getId(), condomino.getNome()));
+			}			
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");				
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}
+		return listaSICondomino;
+	}
+	
 
 	public Condomino getCondomino() {		
 		return condomino;

@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormListaVisitante" styleClass="content">
+			<rich:panel>				
+				<f:facet name="header">
+					<h:outputText value="#{msg['msg.visitante.visita.VisitasRealizadasEntre']}: "  />
+					<h:outputText value="#{visitanteMB.dataDe}" >
+						<f:convertDateTime pattern="#{msg.formatoData}" timeZone="#{msg.timeZone}"/>
+					</h:outputText>
+					<h:outputText value=" #{msg['msg.visitante.visita.e']} " />					
+					<h:outputText value="#{visitanteMB.dataAte}">
+						<f:convertDateTime pattern="#{msg.formatoData}" timeZone="#{msg.timeZone}"/>
+					</h:outputText>
+				</f:facet>
+				<div>
+					<rich:dataTable value="#{visitanteMB.listaVisitaDataModel}"
+						var="visitaVO" rowClasses="odd-row, even-row" rows="10"
+						styleClass="stable" id="tableVisita" style="width:100%;"
+						rendered="#{visitanteMB.listaVisitaDataModel.rowCount > 0}">
+						<rich:column sortBy="#{visitaVO.dataInicio}" sortOrder="#{ordenaVisitaMB.dataVisita}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['visitante.visita.dataInicial']}" render="tableVisita" action="#{ordenaVisitaMB.ordenarPorDataVisita}" />
+							</f:facet>
+							<h:outputText value="#{visitaVO.dataInicio}" >
+								<f:convertDateTime pattern="#{msg.formatoDataHora}" timeZone="#{msg.timeZone}"/>
+							</h:outputText>
+						</rich:column>
+						<rich:column sortBy="#{visitaVO.nomeCondominio}" sortOrder="#{ordenaVisitaMB.condominioVisita}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['visitante.visita.condominio']}" render="tableVisita" action="#{ordenaVisitaMB.ordenarPorCondominioVisita}" />
+							</f:facet>
+							<h:outputText value="#{visitaVO.nomeCondominio}" />
+						</rich:column>
+						<rich:column sortBy="#{visitaVO.nomeBloco}" sortOrder="#{ordenaVisitaMB.blocoVisita}">
+							 <f:facet name="header">                                                                                    
+								<a4j:commandLink value="#{msg['visitante.visita.bloco']}" render="tableVisita" action="#{ordenaVisitaMB.ordenarPorBlocoVisita}" />
+							</f:facet>
+							<h:outputText value="#{visitaVO.nomeBloco}" />								
+						</rich:column>
+						<rich:column sortBy="#{visitaVO.numeroUnidade}" sortOrder="#{ordenaVisitaMB.unidadeVisita}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['visitante.visita.unidade']}" render="tableVisita" action="#{ordenaVisitaMB.ordenarPorUnidadeVisita}" />
+							</f:facet>
+							<h:outputText value="#{visitaVO.numeroUnidade}" />
+						</rich:column>
+						<rich:column sortBy="#{visitaVO.nomeCondomino}" sortOrder="#{ordenaVisitaMB.condominoVisita}">
+							<f:facet name="header">                                                                                         
+								<a4j:commandLink value="#{msg['visitante.visita.condomino']}" render="tableVisita" action="#{ordenaVisitaMB.ordenarPorCondominoVisita}" />
+							</f:facet>
+							<h:outputText value="#{visitaVO.nomeCondomino}" />
+						</rich:column>
+						<rich:column> 
+							<f:facet name="header">
+								<h:outputText value="#{msg.rotuloAcao}" />
+							</f:facet>
+							<a4j:commandLink value="#{msg.linkVisualizarPrestadorServico}"  action="#{visitanteMB.visualizarPrestadorServico}" 
+							immediate="true" rendered="#{visitaVO.prestarServico}" />
+						</rich:column>
+				                  				
+						<f:facet name="footer">
+              				<rich:dataScroller for="tableVisita"  fastControls="hide" renderIfSinglePage="false" />
+           				</f:facet>	
+					</rich:dataTable>
+				</div>
+			</rich:panel>
+			<h:panelGrid columns="2">
+				<h:commandButton value="#{msg.botaoVoltar}" action="#{visitanteMB.voltarFiltroVisita}" immediate="true"></h:commandButton>
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{visitanteMB.cancelarFiltroVisita}" immediate="true"></h:commandButton>
+			</h:panelGrid>
+		</h:form>
+
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseover"
+			query="jQuery(this).addClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseout"
+			query="jQuery(this).removeClass('active-row')" />
+	</ui:define>
+
+</ui:composition>

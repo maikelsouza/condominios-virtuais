@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormCadastroVisitante" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.cadastroVisitante}" />
+				</f:facet>
+				<h:panelGrid columns="3">	
+					<h:panelGroup>	
+						<h:outputLabel value="#{msg['condominio']}:" for="idListaSICondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>				
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['visitante.nome']}:" for="buscarNomeVisitante" />
+						<span class="asterisco">*</span>
+						<a4j:jsFunction name="buscarIdNomeVisitante"
+							execute="buscarNomeVisitante"
+							action="#{visitanteMB.popularIdNomeVisitante}"
+							render="idVisitanteNomeHidden buscarNomeVisitante idPainelGroupCampoCpf idPainelGroupCampoRg idTelefoneVisitante" />							
+					</h:panelGroup>
+					<h:panelGroup>					
+						<h:outputLabel value="#{msg['visitante.tipoDocumento']}:" for="idTipoDocumento" />		
+					    <span class="asterisco">*</span>
+					</h:panelGroup> 
+					<h:selectOneMenu value="#{visitanteMB.visitante.visita.idCondominio}" id="idListaSICondominio" required="true" label="#{msg['visitante.localVisita.condominio.label']}">		
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="false" />				
+						<f:selectItems value="#{visitanteMB.listaSICondominios}" />
+						<f:ajax listener="#{visitanteMB.popularListaSIBlocos}" render="idListaSIBlocos idListaSIUnidades buscarNomeVisitante idPainelGroupCampoCpf idPainelGroupCampoRg idTelefoneVisitante"/>
+					</h:selectOneMenu>
+					<h:panelGroup>
+						<rich:autocomplete id="buscarNomeVisitante"
+							autocompleteMethod="#{visitanteMB.buscarListaVisitante}" label="#{msg['visitante.nome.label']}"
+							var="visitante" onselectitem="buscarIdNomeVisitante()" disabled="#{visitanteMB.desabilitaCampoNomeVisitante}" onblur="buscarIdNomeVisitante()" 
+							 minChars="3" fetchValue="#{visitante.id}" required="true"
+							 value="#{visitanteMB.nomeVisitante}">
+							#{visitante.nome} 
+						</rich:autocomplete>
+						<h:inputHidden id="idVisitanteNomeHidden" value="#{visitanteMB.idNomeVisitante}"  />
+					</h:panelGroup>
+					
+					<h:selectOneMenu value="#{visitanteMB.tipoDocumento}" id="idTipoDocumento">						
+						<f:selectItems value="#{visitanteMB.listaSITipoDocumento}" />
+						<f:ajax listener="#{visitanteMB.exibirCampoRG}" render="idPainelGroupLabelCpf idPainelGroupLabelRg idPainelGroupCampoRg idPainelGroupCampoCpf"/>
+					</h:selectOneMenu>		
+					<h:panelGroup>
+						<h:panelGroup id="idPainelGroupLabelCpf">	
+							<h:outputLabel value="#{msg['visitante.cpf']}:" for="idCpfVisitante" rendered="#{!visitanteMB.exibeCampoRg}" />
+							<h:outputLabel value="*" styleClass="asterisco" rendered="#{!visitanteMB.exibeCampoRg}"/>
+						</h:panelGroup>						
+						<h:panelGroup  id="idPainelGroupLabelRg">	
+							<h:outputLabel value="#{msg['visitante.rg']}:" for="idRgVisitante" rendered="#{visitanteMB.exibeCampoRg}"/>
+							<h:outputLabel value="*" styleClass="asterisco" rendered="#{visitanteMB.exibeCampoRg}"/>
+						</h:panelGroup>
+					</h:panelGroup>			
+					<h:outputLabel value="#{msg['visitante.telefone']}:" for="idTelefoneVisitante" />	
+					<h:panelGroup>	
+						<h:outputLabel value="#{msg['visitante.quemIraVisitar']}?" for="idQuemIraVisitar" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>	
+					<h:panelGroup>
+						<h:panelGroup id="idPainelGroupCampoRg">
+							<h:inputText id="idRgVisitante" value="#{visitanteMB.visitante.rg}" 
+								label="#{msg['visitante.rg.label']}"  size="25" required="#{visitanteMB.exibeCampoRg}" rendered="#{visitanteMB.exibeCampoRg}">							
+							</h:inputText>
+							<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" rendered="#{visitanteMB.exibeCampoRg}"/>					
+						</h:panelGroup>									
+						<h:panelGroup id="idPainelGroupCampoCpf">
+							<h:inputText id="idCpfVisitante" value="#{visitanteMB.visitante.cpf}" rendered="#{!visitanteMB.exibeCampoRg}"
+								label="#{msg['visitante.cpf.label']}"  size="25" required="#{!visitanteMB.exibeCampoRg}">							
+							</h:inputText>						
+							<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" rendered="#{!visitanteMB.exibeCampoRg}"/>
+						</h:panelGroup>
+					</h:panelGroup>		
+					<h:panelGroup>
+						<h:inputText id="idTelefoneVisitante" value="#{visitanteMB.visitante.telefone}"
+							label="#{msg['visitante.telefone.label']}"  size="25">
+							<f:validateLength minimum="1" maximum="50" />
+						</h:inputText>
+						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
+					</h:panelGroup>							
+					<h:selectOneMenu value="#{visitanteMB.quemIraVisitar}" id="idQuemIraVisitar">						
+						<f:selectItems value="#{visitanteMB.listaSIQuemIraVisitar}" />
+						<f:ajax listener="#{visitanteMB.exibirLocalVisita}" render="idPanelGroupLocalVisita"/>
+					</h:selectOneMenu>
+				</h:panelGrid>
+				<h:panelGrid columns="1">
+					<h:panelGroup>	
+						<h:outputLabel value="#{msg['visitante.visita.prestadorServico']}:" for="idPrestadorServico" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>	
+					<h:selectOneMenu value="#{visitanteMB.visitante.visita.prestarServico}" id="idPrestadorServico">
+						<f:selectItems value="#{visitanteMB.listaSIPrestadorServico}" />
+						<f:ajax listener="#{visitanteMB.exibirPainelPrestadorServico}" render="idPanelGroupPrestadorServico"/>
+					</h:selectOneMenu>					
+				</h:panelGrid>						
+			</rich:panel>
+			<h:panelGroup id="idPanelGroupLocalVisita" >
+				<rich:panel  header="#{msg['visitante.painelLocalVisita']}" rendered="#{visitanteMB.painelLocalVisita}">
+					<h:panelGrid columns="2">						
+						<h:panelGroup rendered="#{visitanteMB.painelLocalVisita}">	
+						<h:outputLabel value="#{msg['bloco']}:" for="idListaSIBlocos" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>		
+						<h:panelGroup  rendered="#{visitanteMB.painelLocalVisita}" >	
+							<h:outputLabel value="#{msg['unidade']}" for="idListaSIUnidades" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>	
+						<h:selectOneMenu value="#{visitanteMB.visitante.visita.idBloco}" id="idListaSIBlocos" required="#{visitanteMB.painelLocalVisita}" label="#{msg['visitante.localVisita.bloco.label']}" rendered="#{visitanteMB.painelLocalVisita}">						
+							<f:selectItem itemLabel="#{msg['bloco.DefaultLabel']}" noSelectionOption="true" />
+							<f:selectItems value="#{visitanteMB.listaSIBlocos}" />
+							<f:ajax listener="#{visitanteMB.popularListaSIUnidades}" render="idListaSIUnidades idListaSICondomino"/>
+						</h:selectOneMenu>						
+						<h:selectOneMenu value="#{visitanteMB.visitante.visita.idUnidade}" id="idListaSIUnidades" required="#{visitanteMB.painelLocalVisita}" label="#{msg['visitante.localVisita.unidade.label']}"  rendered="#{visitanteMB.painelLocalVisita}">				
+							<f:selectItem itemLabel="#{msg['unidade.DefaultLabel']}" noSelectionOption="true" />		
+							<f:selectItems value="#{visitanteMB.listaSIUnidades}" />
+							<f:ajax listener="#{visitanteMB.popularListaSICondominos}" render="idListaSICondomino"/>
+						</h:selectOneMenu>
+					</h:panelGrid>	
+					<h:panelGrid columns="1">
+						<h:outputLabel value="#{msg['condomino']}" for="idListaSICondomino"  rendered="#{visitanteMB.painelLocalVisita}"/>			
+						<h:selectOneMenu value="#{visitanteMB.visitante.visita.idCondomino}" id="idListaSICondomino"  label="#{msg['visitante.localVisita.condomonio.label']}"  rendered="#{visitanteMB.painelLocalVisita}">			
+							<f:selectItem itemLabel="#{msg['condomino.DefaultLabel']}" noSelectionOption="true" />			
+							<f:selectItems value="#{visitanteMB.listaSICondominos}" />
+						</h:selectOneMenu>					
+					</h:panelGrid>					
+				  </rich:panel>
+				</h:panelGroup>
+				<h:panelGroup id="idPanelGroupPrestadorServico" >
+					<rich:panel  header="#{msg['visitante.painelPrestadorServico']}" rendered="#{visitanteMB.painelPrestadorServico}">
+						<h:panelGrid columns="2">
+							<h:panelGroup>	
+								<h:outputLabel value="#{msg['visitante.visita.prestadorServico.nome']}:" for="buscarNomePrestadorServico" />
+								<span class="asterisco">*</span>
+								<a4j:jsFunction name="buscarIdPrestadorServico" execute="buscarNomePrestadorServico" action="#{visitanteMB.popularIdNomePrestadorServico}"
+								render="idPrestadorServicoNomeHidden buscarNomePrestadorServico idPrestadorServicoCnpj idPrestadorServicoTelefone idPrestadorServicoEmail" />
+							</h:panelGroup>		
+							<h:outputLabel value="#{msg['visitante.visita.prestadorServico.cnpj']}" for="idPrestadorServicoCnpj" />
+							
+							<h:panelGroup>
+								<rich:autocomplete id="buscarNomePrestadorServico"
+									autocompleteMethod="#{visitanteMB.buscarListaPrestadorServico}" label="#{msg['visitante.visita.prestadorServico.nome.label']}"
+									var="prestadorServico" onblur="buscarIdPrestadorServico()" required="#{visitanteMB.painelPrestadorServico}" 
+									 minChars="3" fetchValue="#{prestadorServico.id}" onselectitem="buscarIdPrestadorServico()" 
+									value="#{visitanteMB.nomePrestadorServico}">
+									#{prestadorServico.nome} 
+								</rich:autocomplete>
+								<h:inputHidden id="idPrestadorServicoNomeHidden" value="#{visitanteMB.idNomePrestadorServico}"  />
+							</h:panelGroup>
+							
+							<h:panelGroup>
+								<h:inputText id="idPrestadorServicoCnpj" value="#{visitanteMB.visitante.visita.prestadorServico.cnpj}" label="#{msg['visitante.visita.prestadorServico.cnpj.label']}" size="35"/>
+								<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
+							</h:panelGroup>
+							<h:panelGroup>							
+								<h:outputLabel value="#{msg['visitante.visita.prestadorServico.telefone']}" for="idPrestadorServicoTelefone">
+									<span class="asterisco">*</span>
+								</h:outputLabel>							
+							</h:panelGroup>
+							<h:outputLabel value="#{msg['visitante.visita.prestadorServico.email']}" for="idPrestadorServicoEmail" />
+							<h:panelGroup>	
+								<h:inputText id="idPrestadorServicoTelefone" value="#{visitanteMB.visitante.visita.prestadorServico.telefone}" label="#{msg['visitante.visita.prestadorServico.telefone.label']}" size="35" required="#{visitanteMB.painelPrestadorServico}"/>
+								<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
+							</h:panelGroup>	
+							<h:inputText id="idPrestadorServicoEmail" value="#{visitanteMB.visitante.visita.prestadorServico.email}" label="#{msg['visitante.visita.prestadorServico.email.label']}" size="35"/>
+						</h:panelGrid>					
+					  </rich:panel>
+				 </h:panelGroup>
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
+				</h:panelGrid>
+			<h:panelGrid columns="3">
+				<h:commandButton value="#{msg.botaoSalvar}" action="#{visitanteMB.salvarVisitante}" />
+				<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{visitanteMB.limparCadastroVisitante}"  />
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{visitanteMB.cancelarCadastroVisitante}"  immediate="true" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

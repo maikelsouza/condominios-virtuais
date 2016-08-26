@@ -84,7 +84,13 @@ public enum PathTelasAplicacaoEnum {
 	FORM_EDITA_DESPESAS_CONDOMINO(PREFIXO.getPathTelas()+"formEditaDespesasCondomino.xhtml"),
 	FORM_CADASTRO_CHAMADO(PREFIXO.getPathTelas()+"formCadastroChamado.xhtml"),
 	FORM_LISTA_CHAMADO(PREFIXO.getPathTelas()+"formListaChamado.xhtml"),
-	FORM_DAR_ANDAMENTO_CHAMADO(PREFIXO.getPathTelas()+"formDarAndamentoChamado.xhtml");
+	FORM_DAR_ANDAMENTO_CHAMADO(PREFIXO.getPathTelas()+"formDarAndamentoChamado.xhtml"),
+	FORM_CADASTRO_VISITANTE(PREFIXO.getPathTelas()+"formCadastroVisitante.xhtml"),
+	FORM_LISTA_VISITANTE(PREFIXO.getPathTelas()+"formListaVisitante.xhtml"),
+	FORM_LISTA_VISITA(PREFIXO.getPathTelas()+"formListaVisita.xhtml"),
+	FORM_VISUALIZAR_PRESTADOR_SERVICO(PREFIXO.getPathTelas()+"formVisualizaPrestadorServico.xhtml");
+	
+	
 	
 	
 	

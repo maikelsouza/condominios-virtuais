@@ -311,14 +311,14 @@ public class BlocoDAOImpl implements BlocoDAO, Serializable{
 		ResultSet resultSet = null;
 		Bloco bloco = null;
 		try {
-			preparedStatement = con.prepareStatement(query.toString());
-			preparedStatement.setInt(1, idBloco);
+			preparedStatement = con.prepareStatement(query.toString());			
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1,idBloco, java.sql.Types.INTEGER);
 			resultSet = preparedStatement.executeQuery();
 			while(resultSet.next()){
 				bloco = new Bloco();
-				bloco.setId(resultSet.getInt(ID));
-				bloco.setNome(resultSet.getString(NOME));	
-				bloco.setIdCondominio(resultSet.getInt(ID_CONDOMINIO));
+				bloco.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));				
+				bloco.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));	
+				bloco.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
 			}
 		} catch (SQLException e) {			
 			throw e;

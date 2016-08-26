@@ -113,6 +113,16 @@
   <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaChamadoMB</managed-bean-class>
   <managed-bean-scope>view</managed-bean-scope>
  </managed-bean>
+ <managed-bean>
+  <managed-bean-name>ordenaVisitanteMB</managed-bean-name>
+  <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaVisitanteMB</managed-bean-class>
+  <managed-bean-scope>view</managed-bean-scope>
+ </managed-bean>
+ <managed-bean>
+ <managed-bean-name>ordenaVisitaMB</managed-bean-name>
+  <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaVisitaMB</managed-bean-class>
+  <managed-bean-scope>view</managed-bean-scope>
+ </managed-bean>
  
  <navigation-rule>
   <navigation-case>
@@ -353,6 +363,18 @@
    <from-action>#{principalMB.listarChamado}</from-action>
    <from-outcome>listarChamado</from-outcome>
    <to-view-id>/pages/formListaChamado.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-action>#{principalMB.cadastrarVisitante}</from-action>
+   <from-outcome>cadastrarVisitante</from-outcome>
+   <to-view-id>/pages/formCadastroVisitante.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-action>#{principalMB.listarVisitante}</from-action>
+   <from-outcome>listarVisitante</from-outcome>
+   <to-view-id>/pages/formListaVisitante.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
  </navigation-rule>
@@ -1421,7 +1443,67 @@
    <from-outcome>cancelar</from-outcome>
    <to-view-id>/pages/formListaChamado.xhtml</to-view-id>    
   </navigation-case>  
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formCadastroVisitante.xhtml</from-view-id>
+  <navigation-case>
+   <from-action>#{visitanteMB.cancelarCadastroVisitante}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>    
+    <redirect/>
+  </navigation-case>    
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formListaVisitante.xhtml</from-view-id>
+  <navigation-case>                              
+   <from-action>#{visitanteMB.visualizarVisitas}</from-action>
+   <from-outcome>visualizarVisitas</from-outcome>
+   <to-view-id>/pages/formListaVisita.xhtml</to-view-id>    
+    <redirect/>
+  </navigation-case>
+  <navigation-case>                              
+   <from-action>#{visitanteMB.cancelarFiltroPesquisaVisitante}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>    
+    <redirect/>
+  </navigation-case>    
  </navigation-rule> 
+ <navigation-rule>                       
+  <from-view-id>/pages/formListaVisita.xhtml</from-view-id>
+  <navigation-case>                              
+   <from-action>#{visitanteMB.voltarFiltroVisita}</from-action>
+   <from-outcome>voltar</from-outcome>
+   <to-view-id>/pages/formListaVisitante.xhtml</to-view-id>    
+    <redirect/>
+  </navigation-case>
+  <navigation-case>                              
+   <from-action>#{visitanteMB.cancelarFiltroVisita}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>    
+    <redirect/>
+  </navigation-case>
+   <navigation-case>                              
+   <from-action>#{visitanteMB.visualizarPrestadorServico}</from-action>
+   <from-outcome>visualizaPrestadorServico</from-outcome>
+   <to-view-id>/pages/formVisualizaPrestadorServico.xhtml</to-view-id>    
+    <redirect/>
+  </navigation-case>
+ </navigation-rule> 
+ <navigation-rule>                       
+  <from-view-id>/pages/formVisualizaPrestadorServico.xhtml</from-view-id>
+  <navigation-case>                              
+   <from-action>#{visitanteMB.voltarVisualizarPrestadorServico}</from-action>
+   <from-outcome>voltar</from-outcome>
+   <to-view-id>/pages/formListaVisita.xhtml</to-view-id>    
+    <redirect/>
+  </navigation-case>
+  <navigation-case>                              
+   <from-action>#{visitanteMB.cancelarVisualizarPrestadorServico}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>    
+    <redirect/>
+  </navigation-case>
+ </navigation-rule>  
  
  
  <application>

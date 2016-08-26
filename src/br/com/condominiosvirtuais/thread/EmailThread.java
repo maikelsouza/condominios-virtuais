@@ -48,7 +48,7 @@ public class EmailThread extends Thread {
 			    get(ConfiguracaoAplicacaoEnum.QTD_ENVIO_EMAIL_LOTE.getChave())));
 				for (Email email : listaEmail) {
 // TODO: Código comentado em 06/08/2016. Apagar em 180 dias					
-					//this.emailService.enviar(email);
+					//this.emailService.enviar(email);					
 					this.emailService.enviarHTML(email, principalMB.getCaminhoAplicacao());
 					this.emailService.excluir(email);					 
 				 }
