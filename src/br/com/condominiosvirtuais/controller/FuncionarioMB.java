@@ -423,7 +423,7 @@ public class FuncionarioMB implements  Serializable {
 			// Seta vazio, pois quando pesquisado via xhtml esse atributo vem vazio.
 			this.funcionario.setNome("");
 			this.pesquisarFuncionarioCondominio(null);
-			ManagedBeanUtil.setMensagemInfo("msg.ambienteCondominio.atualizadoSucesso");
+			ManagedBeanUtil.setMensagemInfo("msg.funcionarioCondominio.atualizadoSucesso");
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");	
