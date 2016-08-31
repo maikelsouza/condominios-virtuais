@@ -155,6 +155,42 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 		return listaCondomino;
 	}
 	
+	public List<Integer> buscarListaIdsCondominosPorIdUnidade(Integer idUnidade) throws SQLException, Exception{
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(CONDOMINO);
+		query.append(" WHERE ");
+		query.append(ID_UNIDADE);
+		query.append(" = ?");
+		query.append(";");		
+		Connection con = Conexao.getConexao();
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;	
+		List<Integer> listaIds = new ArrayList<Integer>();
+		Integer id = null;
+		try {
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement,1, idUnidade, java.sql.Types.INTEGER);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				id = (Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER);
+				listaIds.add(id);
+			}
+		}catch (SQLException e) {
+			throw e;
+		}catch (Exception e) {		
+			throw e;
+		}finally{
+			try {
+				preparedStatement.close();
+				con.close();
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);
+			}
+		}	
+		return listaIds;
+	}
+	
 	public void salvarCondomino(Condomino condomino) throws SQLException, Exception{
 		PreparedStatement statement = null;
 		Connection con = null;

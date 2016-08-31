@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
 import br.com.condominiosvirtuais.entity.Agendamento;
 import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.Condomino;
-import br.com.condominiosvirtuais.enumeration.AgendamentoEnum;
+import br.com.condominiosvirtuais.enumeration.AgendamentoSituacaoEnum;
 import br.com.condominiosvirtuais.service.AgendamentoService;
 import br.com.condominiosvirtuais.service.BlocoService;
 import br.com.condominiosvirtuais.service.CondominioService;
@@ -36,7 +36,11 @@ public class AgendamentoMB implements Serializable {
 	
 	private static Logger logger = Logger.getLogger(AgendamentoMB.class);
 	
+	private static final String TODAS = "TODAS";
+	
 	private ListDataModel<AgendamentoVO> listaDeAgendamentoVOs = null;
+	
+	private ListDataModel<AgendamentoVO> listaDeAgendamentoPendentesVOs = null;
 	
 	private ListDataModel<Agendamento> listaMeusAgendamentos = null;
 	
@@ -52,7 +56,9 @@ public class AgendamentoMB implements Serializable {
 	 
 	private List<SelectItem> listaSICondominios  = new ArrayList<SelectItem>();
 	
-	private Integer diaSemana = 1;
+	private List<SelectItem> listaSISituacaoAgendamento = null;
+	
+	private Integer diaSemana = 1;	
 	
 	@Inject
 	private AgendamentoService agendamentoService;
@@ -84,10 +90,14 @@ public class AgendamentoMB implements Serializable {
 		try {
 			this.descobrirCondominio();
 			this.popularListaMeusAgendamentos();
+			this.populaSituacao();
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}	
 	}
 	
 	
@@ -106,7 +116,7 @@ public class AgendamentoMB implements Serializable {
 			return null;
 		}
 		try {
-			this.agendamento.setSituacao(AgendamentoEnum.PENDENTE.getSituacao());
+			this.agendamento.setSituacao(AgendamentoSituacaoEnum.PENDENTE.getSituacao());
 			this.agendamento.setUnidade(this.unidadeService.buscarPorId(this.condomino.getIdUnidade()));
 			this.agendamento.setBloco(this.blocoService.buscarPorId(this.agendamento.getUnidade().getIdBloco()));
 			this.agendamento.setCondomino(this.condomino);
@@ -126,7 +136,7 @@ public class AgendamentoMB implements Serializable {
 		List<AgendamentoVO> listaDeAgendamentoLocalVOs = new ArrayList<AgendamentoVO>();
 		AgendamentoVO agendamentoVO = null;
 		try {
-			listaDeAgendamentoLocal = this.agendamentoService.buscarPorCondominioETipo(this.condominio, AgendamentoEnum.PENDENTE.getSituacao());
+			listaDeAgendamentoLocal = this.agendamentoService.buscarPorCondominioESituacao(this.condominio, AgendamentoSituacaoEnum.PENDENTE.getSituacao());
 			for (Agendamento agendamento : listaDeAgendamentoLocal) {				
 				agendamentoVO = new AgendamentoVO();
 				agendamentoVO.setId(agendamento.getId());				
@@ -139,8 +149,8 @@ public class AgendamentoMB implements Serializable {
 				agendamentoVO.setCondomino(agendamento.getCondomino());
 				listaDeAgendamentoLocalVOs.add(agendamentoVO);			
 			}
-			this.listaDeAgendamentoVOs = new ListDataModel<AgendamentoVO>(listaDeAgendamentoLocalVOs);		
-			if (this.listaDeAgendamentoVOs.getRowCount() == 0){
+			this.listaDeAgendamentoPendentesVOs = new ListDataModel<AgendamentoVO>(listaDeAgendamentoLocalVOs);		
+			if (this.listaDeAgendamentoPendentesVOs.getRowCount() == 0){
 				ManagedBeanUtil.setMensagemInfo("msg.agendamentoMudança.semAgendamento");
 			}
 		} catch (SQLException e) {
@@ -154,7 +164,7 @@ public class AgendamentoMB implements Serializable {
 	
 	
 	public void popularListaMeusAgendamentos(){				
-		try {			
+		try {
 			this.listaMeusAgendamentos =  new ListDataModel<Agendamento> (this.agendamentoService.buscarPorCondomino(this.condomino));	
 		} catch (NumberFormatException e) {
 			logger.error("", e);
@@ -176,15 +186,19 @@ public class AgendamentoMB implements Serializable {
 	
 	public void limparListarAgendamento(ActionEvent event) {
 		this.agendamento = new Agendamento();
-		this.listaDeAgendamentoVOs = new ListDataModel<AgendamentoVO>();
+		this.listaDeAgendamentoPendentesVOs = new ListDataModel<AgendamentoVO>();
 	}
 	
 	public void popularListaAgendamentos(){		
 		List<Agendamento> listaDeAgendamentoLocal = null;
 		List<AgendamentoVO> listaDeAgendamentoLocalVOs = new ArrayList<AgendamentoVO>();		
 		AgendamentoVO agendamentoVO = null;
-		try {			
-			listaDeAgendamentoLocal = this.agendamentoService.buscarPorCondominio(this.condominio);
+		try {
+			if (this.agendamento.getSituacao().equals(TODAS)){
+				listaDeAgendamentoLocal = this.agendamentoService.buscarPorCondominio(this.condominio);				
+			}else{
+				listaDeAgendamentoLocal = this.agendamentoService.buscarPorCondominioESituacao(this.condominio, this.agendamento.getSituacao());	
+			}
 			for (Agendamento agendamento : listaDeAgendamentoLocal) {
 				agendamentoVO = new AgendamentoVO();
 				agendamentoVO.setId(agendamento.getId());				
@@ -212,11 +226,11 @@ public class AgendamentoMB implements Serializable {
 	}
 	
 	public void aprovarAgendamento(ActionEvent event){		
-		AgendamentoVO agendamentoVO = this.listaDeAgendamentoVOs.getRowData();
+		AgendamentoVO agendamentoVO = this.listaDeAgendamentoPendentesVOs.getRowData();
 		try {
 			Agendamento agendamentoLocal = new Agendamento();
 			agendamentoLocal.setId(agendamentoVO.getId());			
-			agendamentoLocal.setSituacao(AgendamentoEnum.APROVADA.getSituacao());
+			agendamentoLocal.setSituacao(AgendamentoSituacaoEnum.APROVADA.getSituacao());
 			agendamentoLocal.setBloco(agendamentoVO.getBloco());
 			agendamentoLocal.setUnidade(agendamentoVO.getUnidade());
 			agendamentoLocal.setCondomino(agendamentoVO.getCondomino());
@@ -236,11 +250,11 @@ public class AgendamentoMB implements Serializable {
 	}
 	
 	public void reprovarAgendamento(ActionEvent event){		
-		AgendamentoVO agendamentoVO = this.listaDeAgendamentoVOs.getRowData();
+		AgendamentoVO agendamentoVO = this.listaDeAgendamentoPendentesVOs.getRowData();
 		try {
 			Agendamento agendamentoLocal = new Agendamento();
 			agendamentoLocal.setId(agendamentoVO.getId());			
-			agendamentoLocal.setSituacao(AgendamentoEnum.REPROVADA.getSituacao());	
+			agendamentoLocal.setSituacao(AgendamentoSituacaoEnum.REPROVADA.getSituacao());	
 			agendamentoLocal.setBloco(agendamentoVO.getBloco());
 			agendamentoLocal.setUnidade(agendamentoVO.getUnidade());
 			agendamentoLocal.setCondomino(agendamentoVO.getCondomino());
@@ -335,9 +349,16 @@ public class AgendamentoMB implements Serializable {
 				ehDiaSemana = Boolean.FALSE;
 			}			
 		}
-		return ehDiaSemana;
-		
+		return ehDiaSemana;		
 	}
+	
+	private void populaSituacao(){
+		this.listaSISituacaoAgendamento = new ArrayList<SelectItem>();
+		this.listaSISituacaoAgendamento.add(new SelectItem(AgendamentoSituacaoEnum.APROVADA.getSituacao(), AplicacaoUtil.i18n(AgendamentoSituacaoEnum.APROVADA.getSituacao())));
+		this.listaSISituacaoAgendamento.add(new SelectItem(AgendamentoSituacaoEnum.PENDENTE.getSituacao(), AplicacaoUtil.i18n(AgendamentoSituacaoEnum.PENDENTE.getSituacao())));
+		this.listaSISituacaoAgendamento.add(new SelectItem(AgendamentoSituacaoEnum.REPROVADA.getSituacao(), AplicacaoUtil.i18n(AgendamentoSituacaoEnum.REPROVADA.getSituacao())));
+		this.listaSISituacaoAgendamento.add(new SelectItem(TODAS,AplicacaoUtil.i18n("todas")));
+	}	
 
 	public Agendamento getAgendamento() {
 		return agendamento;
@@ -347,31 +368,25 @@ public class AgendamentoMB implements Serializable {
 		this.agendamento = agendamento;
 	}
 
-
 	public List<SelectItem> getListaSIHoraInicial() {
 		return listaSIHoraInicial;
 	}
-
 
 	public void setListaSIHoraInicial(List<SelectItem> listaSIHoraInicial) {
 		this.listaSIHoraInicial = listaSIHoraInicial;
 	}
 
-
 	public List<SelectItem> getListaSIHoraFinal() {
 		return listaSIHoraFinal;
 	}
-
 
 	public void setListaSIHoraFinal(List<SelectItem> listaSIHoraFinal) {
 		this.listaSIHoraFinal = listaSIHoraFinal;
 	}
 
-
 	public Integer getDiaSemana() {
 		return diaSemana;
 	}
-
 
 	public void setDiaSemana(Integer diaSemana) {
 		this.diaSemana = diaSemana;
@@ -408,7 +423,23 @@ public class AgendamentoMB implements Serializable {
 	
 	public void setListaMeusAgendamentos(ListDataModel<Agendamento> listaMeusAgendamentos) {
 		this.listaMeusAgendamentos = listaMeusAgendamentos;
-	}		
+	}
+
+	public List<SelectItem> getListaSISituacaoAgendamento() {
+		return listaSISituacaoAgendamento;
+	}
+
+	public void setListaSISituacaoAgendamento(List<SelectItem> listaSISituacaoAgendamento) {
+		this.listaSISituacaoAgendamento = listaSISituacaoAgendamento;
+	}
+
+	public ListDataModel<AgendamentoVO> getListaDeAgendamentoPendentesVOs() {
+		return listaDeAgendamentoPendentesVOs;
+	}
+
+	public void setListaDeAgendamentoPendentesVOs(ListDataModel<AgendamentoVO> listaDeAgendamentoPendentesVOs) {
+		this.listaDeAgendamentoPendentesVOs = listaDeAgendamentoPendentesVOs;
+	}
 	
 
 }

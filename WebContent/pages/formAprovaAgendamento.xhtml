@@ -9,7 +9,7 @@
 	xmlns:c="http://java.sun.com/jstl/core"
 	template="/templates/templatePrincipal.xhtml">
 	
-	<ui:define name="conteudo">		
+	<ui:define name="conteudo">
 		<h:form id="idFormAprovaAgendamento" styleClass="content">
 			<rich:panel>
 				<f:facet name="header">
@@ -47,10 +47,10 @@
 					<h:outputText value="#{msg.listarAgendamento}" />
 				</f:facet>
 				<div>
-					<rich:dataTable value="#{agendamentoMB.listaDeAgendamentoVOs}"
+					<rich:dataTable value="#{agendamentoMB.listaDeAgendamentoPendentesVOs}"
 						var="agendamentoVO" rowClasses="odd-row, even-row" styleClass="stable"
 						id="tableAgendamentoVO" style="width:100%;" rows="10"
-						rendered="#{agendamentoMB.listaDeAgendamentoVOs.rowCount > 0}">
+						rendered="#{agendamentoMB.listaDeAgendamentoPendentesVOs.rowCount > 0}">
 						<rich:column sortBy="#{agendamentoVO.bloco}"
 							sortOrder="#{ordenaAgendamentoMB.bloco}">
 							<f:facet name="header">

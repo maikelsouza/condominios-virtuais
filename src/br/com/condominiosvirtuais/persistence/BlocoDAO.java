@@ -10,6 +10,8 @@ public interface BlocoDAO {
 	
 	public abstract List<Bloco> buscarPorIdCondominio(Integer idCondominio, Connection con) throws SQLException, Exception;
 	
+	public abstract List<Integer> buscarListaIdsBlocosPorIdCondominio(Integer idCondominio) throws SQLException, Exception;
+	
 	public abstract void popularBloco(Bloco bloco) throws SQLException, Exception;
 	
 	public abstract Bloco buscarPorId(Integer idBloco, Connection con) throws SQLException, Exception;

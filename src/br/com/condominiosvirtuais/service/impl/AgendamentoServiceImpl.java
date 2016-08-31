@@ -53,8 +53,8 @@ public class AgendamentoServiceImpl implements Serializable, AgendamentoService 
 	}
 
 	@Override
-	public List<Agendamento> buscarPorCondominioETipo(Condominio condominio, String tipo) throws SQLException, Exception {		
-		return this.agendamentoDAO.buscarPorCondominioETipo(condominio, tipo);
+	public List<Agendamento> buscarPorCondominioESituacao(Condominio condominio, String situacao) throws SQLException, Exception {		
+		return this.agendamentoDAO.buscarPorCondominioESituacao(condominio, situacao);
 	}
 
 	@Override

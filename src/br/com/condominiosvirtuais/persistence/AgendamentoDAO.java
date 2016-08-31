@@ -11,7 +11,7 @@ public interface AgendamentoDAO {
 	
 	public void salvar(Agendamento agendamento) throws SQLException, Exception;
 	
-	public abstract List<Agendamento> buscarPorCondominioETipo(Condominio condominio, String tipo) throws SQLException, Exception;
+	public abstract List<Agendamento> buscarPorCondominioESituacao(Condominio condominio, String Situacao) throws SQLException, Exception;
 	
 	public abstract List<Agendamento> buscarPorCondominio(Condominio condominio) throws SQLException, Exception;
 	

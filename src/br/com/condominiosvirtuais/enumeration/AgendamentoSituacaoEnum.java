@@ -1,6 +1,6 @@
 package br.com.condominiosvirtuais.enumeration;
 
-public enum AgendamentoEnum {
+public enum AgendamentoSituacaoEnum {
 	
     REPROVADA("agendamentoMudança.situacao.0"),
 	
@@ -10,7 +10,7 @@ public enum AgendamentoEnum {
 	
 	private String situacao = null;	
 	
-	AgendamentoEnum(String situacao){
+	AgendamentoSituacaoEnum(String situacao){
 		this.situacao = situacao;
 	}
 

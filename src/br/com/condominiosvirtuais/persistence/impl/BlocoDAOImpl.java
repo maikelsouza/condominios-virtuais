@@ -116,9 +116,11 @@ public class BlocoDAOImpl implements BlocoDAO, Serializable{
 				bloco.setSubSindico(subSindico == null ? new Condomino() : subSindico);
 				listaBloco.add(bloco);
 			}
-		} catch (SQLException e) {					
+		} catch (SQLException e) {		
+			con.rollback();
 			throw e;
-		} catch (Exception e) {					
+		} catch (Exception e) {
+			con.rollback();
 			throw e;			
 		}finally{
 			try {
@@ -441,6 +443,46 @@ public class BlocoDAOImpl implements BlocoDAO, Serializable{
 			conselheiroGestorCondominio.setTipoCondomino(TipoGestorCondominioEnum.CONSELHEIRO_BLOCO.getGestorCondominio());
 			this.gestorCondominioDAO.get().salvarGestorCondominioBloco(conselheiroGestorCondominio, con);
 		}
+	}
+
+	@Override
+	public List<Integer> buscarListaIdsBlocosPorIdCondominio(Integer idCondominio)
+			throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT ");
+		query.append(ID);
+		query.append(" FROM ");
+		query.append(BLOCO);
+		query.append(" WHERE ");
+		query.append(ID_CONDOMINIO);
+		query.append(" = ? ");
+		query.append(";");		
+		Connection con = Conexao.getConexao();
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		List<Integer> listaIds = new ArrayList<Integer>();
+		Integer id = null;
+		try {
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, idCondominio, java.sql.Types.INTEGER);		
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){				
+				id = (Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER);
+				listaIds.add(id);
+			}
+		} catch (SQLException e) {
+			throw e;
+		} catch (Exception e) {			
+			throw e;			
+		}finally{
+			try {
+				preparedStatement.close();
+				con.close();				
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);				
+			}
+		}	
+		return listaIds;		
 	}
 
 

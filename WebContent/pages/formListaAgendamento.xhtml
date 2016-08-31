@@ -15,9 +15,14 @@
 				<f:facet name="header">
 					<h:outputText value="#{msg.listarAgendamento}" />
 				</f:facet>
-				<h:panelGrid columns="1">
+				<h:panelGrid columns="2">
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['condominio']}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['agendamentoMudança.situacao']}:" for="idSituacao" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 					<h:selectOneMenu value="#{agendamentoMB.condominio.id}"
@@ -26,10 +31,16 @@
 						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}"
 							noSelectionOption="true" />
 						<f:selectItems value="#{agendamentoMB.listaSICondominios}" />
+					</h:selectOneMenu>					
+					<h:selectOneMenu value="#{agendamentoMB.agendamento.situacao}"
+						id="idSituacao" label="#{msg['agendamentoMudança.situacao.label']}" required="true">
+						<f:selectItem itemLabel="#{msg['agendamentoMudança.situacao.DefaultLabel']}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{agendamentoMB.listaSISituacaoAgendamento}" />
 					</h:selectOneMenu>
 					</h:panelGrid>
 					<h:panelGrid columns="2">					
-						<h:commandButton value="#{msg.botaoPesquisar}" actionListener="#{agendamentoMB.popularListaAgendamentos}" />					
+						<h:commandButton value="#{msg.botaoPesquisar}" actionListener="#{agendamentoMB.popularListaAgendamentos}"  />					
 						<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{agendamentoMB.limparListarAgendamento}" immediate="true" />
 				    </h:panelGrid>
 

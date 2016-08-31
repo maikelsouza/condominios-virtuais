@@ -112,19 +112,31 @@ public class AgendamentoDAOImpl implements AgendamentoDAO, Serializable {
 
 
 	@Override
-	public List<Agendamento> buscarPorCondominioETipo(Condominio condominio, String tipo) throws SQLException, Exception {
+	public List<Agendamento> buscarPorCondominioESituacao(Condominio condominio, String situacao) throws SQLException, Exception {
 		List<Agendamento> listaAgendamento = new ArrayList<Agendamento>();
-		String pontoInterrogacao = "";		
-		List<Condomino> listaCondomino = new ArrayList<Condomino>();
-		this.condominioDAO.get().popularCondominio(condominio);
-		for (Bloco bloco : condominio.getListaBlocos()) {
-			for (Unidade unidade : bloco.getListaUnidade()) {
-				for (Condomino condomino : unidade.getListaCondominos()) {
-					listaCondomino.add(condomino);
-				}
-			}					
+		String pontoInterrogacao = "";
+		List<Integer> listIdsBlocos = null;
+		List<Integer> listIdsUnidades = null;
+		List<Integer> listIdsCondomino = new ArrayList<Integer>();
+		listIdsBlocos = this.blocoDAO.buscarListaIdsBlocosPorIdCondominio(condominio.getId());
+		for (Integer idBloco : listIdsBlocos) {
+			listIdsUnidades  = this.unidadeDAO.buscarListaIdsUnidadesPorIdBloco(idBloco);
+			for (Integer idUnidade : listIdsUnidades) {
+				listIdsCondomino.addAll(this.condominoDAO.buscarListaIdsCondominosPorIdUnidade(idUnidade));
+			}
 		}
-		pontoInterrogacao = SQLUtil.popularInterrocacoes(listaCondomino.size());
+	
+// TODO: Código comentado em 30/08/2016. Apagar em 180 dias		
+//		List<Condomino> listaCondomino = new ArrayList<Condomino>();
+//		this.condominioDAO.get().popularCondominio(condominio);
+//		for (Bloco bloco : condominio.getListaBlocos()) {
+//			for (Unidade unidade : bloco.getListaUnidade()) {
+//				for (Condomino condomino : unidade.getListaCondominos()) {
+//					listaCondomino.add(condomino);
+//				}
+//			}					
+//		}
+		pontoInterrogacao = SQLUtil.popularInterrocacoes(listIdsCondomino.size());
 		StringBuffer query = new StringBuffer();
 		query.append("SELECT * FROM ");
 		query.append(AGENDAMENTO);
@@ -135,9 +147,12 @@ public class AgendamentoDAOImpl implements AgendamentoDAO, Serializable {
 		query.append(") ");
 		query.append("AND ");
 		query.append(SITUACAO);		
-		query.append("=  ?");		
-		query.append(";");
-		
+		query.append("=  ? ");		
+		query.append("ORDER BY ");
+		query.append(DATA);
+		query.append(" DESC, ");
+		query.append(HORA_INICIAL);
+		query.append(";");		
 		Bloco bloco;
 		Unidade unidade;		
 		Condomino condomino;
@@ -148,10 +163,14 @@ public class AgendamentoDAOImpl implements AgendamentoDAO, Serializable {
 		Connection con = Conexao.getConexao();
 	    preparedStatement = con.prepareStatement(query.toString());
 	    try {
-	    	for (Condomino condominoBase : listaCondomino) {
-				SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, condominoBase.getId(), java.sql.Types.INTEGER);				
-			}	
-	    	SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, tipo, java.sql.Types.VARCHAR);
+// TODO: Código comentado em 30/08/2016. Apagar em 180 dias	    	
+//	    	for (Condomino condominoBase : listaCondomino) {
+//				SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, condominoBase.getId(), java.sql.Types.INTEGER);				
+//			}	
+	    	for (Integer idCondomino : listIdsCondomino) {
+	    		SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, idCondomino, java.sql.Types.INTEGER);				
+	    	}	
+	    	SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, situacao, java.sql.Types.VARCHAR);
 			resultSet = preparedStatement.executeQuery();				
 			while(resultSet.next()){				
 				agendamento = new Agendamento();				
@@ -218,8 +237,7 @@ public class AgendamentoDAOImpl implements AgendamentoDAO, Serializable {
 			}catch (SQLException e) {
 				logger.error("erro sqlstate "+e.getSQLState(), e);
 		    }
-		}	
-		
+		}			
 	}
 
 
@@ -260,16 +278,31 @@ public class AgendamentoDAOImpl implements AgendamentoDAO, Serializable {
 	public List<Agendamento> buscarPorCondominio(Condominio condominio) throws SQLException, Exception {
 		List<Agendamento> listaAgendamento = new ArrayList<Agendamento>();
 		String pontoInterrogacao = "";		
-		List<Condomino> listaCondomino = new ArrayList<Condomino>();
-		this.condominioDAO.get().popularCondominio(condominio);
-		for (Bloco bloco : condominio.getListaBlocos()) {
-			for (Unidade unidade : bloco.getListaUnidade()) {
-				for (Condomino condomino : unidade.getListaCondominos()) {
-					listaCondomino.add(condomino);
-				}
-			}					
+		
+		List<Integer> listIdsBlocos = null;
+		List<Integer> listIdsUnidades = null;
+		List<Integer> listIdsCondomino = new ArrayList<Integer>();
+		listIdsBlocos = this.blocoDAO.buscarListaIdsBlocosPorIdCondominio(condominio.getId());
+		for (Integer idBloco : listIdsBlocos) {
+			listIdsUnidades  = this.unidadeDAO.buscarListaIdsUnidadesPorIdBloco(idBloco);
+			for (Integer idUnidade : listIdsUnidades) {
+				listIdsCondomino.addAll(this.condominoDAO.buscarListaIdsCondominosPorIdUnidade(idUnidade));
+			}
 		}
-		pontoInterrogacao = SQLUtil.popularInterrocacoes(listaCondomino.size());
+		
+		
+// TODO: Código comentado em 30/08/2016. Apagar em 180 dias		
+//		List<Condomino> listaCondomino = new ArrayList<Condomino>();
+//		this.condominioDAO.get().popularCondominio(condominio);
+//		for (Bloco bloco : condominio.getListaBlocos()) {
+//			for (Unidade unidade : bloco.getListaUnidade()) {
+//				for (Condomino condomino : unidade.getListaCondominos()) {
+//					listaCondomino.add(condomino);
+//				}
+//			}					
+//		}
+		
+		pontoInterrogacao = SQLUtil.popularInterrocacoes(listIdsCondomino.size());
 		StringBuffer query = new StringBuffer();
 		query.append("SELECT * FROM ");
 		query.append(AGENDAMENTO);
@@ -277,7 +310,12 @@ public class AgendamentoDAOImpl implements AgendamentoDAO, Serializable {
 		query.append(ID_CONDOMINO);
 		query.append(" in (");
 		query.append(pontoInterrogacao);
-		query.append("); ");
+		query.append(") ");
+		query.append(" ORDER BY ");
+		query.append(DATA);
+		query.append(" DESC, ");
+		query.append(HORA_INICIAL);
+		query.append(";");
 		Bloco bloco;
 		Unidade unidade;		
 		Condomino condomino;
@@ -288,9 +326,13 @@ public class AgendamentoDAOImpl implements AgendamentoDAO, Serializable {
 		Connection con = Conexao.getConexao();
 	    preparedStatement = con.prepareStatement(query.toString());
 	    try {
-	    	for (Condomino condominoBase : listaCondomino) {
-				SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, condominoBase.getId(), java.sql.Types.INTEGER);				
-			}
+// TODO: Código comentado em 30/08/2016. Apagar em 180 dias	    	
+//	    	for (Condomino condominoBase : listaCondomino) {
+//				SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, condominoBase.getId(), java.sql.Types.INTEGER);				
+//			}
+	    	for (Integer idCondomino : listIdsCondomino) {
+	    		SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, idCondomino, java.sql.Types.INTEGER);				
+	    	}
 			resultSet = preparedStatement.executeQuery();				
 			while(resultSet.next()){				
 				agendamento = new Agendamento();				
@@ -323,6 +365,8 @@ public class AgendamentoDAOImpl implements AgendamentoDAO, Serializable {
 		}		
 		return listaAgendamento;
 	}
+	
+	
 
 
 	@Override
@@ -333,7 +377,12 @@ public class AgendamentoDAOImpl implements AgendamentoDAO, Serializable {
 		query.append(AGENDAMENTO);
 		query.append(" WHERE ");
 		query.append(ID_CONDOMINO);
-		query.append(" = ?" );
+		query.append(" = ? " );		
+		query.append("ORDER BY ");
+		query.append(DATA);
+		query.append(" DESC, ");
+		query.append(HORA_INICIAL);
+		query.append(";");
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		Agendamento agendamento = null;
