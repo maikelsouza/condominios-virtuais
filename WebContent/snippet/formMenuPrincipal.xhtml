@@ -98,6 +98,13 @@
 				<rich:menuItem label="#{msg['cadastro.funcionario.bloco']}"
 					action="#{principalMB.listarFuncionarioBloco}" title="#{msg['cadastro.funcionario.bloco.title']}"
 					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}" />
+			</rich:menuGroup>
+			<rich:menuGroup label="OBRAS">
+				<rich:menuItem label="Cadastro"
+					action="#{principalMB.cadastrarObra}"/>
+				<rich:menuItem label="Listar"
+					action="#{principalMB.listarObra}"/>
+				
 			</rich:menuGroup>									
 		</rich:dropDownMenu>
 		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,6') and loginMB.sindicoGeralAssociado()}">

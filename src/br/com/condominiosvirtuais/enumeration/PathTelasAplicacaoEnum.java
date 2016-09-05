@@ -88,10 +88,10 @@ public enum PathTelasAplicacaoEnum {
 	FORM_CADASTRO_VISITANTE(PREFIXO.getPathTelas()+"formCadastroVisitante.xhtml"),
 	FORM_LISTA_VISITANTE(PREFIXO.getPathTelas()+"formListaVisitante.xhtml"),
 	FORM_LISTA_VISITA(PREFIXO.getPathTelas()+"formListaVisita.xhtml"),
-	FORM_VISUALIZAR_PRESTADOR_SERVICO(PREFIXO.getPathTelas()+"formVisualizaPrestadorServico.xhtml");
-	
-	
-	
+	FORM_VISUALIZAR_PRESTADOR_SERVICO(PREFIXO.getPathTelas()+"formVisualizaPrestadorServico.xhtml"),
+	FORM_CADASTRO_OBRA(PREFIXO.getPathTelas()+"formCadastroObra.xhtml"),
+	FORM_LISTA_OBRA(PREFIXO.getPathTelas()+"formListaObra.xhtml"),
+	FORM_EDITA_OBRA(PREFIXO.getPathTelas()+"formEditaObra.xhtml");
 	
 	
 	

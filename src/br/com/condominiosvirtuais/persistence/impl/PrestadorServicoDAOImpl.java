@@ -78,7 +78,7 @@ public class PrestadorServicoDAOImpl implements Serializable, PrestadorServicoDA
 
 	@Override
 	public PrestadorServico buscarPorIdVisita(Integer idVisita, Connection con) throws SQLException, Exception {
-// TODO: Código comentado em 24/08/2016. Apagar em 90 dias 		
+// TODO: C?digo comentado em 24/08/2016. Apagar em 90 dias 		
 //		StringBuffer query = new StringBuffer();
 //		query.append("SELECT * FROM ");
 //		query.append(PRESTADOR_SERVICO);

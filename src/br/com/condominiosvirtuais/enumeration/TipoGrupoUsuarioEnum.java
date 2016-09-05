@@ -100,6 +100,9 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_APROVA_AGENDAMENTO.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_AGENDAMENTO.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_CHAMADO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_OBRA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_OBRA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_OBRA.getPathTelas());
 			
 			
 			
@@ -254,6 +257,8 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_VISITANTE.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_VISITA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_PRESTADOR_SERVICO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_OBRA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_OBRA.getPathTelas());
 			
 		}else if(this.getGrupoUsuario() == 4){ // Síndico
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_PRINCIPAL.getPathTelas());
@@ -333,6 +338,9 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_VISITANTE.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_VISITA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_PRESTADOR_SERVICO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_OBRA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_OBRA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_OBRA.getPathTelas());
 			
 		}else if (this.getGrupoUsuario() == 5){ // Condômino
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_PRINCIPAL.getPathTelas());			
@@ -383,6 +391,7 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_AGENDAMENTO.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_DESPESAS_CONDOMINIO.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_CHAMADO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_OBRA.getPathTelas());
 			
 			
 		}else{ // Funcionário

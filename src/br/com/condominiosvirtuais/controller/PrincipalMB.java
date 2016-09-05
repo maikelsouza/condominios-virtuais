@@ -70,6 +70,9 @@ public class PrincipalMB  implements Serializable{
 	@Inject
 	private VisitanteMB visitanteMB;
 	
+	@Inject
+	private ObraMB obraMB;
+	
 	@PostConstruct
 	public void init() {
 		logger.info("Inicializa aplicação");
@@ -268,6 +271,14 @@ public class PrincipalMB  implements Serializable{
 		return "listarVisitante";
 	}
 	
+	public String cadastrarObra(){
+		return "cadastrarObra";
+	}
+	
+	public String listarObra(){
+		return "listarObra";
+	}
+	
 
 	private void iniciaThreads(){				
 		emailThread.start();
@@ -397,7 +408,31 @@ public class PrincipalMB  implements Serializable{
 
 	public void setChamadoMB(ChamadoMB chamadoMB) {
 		this.chamadoMB = chamadoMB;
-	}		
+	}
+
+	public VeiculoMB getVeiculoMB() {
+		return veiculoMB;
+	}
+
+	public void setVeiculoMB(VeiculoMB veiculoMB) {
+		this.veiculoMB = veiculoMB;
+	}
+
+	public VisitanteMB getVisitanteMB() {
+		return visitanteMB;
+	}
+
+	public void setVisitanteMB(VisitanteMB visitanteMB) {
+		this.visitanteMB = visitanteMB;
+	}
+
+	public ObraMB getObraMB() {
+		return obraMB;
+	}
+
+	public void setObraMB(ObraMB obraMB) {
+		this.obraMB = obraMB;
+	}
 	
 	
 }

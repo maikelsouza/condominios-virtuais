@@ -119,8 +119,13 @@
   <managed-bean-scope>view</managed-bean-scope>
  </managed-bean>
  <managed-bean>
- <managed-bean-name>ordenaVisitaMB</managed-bean-name>
+  <managed-bean-name>ordenaVisitaMB</managed-bean-name>
   <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaVisitaMB</managed-bean-class>
+  <managed-bean-scope>view</managed-bean-scope>
+ </managed-bean>
+ <managed-bean>
+  <managed-bean-name>ordenaObraMB</managed-bean-name>
+  <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaObraMB</managed-bean-class>
   <managed-bean-scope>view</managed-bean-scope>
  </managed-bean>
  
@@ -375,6 +380,18 @@
    <from-action>#{principalMB.listarVisitante}</from-action>
    <from-outcome>listarVisitante</from-outcome>
    <to-view-id>/pages/formListaVisitante.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+   <navigation-case>
+   <from-action>#{principalMB.cadastrarObra}</from-action>
+   <from-outcome>cadastrarObra</from-outcome>
+   <to-view-id>/pages/formCadastroObra.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-action>#{principalMB.listarObra}</from-action>
+   <from-outcome>listarObra</from-outcome>
+   <to-view-id>/pages/formListaObra.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
  </navigation-rule>
@@ -1502,8 +1519,36 @@
    <from-outcome>cancelar</from-outcome>
    <to-view-id>/pages/formPrincipal.xhtml</to-view-id>    
     <redirect/>
-  </navigation-case>
+  </navigation-case>  
+ </navigation-rule> 
+  <navigation-rule>                       
+  <from-view-id>/pages/formListaObra.xhtml</from-view-id>
+  <navigation-case>                              
+   <from-action>#{obraMB.editarObra}</from-action>
+   <from-outcome>editar</from-outcome>
+   <to-view-id>/pages/formEditaObra.xhtml</to-view-id>    
+    <redirect/>
+  </navigation-case>  
  </navigation-rule>  
+ <navigation-rule>                       
+  <from-view-id>/pages/formEditaObra.xhtml</from-view-id>
+  <navigation-case>                              
+   <from-action>#{obraMB.atualizarObra}</from-action>
+   <from-outcome>atualizar</from-outcome>
+   <to-view-id>/pages/formListaObra.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>                              
+   <from-action>#{obraMB.excluirObra}</from-action>
+   <from-outcome>excluir</from-outcome>
+   <to-view-id>/pages/formListaObra.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>                              
+   <from-action>#{obraMB.cancelarEditarObra}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formListaObra.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule> 
  
  
  <application>
