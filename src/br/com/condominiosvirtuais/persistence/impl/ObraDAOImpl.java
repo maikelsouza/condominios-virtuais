@@ -148,6 +148,7 @@ public class ObraDAOImpl implements ObraDAO, Serializable {
 			idObra = rs.getInt(1);
 			obraResponsavelObra.setIdObra(idObra);
 			obraResponsavelObra.setIdResponsavelObra(obra.getResponsavelObra().getId());
+			this.responsavelObra.atualizar(obra.getResponsavelObra(), con);
 			this.obraResponsavelObraDAO.salvar(obraResponsavelObra, con);
 			con.commit();
 		}catch (SQLException e) {			
@@ -256,6 +257,7 @@ public class ObraDAOImpl implements ObraDAO, Serializable {
 
 	@Override
 	public void atualizarObraEAtualizarResponsavelObra(Obra obra) throws SQLException, Exception {
+		ObraResponsavelObra obraResponsavelObra = new ObraResponsavelObra();
 		StringBuffer query = new StringBuffer();
 		query.append("UPDATE ");
 		query.append(OBRA);
@@ -292,6 +294,9 @@ public class ObraDAOImpl implements ObraDAO, Serializable {
 			SQLUtil.setValorPpreparedStatement(statement, 8, obra.getId(), java.sql.Types.INTEGER);
 			statement.executeUpdate();
 			this.responsavelObra.atualizar(obra.getResponsavelObra(), con);
+			obraResponsavelObra.setIdObra(obra.getId());
+			obraResponsavelObra.setIdResponsavelObra(obra.getResponsavelObra().getId());
+			this.obraResponsavelObraDAO.atualizarPorIdObra(obraResponsavelObra, con);
 			con.commit();
 		} catch (SQLException e) {
 			throw e;

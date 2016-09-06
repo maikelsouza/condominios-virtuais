@@ -9,6 +9,9 @@
 	template="/templates/templatePrincipal.xhtml">
 
 	<ui:define name="conteudo">
+		<f:metadata>
+			<f:event type="preRenderView" listener="#{obraMB.inicializaPessoa}" />
+		</f:metadata>
 		<h:form id="idFormCadastroObra" styleClass="content">
 			<rich:panel>
 				<f:facet name="header">
@@ -67,65 +70,73 @@
 						</h:inputTextarea>
 					</h:panelGrid>					
 			</rich:panel>
-			<rich:panel  header="#{msg['obra.painelDadosResponsavel']}" >
+			
+			<rich:panel  header="#{msg['obra.painelDadosResponsavel']}"  id="idPainelDadosResponsavel">
 				<h:panelGrid columns="3">
 					<h:panelGroup>	
 						<h:outputLabel value="#{msg['obra.responsavelObra.tipoPessoa']}:" for="idResponsavelObraTipoPessoa" />
 						<span class="asterisco">*</span>								
+					</h:panelGroup>					 	
+					<h:panelGroup rendered="#{obraMB.exibeDadosPessoaFisica}">	
+						<h:outputLabel value="#{msg['obra.responsavelObra.nome']}:" for="buscarNomeResponsavelObra" rendered="#{obraMB.exibeDadosPessoaFisica}" />
+					    <h:outputLabel value="*" styleClass="asterisco" rendered="#{obraMB.exibeDadosPessoaFisica}"/>
+						<a4j:jsFunction name="buscarIdResponsavelObra" execute="buscarNomeResponsavelObra" action="#{obraMB.popularIdNomeResponsavelObra}" 
+								render="idResponsavelObraNomeHidden buscarNomeResponsavelObra idTelefoneResponsavelObra idSitelResponsavelObra idCpfResponsavelObra idCnpjResponsavelObra idPainelGroupCpfResponsavelObra idPainelGroupCnpjResponsavelObra idEmailResponsavelObra" />								
 					</h:panelGroup>		
-					<h:panelGroup>	
-						<h:outputLabel value="#{msg['obra.responsavelObra.nome']}:" for="buscarNomeResponsavelObra" />
-						<span class="asterisco">*</span>
-						<a4j:jsFunction name="buscarIdResponsavelObra" execute="buscarNomeResponsavelObra" action="#{obraMB.popularIdNomeResponsavelObra}"
-								render="idResponsavelObraNomeHidden buscarNomeResponsavelObra idTelefoneResponsavelObra idSitelResponsavelObra idCnpjResponsavelObra idEmailResponsavelObra" />								
-					</h:panelGroup>
-					<h:panelGroup>	
-						<h:outputLabel value="#{msg['obra.responsavelObra.razaoSocial']}:" for="buscarRazaoSocialResponsavelObra" />
-						<span class="asterisco">*</span>
+					<h:panelGroup rendered="#{!obraMB.exibeDadosPessoaFisica}">	
+						<h:outputLabel value="#{msg['obra.responsavelObra.razaoSocial']}:" for="buscarRazaoSocialResponsavelObra" rendered="#{!obraMB.exibeDadosPessoaFisica}"/>
+						<h:outputLabel value="*" styleClass="asterisco" rendered="#{!obraMB.exibeDadosPessoaFisica}"/>
 						<a4j:jsFunction name="buscarIdRazaoSocialResponsavelObra" execute="buscarRazaoSocialResponsavelObra" action="#{obraMB.popularIdRazaoSocialResponsavelObra}"
-								render="idResponsavelObraRazaoSocialHidden buscarRazaoSocialResponsavelObra idTelefoneResponsavelObra idSitelResponsavelObra idCpfResponsavelObra idEmailResponsavelObra" />								
-					</h:panelGroup>				
+								render="idResponsavelObraRazaoSocialHidden buscarRazaoSocialResponsavelObra idTelefoneResponsavelObra idSitelResponsavelObra idCnpjResponsavelObra idCpfResponsavelObra idEmailResponsavelObra idPainelGroupCpfResponsavelObra idPainelGroupCnpjResponsavelObra" />								
+					</h:panelGroup>
 					<h:panelGroup>	
 						<h:outputLabel value="#{msg['obra.responsavelObra.telefone']}" for="idTelefoneResponsavelObra" />
 						<span class="asterisco">*</span>					
-					</h:panelGroup>	
-					<h:outputLabel value="#{msg['obra.responsavelObra.email']}:" for="idEmailResponsavelObra" />
-					<h:selectOneMenu value="#{obraMB.obra.responsavelObra.tipoPessoa}" id="idResponsavelObraTipoPessoa" required="true" label="#{msg['obra.responsavelObra.tipoPessoa.label']}"> 						
-						<f:selectItem itemLabel="#{msg['obra.responsavelObra.tipoPessoa.DefaultLabel']}" noSelectionOption="false" />
+					</h:panelGroup>
+					<h:selectOneMenu value="#{obraMB.obra.responsavelObra.tipoPessoa}" id="idResponsavelObraTipoPessoa" required="true" label="#{msg['obra.responsavelObra.tipoPessoa.label']}">
 						<f:selectItems value="#{obraMB.listaSITipoPessoa}" />
-					</h:selectOneMenu>  
-					<h:panelGroup>	
+						<f:ajax  listener="#{obraMB.exibirDadosPessoaFisica}" render="idPainelDadosResponsavel" />
+					</h:selectOneMenu> 
+					<h:panelGroup rendered="#{obraMB.exibeDadosPessoaFisica}" >	
 						<rich:autocomplete id="buscarNomeResponsavelObra" autocompleteMethod="#{obraMB.buscarListaResponsavelObra}" label="#{msg['obra.responsavelObra.nome.label']}"
-							var="responsavelObra" onblur="buscarIdResponsavelObra()" required="true" minChars="3" fetchValue="#{responsavelObra.id}"
+							var="responsavelObra" onblur="buscarIdResponsavelObra()" required="#{obraMB.exibeDadosPessoaFisica}" minChars="3" fetchValue="#{responsavelObra.id}" rendered="#{obraMB.exibeDadosPessoaFisica}" 
 							onselectitem="buscarIdResponsavelObra()" value="#{obraMB.nomeResponsavelObra}">
 							#{responsavelObra.nome} 
 						</rich:autocomplete>
-						<h:inputHidden id="idResponsavelObraNomeHidden" value="#{obraMB.idNomeResponsavelObra}"  />
-					</h:panelGroup>
-					<h:panelGroup>	
-						<rich:autocomplete id="buscarRazaoSocialResponsavelObra" autocompleteMethod="#{obraMB.buscarListaResponsavelObra}" label="#{msg['obra.responsavelObra.razaoSocial.label']}"
-							var="responsavelObra" onblur="buscarIdRazaoSocialResponsavelObra()" required="true" minChars="3" fetchValue="#{responsavelObra.id}"
-							onselectitem="buscarIdRazaoSocialResponsavelObra()" value="#{obraMB.razaoSocialResponsavelObra}">
-							#{responsavelObra.nome} 
-						</rich:autocomplete>
-						<h:inputHidden id="idResponsavelObraRazaoSocialHidden" value="#{obraMB.idRazaoSocialResponsavelObra}"  />
+						<h:inputHidden id="idResponsavelObraNomeHidden" value="#{obraMB.idNomeResponsavelObra}" rendered="#{obraMB.exibeDadosPessoaFisica}"  />
 					</h:panelGroup>					
-										
+					<h:panelGroup rendered="#{!obraMB.exibeDadosPessoaFisica}" >	
+						<rich:autocomplete id="buscarRazaoSocialResponsavelObra" autocompleteMethod="#{obraMB.buscarListaResponsavelObra}" label="#{msg['obra.responsavelObra.razaoSocial.label']}"
+							var="responsavelObra" onblur="buscarIdRazaoSocialResponsavelObra()" required="#{!obraMB.exibeDadosPessoaFisica}" minChars="3" fetchValue="#{responsavelObra.id}" rendered="#{!obraMB.exibeDadosPessoaFisica}" 
+							onselectitem="buscarIdRazaoSocialResponsavelObra()" value="#{obraMB.razaoSocialResponsavelObra}">
+							#{responsavelObra.razaoSocial} 
+						</rich:autocomplete>
+						<h:inputHidden id="idResponsavelObraRazaoSocialHidden" value="#{obraMB.idRazaoSocialResponsavelObra}" rendered="#{!obraMB.exibeDadosPessoaFisica}"  />
+					</h:panelGroup>
 					<h:panelGroup>	
 						<h:inputText id="idTelefoneResponsavelObra" value="#{obraMB.obra.responsavelObra.telefone}" label="#{msg['obra.responsavelObra.telefone.label']}" size="35" required="true"/>					
 						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda"/>
 					</h:panelGroup>
-					<h:inputText id="idEmailResponsavelObra" value="#{obraMB.obra.responsavelObra.email}" label="#{msg['obra.responsavelObra.email.label']}" size="35"/>					
-						<h:outputLabel value="#{msg['obra.responsavelObra.site']}:" for="idSitelResponsavelObra" />
-						<h:inputText id="idSitelResponsavelObra" value="#{obraMB.obra.responsavelObra.site}" label="#{msg['obra.responsavelObra.site.label']}" size="35"/>					
-					<h:outputLabel value="#{msg['obra.responsavelObra.cnpj']}:" for="idCnpjResponsavelObra" />
-					<h:panelGroup>	
-						<h:inputText id="idCnpjResponsavelObra" value="#{obraMB.obra.responsavelObra.CNPJ}" label="#{msg['obra.responsavelObra.cnpj.label']}" size="35"/>
-						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda"/>
+					<h:outputLabel value="#{msg['obra.responsavelObra.email']}:" for="idEmailResponsavelObra" />
+					<h:outputLabel value="#{msg['obra.responsavelObra.site']}:" for="idSitelResponsavelObra" />
+					<h:panelGroup rendered="#{obraMB.exibeDadosPessoaFisica}">	
+						<h:outputLabel value="#{msg['obra.responsavelObra.cpf']}:" for="idCpfResponsavelObra"  rendered="#{obraMB.exibeDadosPessoaFisica}"/>
+						<h:outputLabel value="*" styleClass="asterisco" rendered="#{obraMB.exibeDadosPessoaFisica}"/>
 					</h:panelGroup>
-					<h:panelGroup>	
-						<h:inputText id="idCpfResponsavelObra" value="#{obraMB.obra.responsavelObra.Cpf}" label="#{msg['obra.responsavelObra.cnpj.label']}" size="35"/>
-						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda"/>
+					<h:panelGroup rendered="#{!obraMB.exibeDadosPessoaFisica}">
+						<h:outputLabel value="#{msg['obra.responsavelObra.cnpj']}:" for="idCnpjResponsavelObra" rendered="#{!obraMB.exibeDadosPessoaFisica}" />
+						<h:outputLabel value="*" styleClass="asterisco" rendered="#{!obraMB.exibeDadosPessoaFisica}"/>
+					</h:panelGroup>
+					<h:inputText id="idEmailResponsavelObra" value="#{obraMB.obra.responsavelObra.email}" label="#{msg['obra.responsavelObra.email.label']}" size="35"/>
+					<h:inputText id="idSitelResponsavelObra" value="#{obraMB.obra.responsavelObra.site}" label="#{msg['obra.responsavelObra.site.label']}" size="35"/>
+					
+					<h:panelGroup rendered="#{obraMB.exibeDadosPessoaFisica}" id="idPainelGroupCpfResponsavelObra">	
+						<h:inputText id="idCpfResponsavelObra" value="#{obraMB.obra.responsavelObra.CPF}" label="#{msg['obra.responsavelObra.cpf.label']}" size="35" rendered="#{obraMB.exibeDadosPessoaFisica}" required="#{obraMB.exibeDadosPessoaFisica}"/>
+						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" rendered="#{obraMB.exibeDadosPessoaFisica}" />
+					</h:panelGroup>
+					<h:panelGroup rendered="#{!obraMB.exibeDadosPessoaFisica}" id="idPainelGroupIdResponsavelObra">	
+						<h:inputText id="idCnpjResponsavelObra" value="#{obraMB.obra.responsavelObra.CNPJ}" label="#{msg['obra.responsavelObra.cnpj.label']}" size="35" rendered="#{!obraMB.exibeDadosPessoaFisica}" required="#{!obraMB.exibeDadosPessoaFisica}"/>
+						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" rendered="#{!obraMB.exibeDadosPessoaFisica}" />
 					</h:panelGroup>
 				</h:panelGrid>	
 			  </rich:panel>	
@@ -137,10 +148,10 @@
 			<br></br>
 			<h:panelGrid columns="3">
 				<h:commandButton value="#{msg.botaoSalvar}" action="#{obraMB.salvarObra}" />
-				<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{visitanteMB.limparCadastroVisitante}"  />
-				<h:commandButton value="#{msg.botaoCancelar}" action="#{visitanteMB.cancelarCadastroVisitante}"  immediate="true" />
+				<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{obraMB.limparCadastroObra}"  />
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{obraMB.cancelarCadastroObra}"  immediate="true" />				                                                               
 			</h:panelGrid>
 		</h:form>
 	</ui:define>
 
-</ui:composition>
+</ui:composition>	

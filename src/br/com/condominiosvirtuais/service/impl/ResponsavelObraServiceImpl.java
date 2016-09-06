@@ -7,6 +7,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import br.com.condominiosvirtuais.entity.ResponsavelObra;
+import br.com.condominiosvirtuais.enumeration.ResponsavelObraTipoPessoaEnum;
 import br.com.condominiosvirtuais.persistence.impl.ResponsavelObraDAOImpl;
 import br.com.condominiosvirtuais.service.ResponsavelObraService;
 
@@ -18,8 +19,12 @@ public class ResponsavelObraServiceImpl implements ResponsavelObraService, Seria
 	private ResponsavelObraDAOImpl responsavelObraDAO;
 
 	@Override
-	public List<ResponsavelObra> buscarPorNome(String nome) throws SQLException, Exception {		
-		return this.responsavelObraDAO.buscarPorNome(nome);
+	public List<ResponsavelObra> buscarPorNomeETipoPessoa(String nome, Integer tipoPessoa) throws SQLException, Exception {
+		if(tipoPessoa == ResponsavelObraTipoPessoaEnum.PESSOA_FISICA.getTipoPessoa()){
+			return this.responsavelObraDAO.buscarPorNome(nome);			
+		}else{
+			return this.responsavelObraDAO.buscarPorRazaoSocial(nome);
+		}
 	}
 
 }

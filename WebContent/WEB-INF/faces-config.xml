@@ -1528,6 +1528,18 @@
    <from-outcome>editar</from-outcome>
    <to-view-id>/pages/formEditaObra.xhtml</to-view-id>    
     <redirect/>
+  </navigation-case>
+  <navigation-case>                              
+   <from-action>#{obraMB.visualizarObra}</from-action>                 
+   <from-outcome>visualizar</from-outcome>
+   <to-view-id>/pages/formVisualizaObra.xhtml</to-view-id>    
+    <redirect/>
+  </navigation-case>
+  <navigation-case>                              
+   <from-action>#{obraMB.cancelarFiltroPesquisaObra}</from-action>                 
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>    
+    <redirect/>
   </navigation-case>  
  </navigation-rule>  
  <navigation-rule>                       
@@ -1543,11 +1555,35 @@
    <to-view-id>/pages/formListaObra.xhtml</to-view-id>
   </navigation-case>
   <navigation-case>                              
-   <from-action>#{obraMB.cancelarEditarObra}</from-action>
-   <from-outcome>cancelar</from-outcome>
+   <from-action>#{obraMB.voltarEditarObra}</from-action>
+   <from-outcome>voltar</from-outcome>
    <to-view-id>/pages/formListaObra.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
+ </navigation-rule> 
+ <navigation-rule>                       
+  <from-view-id>/pages/formVisualizaObra.xhtml</from-view-id>
+  <navigation-case>                              
+   <from-action>#{obraMB.voltarVisualizarObra}</from-action>
+   <from-outcome>voltar</from-outcome>
+   <to-view-id>/pages/formListaObra.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>                              
+   <from-action>#{obraMB.cancelarVisualizarObra}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>  
+ </navigation-rule> 
+ <navigation-rule>                       
+  <from-view-id>/pages/formCadastroObra.xhtml</from-view-id>  
+  <navigation-case>                              
+   <from-action>#{obraMB.cancelarCadastroObra}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>  
  </navigation-rule> 
  
  

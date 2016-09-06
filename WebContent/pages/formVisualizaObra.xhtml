@@ -9,26 +9,50 @@
 	template="/templates/templatePrincipal.xhtml">
 
 	<ui:define name="conteudo">
-		<h:form id="idFormVisualizaPrestadorServico" styleClass="content formView">
+		<h:form id="idFormVisualizaObra" styleClass="content formView">
 			<rich:panel>
 				<f:facet name="header">
-					<h:outputText value="#{msg.visualizarPrestadorServico}" />
+					<h:outputText value="#{msg.visualizarObra}" />
 				</f:facet>
 				<h:panelGrid columns="2">
-					<h:outputLabel value="#{msg['visitante.visita.prestadorServico.nome']}: " for="idPrestadorServicoNome" />
-					<h:outputText id="idPrestadorServicoNome" value="#{visitanteMB.prestadorServico.nome}" />
-					<h:outputLabel value="#{msg['visitante.visita.prestadorServico.cnpj']}: " for="idPrestadorServicoCnpj" rendered="#{visitanteMB.prestadorServico.cnpj != null}"/>
-					<h:outputText id="idPrestadorServicoCnpj" value="#{visitanteMB.prestadorServico.cnpj}" rendered="#{visitanteMB.prestadorServico.cnpj != null}"/>
-					<h:outputLabel value="#{msg['visitante.visita.prestadorServico.telefone']}: " for="idPrestadorServicoTelefone" />
-					<h:outputText id="idPrestadorServicoTelefone" value="#{visitanteMB.prestadorServico.telefone}" />
-					<h:outputLabel value="#{msg['visitante.visita.prestadorServico.email']}: " for="idPrestadorServicoEmail" rendered="#{visitanteMB.prestadorServico.email != ''}" />
-					<h:outputText id="idPrestadorServicoEmail" value="#{visitanteMB.prestadorServico.email}" rendered="#{visitanteMB.prestadorServico.email != ''}"/>					
+					<h:outputLabel value="#{msg['obra.nome']}: " for="idObraNome" />
+					<h:outputText id="idObraNome" value="#{obraMB.obra.nome}" />
+					<h:outputLabel value="#{msg['obra.tipo']}: " for="idObraCnpj"/>
+					<h:outputText id="idObraCnpj" value="#{obraMB.obra.tipoI18n}"/>
+					<h:outputLabel value="#{msg['obra.situacao']}: " for="idSituacao" />
+					<h:outputText id="idSituacao" value="#{obraMB.obra.situacaoI18n}" />
+					<h:outputLabel value="#{msg['obra.dataInicio']}: " for="idDataInicio"/>
+					<h:outputText id="idDataInicio" value="#{obraMB.obra.dataInicio}">
+						<f:convertDateTime pattern="#{msg.formatoData}" timeZone="#{msg.timeZone}"/>
+					</h:outputText>					
+					<h:outputLabel value="#{msg['obra.dataFim']}: " for="idDataFim" rendered="#{obraMB.obra.dataFim != null}"/>
+					<h:outputText id="idDataFim" value="#{obraMB.obra.dataFim}" rendered="#{obraMB.obra.dataFim != null}">
+						<f:convertDateTime pattern="#{msg.formatoData}" timeZone="#{msg.timeZone}"/>
+					</h:outputText>					
 				</h:panelGrid>
 				<div></div>
 			</rich:panel>
+			<rich:panel header="#{msg['obra.painelDadosResponsavel']}">
+				<h:panelGrid columns="2">
+					<h:outputLabel value="#{msg['obra.responsavelObra.nome']}: " for="idObraResponsavelObraNome" rendered="#{obraMB.obra.responsavelObra.nome != 'null'}"/>
+					<h:outputText id="idObraResponsavelObraNome" value="#{obraMB.obra.responsavelObra.nome}" rendered="#{obraMB.obra.responsavelObra.nome != 'null'}" />
+					<h:outputLabel value="#{msg['obra.responsavelObra.razaoSocial']}: " for="idObraResponsavelObraRazaoSocial" rendered="#{obraMB.obra.responsavelObra.razaoSocial != 'null'}"/>
+					<h:outputText id="idObraResponsavelObraRazaoSocial" value="#{obraMB.obra.responsavelObra.razaoSocial}"  rendered="#{obraMB.obra.responsavelObra.razaoSocial != 'null'}"/>
+					<h:outputLabel value="#{msg['obra.responsavelObra.telefone']}: " for="idObraResponsavelObraTelefone" />
+					<h:outputText id="idObraResponsavelObraTelefone" value="#{obraMB.obra.responsavelObra.telefone}" />
+					<h:outputLabel value="#{msg['obra.responsavelObra.cnpj']}: " for="idObraResponsavelObraCNPJ"  rendered="#{obraMB.obra.responsavelObra.CNPJ != null}"/>
+					<h:outputText id="idObraResponsavelObraCNPJ" value="#{obraMB.obra.responsavelObra.CNPJ}" rendered="#{obraMB.obra.responsavelObra.CNPJ != null}" />
+					<h:outputLabel value="#{msg['obra.responsavelObra.cpf']}: " for="idObraResponsavelObraCPF"  rendered="#{obraMB.obra.responsavelObra.CPF != null}"/>
+					<h:outputText id="idObraResponsavelObraCPF" value="#{obraMB.obra.responsavelObra.CPF}" rendered="#{obraMB.obra.responsavelObra.CPF != null}"/>
+					<h:outputLabel value="#{msg['obra.responsavelObra.site']}: " for="idObraResponsavelObraSite"  rendered="#{obraMB.obra.responsavelObra.site != ''}"/>
+					<h:outputText id="idObraResponsavelObraSite" value="#{obraMB.obra.responsavelObra.site}" rendered="#{obraMB.obra.responsavelObra.site != ''}"/>
+					<h:outputLabel value="#{msg['obra.responsavelObra.email']}: " for="idObraResponsavelObraEmail"  rendered="#{obraMB.obra.responsavelObra.email != ''}"/>
+					<h:outputText id="idObraResponsavelObraEmail" value="#{obraMB.obra.responsavelObra.email}" rendered="#{obraMB.obra.responsavelObra.email != ''}"/>
+				</h:panelGrid>			
+			</rich:panel>
 			<h:panelGrid columns="2">
-				<h:commandButton value="#{msg.botaoVoltar}" action="#{visitanteMB.voltarVisualizarPrestadorServico}" immediate="true"></h:commandButton>
-				<h:commandButton value="#{msg.botaoCancelar}" action="#{visitanteMB.cancelarVisualizarPrestadorServico}" immediate="true"></h:commandButton>
+				<h:commandButton value="#{msg.botaoVoltar}" action="#{obraMB.voltarVisualizarObra}" immediate="true"></h:commandButton>
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{obraMB.cancelarVisualizarObra}" immediate="true"></h:commandButton>
 			</h:panelGrid>
 		</h:form>
 	</ui:define>

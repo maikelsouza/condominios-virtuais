@@ -75,7 +75,7 @@ public class ResponsavelObraDAOImpl implements ResponsavelObraDAO, Serializable 
 			SQLUtil.setValorPpreparedStatement(statement, 5, responsavelObra.getSite(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement, 6, responsavelObra.getRazaoSocial(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement, 7, responsavelObra.getTipoPessoa(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement, 8, responsavelObra.getCPF(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 8, responsavelObra.getCPF(), java.sql.Types.BIGINT);
 			statement.executeUpdate();	
 			ResultSet rs = statement.getGeneratedKeys();
 			rs.next();
@@ -148,7 +148,7 @@ public class ResponsavelObraDAOImpl implements ResponsavelObraDAO, Serializable 
 		query.append(RESPONSAVEL_OBRA);
 		query.append(" WHERE ");
 		query.append(NOME);		
-		query.append(" like ?");
+		query.append(" like ?");		
 		query.append(" ORDER BY ");
 		query.append(NOME);
 		query.append(";");		
@@ -159,7 +159,55 @@ public class ResponsavelObraDAOImpl implements ResponsavelObraDAO, Serializable 
 		List<ResponsavelObra> listaResponsavelObra = new ArrayList<ResponsavelObra>();
 		try {
 			preparedStatement = con.prepareStatement(query.toString());
-			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, nome+"%", java.sql.Types.VARCHAR);				
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, nome+"%", java.sql.Types.VARCHAR);			
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				responsavelObra = new ResponsavelObra();
+				responsavelObra.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				responsavelObra.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+				responsavelObra.setCNPJ((Long) SQLUtil.getValorResultSet(resultSet, CNPJ, java.sql.Types.BIGINT));
+				responsavelObra.setEmail(String.valueOf(SQLUtil.getValorResultSet(resultSet, EMAIL, java.sql.Types.VARCHAR)));
+				responsavelObra.setSite(String.valueOf(SQLUtil.getValorResultSet(resultSet, SITE, java.sql.Types.VARCHAR)));
+				responsavelObra.setTelefone((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE, java.sql.Types.BIGINT));
+				responsavelObra.setCPF((Long) SQLUtil.getValorResultSet(resultSet, CPF, java.sql.Types.BIGINT));
+				responsavelObra.setRazaoSocial(String.valueOf(SQLUtil.getValorResultSet(resultSet, RAZAO_SOCIAL, java.sql.Types.VARCHAR)));
+				responsavelObra.setTipoPessoa((Integer) SQLUtil.getValorResultSet(resultSet, TIPO_PESSOA, java.sql.Types.INTEGER));
+				listaResponsavelObra.add(responsavelObra);		
+			}
+		} catch (SQLException e) {
+			throw e;
+		} catch (Exception e) {
+			throw e;		
+		}finally{
+			try {
+				preparedStatement.close();
+				con.close();				
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);
+			}
+		}				
+		return listaResponsavelObra;
+	}
+	
+	@Override
+	public List<ResponsavelObra> buscarPorRazaoSocial(String razaoSocial) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(RESPONSAVEL_OBRA);
+		query.append(" WHERE ");
+		query.append(RAZAO_SOCIAL);		
+		query.append(" like ?");		
+		query.append(" ORDER BY ");
+		query.append(NOME);
+		query.append(";");		
+		Connection con = Conexao.getConexao();
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		ResponsavelObra responsavelObra = null;
+		List<ResponsavelObra> listaResponsavelObra = new ArrayList<ResponsavelObra>();
+		try {
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, razaoSocial+"%", java.sql.Types.VARCHAR);			
 			resultSet = preparedStatement.executeQuery();
 			while(resultSet.next()){
 				responsavelObra = new ResponsavelObra();

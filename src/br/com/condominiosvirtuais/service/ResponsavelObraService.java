@@ -7,6 +7,6 @@ import br.com.condominiosvirtuais.entity.ResponsavelObra;
 
 public interface ResponsavelObraService {
 	
-	public abstract List<ResponsavelObra> buscarPorNome(String nome) throws SQLException, Exception;
+	public abstract List<ResponsavelObra> buscarPorNomeETipoPessoa(String nome, Integer tipoPessoa) throws SQLException, Exception;
 
 }

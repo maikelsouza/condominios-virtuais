@@ -14,6 +14,8 @@ public interface ResponsavelObraDAO {
 	
 	public abstract List<ResponsavelObra> buscarPorNome(String nome) throws SQLException, Exception;
 	
+	public abstract List<ResponsavelObra> buscarPorRazaoSocial(String nome) throws SQLException, Exception;
+	
 	public abstract ResponsavelObra buscarPorId(Integer id, Connection con) throws SQLException, Exception;
 
 }

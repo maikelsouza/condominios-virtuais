@@ -62,9 +62,17 @@ public class ObraMB implements Serializable {
 	
 	private Integer idNomeResponsavelObra;
 	
+	private String razaoSocialResponsavelObra;
+	
+	private Integer idRazaoSocialResponsavelObra;
+	
 	private Date dataInicioDe;
 	
 	private Date dataInicioAte;
+	
+	private Integer tipoPessoa;
+	
+	private Boolean exibeDadosPessoaFisica;
 	
 	@PostConstruct
 	public void carregarObra(){
@@ -80,11 +88,12 @@ public class ObraMB implements Serializable {
 				return null;
 			}
 			this.obra.getResponsavelObra().setNome(this.nomeResponsavelObra);
+			this.obra.getResponsavelObra().setRazaoSocial(this.razaoSocialResponsavelObra);
 			// Situação onde o responsável da obra não está cadastrado no sistema 
-			if(this.idNomeResponsavelObra == null){
-				this.obraService.salvarObraESalvaResponsavelObra(obra);				
+			if(this.idNomeResponsavelObra != null || this.idRazaoSocialResponsavelObra != null){
+				this.obraService.salvarObraEAtualizarResponsavel(this.obra);
 			}else{
-				this.obraService.salvarObraEAtualizarResponsavel(obra);
+				this.obraService.salvarObraESalvaResponsavelObra(this.obra);				
 			}			
 			this.inicializarTela();
 			ManagedBeanUtil.setMensagemInfo("msg.obra.salvaSucesso");
@@ -119,13 +128,22 @@ public class ObraMB implements Serializable {
 	
 	public String atualizarObra(){		
 		try {
-			// Situação onde o responsável da obra não está cadastrado no sistema 
-			this.obra.getResponsavelObra().setNome(this.nomeResponsavelObra);
-			if(this.idNomeResponsavelObra == null){
-				this.obraService.atualizarObraESalvarResponsavelObra(this.obra);				
-			}else{
-				this.obraService.atualizarObraEAtualizarResponsavelObra(this.obra);
+			if(this.validaTelaCadastro() == Boolean.FALSE){
+				return null;
 			}
+			if(this.obra.getResponsavelObra().getTipoPessoa() == ResponsavelObraTipoPessoaEnum.PESSOA_FISICA.getTipoPessoa()){
+				this.obra.getResponsavelObra().setNome(this.nomeResponsavelObra);
+				this.obra.getResponsavelObra().setRazaoSocial(null);				
+			}else{
+				this.obra.getResponsavelObra().setNome(null);
+				this.obra.getResponsavelObra().setRazaoSocial(this.razaoSocialResponsavelObra);
+			}
+			// Situação onde o responsável da obra não está cadastrado no sistema 
+			if(this.idNomeResponsavelObra != null || this.idRazaoSocialResponsavelObra != null){
+				this.obraService.atualizarObraEAtualizarResponsavelObra(this.obra);
+			}else{
+				this.obraService.atualizarObraESalvarResponsavelObra(this.obra);				
+			}		
 			this.pesquisarObra();
 			ManagedBeanUtil.setMensagemInfo("msg.obra.atualizadaSucesso");
 		} catch (SQLException e) {
@@ -140,20 +158,59 @@ public class ObraMB implements Serializable {
 		return "atualizar";
 	}
 	
-	public String cancelarEditarObra(){
+	public String voltarEditarObra(){
+		return "voltar";
+	}
+	
+	public String voltarVisualizarObra(){
+		return "voltar";
+	}	
+	              
+	public String cancelarFiltroPesquisaObra(){
 		return "cancelar";
 	}
 	
+	public String cancelarVisualizarObra(){
+		return "cancelar";
+	}
+	             
+	public String cancelarCadastroObra(){
+		return "cancelar";
+	}
+	
+	public String limparCadastroObra(){
+		this.inicializarTela();
+		return null;
+	}
+	
+	public void limparFiltroPesquisaObra(){
+		this.obra = new Obra();
+		this.dataInicioDe = null;
+		this.dataInicioAte = null;
+		this.listaObraDataModel = new ListDataModel<Obra>();
+	}
+	
+	
 	public String editarObra(){
-		this.obra = (Obra) this.listaObraDataModel.getRowData();
-		this.nomeResponsavelObra = this.obra.getResponsavelObra().getNome();
+		this.obra = (Obra) this.listaObraDataModel.getRowData();		
+		this.nomeResponsavelObra = null;
+		this.razaoSocialResponsavelObra = null;
 		this.idNomeResponsavelObra = this.obra.getResponsavelObra().getId();
+		this.exibeDadosPessoaFisica =  Boolean.FALSE;
+		if(this.obra.getResponsavelObra().getTipoPessoa() == ResponsavelObraTipoPessoaEnum.PESSOA_FISICA.getTipoPessoa()){
+			this.exibeDadosPessoaFisica = Boolean.TRUE;
+			this.nomeResponsavelObra = this.obra.getResponsavelObra().getNome();
+			this.tipoPessoa = ResponsavelObraTipoPessoaEnum.PESSOA_FISICA.getTipoPessoa();
+		}else{
+			this.razaoSocialResponsavelObra = this.obra.getResponsavelObra().getRazaoSocial();
+			this.tipoPessoa = ResponsavelObraTipoPessoaEnum.PESSOA_JURIDICA.getTipoPessoa();
+		}
 		return "editar";
 	}
 	
 	public List<ResponsavelObra> buscarListaResponsavelObra(Object nomeResponsavelObra){
 		try {
-			this.listaResponsavelObra = this.responsavelObraService.buscarPorNome(nomeResponsavelObra.toString());						
+			this.listaResponsavelObra = this.responsavelObraService.buscarPorNomeETipoPessoa(nomeResponsavelObra.toString(), this.tipoPessoa);						
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");	
@@ -195,6 +252,37 @@ public class ObraMB implements Serializable {
 				  if (responsavelObra.getId().equals(this.idNomeResponsavelObra)){
 					  this.nomeResponsavelObra = responsavelObra.getNome();
 					  this.obra.getResponsavelObra().setEmail(responsavelObra.getEmail());
+					  this.obra.getResponsavelObra().setCPF(responsavelObra.getCPF());
+					  this.obra.getResponsavelObra().setSite(responsavelObra.getSite());
+					  this.obra.getResponsavelObra().setTelefone(responsavelObra.getTelefone());
+					  this.obra.getResponsavelObra().setId(responsavelObra.getId());
+					  encontrou = Boolean.TRUE;
+				  }
+			  }
+		  }else{
+			  this.obra.getResponsavelObra().setEmail(null);
+			  this.obra.getResponsavelObra().setCNPJ(null);
+			  this.obra.getResponsavelObra().setCPF(null);
+			  this.obra.getResponsavelObra().setSite(null);
+			  this.obra.getResponsavelObra().setTelefone(null);
+			  this.obra.getResponsavelObra().setId(null);
+		  }
+	  }
+	
+	/**
+	 * Método que encontra o id do nome do visitante selecionado	
+	 */
+	public void popularIdRazaoSocialResponsavelObra() {		
+		  Boolean encontrou = Boolean.FALSE;
+		  this.idRazaoSocialResponsavelObra = null;
+		  if(ManagedBeanUtil.verificaSeExisteSomenteNumeros(this.razaoSocialResponsavelObra)){
+			  this.idRazaoSocialResponsavelObra = Integer.parseInt(this.razaoSocialResponsavelObra);
+			  Integer i = 0;
+			  while(!encontrou){
+				  ResponsavelObra responsavelObra = this.listaResponsavelObra.get(i++);			
+				  if (responsavelObra.getId().equals(this.idRazaoSocialResponsavelObra)){
+					  this.razaoSocialResponsavelObra = responsavelObra.getRazaoSocial();
+					  this.obra.getResponsavelObra().setEmail(responsavelObra.getEmail());
 					  this.obra.getResponsavelObra().setCNPJ(responsavelObra.getCNPJ());
 					  this.obra.getResponsavelObra().setSite(responsavelObra.getSite());
 					  this.obra.getResponsavelObra().setTelefone(responsavelObra.getTelefone());
@@ -205,11 +293,17 @@ public class ObraMB implements Serializable {
 		  }else{
 			  this.obra.getResponsavelObra().setEmail(null);
 			  this.obra.getResponsavelObra().setCNPJ(null);
+			  this.obra.getResponsavelObra().setCPF(null);
 			  this.obra.getResponsavelObra().setSite(null);
 			  this.obra.getResponsavelObra().setTelefone(null);
-			  this.obra.getResponsavelObra().setId(null);
+			  this.obra.getResponsavelObra().setId(null);			  
 		  }
 	  }
+	
+	public String visualizarObra(){
+		this.obra = (Obra) this.listaObraDataModel.getRowData();		
+		return "visualizar";		
+	}
 	
 	private void populaTipoObra(){
 		this.listaSITipo = new ArrayList<SelectItem>();
@@ -229,9 +323,16 @@ public class ObraMB implements Serializable {
 		this.listaSITipoPessoa.add(new SelectItem(ResponsavelObraTipoPessoaEnum.PESSOA_JURIDICA.getTipoPessoa(), AplicacaoUtil.i18n("obra.responsavelObra.tipoPessoa.1")));
 	}
 	
-	private void inicializarTela(){
+	public void inicializarTela(){
 		this.obra = new Obra();
-		this.nomeResponsavelObra = "";
+		this.nomeResponsavelObra = null;
+		this.razaoSocialResponsavelObra = null;
+		this.exibeDadosPessoaFisica = Boolean.TRUE;
+		this.tipoPessoa = ResponsavelObraTipoPessoaEnum.PESSOA_FISICA.getTipoPessoa();
+	}
+	
+	public void inicializaPessoa(){
+		this.tipoPessoa = ResponsavelObraTipoPessoaEnum.PESSOA_FISICA.getTipoPessoa();
 	}
 	
 	private Boolean validaTelaCadastro(){
@@ -245,6 +346,24 @@ public class ObraMB implements Serializable {
 			telaValidada = Boolean.FALSE;
 		}
 		return telaValidada;
+	}
+	
+	public void exibirDadosPessoaFisica(){
+		this.exibeDadosPessoaFisica =  Boolean.FALSE;
+		if(this.obra.getResponsavelObra().getTipoPessoa() == ResponsavelObraTipoPessoaEnum.PESSOA_FISICA.getTipoPessoa()){
+			this.exibeDadosPessoaFisica = Boolean.TRUE;
+		}
+		this.tipoPessoa = this.obra.getResponsavelObra().getTipoPessoa();
+		this.obra.getResponsavelObra().setEmail(null);
+		this.obra.getResponsavelObra().setCNPJ(null);
+		this.obra.getResponsavelObra().setCPF(null);
+		this.obra.getResponsavelObra().setSite(null);
+		this.obra.getResponsavelObra().setTelefone(null);
+		this.obra.getResponsavelObra().setId(null);
+		this.nomeResponsavelObra = null;
+		this.razaoSocialResponsavelObra = null;
+		this.idNomeResponsavelObra = null;
+		this.idRazaoSocialResponsavelObra = null;
 	}
 
 	public List<SelectItem> getListaSICondominios() {
@@ -326,6 +445,38 @@ public class ObraMB implements Serializable {
 
 	public void setListaSITipoPessoa(List<SelectItem> listaSITipoPessoa) {
 		this.listaSITipoPessoa = listaSITipoPessoa;
+	}
+
+	public String getRazaoSocialResponsavelObra() {
+		return razaoSocialResponsavelObra;
+	}
+
+	public void setRazaoSocialResponsavelObra(String razaoSocialResponsavelObra) {
+		this.razaoSocialResponsavelObra = razaoSocialResponsavelObra;
+	}
+
+	public Integer getIdRazaoSocialResponsavelObra() {
+		return idRazaoSocialResponsavelObra;
+	}
+
+	public void setIdRazaoSocialResponsavelObra(Integer idRazaoSocialResponsavelObra) {
+		this.idRazaoSocialResponsavelObra = idRazaoSocialResponsavelObra;
+	}
+
+	public Integer getTipoPessoa() {		
+		return tipoPessoa;
+	}
+
+	public void setTipoPessoa(Integer tipoPessoa) {
+		this.tipoPessoa = tipoPessoa;
+	}
+
+	public Boolean getExibeDadosPessoaFisica() {		
+		return exibeDadosPessoaFisica;
+	}
+
+	public void setExibeDadosPessoaFisica(Boolean exibeDadosPessoaFisica) {
+		this.exibeDadosPessoaFisica = exibeDadosPessoaFisica;
 	}	
 
 }

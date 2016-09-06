@@ -62,10 +62,10 @@
 				action="#{principalMB.anexarImagem}"
 				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}" />
 		</rich:dropDownMenu>
-		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}">
+		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5')}">
 			<f:facet name="label">
 				<h:panelGroup
-					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}">
+					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5')}">
 					<h:outputText value="#{msg.cadastro}" />
 				</h:panelGroup>
 			</f:facet>
@@ -99,12 +99,9 @@
 					action="#{principalMB.listarFuncionarioBloco}" title="#{msg['cadastro.funcionario.bloco.title']}"
 					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}" />
 			</rich:menuGroup>
-			<rich:menuGroup label="OBRAS">
-				<rich:menuItem label="Cadastro"
-					action="#{principalMB.cadastrarObra}"/>
-				<rich:menuItem label="Listar"
-					action="#{principalMB.listarObra}"/>
-				
+			<rich:menuGroup label="#{msg.obra}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,5') and loginMB.sindicoGeralAssociado()}">
+				<rich:menuItem label="#{msg['cadastro.obra.cadastrar']}" action="#{principalMB.cadastrarObra}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4') and loginMB.sindicoGeralAssociado()}"/>
+				<rich:menuItem label="#{msg['cadastro.obra.listar']}" action="#{principalMB.listarObra}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,5') and loginMB.sindicoGeralAssociado()}"/>				
 			</rich:menuGroup>									
 		</rich:dropDownMenu>
 		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,6') and loginMB.sindicoGeralAssociado()}">
