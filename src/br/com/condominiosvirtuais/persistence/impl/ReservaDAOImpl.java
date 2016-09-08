@@ -25,12 +25,13 @@ import br.com.condominiosvirtuais.entity.Condomino;
 import br.com.condominiosvirtuais.entity.ConjuntoBloco;
 import br.com.condominiosvirtuais.entity.Reserva;
 import br.com.condominiosvirtuais.entity.TipoConjuntoBloco;
-import br.com.condominiosvirtuais.enumeration.ReservaEnum;
+import br.com.condominiosvirtuais.enumeration.ReservaSituacaoEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.persistence.AmbienteDAO;
 import br.com.condominiosvirtuais.persistence.BlocoConjuntoBlocoDAO;
 import br.com.condominiosvirtuais.persistence.ConjuntoBlocoDAO;
 import br.com.condominiosvirtuais.persistence.ReservaDAO;
+import br.com.condominiosvirtuais.util.AplicacaoUtil;
 import br.com.condominiosvirtuais.util.SQLUtil;
 
 public class ReservaDAOImpl implements ReservaDAO, Serializable {
@@ -150,6 +151,10 @@ public class ReservaDAOImpl implements ReservaDAO, Serializable {
 		query.append(" WHERE ");
 		query.append(ID_CONDOMINO);		
 		query.append(" = ?");
+		query.append(" ORDER BY ");
+		query.append(DATA);
+		query.append(" DESC, ");
+		query.append(SITUACAO);
 		query.append(";");
 		Connection con = Conexao.getConexao();
 		PreparedStatement preparedStatement = null;
@@ -306,8 +311,7 @@ public class ReservaDAOImpl implements ReservaDAO, Serializable {
 
 	public List<Reserva> buscarPorCondominioETipo(Condominio condominio, String tipo) throws SQLException, Exception {
 // TODO: Passar conexão para os métodos 	
-		List<Reserva> listaReserva = new ArrayList<Reserva>();
-		//this.conjuntoBlocoDAO = new ConjuntoBlocoDAOImpl(new AmbienteDAOImpl());
+		List<Reserva> listaReserva = new ArrayList<Reserva>();		
 		Connection con = Conexao.getConexao();
 		List<Ambiente> listaAmbiente = this.ambienteDAO.get().buscarPorCondominioENomeAmbiente(condominio,null);
 		StringBuffer query = new StringBuffer();
@@ -319,6 +323,9 @@ public class ReservaDAOImpl implements ReservaDAO, Serializable {
 		query.append("AND ");
 		query.append(SITUACAO);
 		query.append("= ? ");
+		query.append("ORDER BY ");
+		query.append(DATA);
+		query.append(" DESC ");
 		query.append(";");		
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -398,6 +405,10 @@ public class ReservaDAOImpl implements ReservaDAO, Serializable {
 			query.append(" WHERE ");
 			query.append(ID_AMBIENTE);		
 			query.append(" = ? ");
+			query.append(" ORDER BY ");
+			query.append(DATA);
+			query.append(" DESC, ");
+			query.append(SITUACAO);
 			query.append(";");		
 			PreparedStatement preparedStatement = null;
 			ResultSet resultSet = null;
@@ -490,8 +501,8 @@ public class ReservaDAOImpl implements ReservaDAO, Serializable {
 			preparedStatement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, idAmbiente, java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(preparedStatement, 2, data, java.sql.Types.DATE);
-			SQLUtil.setValorPpreparedStatement(preparedStatement, 3, ReservaEnum.APROVADA.getSituacao(), java.sql.Types.VARCHAR);
-			SQLUtil.setValorPpreparedStatement(preparedStatement, 4, ReservaEnum.PENDENTE.getSituacao(), java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 3, ReservaSituacaoEnum.APROVADA.getSituacao(), java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 4, ReservaSituacaoEnum.PENDENTE.getSituacao(), java.sql.Types.VARCHAR);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			Reserva reserva = null;			
 			while(resultSet.next()){				
@@ -545,8 +556,8 @@ public class ReservaDAOImpl implements ReservaDAO, Serializable {
 		preparedStatement = con.prepareStatement(query.toString());
 		SQLUtil.setValorPpreparedStatement(preparedStatement, 1, reserva.getAmbiente().getId(), java.sql.Types.INTEGER);
 		SQLUtil.setValorPpreparedStatement(preparedStatement, 2, reserva.getData(), java.sql.Types.DATE);
-		SQLUtil.setValorPpreparedStatement(preparedStatement, 3, ReservaEnum.APROVADA.getSituacao(), java.sql.Types.VARCHAR);
-		SQLUtil.setValorPpreparedStatement(preparedStatement, 4, ReservaEnum.PENDENTE.getSituacao(), java.sql.Types.VARCHAR);
+		SQLUtil.setValorPpreparedStatement(preparedStatement, 3, ReservaSituacaoEnum.APROVADA.getSituacao(), java.sql.Types.VARCHAR);
+		SQLUtil.setValorPpreparedStatement(preparedStatement, 4, ReservaSituacaoEnum.PENDENTE.getSituacao(), java.sql.Types.VARCHAR);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		return resultSet.next();
 	}

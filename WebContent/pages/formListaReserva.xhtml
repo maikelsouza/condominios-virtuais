@@ -18,9 +18,13 @@
 				<f:facet name="header">
 					<h:outputText value="#{msg.listarReservas}" />
 				</f:facet>
-				<h:panelGrid columns="1">
+				<h:panelGrid columns="2">
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['condominio']}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['reserva.situacao']}:" for="idSituacao" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 					<h:selectOneMenu value="#{reservaMB.condominio.id}"
@@ -29,6 +33,11 @@
 						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}"
 							noSelectionOption="true" />
 						<f:selectItems value="#{reservaMB.listaSICondominios}" />
+					</h:selectOneMenu>
+					<h:selectOneMenu value="#{reservaMB.reserva.situacao}" id="idSituacao"
+						label="#{msg['reserva.situacao.label']}" required="true">
+						<f:selectItem itemLabel="#{msg['reserva.situacao.DefaultLabel']}" noSelectionOption="true" />
+						<f:selectItems value="#{reservaMB.listaSISituacoes}" />
 					</h:selectOneMenu>
 					</h:panelGrid>
 					<h:panelGrid columns="2">					

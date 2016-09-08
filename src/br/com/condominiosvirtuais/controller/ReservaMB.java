@@ -25,7 +25,7 @@ import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.Condomino;
 import br.com.condominiosvirtuais.entity.Reserva;
 import br.com.condominiosvirtuais.entity.Unidade;
-import br.com.condominiosvirtuais.enumeration.ReservaEnum;
+import br.com.condominiosvirtuais.enumeration.ReservaSituacaoEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.service.AmbienteService;
 import br.com.condominiosvirtuais.service.BlocoService;
@@ -70,6 +70,8 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 	
 	private List<SelectItem> listaSIMeusAmbientes = null;
 	
+	private List<SelectItem> listaSISituacoes = null;
+	
 	private List<SelectItem> listaSIAmbientes = null;
 	
 	private List<CondominoVO> listaDeCondominosVOs = null;	
@@ -102,9 +104,6 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 	
 	private Integer idAmbiente = null;
 	
-// TODO: Código comentado em 27/07/2014 - Apagar em 90 dias	
-	//private String motivoReprovacao = null;
-	
 	private ReservaVO reservaVO;
 	
 	private UICalendar componenteDataReserva = null;
@@ -112,6 +111,8 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 	private UIAutocomplete componenteNomeCondomino;
 	
 	private UISelectOne componenteCondominio;	
+	
+	private static final String TODAS = "todas";
 	
 	
 	public ReservaMB(){
@@ -123,12 +124,13 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 	public void carregarListaSICondomimios() throws SQLException, Exception{
 		//this.carregarMeusAmbientes();
 		//this.habilitaCamboCondomino();
+		this.popularSituacaoes();
 	}
 	
 	public String salvarReserva(){
 		try{							
 			this.reserva.getCondomino().setId(this.condomino.getId());			
-			this.reserva.setSituacao(ReservaEnum.PENDENTE.getSituacao());
+			this.reserva.setSituacao(ReservaSituacaoEnum.PENDENTE.getSituacao());
 			this.condominio = this.condominioService.buscarPorCondomino(this.condomino);
 			this.populaNomeMeusAmbiente();
 			this.reservaService.solicitar(this.reserva,this.condominio.getSindicoGeral().getEmail().getEmail(),this.condominio.getSindicoGeral().getNome() );
@@ -151,7 +153,7 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 	public String salvarReservaPeloFuncionario(){
 		try{							
 			this.reserva.getCondomino().setId(this.condomino.getId());			
-			this.reserva.setSituacao(ReservaEnum.PENDENTE.getSituacao());
+			this.reserva.setSituacao(ReservaSituacaoEnum.PENDENTE.getSituacao());
 			this.condominio = this.condominioService.buscarPorCondomino(this.condomino);
 			this.populaNomeAmbiente();
 			this.reservaService.solicitar(this.reserva,this.condominio.getSindicoGeral().getEmail().getEmail(),this.condominio.getSindicoGeral().getNome() );
@@ -199,7 +201,7 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 			condomino.setId(reservaVO.getIdCondomino());
 			reservaLocal.setCondomino(condomino);
 			reservaLocal.setData(reservaVO.getData());
-			reservaLocal.setSituacao(ReservaEnum.APROVADA.getSituacao());		
+			reservaLocal.setSituacao(ReservaSituacaoEnum.APROVADA.getSituacao());		
 			this.reservaService.aprovar(reservaLocal);
 			this.buscarListaAprovarReserva();
 			ManagedBeanUtil.setMensagemInfo("msg.reserva.aprovadaSucesso");
@@ -229,7 +231,7 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 				reservaLocal.setCondomino(condomino);
 				reservaLocal.setData(reservaVO.getData());				
 				reservaLocal.setMotivoReprovacao(reservaVO.getMotivoReprovacao());			
-				reservaLocal.setSituacao(ReservaEnum.REPROVADA.getSituacao());
+				reservaLocal.setSituacao(ReservaSituacaoEnum.REPROVADA.getSituacao());
 				this.reservaService.reprovar(reservaLocal);
 				this.buscarListaAprovarReserva();
 				ManagedBeanUtil.setMensagemInfo("msg.reserva.reprovadaSucesso");				
@@ -317,7 +319,7 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 		Bloco bloco = null;
 		ReservaVO reservaVO = null;
 		try {
-			listaDeReservaLocol = this.reservaService.buscarPorCondominioETipo(this.condominio, ReservaEnum.PENDENTE.getSituacao());
+			listaDeReservaLocol = this.reservaService.buscarPorCondominioETipo(this.condominio, ReservaSituacaoEnum.PENDENTE.getSituacao());
 			for (Reserva reserva : listaDeReservaLocol) {
 				reservaVO = new ReservaVO();
 				reservaVO.setId(reserva.getId());
@@ -415,7 +417,11 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 		Bloco bloco = null;
 		ReservaVO reservaVO = null;
 		try {
-			listaDeReservaLocol = this.reservaService.buscarPorCondominio(this.condominio);
+			if(this.reserva.getSituacao().equals(TODAS)){
+				listaDeReservaLocol = this.reservaService.buscarPorCondominio(this.condominio);				
+			}else{
+				listaDeReservaLocol = this.reservaService.buscarPorCondominioETipo(condominio, this.reserva.getSituacao());
+			}
 			for (Reserva reserva : listaDeReservaLocol) {
 				reservaVO = new ReservaVO();
 				reservaVO.setId(reserva.getId());
@@ -500,6 +506,16 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 			}
 			indiceListaSIAmbiente++;
 		}		
+	}
+	
+	private void popularSituacaoes(){
+		this.listaSISituacoes = new ArrayList<SelectItem>();
+		this.listaSISituacoes.add(new SelectItem(ReservaSituacaoEnum.APROVADA.getSituacao(), AplicacaoUtil.i18n("reserva.situacao.1")));
+		this.listaSISituacoes.add(new SelectItem(ReservaSituacaoEnum.PENDENTE.getSituacao(), AplicacaoUtil.i18n("reserva.situacao.2")));
+		this.listaSISituacoes.add(new SelectItem(ReservaSituacaoEnum.REPROVADA.getSituacao(), AplicacaoUtil.i18n("reserva.situacao.0")));
+		this.listaSISituacoes.add(new SelectItem(ReservaSituacaoEnum.SUSPENSA.getSituacao(), AplicacaoUtil.i18n("reserva.situacao.3")));
+		this.listaSISituacoes.add(new SelectItem(TODAS, AplicacaoUtil.i18n(TODAS)));
+		
 	}
 	
 	@Override
@@ -673,17 +689,6 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 		this.idAmbiente = idAmbiente;
 	}	
 
-// TODO: Código comentado em 27/07/2014 - Apagar em 90 dias	
-//	public String getMotivoReprovacao() {
-//		System.out.println("get "+ motivoReprovacao);
-//		return motivoReprovacao;
-//	}
-//
-//	public void setMotivoReprovacao(String motivoReprovacao) {
-//		System.out.println("set "+motivoReprovacao);
-//		this.motivoReprovacao = motivoReprovacao;
-//	}
-	
 	public UICalendar getComponenteDataReserva() {
 		return componenteDataReserva;
 	}
@@ -706,14 +711,21 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 
 	public void setComponenteNomeCondomino(UIAutocomplete componenteNomeCondomino) {
 		this.componenteNomeCondomino = componenteNomeCondomino;
-	}
-	
+	}	
 
 	public ReservaVO getReservaVO() {
 		return reservaVO;
 	}
-
 	public void setReservaVO(ReservaVO reservaVO) {
 		this.reservaVO = reservaVO;
 	}
+
+	public List<SelectItem> getListaSISituacoes() {
+		return listaSISituacoes;
+	}
+
+	public void setListaSISituacoes(List<SelectItem> listaSISituacoes) {
+		this.listaSISituacoes = listaSISituacoes;
+	}	
+	
 }
