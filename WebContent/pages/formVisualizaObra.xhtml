@@ -29,6 +29,13 @@
 					<h:outputText id="idDataFim" value="#{obraMB.obra.dataFim}" rendered="#{obraMB.obra.dataFim != null}">
 						<f:convertDateTime pattern="#{msg.formatoData}" timeZone="#{msg.timeZone}"/>
 					</h:outputText>					
+					<h:outputLabel value="#{msg['obra.valor']}: " for="idValor" rendered="#{obraMB.obra.valor != null}"/>
+					<h:outputText id="idValor" value="#{obraMB.obra.valor}" rendered="#{obraMB.obra.valor != null}">
+						<f:convertNumber pattern="#{msg.formatoMoeda}" />
+					</h:outputText>	
+					<h:outputLabel value="#{msg['obra.descricao']}: " for="idDescricao" rendered="#{obraMB.obra.descricao != ''}"/>
+					<h:outputText id="idDescricao" value="#{obraMB.obra.descricao}" rendered="#{obraMB.obra.descricao != ''}" />						
+										
 				</h:panelGrid>
 				<div></div>
 			</rich:panel>

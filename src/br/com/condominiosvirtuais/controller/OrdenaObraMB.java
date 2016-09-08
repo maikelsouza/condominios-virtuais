@@ -18,6 +18,8 @@ public class OrdenaObraMB implements Serializable {
 	
 	private SortOrder dataFimObra = SortOrder.unsorted;
 	
+	private SortOrder valorObra = SortOrder.unsorted;
+	
 	private SortOrder descricaoObra = SortOrder.unsorted;
 	
 	public void ordenarPorNomeObra() {
@@ -26,6 +28,7 @@ public class OrdenaObraMB implements Serializable {
 		this.setTipoObra(SortOrder.unsorted);
 		this.setSituacaoObra(SortOrder.unsorted);
 		this.setDescricaoObra(SortOrder.unsorted);
+		this.setValorObra(SortOrder.unsorted);
 		if (this.nomeObra.equals(SortOrder.ascending)) {
 			this.setNomeObra(SortOrder.descending);
 		} else {
@@ -39,6 +42,7 @@ public class OrdenaObraMB implements Serializable {
 		this.setDataInicioObra(SortOrder.unsorted);		
 		this.setSituacaoObra(SortOrder.unsorted);
 		this.setDescricaoObra(SortOrder.unsorted);
+		this.setValorObra(SortOrder.unsorted);
 		if (this.tipoObra.equals(SortOrder.ascending)) {
 			this.setTipoObra(SortOrder.descending);
 		} else {
@@ -52,6 +56,7 @@ public class OrdenaObraMB implements Serializable {
 		this.setDataInicioObra(SortOrder.unsorted);			
 		this.setTipoObra(SortOrder.unsorted);
 		this.setDescricaoObra(SortOrder.unsorted);
+		this.setValorObra(SortOrder.unsorted);
 		if (this.situacaoObra.equals(SortOrder.ascending)) {
 			this.setSituacaoObra(SortOrder.descending);
 		} else {
@@ -65,6 +70,7 @@ public class OrdenaObraMB implements Serializable {
 		this.setTipoObra(SortOrder.unsorted);
 		this.setSituacaoObra(SortOrder.unsorted);
 		this.setDescricaoObra(SortOrder.unsorted);
+		this.setValorObra(SortOrder.unsorted);
 		if (this.dataInicioObra.equals(SortOrder.ascending)) {
 			this.setDataInicioObra(SortOrder.descending);
 		} else {
@@ -77,11 +83,26 @@ public class OrdenaObraMB implements Serializable {
 		this.setDataInicioObra(SortOrder.unsorted);
 		this.setTipoObra(SortOrder.unsorted);
 		this.setSituacaoObra(SortOrder.unsorted);
+		this.setValorObra(SortOrder.unsorted);
 		this.setDescricaoObra(SortOrder.unsorted);
 		if (this.dataFimObra.equals(SortOrder.ascending)) {
 			this.setDataFimObra(SortOrder.descending);
 		} else {
 			this.setDataFimObra(SortOrder.ascending);
+		}
+	}
+	
+	public void ordenarPorValorObra() {
+		this.setNomeObra(SortOrder.unsorted);
+		this.setDataInicioObra(SortOrder.unsorted);
+		this.setDataFimObra(SortOrder.unsorted);
+		this.setTipoObra(SortOrder.unsorted);		
+		this.setSituacaoObra(SortOrder.unsorted);
+		this.setDescricaoObra(SortOrder.unsorted);
+		if (this.valorObra.equals(SortOrder.ascending)) {
+			this.setValorObra(SortOrder.descending);
+		} else {
+			this.setValorObra(SortOrder.ascending);
 		}
 	}
 	
@@ -91,6 +112,7 @@ public class OrdenaObraMB implements Serializable {
 		this.setDataFimObra(SortOrder.unsorted);
 		this.setTipoObra(SortOrder.unsorted);		
 		this.setSituacaoObra(SortOrder.unsorted);
+		this.setValorObra(SortOrder.unsorted);
 		if (this.descricaoObra.equals(SortOrder.ascending)) {
 			this.setDescricaoObra(SortOrder.descending);
 		} else {
@@ -136,6 +158,14 @@ public class OrdenaObraMB implements Serializable {
 
 	public void setDataFimObra(SortOrder dataFimObra) {
 		this.dataFimObra = dataFimObra;
+	}
+
+	public SortOrder getValorObra() {
+		return valorObra;
+	}
+
+	public void setValorObra(SortOrder valorObra) {
+		this.valorObra = valorObra;
 	}
 
 	public SortOrder getDescricaoObra() {

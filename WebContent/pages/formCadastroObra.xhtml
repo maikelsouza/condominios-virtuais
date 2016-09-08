@@ -62,15 +62,20 @@
 							datePattern="#{msg['formatoData']}" cellWidth="24px"
 							cellHeight="22px" style="width:200px" mode="ajax">
 					</rich:calendar>							
-				</h:panelGrid>		
-				<h:panelGrid columns="1">
+					<h:panelGrid columns="1">
+						<h:outputLabel value="#{msg['obra.valor']}:" for="idValor" />		
+						<h:inputText id="idValor" value="#{obraMB.obra.valor}" label="#{msg['obra.valor.label']}">
+							<f:convertNumber pattern="#{msg.formatoMoeda}" />
+						</h:inputText>	
+					</h:panelGrid>
+					<h:panelGrid columns="1">
 						<h:outputLabel value="#{msg['obra.descricao']}:" for="idDescricao" />	
-						<h:inputTextarea id="idDescricao" value="#{obraMB.obra.descricao}" label="#{msg['obra.descricao.label']}"  rows="4" cols="50" validatorMessage="#{msg['msg.chamado.comentarioTamanhoMaximo']}">
-							<f:validateLength maximum="240" />
+						<h:inputTextarea id="idDescricao" value="#{obraMB.obra.descricao}" label="#{msg['obra.descricao.label']}"  rows="4" cols="40" validatorMessage="#{msg['msg.chamado.comentarioTamanhoMaximo']}">
+							<f:validateLength maximum="140" />
 						</h:inputTextarea>
 					</h:panelGrid>					
+				</h:panelGrid>		
 			</rich:panel>
-			
 			<rich:panel  header="#{msg['obra.painelDadosResponsavel']}"  id="idPainelDadosResponsavel">
 				<h:panelGrid columns="3">
 					<h:panelGroup>	

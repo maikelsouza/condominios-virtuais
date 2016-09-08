@@ -40,6 +40,8 @@ public class ObraDAOImpl implements ObraDAO, Serializable {
 	
 	private static final String DATA_FIM = "DATA_FIM";
 	
+	private static final String VALOR = "VALOR";
+	
 	private static final String ID_CONDOMINIO = "ID_CONDOMINIO";
 	
 	@Inject
@@ -72,8 +74,10 @@ public class ObraDAOImpl implements ObraDAO, Serializable {
 		query.append(DATA_FIM);
 		query.append(",");		
 		query.append(ID_CONDOMINIO);
+		query.append(",");		
+		query.append(VALOR);		
 		query.append(") ");
-		query.append("VALUES(?,?,?,?,?,?,?)");
+		query.append("VALUES(?,?,?,?,?,?,?,?)");
 		PreparedStatement statement = null;
 		try {			
 			statement = con.prepareStatement(query.toString(), PreparedStatement.RETURN_GENERATED_KEYS);			
@@ -84,6 +88,7 @@ public class ObraDAOImpl implements ObraDAO, Serializable {
 			SQLUtil.setValorPpreparedStatement(statement, 5, obra.getDataInicio(), java.sql.Types.DATE);
 			SQLUtil.setValorPpreparedStatement(statement, 6, obra.getDataFim(), java.sql.Types.DATE);
 			SQLUtil.setValorPpreparedStatement(statement, 7, obra.getIdCondominio(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 8, obra.getValor(), java.sql.Types.DOUBLE);
 			statement.executeUpdate();
 			ResultSet rs = statement.getGeneratedKeys();
 			rs.next();
@@ -130,8 +135,10 @@ public class ObraDAOImpl implements ObraDAO, Serializable {
 		query.append(DATA_FIM);
 		query.append(",");		
 		query.append(ID_CONDOMINIO);
+		query.append(",");		
+		query.append(VALOR);
 		query.append(") ");
-		query.append("VALUES(?,?,?,?,?,?,?)");
+		query.append("VALUES(?,?,?,?,?,?,?,?)");
 		PreparedStatement statement = null;
 		try {			
 			statement = con.prepareStatement(query.toString(), PreparedStatement.RETURN_GENERATED_KEYS);			
@@ -142,6 +149,7 @@ public class ObraDAOImpl implements ObraDAO, Serializable {
 			SQLUtil.setValorPpreparedStatement(statement, 5, obra.getDataInicio(), java.sql.Types.DATE);
 			SQLUtil.setValorPpreparedStatement(statement, 6, obra.getDataFim(), java.sql.Types.DATE);
 			SQLUtil.setValorPpreparedStatement(statement, 7, obra.getIdCondominio(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 8, obra.getValor(), java.sql.Types.DOUBLE);
 			statement.executeUpdate();
 			ResultSet rs = statement.getGeneratedKeys();
 			rs.next();
@@ -205,6 +213,7 @@ public class ObraDAOImpl implements ObraDAO, Serializable {
 				obra.setDataInicio((Date) SQLUtil.getValorResultSet(resultSet, DATA_INICIO, java.sql.Types.DATE));
 				obra.setDataFim((Date) SQLUtil.getValorResultSet(resultSet, DATA_FIM, java.sql.Types.DATE));	
 				obra.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
+				obra.setValor((Double) SQLUtil.getValorResultSet(resultSet, VALOR, java.sql.Types.DOUBLE));
 				obra.setResponsavelObra(this.responsavelObra.buscarPorId(this.obraResponsavelObraDAO.buscarPorIdObra(obra.getId(), con).getIdResponsavelObra(), con));
 				listaObra.add(obra);
 			}
@@ -275,6 +284,8 @@ public class ObraDAOImpl implements ObraDAO, Serializable {
 		query.append(DATA_FIM);	
 		query.append("= ?, ");
 		query.append(ID_CONDOMINIO);	
+		query.append("= ?, ");
+		query.append(VALOR);	
 		query.append("= ? ");
 		query.append(" WHERE ");
 		query.append(ID);
@@ -291,7 +302,8 @@ public class ObraDAOImpl implements ObraDAO, Serializable {
 			SQLUtil.setValorPpreparedStatement(statement, 5, obra.getDataInicio(), java.sql.Types.DATE);
 			SQLUtil.setValorPpreparedStatement(statement, 6, obra.getDataFim(), java.sql.Types.DATE);
 			SQLUtil.setValorPpreparedStatement(statement, 7, obra.getIdCondominio(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement, 8, obra.getId(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 8, obra.getValor(), java.sql.Types.DOUBLE);
+			SQLUtil.setValorPpreparedStatement(statement, 9, obra.getId(), java.sql.Types.INTEGER);
 			statement.executeUpdate();
 			this.responsavelObra.atualizar(obra.getResponsavelObra(), con);
 			obraResponsavelObra.setIdObra(obra.getId());
@@ -333,6 +345,8 @@ public class ObraDAOImpl implements ObraDAO, Serializable {
 		query.append(DATA_FIM);	
 		query.append("= ?, ");
 		query.append(ID_CONDOMINIO);	
+		query.append("= ?, ");
+		query.append(VALOR);	
 		query.append("= ? ");
 		query.append(" WHERE ");
 		query.append(ID);
@@ -349,7 +363,8 @@ public class ObraDAOImpl implements ObraDAO, Serializable {
 			SQLUtil.setValorPpreparedStatement(statement, 5, obra.getDataInicio(), java.sql.Types.DATE);
 			SQLUtil.setValorPpreparedStatement(statement, 6, obra.getDataFim(), java.sql.Types.DATE);
 			SQLUtil.setValorPpreparedStatement(statement, 7, obra.getIdCondominio(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement, 8, obra.getId(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 8, obra.getValor(), java.sql.Types.DOUBLE);
+			SQLUtil.setValorPpreparedStatement(statement, 9, obra.getId(), java.sql.Types.INTEGER);
 			statement.executeUpdate();
 			idResponsavelObra = this.responsavelObra.salvar(obra.getResponsavelObra(), con);
 			obraResponsavelObra.setIdObra(obra.getId());

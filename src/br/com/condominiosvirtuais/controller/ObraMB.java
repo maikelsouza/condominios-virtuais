@@ -72,6 +72,8 @@ public class ObraMB implements Serializable {
 	
 	private Integer tipoPessoa;
 	
+	private Integer idCondominio;
+	
 	private Boolean exibeDadosPessoaFisica;
 	
 	@PostConstruct
@@ -94,8 +96,12 @@ public class ObraMB implements Serializable {
 				this.obraService.salvarObraEAtualizarResponsavel(this.obra);
 			}else{
 				this.obraService.salvarObraESalvaResponsavelObra(this.obra);				
-			}			
+			}
+			this.dataInicioDe = this.obra.getDataInicio();
+			this.dataInicioAte = this.obra.getDataFim();
+			this.idCondominio = this.obra.getIdCondominio();
 			this.inicializarTela();
+			this.pesquisarObra();
 			ManagedBeanUtil.setMensagemInfo("msg.obra.salvaSucesso");
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
@@ -106,7 +112,7 @@ public class ObraMB implements Serializable {
 			logger.error("", e);
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");			
 		}	
-		return null;
+		return "salvar";
 	}
 	
 	public String excluirObra(){		
@@ -223,7 +229,7 @@ public class ObraMB implements Serializable {
 	
 	public void pesquisarObra(){
 		try {
-			this.listaObraDataModel = new ListDataModel<Obra>(this.obraService.buscarPorCondominioEPeriodoDeAte(this.obra.getIdCondominio(), this.dataInicioDe, this.dataInicioAte));
+			this.listaObraDataModel = new ListDataModel<Obra>(this.obraService.buscarPorCondominioEPeriodoDeAte(this.idCondominio, this.dataInicioDe, this.dataInicioAte));
 			if(this.listaObraDataModel .getRowCount() == 0){
 				ManagedBeanUtil.setMensagemInfo("msg.obra.semObra");
 			}
@@ -332,7 +338,11 @@ public class ObraMB implements Serializable {
 	}
 	
 	public void inicializaPessoa(){
-		this.tipoPessoa = ResponsavelObraTipoPessoaEnum.PESSOA_FISICA.getTipoPessoa();
+		if(this.obra.getResponsavelObra().getTipoPessoa() == null){
+			this.tipoPessoa = ResponsavelObraTipoPessoaEnum.PESSOA_FISICA.getTipoPessoa();
+		}else{
+			this.tipoPessoa = this.obra.getResponsavelObra().getTipoPessoa();
+		}
 	}
 	
 	private Boolean validaTelaCadastro(){
@@ -477,6 +487,14 @@ public class ObraMB implements Serializable {
 
 	public void setExibeDadosPessoaFisica(Boolean exibeDadosPessoaFisica) {
 		this.exibeDadosPessoaFisica = exibeDadosPessoaFisica;
+	}
+
+	public Integer getIdCondominio() {
+		return idCondominio;
+	}
+
+	public void setIdCondominio(Integer idCondominio) {
+		this.idCondominio = idCondominio;
 	}	
 
 }

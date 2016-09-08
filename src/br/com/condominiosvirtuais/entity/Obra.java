@@ -20,6 +20,8 @@ public class Obra {
 	
 	private String descricao;
 	
+	private Double valor;
+	
 	private ResponsavelObra responsavelObra;
 	
 	private Integer idCondominio;
@@ -82,6 +84,14 @@ public class Obra {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}	
+
+	public Double getValor() {
+		return valor;
+	}
+
+	public void setValor(Double valor) {
+		this.valor = valor;
 	}
 
 	public ResponsavelObra getResponsavelObra() {

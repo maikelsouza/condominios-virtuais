@@ -27,7 +27,7 @@
 						<h:outputLabel value="#{msg['obra.dataInicioAte']}:" for="idCalendarDataInicioAte"/>
 						<span class="asterisco">*</span>
 					</h:panelGroup>							
-					<h:selectOneMenu id="idCondominio" value="#{obraMB.obra.idCondominio}"
+					<h:selectOneMenu id="idCondominio" value="#{obraMB.idCondominio}"
 						defaultLabel="#{msg['condominio.DefaultLabel']}" required="true" label="#{msg['condominio.label']}">
 						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="true" />
 						<f:selectItems value="#{obraMB.listaSICondominios}" />
@@ -99,11 +99,18 @@
 								<f:convertDateTime pattern="#{msg.formatoData}" timeZone="#{msg.timeZone}"/>
 							</h:outputText>
 						</rich:column>
-						<rich:column sortBy="#{obra.descricao}" sortOrder="#{ordenaObraMB.descricaoObra}">
+						<rich:column sortBy="#{obra.valor}" sortOrder="#{ordenaObraMB.valorObra}">
+							<f:facet name="header">
+							    
+								<a4j:commandLink value="#{msg['obra.valor']}" render="tableObra" action="#{ordenaObraMB.ordenarPorValorObra}" />
+							</f:facet>
+							<h:outputText value="#{obra.valor}" />
+						</rich:column>						
+						<rich:column sortBy="#{obra.descricao}" sortOrder="#{ordenaObraMB.descricaoObra}" >
 							<f:facet name="header">
 								<a4j:commandLink value="#{msg['obra.descricao']}" render="tableObra" action="#{ordenaObraMB.ordenarPorDescricaoObra}" />
 							</f:facet>
-							<h:outputText value="#{obra.descricao}" />
+							<h:outputText value="#{obra.descricao.length() >= 50 ?  obra.descricao.substring(0,25) : obra.descricao}" />
 						</rich:column>						
 						<rich:column>
 							<f:facet name="header">

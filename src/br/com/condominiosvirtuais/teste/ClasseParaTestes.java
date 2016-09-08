@@ -53,8 +53,11 @@ public class ClasseParaTestes {
 
 		Date data = new Date();
 		   String dataString = "dd/MM/yyyy";
-		   SimpleDateFormat spd = new SimpleDateFormat(dataString);
-		   System.out.println("Data de hoje: "+spd.format(data));
+		  // dataString.substring(beginIndex)
+		  dataString = "sdmfmsdmfms.fmasdmfsdm.,fmsdmf.msdmfmsdmfmsfmasdmfsdm";
+		   
+		   System.out.println(dataString.substring(0,10));
+		   
     
 
 	}
