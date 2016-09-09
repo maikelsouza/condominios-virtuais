@@ -3,6 +3,7 @@ package br.com.condominiosvirtuais.controller;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -245,6 +246,36 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 		}		
 	}
 	
+	public void suspenderReserva(ActionEvent event){
+		try {
+			ReservaVO reservaVO = this.listaDeReservasVOs.getRowData();
+			if(reservaVO.getMotivoSuspensao().trim().equals("")){
+				ManagedBeanUtil.setMensagemErro("msg.reserva.motivoSuspensaoObrigatorio");
+			}else{
+				Reserva reservaLocal = new Reserva();
+				reservaLocal.setId(reservaVO.getId());
+				Ambiente ambiente = new Ambiente();
+				ambiente.setId(reservaVO.getIdAmbiente());
+				ambiente.setNome(reservaVO.getAmbiente());
+				reservaLocal.setAmbiente(ambiente);
+				Condomino condomino = this.condominoService.buscarPorId(reservaVO.getIdCondomino());
+				condomino.setId(reservaVO.getIdCondomino());
+				reservaLocal.setCondomino(condomino);
+				reservaLocal.setData(reservaVO.getData());				
+				reservaLocal.setMotivoSuspensao(reservaVO.getMotivoSuspensao());			
+				reservaLocal.setSituacao(ReservaSituacaoEnum.SUSPENSA.getSituacao());
+				this.reservaService.suspender(reservaLocal);
+				this.buscarListaAprovarReserva();
+				ManagedBeanUtil.setMensagemInfo("msg.reserva.suspensaoSucesso");				
+			}
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}		
+	}
 	
 	public String atualizarReserva(){
 		try {
@@ -284,8 +315,9 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 		return "voltar";
 	}
 	
-	public void limparReserva(ActionEvent event){		
-		listaMinhasReservas = new ListDataModel<Reserva>();	
+	public void limparReserva(ActionEvent event){				
+		this.carregarMeusAmbientes();
+		this.reserva = new Reserva();			
 	}
 
 	
@@ -315,11 +347,15 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 	public void buscarListaAprovarReserva() {
 		List<Reserva> listaDeReservaLocol = null;
 		List<ReservaVO> listaDeReservaLocolVOs = new ArrayList<ReservaVO>();
+		List<String> listaSituacoes = new ArrayList<String>();
+		listaSituacoes.add(ReservaSituacaoEnum.PENDENTE.getSituacao());
+		listaSituacoes.add(ReservaSituacaoEnum.APROVADA.getSituacao());
+		listaSituacoes.add(ReservaSituacaoEnum.SUSPENSA.getSituacao());
 		Unidade unidade = null;
 		Bloco bloco = null;
 		ReservaVO reservaVO = null;
-		try {
-			listaDeReservaLocol = this.reservaService.buscarPorCondominioETipo(this.condominio, ReservaSituacaoEnum.PENDENTE.getSituacao());
+		try {			
+			listaDeReservaLocol = this.reservaService.buscarPorCondominioESituacoesEAteData(this.condominio, listaSituacoes, new Date());
 			for (Reserva reserva : listaDeReservaLocol) {
 				reservaVO = new ReservaVO();
 				reservaVO.setId(reserva.getId());
@@ -458,7 +494,8 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 			this.listaSIMeusAmbientes = new ArrayList<SelectItem>();
 			for (Ambiente ambiente : listaAmbiente) {
 				this.listaSIMeusAmbientes.add(new SelectItem(ambiente.getId(), ambiente.getNome()));
-			}		
+			}	
+			this.popularListaMinhasReservas();
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
@@ -471,7 +508,12 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 	public void limparListaReservas(ActionEvent actionEvent){
 		this.listaReservasVOs = new ListDataModel<ReservaVO>();
 		this.reserva = new Reserva();		
-		//ManagedBeanUtil.cleanSubmittedValues(this.componenteCondominio);
+		this.populaNomeMeusAmbiente();
+	}
+	
+	public void limparListaAprovarReservas(ActionEvent actionEvent){
+		this.listaDeReservasVOs = new ListDataModel<ReservaVO>();		
+		this.condominio = new Condominio();
 	}
 	
 

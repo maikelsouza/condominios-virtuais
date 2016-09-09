@@ -23,9 +23,13 @@ public interface ReservaService {
 	
 	public abstract void reprovar(Reserva reserva) throws SQLException, Exception;
 	
+	public abstract void suspender(Reserva reserva) throws SQLException, Exception;
+	
 	public abstract void solicitar(Reserva reserva, String emailSindico, String nomeSindico) throws SQLException, Exception;
 	
 	public abstract List<Reserva> buscarPorCondominioETipo(Condominio condominio, String tipo) throws SQLException, Exception;
+	
+	public abstract List<Reserva> buscarPorCondominioESituacoesEAteData(Condominio condominio, List<String> listaSituacao, Date data) throws SQLException, Exception;
 	
 	public abstract List<Reserva> buscarPorCondominio(Condominio condominio) throws SQLException, Exception;
 	

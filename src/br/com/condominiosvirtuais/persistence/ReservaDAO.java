@@ -21,11 +21,15 @@ public interface ReservaDAO {
 
 	public abstract List<Reserva> buscarPorCondominioETipo(Condominio condominio, String tipo) throws SQLException, Exception;
 	
+	public abstract List<Reserva> buscarPorCondominioESituacoesEAteData(Condominio condominio, List<String> listaSituacao, Date data) throws SQLException, Exception;
+	
 	public abstract List<Reserva> buscarPorCondominio(Condominio condominio) throws SQLException, Exception;
 	
 	public abstract List<Reserva> buscarPorIdAmbienteEMaiorIgualDataEPendeteOUAprovado(Integer idAmbiente, Date data) throws NumberFormatException, SQLException, Exception;
 	
 	public abstract void aprovar(Reserva reserva) throws SQLException, Exception;
+	
+	public abstract void suspender(Reserva reserva) throws SQLException, Exception;
 	
 	public abstract void reprovar(Reserva reserva) throws SQLException, Exception;
 }

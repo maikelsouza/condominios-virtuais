@@ -59,14 +59,10 @@
 				</h:panelGrid>
 			</rich:panel>
 			<div>
-				<h:panelGrid columns="3">
-				<h:commandButton value="#{msg.botaoPesquisar}" immediate="true"
-						action="#{reservaMB.popularListaMinhasReservas}" />
-					<h:commandButton value="#{msg.botaoSalvar}" 
-						action="#{reservaMB.salvarReserva}" />
-					<h:commandButton value="#{msg.botaoLimpar}"
-						actionListener="#{reservaMB.limparReserva}" immediate="true" />
-				</h:panelGrid>
+			<h:panelGrid columns="2">				
+				<h:commandButton value="#{msg.botaoSalvar}" action="#{reservaMB.salvarReserva}" />
+				<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{reservaMB.limparReserva}" />
+			</h:panelGrid>
 			</div>
 			<rich:panel>
 				<f:facet name="header">
@@ -114,6 +110,14 @@
 									action="#{ordenaReservaMB.ordenarPorMotivoReprovacao}" />
 							</f:facet>
 							<h:outputText value="#{reserva.motivoReprovacao}" />
+						</rich:column>
+						<rich:column sortBy="#{reserva.motivoSuspensao}"
+							sortOrder="#{ordenaReservaMB.motivoSuspensao}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['reserva.motivoSuspensao']}"
+									render="tableReserva" action="#{ordenaReservaMB.ordenarPorMotivoSuspensao}" />
+							</f:facet>
+							<h:outputText value="#{reserva.motivoSuspensao}" />
 						</rich:column>
 						<rich:column style="width:5%;">
 							<f:facet name="header">

@@ -9,10 +9,7 @@
 	xmlns:c="http://java.sun.com/jstl/core"
 	template="/templates/templatePrincipal.xhtml">
 
-	<ui:define name="conteudo">
-		<f:metadata>
-			<f:event type="preRenderView" listener="#{reservaMB.abreSessao}" />
-		</f:metadata>
+	<ui:define name="conteudo">		
 		<h:form id="idFormListaReserva" styleClass="content">
 			<rich:panel>
 				<f:facet name="header">

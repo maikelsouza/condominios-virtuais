@@ -144,13 +144,11 @@ public class PrincipalMB  implements Serializable{
 		return "listarFuncionarioCondominio";
 	}
 	              
-	public String listarFuncionarioBloco(){
-		this.finalizaSessoes();
+	public String listarFuncionarioBloco(){		
 		return "listarFuncionarioBloco";
 	}
 	
 	public String cadastroListarReserva(){
-		this.finalizaSessoes();
 		return "cadastroListarReserva";
 	}
 	
@@ -290,16 +288,17 @@ public class PrincipalMB  implements Serializable{
 	}
 	
 	private void finalizaSessoes(){
-		this.condominioMB.fechaSessao();
-		this.blocoMB.fechaSessao();
-		this.unidadeMB.fechaSessao();
-		this.ambienteMB.fechaSessao();
-		this.itemAmbienteMB.fechaSessao();		
-		this.ambienteMB.fechaSessao();
-		this.reservaMB.fechaSessao();
-		this.mensagemMB.fechaSessao();
-		this.enqueteMB.fechaSessao();
-		this.veiculoMB.fechaSessao();
+// TODO: Código comentado em 09/09/2016. Apagar em 90 dias		
+//		this.condominioMB.fechaSessao();
+//		this.blocoMB.fechaSessao();
+//		this.unidadeMB.fechaSessao();
+//		this.ambienteMB.fechaSessao();
+//		this.itemAmbienteMB.fechaSessao();		
+//		this.ambienteMB.fechaSessao();
+//		this.reservaMB.fechaSessao();
+//		this.mensagemMB.fechaSessao();
+//		this.enqueteMB.fechaSessao();
+//		this.veiculoMB.fechaSessao();
 	}
 
 	public CondominioMB getCondominioMB() {

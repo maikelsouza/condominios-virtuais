@@ -25,6 +25,8 @@ public class ReservaVO {
 	private String situacao;
 	
 	private String motivoReprovacao;
+	
+	private String motivoSuspensao;
 
 	public Integer getId() {
 		return id;
@@ -114,7 +116,14 @@ public class ReservaVO {
 	public void setMotivoReprovacao(String motivoReprovacao) {
 		this.motivoReprovacao = motivoReprovacao;
 	}
-	
+
+	public String getMotivoSuspensao() {
+		return motivoSuspensao;
+	}
+
+	public void setMotivoSuspensao(String motivoSuspensao) {
+		this.motivoSuspensao = motivoSuspensao;
+	}
 	
 
 }

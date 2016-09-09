@@ -24,6 +24,8 @@ public class OrdenaReservaMB implements Serializable {
 	
 	private SortOrder motivoReprovacao = SortOrder.unsorted;
 	
+	private SortOrder motivoSuspensao = SortOrder.unsorted;
+	
 	private SortOrder bloco = SortOrder.unsorted;
 	
 	private SortOrder unidade = SortOrder.unsorted;
@@ -37,6 +39,8 @@ public class OrdenaReservaMB implements Serializable {
 		this.setBloco(SortOrder.unsorted);
 		this.setUnidade(SortOrder.unsorted);
 		this.setCondomino(SortOrder.unsorted);		
+		this.setMotivoReprovacao(SortOrder.unsorted);
+		this.setMotivoSuspensao(SortOrder.unsorted);
 		if (nomeAmbiente.equals(SortOrder.ascending)) {
 			this.setNomeAmbiente(SortOrder.descending);
 		} else {
@@ -50,6 +54,8 @@ public class OrdenaReservaMB implements Serializable {
 		this.setBloco(SortOrder.unsorted);
 		this.setUnidade(SortOrder.unsorted);
 		this.setCondomino(SortOrder.unsorted);		
+		this.setMotivoReprovacao(SortOrder.unsorted);
+		this.setMotivoSuspensao(SortOrder.unsorted);
 		if (dataReserva.equals(SortOrder.ascending)) {
 			this.setDataReserva(SortOrder.descending);
 		} else {
@@ -63,6 +69,8 @@ public class OrdenaReservaMB implements Serializable {
 		this.setBloco(SortOrder.unsorted);
 		this.setUnidade(SortOrder.unsorted);
 		this.setCondomino(SortOrder.unsorted);	
+		this.setMotivoReprovacao(SortOrder.unsorted);
+		this.setMotivoSuspensao(SortOrder.unsorted);
 		if (situacao.equals(SortOrder.ascending)) {
 			this.setSituacao(SortOrder.descending);
 		} else {
@@ -75,7 +83,9 @@ public class OrdenaReservaMB implements Serializable {
 		this.setDataReserva(SortOrder.unsorted);
 		this.setSituacao(SortOrder.unsorted);
 		this.setUnidade(SortOrder.unsorted);
-		this.setCondomino(SortOrder.unsorted);		
+		this.setCondomino(SortOrder.unsorted);	
+		this.setMotivoReprovacao(SortOrder.unsorted);
+		this.setMotivoSuspensao(SortOrder.unsorted);
 		if (bloco.equals(SortOrder.ascending)) {
 			this.setBloco(SortOrder.descending);
 		} else {
@@ -89,6 +99,8 @@ public class OrdenaReservaMB implements Serializable {
 		this.setSituacao(SortOrder.unsorted);
 		this.setBloco(SortOrder.unsorted);
 		this.setCondomino(SortOrder.unsorted);
+		this.setMotivoReprovacao(SortOrder.unsorted);
+		this.setMotivoSuspensao(SortOrder.unsorted);
 		if (unidade.equals(SortOrder.ascending)) {
 			this.setUnidade(SortOrder.descending);
 		} else {
@@ -102,6 +114,8 @@ public class OrdenaReservaMB implements Serializable {
 		this.setSituacao(SortOrder.unsorted);
 		this.setBloco(SortOrder.unsorted);
 		this.setUnidade(SortOrder.unsorted);
+		this.setMotivoReprovacao(SortOrder.unsorted);
+		this.setMotivoSuspensao(SortOrder.unsorted);
 		if (condomino.equals(SortOrder.ascending)) {
 			this.setCondomino(SortOrder.descending);
 		} else {
@@ -115,11 +129,26 @@ public class OrdenaReservaMB implements Serializable {
 		this.setSituacao(SortOrder.unsorted);
 		this.setBloco(SortOrder.unsorted);
 		this.setUnidade(SortOrder.unsorted);
+		this.setMotivoSuspensao(SortOrder.unsorted);
 		this.setMotivoReprovacao(SortOrder.unsorted);
 		if (motivoReprovacao.equals(SortOrder.ascending)) {
 			this.setMotivoReprovacao(SortOrder.descending);
 		} else {
 			this.setMotivoReprovacao(SortOrder.ascending);
+		}
+	}
+	
+	public void ordenarPorMotivoSuspensao() {
+		this.setNomeAmbiente(SortOrder.unsorted);
+		this.setDataReserva(SortOrder.unsorted);
+		this.setSituacao(SortOrder.unsorted);
+		this.setBloco(SortOrder.unsorted);
+		this.setUnidade(SortOrder.unsorted);
+		this.setMotivoReprovacao(SortOrder.unsorted);
+		if (motivoSuspensao.equals(SortOrder.ascending)) {
+			this.setMotivoSuspensao(SortOrder.descending);
+		} else {
+			this.setMotivoSuspensao(SortOrder.ascending);
 		}
 	}
 
@@ -178,5 +207,15 @@ public class OrdenaReservaMB implements Serializable {
 	public void setMotivoReprovacao(SortOrder motivoReprovacao) {
 		this.motivoReprovacao = motivoReprovacao;
 	}
+
+	public SortOrder getMotivoSuspensao() {
+		return motivoSuspensao;
+	}
+
+	public void setMotivoSuspensao(SortOrder motivoSuspensao) {
+		this.motivoSuspensao = motivoSuspensao;
+	}
+	
+	
 
 }

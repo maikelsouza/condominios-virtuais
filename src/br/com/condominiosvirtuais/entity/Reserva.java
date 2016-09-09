@@ -23,6 +23,8 @@ public class Reserva {
 	
 	private String motivoReprovacao;
 	
+	private String motivoSuspensao;
+	
 	
 	public Reserva() {
 		this.ambiente = new Ambiente();
@@ -76,8 +78,16 @@ public class Reserva {
 
 	public void setSituacao(String situacao) {
 		this.situacao = situacao;
-	}
+	}	
 	
+	public String getMotivoSuspensao() {
+		return motivoSuspensao;
+	}
+
+	public void setMotivoSuspensao(String motivoSuspensao) {
+		this.motivoSuspensao = motivoSuspensao;
+	}
+
 	/* Existe três possibilidade de situação: Pedente, Aprovada ou Reprovada.
 	 * Para que seja possíve exibir essas três possibilidades em um único campo e em momentos diferentes, foi
 	 * gravado a string no banco. 

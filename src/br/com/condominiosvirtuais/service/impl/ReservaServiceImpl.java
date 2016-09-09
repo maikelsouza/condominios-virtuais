@@ -101,4 +101,19 @@ public class ReservaServiceImpl implements ReservaService, Serializable {
 		return this.reservaDAO.buscarPorCondominio(condominio);
 	}
 
+	@Override
+	public void suspender(Reserva reserva) throws SQLException, Exception {
+		this.reservaDAO.suspender(reserva);	
+		Email email = new Email();			
+		email.setPara(reserva.getCondomino().getEmail().getEmail());
+		email.setAssunto(AplicacaoUtil.i18n("msg.solicitacaoReserva.suspensa.assunto"));
+		email.setMensagem(MensagensEmailUtil.solicitacaoDeReservaSuspensa(reserva));
+		this.emailService.salvar(email);		
+	}
+
+	@Override
+	public List<Reserva> buscarPorCondominioESituacoesEAteData(Condominio condominio, List<String> listaSituacao, Date data) throws SQLException, Exception {		
+		return this.reservaDAO.buscarPorCondominioESituacoesEAteData(condominio, listaSituacao, data);
+	}
+
 }

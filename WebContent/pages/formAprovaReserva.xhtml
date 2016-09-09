@@ -10,9 +10,7 @@
 	template="/templates/templatePrincipal.xhtml">
 	
 	<ui:define name="conteudo">
-		<f:metadata>
-			<f:event type="preRenderView" listener="#{reservaMB.abreSessao}" />
-		</f:metadata>
+		
 		<h:form id="idFormAprovaReserva" styleClass="content">
 			<rich:panel>
 				<f:facet name="header">
@@ -24,20 +22,19 @@
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 					<h:selectOneMenu value="#{reservaMB.condominio.id}"
-						defaultLabel="#{msg['condominio.DefaultLabel']}" id="idCondominio"
-						label="#{msg['condominio.label']}" required="true">
-						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}"
-							noSelectionOption="true"  />
+						defaultLabel="#{msg['condominio.DefaultLabel']}" id="idCondominio" label="#{msg['condominio.label']}" required="true">
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="true"  />
 						<f:selectItems value="#{reservaMB.listaSICondominios}" />
-						<a4j:ajax listener="#{reservaMB.buscarListaAprovarReserva}"
-							render="idListaReserva IdMessages" />
 					</h:selectOneMenu>
 				</h:panelGrid>
+				
+				<h:panelGrid columns="2">					
+					<h:commandButton value="#{msg.botaoPesquisar}" actionListener="#{reservaMB.buscarListaAprovarReserva}" />					
+					<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{reservaMB.limparListaAprovarReservas}"  />
+				 </h:panelGrid>
 				<h:panelGrid columns="2" styleClass="msgAsterisco">
-					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
-						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
-					<h:outputLabel value="*" id="idCampoObrigatorio"
-						styleClass="asterisco" />
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
 				</h:panelGrid>
 			</rich:panel>
 
@@ -105,44 +102,56 @@
 							</f:facet>
 							<h:outputText value="#{reservaVO.situacao}" />
 						</rich:column>
-						<rich:column style="width:10%;">
+						<rich:column style="width:18%;">
 							<f:facet name="header">
 								<h:outputText value="#{msg.rotuloAcao}" />
 							</f:facet>
-							<h:commandLink value="#{msg.linkAprovar}" render="tableReservaVO"
-								actionListener="#{reservaMB.aprovarReserva}" immediate="true" />				
+							<h:commandLink value="#{msg.linkAprovar}" render="tableReservaVO" actionListener="#{reservaMB.aprovarReserva}" immediate="true" rendered="#{reservaVO.situacao != msg['reserva.situacao.1']}"/>				
 							 #{' '}
-				            <h:commandLink value="#{msg.linkReprovar}" render="tableReservaVO"
-								immediate="true">
-								<rich:componentControl target="informaMotivoReprovacao"
-									operation="show" />
+				            <h:commandLink value="#{msg.linkReprovar}" render="tableReservaVO" immediate="true">
+								<rich:componentControl target="informaMotivoReprovacao" operation="show" />
+							</h:commandLink>
+							#{' '}
+							<h:commandLink value="#{msg.linkSuspender}" render="tableReservaVO" immediate="true" rendered="#{reservaVO.situacao != msg['reserva.situacao.3']}">
+								<rich:componentControl target="informaMotivoSuspensao" operation="show" />
 							</h:commandLink>
 
-							<rich:popupPanel id="informaMotivoReprovacao" modal="true"
-								autosized="true" domElementAttachment="form">
+							<rich:popupPanel id="informaMotivoReprovacao" modal="true" autosized="true" domElementAttachment="form">
 								<f:facet name="header">
 									<h:outputText
 										value="#{msg['msg.reserva.motivoReprovadaReserva']}" />
-								</f:facet>
-
+								    </f:facet>
 								<h:panelGrid columns="2" styleClass="confFont">
 									<h:outputLabel value="#{msg['reserva.motivoReprovacao']}:" for="idMotivoReprovacao" />
-								<h:inputTextarea id="idMotivoReprovacao" 
-										value="#{reservaVO.motivoReprovacao}" rows="5" cols="45"
-										label="#{msg['reserva.motivoReprovacao.label']}"
-										validatorMessage="#{msg['msg.reserva.motivoReprovacaoTamanhoMaximo']}">
-										<f:validateLength maximum="150" />
-								</h:inputTextarea>
-									
+									<h:inputTextarea id="idMotivoReprovacao"  value="#{reservaVO.motivoReprovacao}" rows="5" cols="45"
+										label="#{msg['reserva.motivoReprovacao.label']}" validatorMessage="#{msg['msg.reserva.motivoReprovacaoTamanhoMaximo']}">
+											<f:validateLength maximum="150" />
+									</h:inputTextarea>
 								</h:panelGrid>
 								<h:panelGrid columns="2">
-								<a4j:commandButton value="#{msg.botaoOK}"
-									onclick="#{rich:component('informaMotivoReprovacao')}.hide(); return true;"
-									actionListener="#{reservaMB.reprovarReserva}"
-									render="IdMessages idFormAprovaReserva" />
-								<a4j:commandButton value="#{msg.botaoCancelar}"
-							onclick="#{rich:component('informaMotivoReprovacao')}.hide(); return false;" />
-							</h:panelGrid>		
+									<a4j:commandButton value="#{msg.botaoOK}" onclick="#{rich:component('informaMotivoReprovacao')}.hide(); return true;"
+										actionListener="#{reservaMB.reprovarReserva}" render="IdMessages idFormAprovaReserva" />
+									<a4j:commandButton value="#{msg.botaoCancelar}" onclick="#{rich:component('informaMotivoReprovacao')}.hide(); return false;" />
+								</h:panelGrid>		
+							</rich:popupPanel>
+							
+							<rich:popupPanel id="informaMotivoSuspensao" modal="true" autosized="true" domElementAttachment="form">
+								<f:facet name="header">
+									<h:outputText
+										value="#{msg['msg.reserva.motivoSuspensaoReserva']}" />
+								    </f:facet>
+								<h:panelGrid columns="2" styleClass="confFont">
+									<h:outputLabel value="#{msg['reserva.motivoSuspensao']}:" for="idMotivoSuspensao" />
+									<h:inputTextarea id="idMotivoSuspensao"  value="#{reservaVO.motivoSuspensao}" rows="5" cols="45"
+										label="#{msg['reserva.motivoSuspensao.label']}" validatorMessage="#{msg['msg.reserva.motivoSuspensaoTamanhoMaximo']}">
+											<f:validateLength maximum="150" />
+									</h:inputTextarea>
+								</h:panelGrid>
+								<h:panelGrid columns="2">
+									<a4j:commandButton value="#{msg.botaoOK}" onclick="#{rich:component('informaMotivoSuspensao')}.hide(); return true;"
+										actionListener="#{reservaMB.suspenderReserva}" render="IdMessages idFormAprovaReserva" />
+									<a4j:commandButton value="#{msg.botaoCancelar}" onclick="#{rich:component('informaMotivoSuspensao')}.hide(); return false;" />
+								</h:panelGrid>		
 							</rich:popupPanel>
 						</rich:column>
 					</rich:dataTable>
