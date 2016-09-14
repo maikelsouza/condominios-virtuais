@@ -119,26 +119,41 @@
 							</f:facet>
 							<h:outputText value="#{reserva.motivoSuspensao}" />
 						</rich:column>
-						<rich:column style="width:5%;">
+						<rich:column style="width:10%;">
 							<f:facet name="header">
 								<h:outputText value="#{msg.rotuloAcao}" />
 							</f:facet>
 							<a4j:commandLink value="#{msg.linkEditar}" render="tableReserva" rendered="#{reserva.situacao == 'reserva.situacao.2'}"
-								action="#{reservaMB.editarReserva}" immediate="true" />
-							<a4j:commandLink value="#{msg.linkExcluir}" render="tableReserva" rendered="#{reserva.situacao != 'reserva.situacao.2'}"
-								action="#{reservaMB.editarReserva}" immediate="true" />	
+								action="#{reservaMB.editarReserva}" immediate="true" />								
+							#{' '}								
+							<a4j:commandLink value="#{msg.linkExcluir}" render="tableReserva" immediate="true" >
+								<rich:componentControl target="confirmaExcluirReserva" operation="show" />
+							</a4j:commandLink>
+							<rich:popupPanel id="confirmaExcluirReserva" autosized="true">
+		       				  #{msg['msg.reserva.confirmacaoExcluir']}
+						         <h:panelGrid columns="2">		         	
+									<h:commandButton value="#{msg.botaoExcluir}" action="#{reservaMB.excluirReserva}" immediate="true"
+										onclick=" #{rich:component('confirmaExcluirReserva')}.hide();  return true;" />
+									<h:commandButton value="#{msg.botaoCancelar}" onclick="#{rich:component('confirmaExcluirReserva')}.hide(); return false;" />	
+								</h:panelGrid>
+		   					</rich:popupPanel>
 						</rich:column>
 					</rich:dataTable>
+					
+					
+					
 				</div>
 			</rich:panel>
+			
+			
+			
+			
 		</h:form>
 
 		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
 		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
-		<rich:jQuery selector=".stable tr" event="mouseover"
-			query="jQuery(this).addClass('active-row')" />
-		<rich:jQuery selector=".stable tr" event="mouseout"
-			query="jQuery(this).removeClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseover" query="jQuery(this).addClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseout" query="jQuery(this).removeClass('active-row')" />
 	</ui:define>
 
 </ui:composition>

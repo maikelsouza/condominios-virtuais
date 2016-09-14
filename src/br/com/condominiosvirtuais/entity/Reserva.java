@@ -30,6 +30,7 @@ public class Reserva {
 		this.ambiente = new Ambiente();
 		this.condomino = new Condomino();
 		this.motivoReprovacao = "";
+		this.motivoSuspensao = "";
 	}
 
 	public Integer getId() {

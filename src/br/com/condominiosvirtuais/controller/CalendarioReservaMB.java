@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -19,6 +20,7 @@ import org.richfaces.model.CalendarDataModelItem;
 
 import br.com.condominiosvirtuais.entity.ItemCalendario;
 import br.com.condominiosvirtuais.entity.Reserva;
+import br.com.condominiosvirtuais.enumeration.ReservaSituacaoEnum;
 import br.com.condominiosvirtuais.service.ReservaService;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
 import br.com.condominiosvirtuais.util.ManagedBeanUtil;
@@ -44,8 +46,15 @@ public class CalendarioReservaMB implements CalendarDataModel, Serializable {
 	        Calendar hoje = GregorianCalendar.getInstance();
 	        hoje.setTime(new Date());
 	        List<Reserva> listaReserva = null;
-	        Integer idAmbiente = (Integer) ManagedBeanUtil.getSession(true).getAttribute("idAmbiente");                    	
-	        listaReserva = this.reservaServiceimpl.buscarPorIdAmbienteEMaiorIgualDataEPendeteOUAprovado(idAmbiente, hoje.getTime());        
+	        List<String> listaSituacoes = new ArrayList<String>();
+	        listaSituacoes.add(ReservaSituacaoEnum.APROVADA.getSituacao());
+	        listaSituacoes.add(ReservaSituacaoEnum.PENDENTE.getSituacao());
+	        listaSituacoes.add(ReservaSituacaoEnum.SUSPENSA.getSituacao());
+	        Integer idAmbiente = (Integer) ManagedBeanUtil.getSession(true).getAttribute("idAmbiente");      
+	        // TODO: Código comentado em 12/09/2016. Apagar em 180 dias
+	        //listaReserva = this.reservaServiceimpl.buscarPorIdAmbienteEMaiorIgualDataEPendeteOUAprovado(idAmbiente, hoje.getTime());	        
+	        listaReserva = this.reservaServiceimpl.buscarPorIdAmbienteEMaiorIgualDataESituacoes(idAmbiente, hoje.getTime(), listaSituacoes);
+	        
 	        for (int i = 0; i < dateArray.length; i++) {	        
 	        	calendar.setTime(dateArray[i]);
 	            ItemCalendario itemCalendario = new ItemCalendario();

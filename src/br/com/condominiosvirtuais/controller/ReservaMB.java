@@ -24,6 +24,7 @@ import br.com.condominiosvirtuais.entity.Ambiente;
 import br.com.condominiosvirtuais.entity.Bloco;
 import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.Condomino;
+import br.com.condominiosvirtuais.entity.Enquete;
 import br.com.condominiosvirtuais.entity.Reserva;
 import br.com.condominiosvirtuais.entity.Unidade;
 import br.com.condominiosvirtuais.enumeration.ReservaSituacaoEnum;
@@ -298,8 +299,9 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 	}
 	
 	public String excluirReserva(){
-		try {
-			this.reservaService.excluir(this.reserva);
+		try {                                
+			Reserva reserva = (Reserva) this.listaMinhasReservas.getRowData();
+			this.reservaService.excluir(reserva);
 			ManagedBeanUtil.setMensagemInfo("msg.reserva.excluirSucesso");
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	

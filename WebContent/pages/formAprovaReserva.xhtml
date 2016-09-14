@@ -97,7 +97,7 @@
 							sortOrder="#{ordenaReservaMB.situacao}">
 							<f:facet name="header">
 								<a4j:commandLink value="#{msg['reserva.situacao']}"
-									render="tableReserva"
+									render="tableReservaVO"
 									action="#{ordenaReservaMB.ordenarPorSituacao}" />
 							</f:facet>
 							<h:outputText value="#{reservaVO.situacao}" />

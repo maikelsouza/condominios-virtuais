@@ -23,14 +23,18 @@ import br.com.condominiosvirtuais.entity.BlocoConjuntoBloco;
 import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.Condomino;
 import br.com.condominiosvirtuais.entity.ConjuntoBloco;
+import br.com.condominiosvirtuais.entity.Log;
+import br.com.condominiosvirtuais.entity.LogReserva;
 import br.com.condominiosvirtuais.entity.Reserva;
 import br.com.condominiosvirtuais.entity.TipoConjuntoBloco;
+import br.com.condominiosvirtuais.enumeration.LogAcaoEnum;
 import br.com.condominiosvirtuais.enumeration.ReservaSituacaoEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.persistence.AmbienteDAO;
 import br.com.condominiosvirtuais.persistence.BlocoConjuntoBlocoDAO;
 import br.com.condominiosvirtuais.persistence.ConjuntoBlocoDAO;
 import br.com.condominiosvirtuais.persistence.ReservaDAO;
+import br.com.condominiosvirtuais.util.AplicacaoUtil;
 import br.com.condominiosvirtuais.util.SQLUtil;
 
 public class ReservaDAOImpl implements ReservaDAO, Serializable {
@@ -69,6 +73,9 @@ public class ReservaDAOImpl implements ReservaDAO, Serializable {
 	
 	@Inject 
 	private BlocoConjuntoBlocoDAO blocoConjuntoBlocoDAO = null;
+	
+	@Inject
+	private Instance<LogDAOImpl> logDAO = null;
 	
 	
 	public void salvar(Reserva reserva) throws SQLException, BusinessException, Exception {
@@ -123,17 +130,20 @@ public class ReservaDAOImpl implements ReservaDAO, Serializable {
 	
 	public void excluir(Reserva reserva) throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
-		Connection con = Conexao.getConexao();
+		Connection con = Conexao.getConexao();		
 		PreparedStatement statement = null;
-		try {			
+		try {
+			con.setAutoCommit(Boolean.FALSE);
+			this.salvarLogExclurReserva(reserva,con);
 			query.append("DELETE FROM ");
 			query.append(RESERVA);
 			query.append(" WHERE ");		
 			query.append(ID);
 			query.append(" = ?");
-			statement = con.prepareStatement(query.toString());
-			statement.setInt(1, reserva.getId());
+			statement = con.prepareStatement(query.toString());			
+			SQLUtil.setValorPpreparedStatement(statement, 1, reserva.getId(), java.sql.Types.INTEGER);
 			statement.executeUpdate();
+			con.commit();
 		} catch (SQLException e) {					
 			throw e;
 		} catch (Exception e) {					
@@ -512,16 +522,18 @@ public class ReservaDAOImpl implements ReservaDAO, Serializable {
 				query.append(RESERVA);
 				query.append(" WHERE ");
 				query.append(ID_AMBIENTE);		
-				query.append(" in ( ");
+				query.append(" in (");
 				query.append(SQLUtil.popularInterrocacoes(listaAmbiente.size()));
-				query.append(" ) AND ");
+				query.append(") AND ");
 				query.append(SITUACAO);
-				query.append(" in ( ");
+				query.append(" in (");
 				query.append(SQLUtil.popularInterrocacoes(listaSituacao.size()));
 				query.append(") AND ");
 				query.append(DATA);
 				query.append(" >= ?");
 				query.append(" ORDER BY ");
+				query.append(SITUACAO);
+				query.append(" DESC, ");
 				query.append(DATA);
 				query.append(" DESC ");
 				query.append(";");		
@@ -914,6 +926,115 @@ public class ReservaDAOImpl implements ReservaDAO, Serializable {
 		    }
 		}	
 		
+	}
+
+	@Override
+	public List<Reserva> buscarPorIdAmbienteEMaiorIgualDataESituacoes(Integer idAmbiente, Date data,
+			List<String> listaSituacoes) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(RESERVA);
+		query.append(" WHERE ");
+		query.append(ID_AMBIENTE);		
+		query.append(" = ? ");
+		query.append("AND ");
+		query.append(DATA);
+		query.append(" >= ? ");		
+		query.append("AND ");
+		query.append(SITUACAO);
+		query.append(" in ( ");
+		query.append(SQLUtil.popularInterrocacoes(listaSituacoes.size()));
+		query.append(" )");
+		query.append(";");		
+		Connection con = Conexao.getConexao();
+		PreparedStatement preparedStatement = null;
+		List<Reserva> listaReserva = new ArrayList<Reserva>();
+		Integer contador = 3;
+		try {
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, idAmbiente, java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 2, data, java.sql.Types.DATE);
+			for (String situacao : listaSituacoes) {
+				SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, situacao, java.sql.Types.VARCHAR);
+			}
+			ResultSet resultSet = preparedStatement.executeQuery();
+			Reserva reserva = null;			
+			while(resultSet.next()){				
+				reserva = new Reserva();				
+				reserva.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				reserva.setData((Date)(SQLUtil.getValorResultSet(resultSet, DATA, java.sql.Types.DATE)));
+				reserva.setSituacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.VARCHAR)));
+				reserva.setMotivoReprovacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, MOTIVO_REPROVACAO, java.sql.Types.VARCHAR)));
+				reserva.setMotivoSuspensao(String.valueOf(SQLUtil.getValorResultSet(resultSet, MOTIVO_SUSPENSAO, java.sql.Types.VARCHAR)));
+				listaReserva.add(reserva);
+			}
+		} catch (NumberFormatException e) {
+			throw e;
+		} catch (SQLException e) {
+			throw e;
+		} catch (Exception e){
+			throw e;
+		}finally{
+			try{				
+				preparedStatement.close();
+				con.close();				
+			}catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);
+		    }
+		}
+		return listaReserva;		
+	}
+	
+	
+
+	@Override
+	public Reserva buscarPorId(Integer idReserva, Connection con) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(RESERVA);
+		query.append(" WHERE ");
+		query.append(ID);
+		query.append(";");
+		PreparedStatement preparedStatement = null;
+		Reserva reserva = null;			
+		try {
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, idReserva, java.sql.Types.INTEGER);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){				
+				reserva = new Reserva();				
+				reserva.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				reserva.setData((Date)(SQLUtil.getValorResultSet(resultSet, DATA, java.sql.Types.DATE)));
+				reserva.setSituacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.VARCHAR)));
+				reserva.setMotivoReprovacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, MOTIVO_REPROVACAO, java.sql.Types.VARCHAR)));
+				reserva.setMotivoSuspensao(String.valueOf(SQLUtil.getValorResultSet(resultSet, MOTIVO_SUSPENSAO, java.sql.Types.VARCHAR)));
+			}
+		} catch (NumberFormatException e) {
+			throw e;
+		} catch (SQLException e) {
+			throw e;
+		} catch (Exception e){
+			throw e;
+		}				
+		return reserva;
+	}
+	
+	private void salvarLogExclurReserva(Reserva reserva, Connection con ) throws SQLException, Exception{
+		Log log = new Log();
+		LogReserva logReserva = new LogReserva();
+		log.setAcao(LogAcaoEnum.EXCLUIR_RESERVA.getAcao());
+		log.setData(new Date());
+		log.setIdUsuario(AplicacaoUtil.getUsuarioAutenticado().getId());
+		logReserva = new LogReserva();
+		logReserva.setIdReserva(reserva.getId());
+		logReserva.setIdAmbiente(reserva.getAmbiente().getId());
+		logReserva.setIdCondomino(reserva.getCondomino().getId());
+		logReserva.setSituacao(reserva.getSituacao());
+		logReserva.setMotivoSuspensao(reserva.getMotivoSuspensao());
+		logReserva.setMotivoReprovacao(reserva.getMotivoReprovacao());
+		logReserva.setData(reserva.getData());
+		log.setLogReserva(logReserva);
+		this.logDAO.get().salvarReserva(log, con);
 	}
 	
 }

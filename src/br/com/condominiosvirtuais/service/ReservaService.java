@@ -29,9 +29,11 @@ public interface ReservaService {
 	
 	public abstract List<Reserva> buscarPorCondominioETipo(Condominio condominio, String tipo) throws SQLException, Exception;
 	
-	public abstract List<Reserva> buscarPorCondominioESituacoesEAteData(Condominio condominio, List<String> listaSituacao, Date data) throws SQLException, Exception;
+	public abstract List<Reserva> buscarPorCondominioESituacoesEAteData(Condominio condominio, List<String> listaSituacoes, Date data) throws SQLException, Exception;	
 	
 	public abstract List<Reserva> buscarPorCondominio(Condominio condominio) throws SQLException, Exception;
 	
 	public abstract List<Reserva> buscarPorIdAmbienteEMaiorIgualDataEPendeteOUAprovado(Integer idAmbiente, Date data) throws NumberFormatException, SQLException, Exception;
+	
+	public abstract List<Reserva> buscarPorIdAmbienteEMaiorIgualDataESituacoes(Integer idAmbiente, Date data, List<String> listaSituacoes) throws SQLException, Exception;
 }

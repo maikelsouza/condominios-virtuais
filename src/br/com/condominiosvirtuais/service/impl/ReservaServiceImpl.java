@@ -112,8 +112,14 @@ public class ReservaServiceImpl implements ReservaService, Serializable {
 	}
 
 	@Override
-	public List<Reserva> buscarPorCondominioESituacoesEAteData(Condominio condominio, List<String> listaSituacao, Date data) throws SQLException, Exception {		
-		return this.reservaDAO.buscarPorCondominioESituacoesEAteData(condominio, listaSituacao, data);
+	public List<Reserva> buscarPorCondominioESituacoesEAteData(Condominio condominio, List<String> listaSituacoes, Date data) throws SQLException, Exception {		
+		return this.reservaDAO.buscarPorCondominioESituacoesEAteData(condominio, listaSituacoes, data);
+	}
+
+	@Override
+	public List<Reserva> buscarPorIdAmbienteEMaiorIgualDataESituacoes(Integer idAmbiente, Date data,
+			List<String> listaSituacoes) throws SQLException, Exception {		
+		return this.reservaDAO.buscarPorIdAmbienteEMaiorIgualDataESituacoes(idAmbiente, data, listaSituacoes);
 	}
 
 }

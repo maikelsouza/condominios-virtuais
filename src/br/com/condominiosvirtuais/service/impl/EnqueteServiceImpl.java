@@ -67,6 +67,7 @@ public class EnqueteServiceImpl implements EnqueteService, Serializable {
 
 	@Override
 	public void enviarEmailCondominosEnqueteCriada(Enquete enquete) throws SQLException, Exception {
+		// TODO: REVER ESSE CÓDIGO, POIS O EMAIL DEVE SER ENVIADO NO FORMATO HTML
 		List<CondominoVO> listaDeCondominosVOs = null;
 		Email email = null;
 		Condominio condominio = new Condominio();

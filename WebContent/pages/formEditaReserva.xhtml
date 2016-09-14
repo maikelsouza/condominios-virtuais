@@ -43,7 +43,7 @@
 						locale="pt_BR" popup="true" datePattern="#{msg['formatoData']}"
 						rendered="#{reservaMB.idAmbiente != null}" cellWidth="24px"
 						cellHeight="22px" style="width:200px" required="true"
-						dataModel="#{calendarioReservaMB}" mode="ajax" 
+						dataModel="#{calendarioReservaMB}"  mode="ajax" 
 						boundaryDatesMode="scroll" showFooter="false" disabled="#{reservaMB.reserva.situacao != 'reserva.situacao.2'}"
 						label="#{msg['reserva.data.label']}">
 					</rich:calendar>
@@ -55,31 +55,13 @@
 					<h:outputLabel value="*" id="idCampoObrigatorio"
 						styleClass="asterisco" />
 				</h:panelGrid>
-				
-				<rich:popupPanel id="confirmaExcluirReserva" autosized="true">
-		         #{msg['msg.reserva.confirmacaoExcluir']}
-		         <h:panelGrid columns="2">		         	
-					<h:commandButton value="#{msg.botaoExcluir}"
-						action="#{reservaMB.excluirReserva}"
-						onclick=" #{rich:component('confirmaExcluirReserva')}.hide();  return true;" />
-					<h:commandButton value="#{msg.botaoCancelar}"
-							onclick="#{rich:component('confirmaExcluirReserva')}.hide(); return false;" />	
-				</h:panelGrid>
-				</rich:popupPanel>
 
 			</rich:panel>
 			<div>
 				<!-- Soh eh possivel atualizar uma reserva se essa estah com status de pendente, ou seja, caso tenha sido aprovada/reprovada nao altera mais-->
-				<h:panelGrid columns="3">
-					<h:commandButton value="#{msg.botaoAtualizar}"
-						action="#{reservaMB.atualizarReserva}"
-						rendered="#{reservaMB.reserva.situacao == 'reserva.situacao.2' }" />
-					<h:commandButton value="#{msg.botaoExcluir}">
-						<rich:componentControl target="confirmaExcluirReserva"
-							operation="show" />
-					</h:commandButton>					
-					<h:commandButton value="#{msg.botaoVoltar}"
-						action="#{reservaMB.voltarListaReserva}" immediate="true" />
+				<h:panelGrid columns="2">
+					<h:commandButton value="#{msg.botaoAtualizar}" action="#{reservaMB.atualizarReserva}" rendered="#{reservaMB.reserva.situacao == 'reserva.situacao.2' }" />							
+					<h:commandButton value="#{msg.botaoVoltar}" action="#{reservaMB.voltarListaReserva}" immediate="true" />
 				</h:panelGrid>
 			</div>
 		</h:form>

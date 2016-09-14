@@ -1,5 +1,6 @@
 package br.com.condominiosvirtuais.persistence;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
@@ -27,9 +28,13 @@ public interface ReservaDAO {
 	
 	public abstract List<Reserva> buscarPorIdAmbienteEMaiorIgualDataEPendeteOUAprovado(Integer idAmbiente, Date data) throws NumberFormatException, SQLException, Exception;
 	
+	public abstract List<Reserva> buscarPorIdAmbienteEMaiorIgualDataESituacoes(Integer idAmbiente, Date data, List<String> listaSituacoes) throws SQLException, Exception;
+	
 	public abstract void aprovar(Reserva reserva) throws SQLException, Exception;
 	
 	public abstract void suspender(Reserva reserva) throws SQLException, Exception;
 	
 	public abstract void reprovar(Reserva reserva) throws SQLException, Exception;
+	
+	public abstract Reserva buscarPorId(Integer idReserva, Connection con) throws SQLException, Exception;
 }
