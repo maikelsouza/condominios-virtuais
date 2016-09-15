@@ -16,6 +16,7 @@ import br.com.condominiosvirtuais.service.CondominoService;
 import br.com.condominiosvirtuais.service.EmailService;
 import br.com.condominiosvirtuais.service.EnqueteService;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
+import br.com.condominiosvirtuais.util.MensagensEmailUtil;
 import br.com.condominiosvirtuais.vo.CondominoVO;
 
 public class EnqueteServiceImpl implements EnqueteService, Serializable {
@@ -77,12 +78,14 @@ public class EnqueteServiceImpl implements EnqueteService, Serializable {
 			email = new Email();
 			email.setPara(condominoVO.getEmailCondomino());
 			email.setAssunto(AplicacaoUtil.i18n("msg.cadastroEnquete.assunto"));
-			Object[] parametros = new Object[3];
-			parametros[0] = condominoVO.getNomeCondomino().toUpperCase();
-			parametros[1] = enquete.getPergunta().toUpperCase();
-			SimpleDateFormat formato = new SimpleDateFormat(AplicacaoUtil.i18n("formatoData"));  
-			parametros[2] = formato.format(enquete.getDataFim());					
-			email.setMensagem(AplicacaoUtil.i18n("msg.cadastroEnquete.mensagem",parametros));
+// TODO: Código comentado em 14/09/2016. Apagar em 90 dias			
+//			Object[] parametros = new Object[3];
+//			parametros[0] = condominoVO.getNomeCondomino().toUpperCase();
+//			parametros[1] = enquete.getPergunta().toUpperCase();
+//			SimpleDateFormat formato = new SimpleDateFormat(AplicacaoUtil.i18n("formatoData"));  
+//			parametros[2] = formato.format(enquete.getDataFim());					
+//			email.setMensagem(AplicacaoUtil.i18n("msg.cadastroEnquete.mensagem",parametros));
+			email.setMensagem(MensagensEmailUtil.cadastroEnquete(enquete, condominoVO.getNomeCondomino()));
 			this.emailService.salvar(email);			
 		}
 		

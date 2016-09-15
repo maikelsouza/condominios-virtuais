@@ -134,32 +134,10 @@ public class ClassificadosMB implements Serializable {
 			if (this.condominio.getId() != 0){				
 				@SuppressWarnings("unchecked")
 				List<Classificados> listClassificados = (List <Classificados>) this.listaClassificados.getWrappedData();				
-				Classificados classificados = listClassificados.get((Integer) object);
-				System.out.println("CLASSIFICADO " +classificados);
-				System.out.println("IMAGEM " +classificados.getImagem());
-				System.out.println(object);
-				System.out.println(classificados.getImagem().getDadosArquivo());
-				System.out.println("----");
+				Classificados classificados = listClassificados.get((Integer) object);				
 				stream.write(classificados.getImagem() != null ? classificados.getImagem().getDadosArquivo() : ManagedBeanUtil.popularImagemNaoDisponivel());
 				stream.flush();
-				stream.close();
-				
-			//	Classificados classificados =  this.listaClassificados.getRowData();
-//				Iterator<Classificados> it = this.listaClassificados.iterator();
-//				while(it.hasNext()){
-//					
-//					Classificados classificados = it.next();
-//				
-//				System.out.println("CLASSIFICADO " +classificados);
-//				System.out.println("IMAGEM " +classificados.getImagem());
-//				System.out.println(object);
-//				System.out.println(classificados.getImagem().getDadosArquivo());
-//				System.out.println("----");
-//				stream.write(classificados.getImagem() != null ? classificados.getImagem().getDadosArquivo() : ManagedBeanUtil.popularImagemNaoDisponivel());
-//				stream.flush();
-//				stream.close();
-//				}
-			}			
+				stream.close();			}			
 		} catch (IOException e) {
 			logger.error("", e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");

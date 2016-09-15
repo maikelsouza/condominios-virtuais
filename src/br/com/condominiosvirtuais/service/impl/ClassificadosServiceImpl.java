@@ -67,6 +67,7 @@ public class ClassificadosServiceImpl implements ClassificadosService, Serializa
 	
 	@Override
 	public void enviarEmailDataExpira(Email email, Classificados classificados) throws  Exception {
+// TODO: Código comentado em 14/09/2016. Apagar em 180 dias		
 		//Object[] parametros2 = new Object[1];
 		//parametros2[0] = email.getPara().toUpperCase();
 		email.setAssunto(AplicacaoUtil.i18n("msg.expiraClassificados.assunto"));

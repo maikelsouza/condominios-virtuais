@@ -15,6 +15,7 @@ import br.com.condominiosvirtuais.persistence.FuncionarioDAO;
 import br.com.condominiosvirtuais.service.EmailService;
 import br.com.condominiosvirtuais.service.FuncionarioService;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
+import br.com.condominiosvirtuais.util.MensagensEmailUtil;
 
 public class FuncionarioServiceImpl implements FuncionarioService, Serializable {
 
@@ -33,11 +34,12 @@ public class FuncionarioServiceImpl implements FuncionarioService, Serializable 
 		Email email = new Email();			
 		email.setPara(funcionario.getEmail().getEmail());
 		email.setAssunto(AplicacaoUtil.i18n("msg.cadastroFuncionario.assunto"));
-		Object[] parametros = new Object[3];
-		parametros[0] = funcionario.getNome().toUpperCase();
-		parametros[1] = funcionario.getEmail().getEmail();
-		parametros[2] = funcionario.getSenha();
-		email.setMensagem(AplicacaoUtil.i18n("msg.cadastroFuncionario.mensagem", parametros));
+// TODO: Código comentado em 15/09/2016. Apagar em 90 dias		
+//		Object[] parametros = new Object[3];
+//		parametros[0] = funcionario.getNome().toUpperCase();
+//		parametros[1] = funcionario.getEmail().getEmail();
+//		parametros[2] = funcionario.getSenha();
+		email.setMensagem(MensagensEmailUtil.cadastroFuncionario(funcionario));
 		this.emailService.salvar(email);
 	}
 	
