@@ -116,7 +116,8 @@ public class EmailServiceImpl implements EmailService, Serializable {
 	     messageBodyPart = new MimeBodyPart();
 	     DataSource fds = new FileDataSource (endereçoLogo+File.separator+"imagens"+File.separator+"logo_cabecalho.png");	     
 	     messageBodyPart.setDataHandler(new DataHandler(fds));
-	     messageBodyPart.setFileName("logo_cabecalho.png");                
+	     messageBodyPart.setFileName("logo_cabecalho.png");
+	     messageBodyPart.setDisposition(MimeBodyPart.INLINE);
 	     messageBodyPart.setHeader("Content-ID","<logo>");
 	     multipart.addBodyPart(messageBodyPart);
 	     
@@ -125,20 +126,23 @@ public class EmailServiceImpl implements EmailService, Serializable {
 	     fds = new FileDataSource (endereçoLogo+File.separator+"imagens"+File.separator+"google_plus.png");	    
 	     messageBodyPart.setDataHandler(new DataHandler(fds));
 	     messageBodyPart.setFileName("google_plus.png");
-	     messageBodyPart.setHeader("Content-ID","<googlePlus>");     
+	     messageBodyPart.setHeader("Content-ID","<googlePlus>");   
+	     messageBodyPart.setDisposition(MimeBodyPart.INLINE);
 	     multipart.addBodyPart(messageBodyPart);
 	     
 	     messageBodyPart = new MimeBodyPart();
 	     fds = new FileDataSource (endereçoLogo+File.separator+"imagens"+File.separator+"linkedin.png");	     
 	     messageBodyPart.setDataHandler(new DataHandler(fds));
 	     messageBodyPart.setFileName("linkedin.png");
-	     messageBodyPart.setHeader("Content-ID","<linkedin>");     
+	     messageBodyPart.setHeader("Content-ID","<linkedin>");
+	     messageBodyPart.setDisposition(MimeBodyPart.INLINE);
 	     multipart.addBodyPart(messageBodyPart);
 	     
 	     messageBodyPart = new MimeBodyPart();
 	     fds = new FileDataSource (endereçoLogo+File.separator+"imagens"+File.separator+"facebookMenor.png");	     
 	     messageBodyPart.setDataHandler(new DataHandler(fds));
 	     messageBodyPart.setFileName("facebookMenor.png");
+	     messageBodyPart.setDisposition(MimeBodyPart.INLINE);
 	     messageBodyPart.setHeader("Content-ID","<facebook>");
 	     multipart.addBodyPart(messageBodyPart);
 	     

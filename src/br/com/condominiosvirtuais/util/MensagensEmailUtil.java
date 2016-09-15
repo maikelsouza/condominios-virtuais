@@ -713,9 +713,9 @@ public abstract class MensagensEmailUtil {
 		mensagem.append(reserva.getAmbiente().getNome());
 		mensagem.append("</span>, ");
 		mensagem.append(AplicacaoUtil.i18n("msg.solicitacaoReserva.textoParte3"));
-		mensagem.append(" <span ");
+		mensagem.append("<span ");
 		mensagem.append(CssMensagensEmailUtil.CSS_STYLE_SPAN);
-		mensagem.append(">");
+		mensagem.append("> ");
 		mensagem.append(AplicacaoUtil.formatarData(AplicacaoUtil.i18n("formatoData"), reserva.getData()));
 		mensagem.append("</span><br/>");
 		mensagem.append(AplicacaoUtil.i18n("msg.solicitacaoReserva.textoParte4"));
@@ -1568,7 +1568,7 @@ public abstract class MensagensEmailUtil {
 		mensagem.append(CssMensagensEmailUtil.CSS_STYLE_P);		
 		mensagem.append(">");		
 		mensagem.append(AplicacaoUtil.i18n("msg.cadastroFuncionario.textoParte1"));
-		mensagem.append("<span ");
+		mensagem.append(" <span ");
 		mensagem.append(CssMensagensEmailUtil.CSS_STYLE_SPAN);
 		mensagem.append(">");
 		mensagem.append(funcionario.getNome());
