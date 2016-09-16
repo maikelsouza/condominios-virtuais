@@ -2,6 +2,13 @@ package br.com.condominiosvirtuais.entity;
 
 import java.util.Date;
 
+/**
+ * Entidade que representa uma ação do usuário na funcionalidade Reserva. 
+ * Por exemplo: Excluir Reserva. Será armazenado o registro que foi excluído
+ * @author Maikel
+ * @since 16/09/2016
+ */
+
 public class LogReserva {
 	
 	private Integer id;

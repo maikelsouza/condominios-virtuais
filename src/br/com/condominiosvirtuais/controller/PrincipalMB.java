@@ -73,6 +73,9 @@ public class PrincipalMB  implements Serializable{
 	@Inject
 	private ObraMB obraMB;
 	
+	@Inject
+	private SindicoProfissionalMB sindicoProfissionalMB; 
+	
 	@PostConstruct
 	public void init() {
 		logger.info("Inicializa aplicação");
@@ -277,6 +280,9 @@ public class PrincipalMB  implements Serializable{
 		return "listarObra";
 	}
 	
+	public String cadastrarSindicoProfissional(){
+		return "cadastrarSindicoProfissional";
+	}
 
 	private void iniciaThreads(){				
 		emailThread.start();
@@ -432,6 +438,8 @@ public class PrincipalMB  implements Serializable{
 	public void setObraMB(ObraMB obraMB) {
 		this.obraMB = obraMB;
 	}
+	
+	
 	
 	
 }
