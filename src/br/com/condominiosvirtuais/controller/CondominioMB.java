@@ -22,10 +22,12 @@ import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.Condomino;
+import br.com.condominiosvirtuais.entity.Usuario;
 import br.com.condominiosvirtuais.enumeration.AtributoSessaoEnum;
-import br.com.condominiosvirtuais.enumeration.CondominioEnum;
+import br.com.condominiosvirtuais.enumeration.CondominioSituacaoEnum;
 import br.com.condominiosvirtuais.service.CondominioService;
 import br.com.condominiosvirtuais.service.CondominoService;
+import br.com.condominiosvirtuais.service.UsuarioService;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
 import br.com.condominiosvirtuais.util.ManagedBeanUtil;
 import br.com.condominiosvirtuais.vo.CondominoVO;
@@ -64,6 +66,9 @@ public class CondominioMB implements IConversationScopeMB, Serializable{
 	
 	@Inject
 	private CondominoService condominoService = null;	
+	
+	@Inject
+	private UsuarioService usuarioService = null;
 		
 	private ListDataModel<Condominio> listaDeCondominios = new ListDataModel<Condominio>();	
 		
@@ -107,7 +112,7 @@ public class CondominioMB implements IConversationScopeMB, Serializable{
 	@PostConstruct
 	public void iniciarCondominioMB(){
 		this.condominio = new Condominio();
-		this.condominio.setSituacao(CondominioEnum.ATIVO.getSituacao());
+		this.condominio.setSituacao(CondominioSituacaoEnum.ATIVO.getSituacao());
 	}
 	
 	public void pesquisar(ActionEvent event){
@@ -159,7 +164,7 @@ public class CondominioMB implements IConversationScopeMB, Serializable{
 	
 	public String cancelarCadastroCondominio(){		
 		this.condominio = new Condominio();
-		this.condominio.setSituacao(CondominioEnum.ATIVO.getSituacao());
+		this.condominio.setSituacao(CondominioSituacaoEnum.ATIVO.getSituacao());
 		return "cancelar";
 	}	
 	
@@ -209,8 +214,8 @@ public class CondominioMB implements IConversationScopeMB, Serializable{
 	
 	public List<SelectItem> getListaSituacoes(){
 		List<SelectItem> listaSituacoes = new ArrayList<SelectItem>();
-		listaSituacoes.add(new SelectItem(CondominioEnum.INATIVO.getSituacao(), AplicacaoUtil.i18n("condominio.situacao.itemLabel.0")));
-		listaSituacoes.add(new SelectItem(CondominioEnum.ATIVO.getSituacao(), AplicacaoUtil.i18n("condominio.situacao.itemLabel.1")));
+		listaSituacoes.add(new SelectItem(CondominioSituacaoEnum.INATIVO.getSituacao(), AplicacaoUtil.i18n("condominio.situacao.itemLabel.0")));
+		listaSituacoes.add(new SelectItem(CondominioSituacaoEnum.ATIVO.getSituacao(), AplicacaoUtil.i18n("condominio.situacao.itemLabel.1")));
 		return listaSituacoes;
 	}
 	
@@ -220,10 +225,10 @@ public class CondominioMB implements IConversationScopeMB, Serializable{
 	
 	public String salvarCondominio(){		
 		try {
-			this.condominio.setSituacao(CondominioEnum.ATIVO.getSituacao());
+			this.condominio.setSituacao(CondominioSituacaoEnum.ATIVO.getSituacao());
 			this.condominioService.salvar(this.condominio);
 			this.condominio = new Condominio();
-			this.condominio.setSituacao(CondominioEnum.ATIVO.getSituacao());
+			this.condominio.setSituacao(CondominioSituacaoEnum.ATIVO.getSituacao());
 			this.pesquisar(null);
 			this.limpaFormCadastroCondominio();
 			ManagedBeanUtil.setMensagemInfo("msg.condominio.salvoSucesso");			
@@ -348,7 +353,7 @@ public class CondominioMB implements IConversationScopeMB, Serializable{
 			listaCondominios = this.condominioService.buscarTodos();
 			for (int i = 0; i < listaCondominios.size(); i++) {
 				Condominio condominio = listaCondominios.get(i);
-				if(condominio.getSituacao() == CondominioEnum.ATIVO.getSituacao()){
+				if(condominio.getSituacao() == CondominioSituacaoEnum.ATIVO.getSituacao()){
 					listaSICondominios.add(new SelectItem(condominio.getId(), condominio.getNome()));					
 				}
 			}		
@@ -365,7 +370,7 @@ public class CondominioMB implements IConversationScopeMB, Serializable{
 	private void carregarDadosCondominio() throws  SQLException, Exception{
 		this.condominio = this.listaDeCondominios.getRowData();
 		this.condominioService.associarEndereco(condominio);		
-		Condomino sindicoGeral = this.condominoService.buscarSindicoGeralPorCondominio(this.condominio);
+		Usuario sindicoGeral = this.usuarioService.buscarSindicoGeralPorCondominio(this.condominio);
 		this.listaDeCondominosVOs = condominoService.buscarListaCondominosVOPorCondominioBlocoEUnidade(this.condominio,null,null);
 		this.condominioPossuiCondominos = this.listaDeCondominosVOs.size() == 0 ? Boolean.FALSE: Boolean.TRUE;
 		List<Condomino> listaDeConselheirosLocal = this.condominoService.buscarConselheirosPorCondominio(this.condominio);
@@ -402,7 +407,7 @@ public class CondominioMB implements IConversationScopeMB, Serializable{
 	
 	private void limpaFormListaCondominio(){
 		this.condominio = new Condominio();
-		this.condominio.setSituacao(CondominioEnum.ATIVO.getSituacao());
+		this.condominio.setSituacao(CondominioSituacaoEnum.ATIVO.getSituacao());
 		ManagedBeanUtil.cleanSubmittedValues(this.componenteNomeCondominio);
 		
 	}

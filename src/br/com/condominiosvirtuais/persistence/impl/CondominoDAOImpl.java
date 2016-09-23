@@ -498,7 +498,7 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 		List<GestorCondominio> listaDeGestorCondominio = this.gestorCondominioDAO.buscarListaGestoresCondominioPorCondominio(condominio);
 		for (GestorCondominio gestorCondominio : listaDeGestorCondominio) {
 			if(gestorCondominio.getTipoCondomino() == TipoGestorCondominioEnum.CONSELHEIRO_CONDOMINIO.getGestorCondominio()){
-				listaDeCondomino.add(this.buscarCondominoPorId(gestorCondominio.getIdCondomino()));				
+				listaDeCondomino.add(this.buscarCondominoPorId(gestorCondominio.getIdUsuario()));				
 			}
 		}				
 		return listaDeCondomino;
@@ -512,7 +512,7 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 		while (encontrou == Boolean.FALSE && indice < listaDeGestorCondominio.size()){
 			GestorCondominio gestorCondominio = listaDeGestorCondominio.get(indice++);
 			if(gestorCondominio.getTipoCondomino() == TipoGestorCondominioEnum.SINDICO_GERAL.getGestorCondominio()){
-				condomino = this.buscarCondominoPorId(gestorCondominio.getIdCondomino());
+				condomino = this.buscarCondominoPorId(gestorCondominio.getIdUsuario());
 				encontrou = Boolean.TRUE;
 			}			
 		}		
@@ -527,7 +527,7 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 		while (encontrou == Boolean.FALSE && indice < listaDeGestorCondominio.size()){
 			GestorCondominio gestorCondominio = listaDeGestorCondominio.get(indice++);
 			if(gestorCondominio.getTipoCondomino() == TipoGestorCondominioEnum.SINDICO_GERAL.getGestorCondominio()){
-				condomino = this.buscarCondominoPorId(gestorCondominio.getIdCondomino(),con);
+				condomino = this.buscarCondominoPorId(gestorCondominio.getIdUsuario(),con);
 				encontrou = Boolean.TRUE;
 			}			
 		}		
@@ -542,7 +542,7 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 		while (encontrou == Boolean.FALSE && indice < listaDeGestorCondominio.size()){
 			GestorCondominio gestorCondominio = listaDeGestorCondominio.get(indice++);
 			if(gestorCondominio.getTipoCondomino() == TipoGestorCondominioEnum.SUBSINDICO_GERAL.getGestorCondominio()){
-				condomino = this.buscarCondominoPorId(gestorCondominio.getIdCondomino());
+				condomino = this.buscarCondominoPorId(gestorCondominio.getIdUsuario());
 				encontrou = Boolean.TRUE;
 			}			
 		}		
@@ -557,7 +557,7 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 		while (encontrou == Boolean.FALSE && indice < listaDeGestorCondominio.size()){
 			GestorCondominio gestorCondominio = listaDeGestorCondominio.get(indice++);
 			if(gestorCondominio.getTipoCondomino() == TipoGestorCondominioEnum.SUBSINDICO_GERAL.getGestorCondominio()){
-				condomino = this.buscarCondominoPorId(gestorCondominio.getIdCondomino());
+				condomino = this.buscarCondominoPorId(gestorCondominio.getIdUsuario());
 				encontrou = Boolean.TRUE;
 			}			
 		}		
@@ -569,7 +569,7 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 		List<GestorCondominio> listaDeGestorBloco = this.gestorCondominioDAO.buscarListaGestoresCondominioPorBloco(bloco,con);
 		for (GestorCondominio gestorCondominio : listaDeGestorBloco) {
 			if(gestorCondominio.getTipoCondomino() == TipoGestorCondominioEnum.CONSELHEIRO_BLOCO.getGestorCondominio()){
-				listaDeCondomino.add(this.buscarCondominoPorId(gestorCondominio.getIdCondomino()));				
+				listaDeCondomino.add(this.buscarCondominoPorId(gestorCondominio.getIdUsuario()));				
 			}
 		}				
 		return listaDeCondomino;
@@ -580,7 +580,7 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 		List<GestorCondominio> listaDeGestorBloco = this.gestorCondominioDAO.buscarListaGestoresCondominioPorBloco(bloco);
 		for (GestorCondominio gestorCondominio : listaDeGestorBloco) {
 			if(gestorCondominio.getTipoCondomino() == TipoGestorCondominioEnum.CONSELHEIRO_BLOCO.getGestorCondominio()){
-				listaDeCondomino.add(this.buscarCondominoPorId(gestorCondominio.getIdCondomino()));				
+				listaDeCondomino.add(this.buscarCondominoPorId(gestorCondominio.getIdUsuario()));				
 			}
 		}				
 		return listaDeCondomino;
@@ -594,7 +594,7 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 		while (encontrou == Boolean.FALSE && indice < listaDeGestorBloco.size()){
 			GestorCondominio gestorCondominio = listaDeGestorBloco.get(indice++);
 			if(gestorCondominio.getTipoCondomino() == TipoGestorCondominioEnum.SINDICO.getGestorCondominio()){
-				condomino = this.buscarCondominoPorId(gestorCondominio.getIdCondomino());
+				condomino = this.buscarCondominoPorId(gestorCondominio.getIdUsuario());
 				encontrou = Boolean.TRUE;
 			}			
 		}		
@@ -609,7 +609,7 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 		while (encontrou == Boolean.FALSE && indice < listaDeGestorBloco.size()){
 			GestorCondominio gestorCondominio = listaDeGestorBloco.get(indice++);
 			if(gestorCondominio.getTipoCondomino() == TipoGestorCondominioEnum.SINDICO.getGestorCondominio()){
-				condomino = this.buscarCondominoPorId(gestorCondominio.getIdCondomino());
+				condomino = this.buscarCondominoPorId(gestorCondominio.getIdUsuario());
 				encontrou = Boolean.TRUE;
 			}			
 		}		
@@ -625,7 +625,7 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 		while (encontrou == Boolean.FALSE && indice < listaDeGestorBloco.size()){
 			GestorCondominio gestorCondominio = listaDeGestorBloco.get(indice++);
 			if(gestorCondominio.getTipoCondomino() == TipoGestorCondominioEnum.SUBSINDICO.getGestorCondominio()){
-				condomino = this.buscarCondominoPorId(gestorCondominio.getIdCondomino());
+				condomino = this.buscarCondominoPorId(gestorCondominio.getIdUsuario());
 				encontrou = Boolean.TRUE;
 			}			
 		}		
@@ -640,7 +640,7 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 		while (encontrou == Boolean.FALSE && indice < listaDeGestorBloco.size()){
 			GestorCondominio gestorCondominio = listaDeGestorBloco.get(indice++);
 			if(gestorCondominio.getTipoCondomino() == TipoGestorCondominioEnum.SUBSINDICO.getGestorCondominio()){
-				condomino = this.buscarCondominoPorId(gestorCondominio.getIdCondomino());
+				condomino = this.buscarCondominoPorId(gestorCondominio.getIdUsuario());
 				encontrou = Boolean.TRUE;
 			}			
 		}		

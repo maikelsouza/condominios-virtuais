@@ -21,12 +21,13 @@ import br.com.condominiosvirtuais.entity.GestorCondominio;
 import br.com.condominiosvirtuais.entity.Unidade;
 import br.com.condominiosvirtuais.entity.Usuario;
 import br.com.condominiosvirtuais.entity.UsuarioCondominio;
-import br.com.condominiosvirtuais.enumeration.CondominioEnum;
+import br.com.condominiosvirtuais.enumeration.CondominioSituacaoEnum;
 import br.com.condominiosvirtuais.enumeration.TipoGestorCondominioEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.persistence.ArquivoDAO;
 import br.com.condominiosvirtuais.persistence.CondominioDAO;
 import br.com.condominiosvirtuais.persistence.UsuarioCondominioDAO;
+import br.com.condominiosvirtuais.persistence.UsuarioDAO;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
 import br.com.condominiosvirtuais.util.SQLUtil;
 
@@ -84,6 +85,9 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 	
 	@Inject
 	private Instance<ArquivoDAO>  arquivoDAO = null;
+	
+	@Inject
+	private Instance<UsuarioDAOImpl>  usuarioDAO = null;
 		
 	
 	/**
@@ -150,7 +154,7 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 	}
 	
 	/**
-	 * Método que pesquisa todos os condomínios, considerando o nome e situação {@link CondominioEnum}. Esse método contempla somente os condomínios, <br>
+	 * Método que pesquisa todos os condomínios, considerando o nome e situação {@link CondominioSituacaoEnum}. Esse método contempla somente os condomínios, <br>
 	 * que o usuário autenticado tem acesso.  
 	 * @param condominio - Parametro que contém: situação (obrigatório) e nome
 	 * @return Lista de Condomínios
@@ -235,8 +239,8 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<Condominio> listaCondominio = new ArrayList<Condominio>();
-		Condomino sindicoGeral = null;
 		Condomino subSindicoGeral = null;
+		Usuario sindicoGeral = null;
 		try {
 			Integer quantidadeInterrogacao = 0;
 			preparedStatement = con.prepareStatement(query.toString());
@@ -254,7 +258,7 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 				condominio.setCnpj((Long) SQLUtil.getValorResultSet(resultSet, CNPJ, java.sql.Types.BIGINT));
 				condominio.setTelefoneCelular((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_CELULAR, java.sql.Types.BIGINT));
 				condominio.setTelefoneFixo((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_FIXO, java.sql.Types.BIGINT));
-				sindicoGeral = this.condominoDAO.get().buscarSindicoGeralPorCondominio(condominio,con);
+				sindicoGeral = this.usuarioDAO.get().buscarSindicoGeralPorCondominio(condominio,con);
 				subSindicoGeral = this.condominoDAO.get().buscarSubSindicoGeralPorCondominio(condominio,con);					
 				condominio.setSindicoGeral(sindicoGeral);					
 				condominio.setSubSindicoGeral(subSindicoGeral);
@@ -443,6 +447,7 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		Condominio condominio = null;
+		Usuario sindicoGeral = null;
 		try {
 			preparedStatement = con.prepareStatement(query.toString());		
 			preparedStatement.setInt(1, id);
@@ -455,11 +460,11 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 				condominio.setCnpj((Long) SQLUtil.getValorResultSet(resultSet, CNPJ, java.sql.Types.BIGINT));
 				condominio.setTelefoneCelular((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_CELULAR, java.sql.Types.BIGINT));
 				condominio.setTelefoneFixo((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_FIXO, java.sql.Types.BIGINT));
-				Condomino sindicoGeral = this.condominoDAO.get().buscarSindicoGeralPorCondominio(condominio);
-				if(sindicoGeral != null){
-					sindicoGeral.setEmail(this.emailUsuarioDAO.get().buscarEmailPrincipalPorUsuario(sindicoGeral));					
+				sindicoGeral = this.usuarioDAO.get().buscarSindicoGeralPorCondominio(condominio,con);
+//				if(sindicoGeral != null){
+//					sindicoGeral.setEmail(this.emailUsuarioDAO.get().buscarEmailPrincipalPorUsuario(sindicoGeral));					
 					condominio.setSindicoGeral(sindicoGeral);					
-				}
+			//	}
 			}
 		} catch (SQLException e) {			
 			throw e;
@@ -665,14 +670,14 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 		// Persiste o Síndico-Geral. Sempre deve existir um síndico-geral
 		GestorCondominio sindicoGeralGestorCondominio = new GestorCondominio();
 		sindicoGeralGestorCondominio.setIdCondominio(condominio.getId());
-		sindicoGeralGestorCondominio.setIdCondomino(condominio.getSindicoGeral().getId());
+		sindicoGeralGestorCondominio.setIdUsuario(condominio.getSindicoGeral().getId());
 		sindicoGeralGestorCondominio.setTipoCondomino(TipoGestorCondominioEnum.SINDICO_GERAL.getGestorCondominio());
 		this.gestorCondominioDAO.get().salvarGestorCondominio(sindicoGeralGestorCondominio, con);	
 		// Persiste o SubSíndico-Geral - Caso possua subSíndicoGeral
 		if(condominio.getSubSindicoGeral() != null && condominio.getSubSindicoGeral().getId() != -1){
 			GestorCondominio subsindicoGeralGestorCondominio = new GestorCondominio();
 			subsindicoGeralGestorCondominio.setIdCondominio(condominio.getId());
-			subsindicoGeralGestorCondominio.setIdCondomino(condominio.getSubSindicoGeral().getId());
+			subsindicoGeralGestorCondominio.setIdUsuario(condominio.getSubSindicoGeral().getId());
 			subsindicoGeralGestorCondominio.setTipoCondomino(TipoGestorCondominioEnum.SUBSINDICO_GERAL.getGestorCondominio());
 			this.gestorCondominioDAO.get().salvarGestorCondominio(subsindicoGeralGestorCondominio, con);
 		}
@@ -681,10 +686,59 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 		for (Condomino conselheiro : condominio.getListaConselheiros()) {
 			conselheiroGeralGestorCondominio = new GestorCondominio();
 			conselheiroGeralGestorCondominio.setIdCondominio(condominio.getId());
-			conselheiroGeralGestorCondominio.setIdCondomino(conselheiro.getId());
+			conselheiroGeralGestorCondominio.setIdUsuario(conselheiro.getId());
 			conselheiroGeralGestorCondominio.setTipoCondomino(TipoGestorCondominioEnum.CONSELHEIRO_CONDOMINIO.getGestorCondominio());
 			this.gestorCondominioDAO.get().salvarGestorCondominio(conselheiroGeralGestorCondominio, con);
 		}
+	}
+
+	@Override
+	public List<Condominio> buscarPorSituacaoESemGestores(Integer situacao) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(CONDOMINIO);
+		query.append(" WHERE ");
+		query.append(SITUACAO);	
+		query.append(" = ?");
+		query.append(" ORDER BY ");
+		query.append(NOME);
+		Connection con = Conexao.getConexao();
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		Condominio condominio = null;
+		List<Condominio> listaDeCondominios = new ArrayList<Condominio>();
+		List<GestorCondominio> listaGestorCondominio = null;
+		try {
+			preparedStatement = con.prepareStatement(query.toString());		
+			SQLUtil.setValorPpreparedStatement(preparedStatement,1, situacao, java.sql.Types.INTEGER);
+			resultSet = preparedStatement.executeQuery();			
+			while(resultSet.next()){
+				condominio = new Condominio();
+				condominio.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				condominio.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+				condominio.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
+				condominio.setCnpj((Long) SQLUtil.getValorResultSet(resultSet, CNPJ, java.sql.Types.BIGINT));
+				condominio.setTelefoneCelular((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_CELULAR, java.sql.Types.BIGINT));
+				condominio.setTelefoneFixo((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_FIXO, java.sql.Types.BIGINT));
+				condominio.setCodigo((Integer) SQLUtil.getValorResultSet(resultSet, CODIGO, java.sql.Types.INTEGER));
+				listaGestorCondominio = this.gestorCondominioDAO.get().buscarListaGestoresCondominioPorCondominio(condominio, con);
+				if (listaGestorCondominio.isEmpty()){
+					listaDeCondominios.add(condominio);					
+				}
+			}
+		} catch (SQLException e) {			
+			throw e;
+		} catch (Exception e) {			
+			throw e;
+		}finally{
+			try {
+				preparedStatement.close();
+				con.close();				
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);				
+			}
+		}	
+		return listaDeCondominios;
 	}
 	
 }

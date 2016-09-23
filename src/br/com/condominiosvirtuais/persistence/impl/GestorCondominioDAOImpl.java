@@ -35,7 +35,7 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 	
 	private static final String  ID_BLOCO = "ID_BLOCO";
 	
-	private static final String  ID_CONDOMINO = "ID_CONDOMINO";
+	private static final String  ID_USUARIO = "ID_USUARIO";
 	
 	private static final String  TIPO_CONDOMINO = "TIPO_CONDOMINO";
 	
@@ -64,7 +64,7 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 				gestorCondominio = new GestorCondominio();
 				gestorCondominio.setId(resultSet.getInt(ID));
 				gestorCondominio.setIdCondominio(resultSet.getInt(ID_CONDOMINIO));
-				gestorCondominio.setIdCondomino(resultSet.getInt(ID_CONDOMINO));
+				gestorCondominio.setIdUsuario(resultSet.getInt(ID_USUARIO));
 				gestorCondominio.setIdBloco(resultSet.getInt(ID_BLOCO));
 				gestorCondominio.setTipoCondomino(resultSet.getInt(TIPO_CONDOMINO));
 				listaGestorCondominio.add(gestorCondominio);
@@ -104,7 +104,7 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 				gestorCondominio = new GestorCondominio();
 				gestorCondominio.setId(resultSet.getInt(ID));
 				gestorCondominio.setIdCondominio(resultSet.getInt(ID_CONDOMINIO));
-				gestorCondominio.setIdCondomino(resultSet.getInt(ID_CONDOMINO));
+				gestorCondominio.setIdUsuario(resultSet.getInt(ID_USUARIO));
 				gestorCondominio.setIdBloco(resultSet.getInt(ID_BLOCO));
 				gestorCondominio.setTipoCondomino(resultSet.getInt(TIPO_CONDOMINO));
 				listaGestorCondominio.add(gestorCondominio);
@@ -121,7 +121,7 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 	
 	public void salvarGestorCondominio(GestorCondominio gestorCondominio, Connection con) throws SQLException, Exception{
 		// Código que atualiza o grupo de usuários do usuário que virou um gestor do condomínio. 		
-		Usuario usuario = this.usuarioDAO.buscarPorId(gestorCondominio.getIdCondomino());
+		Usuario usuario = this.usuarioDAO.buscarPorId(gestorCondominio.getIdUsuario());
 		if(gestorCondominio.getTipoCondomino() == TipoGestorCondominioEnum.SINDICO_GERAL.getGestorCondominio()){
 			usuario.setIdGrupoUsuario(TipoGrupoUsuarioEnum.SINDICO.getGrupoUsuario());
 		}else{
@@ -132,7 +132,7 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 		query.append("INSERT INTO "); 
 		query.append(GESTOR_CONDOMINIO);
 		query.append("("); 
-		query.append(ID_CONDOMINO); 
+		query.append(ID_USUARIO); 
 		query.append(",");
 		query.append(TIPO_CONDOMINO); 
 		if(gestorCondominio.getIdCondominio() != null){
@@ -155,7 +155,7 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 		PreparedStatement statement = null;
 		try {			
 			statement = con.prepareStatement(query.toString());
-			statement.setInt(1,gestorCondominio.getIdCondomino());
+			statement.setInt(1,gestorCondominio.getIdUsuario());
 			statement.setInt(2,gestorCondominio.getTipoCondomino());
 			if(gestorCondominio.getIdCondominio() != null && gestorCondominio.getIdBloco() != null){
 				statement.setInt(3,gestorCondominio.getIdCondominio());				
@@ -180,7 +180,7 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 		query.append("INSERT INTO "); 
 		query.append(GESTOR_CONDOMINIO);
 		query.append("("); 
-		query.append(ID_CONDOMINO); 
+		query.append(ID_USUARIO); 
 		query.append(",");
 		query.append(TIPO_CONDOMINO); 
 		if(gestorCondominio.getIdCondominio() != null){
@@ -203,7 +203,7 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 		PreparedStatement statement = null;
 		try {			
 			statement = con.prepareStatement(query.toString());
-			SQLUtil.setValorPpreparedStatement(statement, 1, gestorCondominio.getIdCondomino(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 1, gestorCondominio.getIdUsuario(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 2, gestorCondominio.getTipoCondomino(), java.sql.Types.INTEGER);			
 			if(gestorCondominio.getIdCondominio() != null && gestorCondominio.getIdBloco() != null){
 				SQLUtil.setValorPpreparedStatement(statement, 3, gestorCondominio.getIdCondominio(), java.sql.Types.INTEGER);
@@ -228,7 +228,7 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 		query.append("UPDATE ");
 		query.append(GESTOR_CONDOMINIO);
 		query.append(" SET ");
-		query.append(ID_CONDOMINO);
+		query.append(ID_USUARIO);
 		query.append("= ?, ");
 		query.append(TIPO_CONDOMINO);
 		query.append("= ?, ");
@@ -240,7 +240,7 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 		PreparedStatement statement = null;
 		try {			
 			statement = con.prepareStatement(query.toString());
-			statement.setInt(1,gestorCondominio.getIdCondomino());
+			statement.setInt(1,gestorCondominio.getIdUsuario());
 			statement.setInt(2,gestorCondominio.getTipoCondomino());
 			statement.setInt(3,gestorCondominio.getIdBloco());
 			statement.setInt(4,gestorCondominio.getIdCondominio());
@@ -261,7 +261,7 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 		List<GestorCondominio> listaGestores = this.buscarListaGestoresCondominioPorCondominio(condominio);
 		Usuario usuario = null;
 		for (GestorCondominio gestorCondominio : listaGestores) {
-			usuario = this.usuarioDAO.buscarPorId(gestorCondominio.getIdCondomino());
+			usuario = this.usuarioDAO.buscarPorId(gestorCondominio.getIdUsuario());
 			usuario.setIdGrupoUsuario(TipoGrupoUsuarioEnum.CONDOMINO.getGrupoUsuario());
 			this.usuarioDAO.atualizarUsuario(usuario, con);		
 		}
@@ -327,7 +327,7 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 				gestorCondominio = new GestorCondominio();
 				gestorCondominio.setId(resultSet.getInt(ID));
 				gestorCondominio.setIdCondominio(resultSet.getInt(ID_CONDOMINIO));
-				gestorCondominio.setIdCondomino(resultSet.getInt(ID_CONDOMINO));
+				gestorCondominio.setIdUsuario(resultSet.getInt(ID_USUARIO));
 				gestorCondominio.setIdBloco(resultSet.getInt(ID_BLOCO));
 				gestorCondominio.setTipoCondomino(resultSet.getInt(TIPO_CONDOMINO));
 				listaGestorCondominio.add(gestorCondominio);
@@ -363,7 +363,7 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 				gestorCondominio = new GestorCondominio();
 				gestorCondominio.setId(resultSet.getInt(ID));
 				gestorCondominio.setIdCondominio(resultSet.getInt(ID_CONDOMINIO));
-				gestorCondominio.setIdCondomino(resultSet.getInt(ID_CONDOMINO));
+				gestorCondominio.setIdUsuario(resultSet.getInt(ID_USUARIO));
 				gestorCondominio.setIdBloco(resultSet.getInt(ID_BLOCO));
 				gestorCondominio.setTipoCondomino(resultSet.getInt(TIPO_CONDOMINO));
 				listaGestorCondominio.add(gestorCondominio);
@@ -382,13 +382,32 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 		}	
 		return listaGestorCondominio;
 	}
-
-	public UsuarioDAOImpl getUsuarioDAO() {
-		return usuarioDAO;
+	
+	public void salvarGestorCondominioSindicoProfissional(GestorCondominio gestorCondominio, Connection con) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("INSERT INTO "); 
+		query.append(GESTOR_CONDOMINIO);
+		query.append("("); 
+		query.append(ID_USUARIO); 
+		query.append(",");
+		query.append(TIPO_CONDOMINO); 
+		query.append(",");
+		query.append(ID_CONDOMINIO);
+		query.append(") ");
+		query.append("VALUES(?,?,?)");
+		PreparedStatement statement = null;
+		try {			
+			statement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(statement, 1, gestorCondominio.getIdUsuario(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 2, gestorCondominio.getTipoCondomino(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 3, gestorCondominio.getIdCondominio(), java.sql.Types.INTEGER);
+			statement.executeUpdate();			
+		} catch (SQLException e) {
+			con.rollback();
+			throw e;
+		} catch (Exception e) {
+			con.rollback();
+			throw e;
+		}		
 	}
-
-	public void setUsuarioDAO(UsuarioDAOImpl usuarioDAO) {
-		this.usuarioDAO = usuarioDAO;
-	}
-
 }

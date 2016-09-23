@@ -9,6 +9,9 @@
 	template="/templates/templatePrincipal.xhtml">
 
 	<ui:define name="conteudo">
+		<f:metadata>
+			<f:event type="preRenderView" listener="#{sindicoProfissionalMB.popularListaCondominiosAtivosESemGestores}" />
+		</f:metadata>
 		<h:form id="idFormCadastroSindicoProfissional" styleClass="content">
 			<rich:panel header="#{msg.cadastroSindicoProfissional}">
 				<h:panelGrid columns="3">
@@ -53,9 +56,9 @@
 					<h:outputLabel value="#{msg['sindicoProfissional.site']}:" for="idSite" />
 					<h:outputLabel value="#{msg['sindicoProfissional.telefoneComercial']}:" for="idTelefoneComercial" />					
 					<h:inputText id="idEmail" value="#{sindicoProfissionalMB.sindicoProfissional.email.email}" required="true" size="40" label="#{msg['sindicoProfissional.email.label']}"/>
-					<h:inputText id="idSite" value="#{sindicoProfissionalMB.sindicoProfissional.site}" required="true" size="40" label="#{msg['sindicoProfissional.email.label']}"/>
+					<h:inputText id="idSite" value="#{sindicoProfissionalMB.sindicoProfissional.site}" size="40" label="#{msg['sindicoProfissional.site.label']}"/>
 					<h:panelGroup>
-						<h:inputText id="idTelefoneComercial" value="#{condominoMB.condomino.telefoneComercial}" size="15" maxlength="15" label="#{msg['condomino.telefoneComercial.label']}" />
+						<h:inputText id="idTelefoneComercial" value="#{sindicoProfissionalMB.sindicoProfissional.telefoneComercial}" size="15" maxlength="15" label="#{msg['sindicoProfissional.telefoneComercial.label']}" />
 						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
 					</h:panelGroup>
 					<h:outputLabel for="idTelefoneCelular1" value="#{msg['sindicoProfissional.telefoneCelular1']}:" />
@@ -90,30 +93,35 @@
 					</h:panelGroup>
 					<h:panelGroup>
 						<h:inputSecret id="idConfirmarSenha" value="#{sindicoProfissionalMB.sindicoProfissional.confirmarSenha}" required="true" label="#{msg['sindicoProfissional.confirmarSenha.label']}"
-							validatorMessage="#{msg['msg.sindicoProfissional.ConfirmarSenha']}">
+							validatorMessage="#{msg['msg.sindicoProfissional.confirmarSenha']}">
 							<f:validateLength minimum="6" maximum="15" />
 						</h:inputSecret>
 					</h:panelGroup>
 					<div></div>
 				</h:panelGrid>
-				<h:panelGrid columns="1" styleClass="msgAsterisco">
-					<h:panelGroup>
-						<h:outputLabel value="#{msg['regraSenha']}" for="idRegraSenhaCondomino" styleClass="camposObrigatorios" />
-						<h:outputLabel value="*" id="idRegraSenhaSindicoProfissional" styleClass="asterisco" />
-					</h:panelGroup>
-					<h:panelGroup>
-						<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
-						<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
-					</h:panelGroup>
-				</h:panelGrid>
 			</rich:panel>
 			<rich:panel header="Associar Condomínios">
-			
-			</rich:panel>
+				<rich:pickList addAllText="#{msg.adicionarTodos}" listWidth="350px" targetCaption="Condomínios Associados" sourceCaption="Condomínios Ativos"
+						addText="#{msg.adicionar}" var="condominio" id="idCondominio"  removeAllText="#{msg.removerTodos}" removeText="#{msg.remover}"
+						rendered="true" converter="condominioConversor" value="#{sindicoProfissionalMB.listaDeCondominiosAssociados}">
+					<f:selectItems value="#{sindicoProfissionalMB.listaDeCondominios}" var="condominio" itemValue="#{condominio}"  itemLabel="#{condominio.nome}" />
+				</rich:pickList>			
+			</rich:panel>			
+			<h:panelGrid columns="1" styleClass="msgAsterisco">
+				<h:panelGroup>
+					<h:outputLabel value="#{msg['regraSenha']}" for="idRegraSenhaSindicoProfissional" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idRegraSenhaSindicoProfissional" styleClass="asterisco" />
+				</h:panelGroup>
+				<h:panelGroup>
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
+				</h:panelGroup>
+			</h:panelGrid>
+			<br></br>
 			<h:panelGrid columns="3">
-				<h:commandButton value="#{msg.botaoSalvar}" action="#{condominoMB.salvarCondomino}" />
-				<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{condominoMB.limparFiltroCondomino}" immediate="true" />
-				<h:commandButton value="#{msg.botaoCancelar}" action="#{condominoMB.cancelarCadastroCondomino}" immediate="true" />
+				<h:commandButton value="#{msg.botaoSalvar}" action="#{sindicoProfissionalMB.salvar}" />
+				<h:commandButton value="#{msg.botaoLimpar}" action="#{sindicoProfissionalMB.limparCadastroSindicoProfissional}" immediate="false" />
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{sindicoProfissionalMB.cancelarCadastroSindicoProfissional}" immediate="true" />
 			</h:panelGrid>
 		</h:form>
 	</ui:define>

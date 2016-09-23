@@ -13,6 +13,7 @@ import br.com.condominiosvirtuais.entity.Condomino;
 import br.com.condominiosvirtuais.entity.Email;
 import br.com.condominiosvirtuais.entity.Unidade;
 import br.com.condominiosvirtuais.exception.BusinessException;
+import br.com.condominiosvirtuais.persistence.UsuarioDAO;
 import br.com.condominiosvirtuais.persistence.impl.CondominoDAOImpl;
 import br.com.condominiosvirtuais.service.BlocoService;
 import br.com.condominiosvirtuais.service.CondominioService;
@@ -37,6 +38,9 @@ public class CondominoServiceImpl implements CondominoService, Serializable{
 	
 	@Inject
 	private CondominoDAOImpl condominoDAO;
+	
+	@Inject
+	private UsuarioDAO usuarioDAO;
 	
 	public List<Condomino> buscarPorUnidade(Unidade unidade) throws SQLException, Exception{
 		return  this.condominoDAO.buscarListaCondominosPorUnidade(unidade);		

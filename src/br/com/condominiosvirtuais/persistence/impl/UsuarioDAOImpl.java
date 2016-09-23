@@ -16,8 +16,10 @@ import javax.inject.Inject;
 import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Condominio;
+import br.com.condominiosvirtuais.entity.GestorCondominio;
 import br.com.condominiosvirtuais.entity.Usuario;
 import br.com.condominiosvirtuais.entity.UsuarioCondominio;
+import br.com.condominiosvirtuais.enumeration.TipoGestorCondominioEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.persistence.UsuarioCondominioDAO;
 import br.com.condominiosvirtuais.persistence.UsuarioDAO;
@@ -58,6 +60,9 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 	
 	@Inject
 	private Instance<EmailUsuarioDAOImpl> emailUsuarioDAO = null;
+	
+	@Inject
+	private Instance<GestorCondominioDAOImpl> gestorCondominioDAO = null;
 	
 	
 	// Constraint referente a integridade entre uma mensagem e um usuário, ou seja, não será possível excluir um usuário
@@ -579,23 +584,43 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 	   }
 		
 	}
+	
+	public Usuario buscarSindicoGeralPorCondominio(Condominio condominio, Connection con) throws SQLException, Exception{
+		Usuario usuario = null;
+		Boolean encontrou = Boolean.FALSE;                   
+		List<GestorCondominio> listaDeGestorCondominio = this.gestorCondominioDAO.get().buscarListaGestoresCondominioPorCondominio(condominio,con);
+		Integer indice = 0;
+		while (encontrou == Boolean.FALSE && indice < listaDeGestorCondominio.size()){
+			GestorCondominio gestorCondominio = listaDeGestorCondominio.get(indice++);
+			if(gestorCondominio.getTipoCondomino() == TipoGestorCondominioEnum.SINDICO_GERAL.getGestorCondominio()){
+				usuario = new Usuario();
+				usuario.setId(gestorCondominio.getIdUsuario());
+				this.buscarEPopularUsuarioPeloId(usuario,con);
+				encontrou = Boolean.TRUE;
+			}			
+		}		
+		return usuario;
+	}
+	
+	public Usuario buscarSindicoGeralPorCondominio(Condominio condominio) throws SQLException, Exception{
+		Usuario usuario = null;
+		Boolean encontrou = Boolean.FALSE;   
+		Connection con = Conexao.getConexao();
+		List<GestorCondominio> listaDeGestorCondominio = this.gestorCondominioDAO.get().buscarListaGestoresCondominioPorCondominio(condominio,con);
+		Integer indice = 0;
+		while (encontrou == Boolean.FALSE && indice < listaDeGestorCondominio.size()){
+			GestorCondominio gestorCondominio = listaDeGestorCondominio.get(indice++);
+			if(gestorCondominio.getTipoCondomino() == TipoGestorCondominioEnum.SINDICO_GERAL.getGestorCondominio()){
+				usuario = new Usuario();
+				usuario.setId(gestorCondominio.getIdUsuario());
+				this.buscarEPopularUsuarioPeloId(usuario,con);
+				encontrou = Boolean.TRUE;
+			}			
+		}		
+		return usuario;
+	}
 
-//	public UsuarioCondominioDAO getUsuarioCondominioDAO() {
-//		return usuarioCondominioDAO;
-//	}
-//
-//	public void setUsuarioCondominioDAO(UsuarioCondominioDAO usuarioCondominioDAO) {
-//		this.usuarioCondominioDAO = usuarioCondominioDAO;
-//	}
-//
-//	public CondominioDAOImpl getCondominioDAO() {
-//		return condominioDAO;
-//	}
-//
-//	public void setCondominioDAO(CondominioDAOImpl condominioDAO) {
-//		this.condominioDAO = condominioDAO;
-//	}
-//
+
 	public Instance<EmailUsuarioDAOImpl> getEmailUsuarioDAO() {
 		return emailUsuarioDAO;
 	}

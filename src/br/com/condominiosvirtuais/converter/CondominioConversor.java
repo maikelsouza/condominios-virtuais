@@ -66,7 +66,10 @@ public class CondominioConversor implements Converter{
 							metodo.invoke(this.condominio,   Integer.parseInt((String) beanConversor.getConteudo()));							
 						}else if (this.atritutos[i].getType().getName().equals("java.lang.String")){							
 							metodo.invoke(this.condominio,  beanConversor.getConteudo());
+						}else if (this.atritutos[i].getType().getName().equals("java.lang.Long")){							
+							metodo.invoke(this.condominio, Long.parseLong((String) beanConversor.getConteudo()));
 						}
+						
 					}
 				}
 			}

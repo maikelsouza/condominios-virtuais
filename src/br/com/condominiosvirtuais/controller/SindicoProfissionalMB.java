@@ -15,8 +15,10 @@ import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.SindicoProfissional;
+import br.com.condominiosvirtuais.enumeration.CondominioSituacaoEnum;
+import br.com.condominiosvirtuais.enumeration.TipoGrupoUsuarioEnum;
+import br.com.condominiosvirtuais.enumeration.UsuarioEnum;
 import br.com.condominiosvirtuais.enumeration.UsuarioSexoEnum;
-import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.service.impl.CondominioServiceImpl;
 import br.com.condominiosvirtuais.service.impl.SindicoProfissionalServiceImpl;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
@@ -37,27 +39,65 @@ public class SindicoProfissionalMB implements Serializable {
 	
 	private SindicoProfissional sindicoProfissional;	
 	
-	private List<SelectItem> listaSISexo;
-	
-	private List<SelectItem> listaSICondominio;
+	private List<SelectItem> listaSISexo;	
 	
 	private List<SelectItem> listaSIDias = new ArrayList<SelectItem>();
 	
 	private List<SelectItem> listaSIMeses = new ArrayList<SelectItem>();
 	
 	private List<SelectItem> listaSIAnos = new ArrayList<SelectItem>();	
+	
+	private List<Condominio> listaDeCondominios;
+	
+	private List<Condominio> listaDeCondominiosAssociados;
+	
 
 	
 	
 	@PostConstruct
 	public void iniciarSindicoProfissionalMB(){
 		this.popularListaSISexo();
-		this.popularListaSICondominio();
 		this.sindicoProfissional = new SindicoProfissional();
+		this.listaDeCondominiosAssociados = new ArrayList<Condominio>();
 		ManagedBeanUtil.popularSIDias(this.listaSIDias);
 		ManagedBeanUtil.popularSIMeses(this.listaSIMeses);
-		ManagedBeanUtil.popularSIAnos(this.listaSIAnos);
+		ManagedBeanUtil.popularSIAnos(this.listaSIAnos);		
 	}	
+	
+	public String salvar (){
+		this.sindicoProfissional.setSituacao(UsuarioEnum.ATIVO.getSituacao());
+		this.sindicoProfissional.setIdGrupoUsuario(TipoGrupoUsuarioEnum.SINDICO_PROFISSIONAL.getGrupoUsuario());
+		this.sindicoProfissional.getEmail().setPrincipal(Boolean.TRUE);
+		this.sindicoProfissional.setListaCondominio(this.listaDeCondominiosAssociados);
+		try {
+			if(!this.sindicoProfissional.getSenha().equals(this.sindicoProfissional.getConfirmarSenha())){
+				ManagedBeanUtil.setMensagemErro("msg.sindicoProfissional.senhasNaoCorrespondem");
+				return null;
+			}
+			if (!ManagedBeanUtil.validaEmail(this.sindicoProfissional.getEmail().getEmail())){
+				ManagedBeanUtil.setMensagemErro("msg.sindicoProfissional.formatoEmailInvalido");
+				return null;
+			}
+			this.sindicoProfissionalService.salvar(sindicoProfissional);
+			ManagedBeanUtil.setMensagemInfo("msg.sindicoProfissional.salvoSucesso");
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");				
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}
+		return null;
+	}
+	
+	public String cancelarCadastroSindicoProfissional(){
+		return "cancelar";
+	}
+	
+	public void limparCadastroSindicoProfissional(){
+		this.sindicoProfissional = new SindicoProfissional();
+		this.listaDeCondominiosAssociados.clear();
+	}
 	
 	
 	
@@ -67,23 +107,17 @@ public class SindicoProfissionalMB implements Serializable {
 		this.listaSISexo.add(new SelectItem(UsuarioSexoEnum.FEMININO.getSexo(), AplicacaoUtil.i18n("sindicoProfissional.sexo.1")));
 	}
 	
-	private void popularListaSICondominio(){
-		List<Condominio> listaDeCondominios;
-		this.listaSICondominio =  new ArrayList<SelectItem>();  
+	public void popularListaCondominiosAtivosESemGestores(){
 		try {
-			listaDeCondominios = this.condominioService.buscarTodos();
-			for (Condominio condominio : listaDeCondominios) {
-				this.listaSICondominio.add(new SelectItem(condominio.getId(), condominio.getNome()));				
-			}
+			this.listaDeCondominios = this.condominioService.buscarPorSituacaoESemGestores(CondominioSituacaoEnum.ATIVO.getSituacao());
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
-			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");			
-		} catch (BusinessException e) {				
-			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage());			
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");				
 		} catch (Exception e) {
 			logger.error("", e);
-			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");			
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
 		}
+	
 	}
 	
 	public SindicoProfissional getSindicoProfissional() {
@@ -100,15 +134,7 @@ public class SindicoProfissionalMB implements Serializable {
 
 	public void setListaSISexo(List<SelectItem> listaSISexo) {
 		this.listaSISexo = listaSISexo;
-	}
-
-	public List<SelectItem> getListaSICondominio() {
-		return listaSICondominio;
-	}
-
-	public void setListaSICondominio(List<SelectItem> listaSICondominio) {
-		this.listaSICondominio = listaSICondominio;
-	}
+	}	
 
 	public List<SelectItem> getListaSIDias() {
 		return listaSIDias;
@@ -133,7 +159,22 @@ public class SindicoProfissionalMB implements Serializable {
 	public void setListaSIAnos(List<SelectItem> listaSIAnos) {
 		this.listaSIAnos = listaSIAnos;
 	}
-	
+
+	public List<Condominio> getListaDeCondominios() {
+		return listaDeCondominios;
+	}
+
+	public void setListaDeCondominios(List<Condominio> listaDeCondominios) {
+		this.listaDeCondominios = listaDeCondominios;
+	}
+
+	public List<Condominio> getListaDeCondominiosAssociados() {
+		return listaDeCondominiosAssociados;
+	}
+
+	public void setListaDeCondominiosAssociados(List<Condominio> listaDeCondominiosAssociados) {
+		this.listaDeCondominiosAssociados = listaDeCondominiosAssociados;
+	}
 	
 
 }

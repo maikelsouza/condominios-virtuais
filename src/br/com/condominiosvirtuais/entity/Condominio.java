@@ -18,7 +18,7 @@ public class Condominio{
 	
 	private Long cnpj;
 	
-	private Condomino sindicoGeral;
+	private Usuario sindicoGeral;
 	
 	private Condomino subSindicoGeral;
 	
@@ -38,8 +38,8 @@ public class Condominio{
 	private Integer codigo;
 		
 	public Condominio() {
-		this.endereco = new Endereco();	
-		this.sindicoGeral = new Condomino();
+		this.endereco = new Endereco();
+		this.sindicoGeral = new Usuario();
 		this.subSindicoGeral = new Condomino();
 	}
 		
@@ -75,11 +75,11 @@ public class Condominio{
 		this.cnpj = cnpj;
 	}
 
-	public Condomino getSindicoGeral() {
+	public Usuario getSindicoGeral() {
 		return sindicoGeral;
 	}
 
-	public void setSindicoGeral(Condomino sindicoGeral) {
+	public void setSindicoGeral(Usuario sindicoGeral) {
 		this.sindicoGeral = sindicoGeral;
 	}
 

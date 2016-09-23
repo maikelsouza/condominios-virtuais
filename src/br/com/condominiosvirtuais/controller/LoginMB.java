@@ -50,8 +50,6 @@ public class LoginMB implements Serializable{
 	private EmailService emailService;
 	
 	
-
-// FIXME APÓS MODIFICAR O CÓDIGO PARA VALIDAR SENHA DO USUÁRIO NÃO ESQUECER DO LOG.	 
 	public String login() throws NoSuchAlgorithmException{
 		this.usuario = null;
 		this.autenticado = Boolean.FALSE;		
@@ -70,7 +68,7 @@ public class LoginMB implements Serializable{
 				return null;
 			}			
 			for (Condominio condominio : this.usuario.getListaCondominio()) {
-				if(condominio.getSindicoGeral().getId() == null){
+				if(condominio.getSindicoGeral() == null){
 					condominiosSemSindicoGeral.add(condominio.getNome());	
 				}
 			}
@@ -78,9 +76,17 @@ public class LoginMB implements Serializable{
 				ManagedBeanUtil.setMensagemWarn("msg.condominio.semSindicoGeral"," : "+mensagem);	
 			}
 			this.salvarDataHoraLogin();			
+		}catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+			return null;
+		} catch (BusinessException e) {				
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage());
+			return null;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+			return null;
 		}
 		return "logar";
 	}
@@ -95,12 +101,17 @@ public class LoginMB implements Serializable{
 			session.invalidate();
 			this.autenticado = Boolean.FALSE;
 			this.salvarDataHoraLogout();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		}catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+			return null;
+		} catch (BusinessException e) {				
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage());
+			return null;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+			return null;
 		}
 		return "logout";
 	 }
@@ -140,7 +151,7 @@ public class LoginMB implements Serializable{
 		Boolean sindicoGeralAssociado = Boolean.TRUE;
 //		// Regra válida somente para usuário não admin
 		for (Condominio condominio : this.usuario.getListaCondominio()) {
-			if(condominio.getSindicoGeral().getId() == null){
+			if(condominio.getSindicoGeral() == null){
 				sindicoGeralAssociado  = Boolean.FALSE;
 			}
 		}
@@ -229,7 +240,7 @@ public class LoginMB implements Serializable{
 	
 	private void salvarDataHoraLogin() throws SQLException, Exception{
 		this.usuario.setUltimoLogin(new Date());
-		this.usuarioService.salvarDataHoraLogin(usuario);
+		this.usuarioService.salvarDataHoraLogin(this.usuario);
 	}
 	
 	private void salvarDataHoraLogout() throws SQLException, Exception{

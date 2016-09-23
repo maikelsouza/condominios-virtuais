@@ -26,7 +26,7 @@ import br.com.condominiosvirtuais.entity.MensagemEnviada;
 import br.com.condominiosvirtuais.entity.MensagemRecebida;
 import br.com.condominiosvirtuais.entity.Unidade;
 import br.com.condominiosvirtuais.entity.Usuario;
-import br.com.condominiosvirtuais.enumeration.CondominioEnum;
+import br.com.condominiosvirtuais.enumeration.CondominioSituacaoEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.service.BlocoService;
 import br.com.condominiosvirtuais.service.CondominioService;
@@ -540,7 +540,7 @@ public class MensagemMB implements IConversationScopeMB, Serializable {
 	private void removeCondominioInativo(){
 		List<Condominio> listaRemoverCondominios = new ArrayList<Condominio>();
 		for (Condominio condominio : this.listaCondominios) {
-			if(condominio.getSituacao() == CondominioEnum.INATIVO.getSituacao()){
+			if(condominio.getSituacao() == CondominioSituacaoEnum.INATIVO.getSituacao()){
 				listaRemoverCondominios.add(condominio);				
 			}
 		}

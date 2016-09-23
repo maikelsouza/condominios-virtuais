@@ -422,7 +422,7 @@ public class BlocoDAOImpl implements BlocoDAO, Serializable{
 		if(bloco.getSindico().getId() != null && bloco.getSindico().getId() != 0){
 			GestorCondominio sindicoGestorCondominio = new GestorCondominio();
 			sindicoGestorCondominio.setIdBloco(bloco.getId());
-			sindicoGestorCondominio.setIdCondomino(bloco.getSindico().getId());
+			sindicoGestorCondominio.setIdUsuario(bloco.getSindico().getId());
 			sindicoGestorCondominio.setTipoCondomino(TipoGestorCondominioEnum.SINDICO.getGestorCondominio());
 			this.gestorCondominioDAO.get().salvarGestorCondominioBloco(sindicoGestorCondominio, con);			
 		}
@@ -430,7 +430,7 @@ public class BlocoDAOImpl implements BlocoDAO, Serializable{
 		if(bloco.getSubSindico().getId() != null && bloco.getSubSindico().getId() != 0){
 			GestorCondominio subsindicoGestorCondominio = new GestorCondominio();
 			subsindicoGestorCondominio.setIdBloco(bloco.getId());
-			subsindicoGestorCondominio.setIdCondomino(bloco.getSubSindico().getId());
+			subsindicoGestorCondominio.setIdUsuario(bloco.getSubSindico().getId());
 			subsindicoGestorCondominio.setTipoCondomino(TipoGestorCondominioEnum.SUBSINDICO.getGestorCondominio());
 			this.gestorCondominioDAO.get().salvarGestorCondominioBloco(subsindicoGestorCondominio, con);
 		}
@@ -439,7 +439,7 @@ public class BlocoDAOImpl implements BlocoDAO, Serializable{
 		for (Condomino conselheiro : bloco.getListaConselheiros()) {
 			conselheiroGestorCondominio = new GestorCondominio();
 			conselheiroGestorCondominio.setIdBloco(bloco.getId());
-			conselheiroGestorCondominio.setIdCondomino(conselheiro.getId());
+			conselheiroGestorCondominio.setIdUsuario(conselheiro.getId());
 			conselheiroGestorCondominio.setTipoCondomino(TipoGestorCondominioEnum.CONSELHEIRO_BLOCO.getGestorCondominio());
 			this.gestorCondominioDAO.get().salvarGestorCondominioBloco(conselheiroGestorCondominio, con);
 		}

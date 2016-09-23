@@ -1,6 +1,6 @@
 package br.com.condominiosvirtuais.enumeration;
 
-public enum CondominioEnum {
+public enum CondominioSituacaoEnum {
 	
 	INATIVO(0),
 	
@@ -8,7 +8,7 @@ public enum CondominioEnum {
 	
 	private Integer situacao = null;	
 	
-	CondominioEnum(Integer situacao){
+	CondominioSituacaoEnum(Integer situacao){
 		this.situacao = situacao;
 	}
 

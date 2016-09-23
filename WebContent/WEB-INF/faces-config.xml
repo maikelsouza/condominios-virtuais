@@ -1596,6 +1596,15 @@
    <to-view-id>/pages/formListaObra.xhtml</to-view-id>   
   </navigation-case>  
  </navigation-rule> 
+ <navigation-rule>                       
+  <from-view-id>/pages/formCadastroSindicoProfissional.xhtml</from-view-id>  
+  <navigation-case>                              
+   <from-action>#{sindicoProfissionalMB.cancelarCadastroSindicoProfissional}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule> 
  
  
  <application>

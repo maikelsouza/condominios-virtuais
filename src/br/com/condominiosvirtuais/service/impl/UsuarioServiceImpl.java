@@ -126,4 +126,9 @@ public class UsuarioServiceImpl implements UsuarioService, Serializable {
 		this.usuarioDAO.salvarDataHoraLogout(usuario);
 	}
 
+	@Override
+	public Usuario buscarSindicoGeralPorCondominio(Condominio condominio) throws SQLException, Exception {
+		return this.usuarioDAO.buscarSindicoGeralPorCondominio(condominio);
+	}
+
 }

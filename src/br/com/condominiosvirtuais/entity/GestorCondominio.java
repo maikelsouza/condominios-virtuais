@@ -14,7 +14,7 @@ public class GestorCondominio {
 	
 	private Integer idBloco;
 	
-	private Integer idCondomino;
+	private Integer idUsuario;
 	
 	private Integer tipoCondomino;
 
@@ -42,12 +42,12 @@ public class GestorCondominio {
 		this.idBloco = idBloco;
 	}
 
-	public Integer getIdCondomino() {
-		return idCondomino;
+	public Integer getIdUsuario() {
+		return idUsuario;
 	}
 
-	public void setIdCondomino(Integer idCondomino) {
-		this.idCondomino = idCondomino;
+	public void setIdUsuario(Integer idUsuario) {
+		this.idUsuario = idUsuario;
 	}
 
 	public Integer getTipoCondomino() {

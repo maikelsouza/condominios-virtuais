@@ -24,7 +24,7 @@ import br.com.condominiosvirtuais.entity.ConjuntoBloco;
 import br.com.condominiosvirtuais.entity.ItemAmbiente;
 import br.com.condominiosvirtuais.entity.TipoConjuntoBloco;
 import br.com.condominiosvirtuais.entity.Unidade;
-import br.com.condominiosvirtuais.enumeration.CondominioEnum;
+import br.com.condominiosvirtuais.enumeration.CondominioSituacaoEnum;
 import br.com.condominiosvirtuais.enumeration.TipoConjuntoBlocoEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.persistence.AmbienteDAO;
@@ -531,7 +531,7 @@ public class AmbienteDAOImpl implements AmbienteDAO, Serializable {
 			// -- Início do código que descobre quais ambientes associados ao condomínio que o condômino tem acesso --
 			Unidade unidade = this.unidadeDAO.buscarPorId(condomino.getIdUnidade(), con);
 			Bloco bloco = this.blocoDAO.buscarPorId(unidade.getIdBloco(),con);	
-			Condominio condominio = this.condominioDAO.buscarPorIdESituacao(bloco.getIdCondominio(),CondominioEnum.ATIVO.getSituacao(),con);
+			Condominio condominio = this.condominioDAO.buscarPorIdESituacao(bloco.getIdCondominio(),CondominioSituacaoEnum.ATIVO.getSituacao(),con);
 			StringBuffer query = new StringBuffer();
 			query.append("SELECT * FROM ");
 			query.append(AMBIENTE);

@@ -11,7 +11,7 @@ public class SindicoProfissional extends Usuario {
 	private Long telefoneCelular3;
 	
 	private String site;
-
+	
 	public Long getTelefoneComercial() {
 		return telefoneComercial;
 	}
