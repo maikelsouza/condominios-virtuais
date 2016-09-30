@@ -2,6 +2,7 @@ package br.com.condominiosvirtuais.service.impl;
 
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -21,6 +22,11 @@ public class SindicoProfissionalServiceImpl implements SindicoProfissionalServic
 	public void salvar(SindicoProfissional sindicoProfissional) throws SQLException, Exception {
 		this.sindicoProfissionalDAO.salvar(sindicoProfissional);
 		
+	}
+
+	@Override
+	public List<SindicoProfissional> buscarPorSituacao(Integer situacao) throws SQLException, Exception {		
+		return this.sindicoProfissionalDAO.buscarPorSituacao(situacao);
 	}
 
 }

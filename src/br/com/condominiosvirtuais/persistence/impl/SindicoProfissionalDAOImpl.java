@@ -3,7 +3,10 @@ package br.com.condominiosvirtuais.persistence.impl;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -103,6 +106,55 @@ public class SindicoProfissionalDAOImpl implements SindicoProfissionalDAO, Seria
 			}
 		}	
 		
+	}
+
+
+
+	@Override
+	public List<SindicoProfissional> buscarPorSituacao(Integer situacao) throws SQLException, Exception {
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;		
+		Connection con = null;
+		List<SindicoProfissional> listaSindicoProfissional = new ArrayList<SindicoProfissional>(); 
+		SindicoProfissional sindicoProfissional = null;
+		try {
+			con = Conexao.getConexao();
+			StringBuffer query = new StringBuffer();
+			query.append("SELECT * FROM "); 
+			query.append(SINDICO_PROFISSIONAL);
+			statement = con.prepareStatement(query.toString());
+			resultSet = statement.executeQuery();
+			Boolean encontrou = Boolean.FALSE;
+			while(resultSet.next()){
+				sindicoProfissional = new SindicoProfissional();				
+				sindicoProfissional.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				sindicoProfissional.setSite(String.valueOf(SQLUtil.getValorResultSet(resultSet, SITE, java.sql.Types.VARCHAR)));
+				sindicoProfissional.setTelefoneComercial((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_COMERCIAL, java.sql.Types.BIGINT));
+				sindicoProfissional.setTelefoneCelular1((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_CELULAR1, java.sql.Types.BIGINT));
+				sindicoProfissional.setTelefoneCelular2((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_CELULAR2, java.sql.Types.BIGINT));
+				sindicoProfissional.setTelefoneCelular3((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_CELULAR3, java.sql.Types.BIGINT));
+				sindicoProfissional.setSituacao(situacao);
+				encontrou = this.usuarioDAO.buscarPorIdESituacaoEPopularUsuarioPeloId(sindicoProfissional, con);
+				if(encontrou){
+					listaSindicoProfissional.add(sindicoProfissional);
+				}
+			}
+				
+		} catch (SQLException e) {
+			throw e;
+		} catch (BusinessException e) {
+			throw e;
+		} catch (Exception e) {		
+			throw e;			
+		}finally{
+			try {				
+				con.close();	
+				statement.close();
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);		
+			}
+		}		
+		return listaSindicoProfissional;
 	}
 
 }

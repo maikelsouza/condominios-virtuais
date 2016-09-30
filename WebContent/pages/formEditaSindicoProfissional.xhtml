@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormEditaSindicoProfissional" styleClass="content">
+			<rich:panel header="#{msg.editaSindicoProfissional}">
+				<h:panelGrid columns="3">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['sindicoProfissional.nome']}:" for="idNome" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['sindicoProfissional.sexo']}:" for="idSexo" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:outputLabel value="#{msg['sindicoProfissional.dataNascimento']}:" for="idDataNascimento" />
+					<h:inputText id="idNome" value="#{sindicoProfissionalMB.sindicoProfissional.nome}"
+						required="true" size="40" label="#{msg['sindicoProfissional.nome.label']}"
+						validatorMessage="#{msg['msg.sindicoProfissional.nome']}">
+						<f:validateLength minimum="1" maximum="150" />
+					</h:inputText>
+					<h:selectOneRadio id="idSexo" value="#{sindicoProfissionalMB.sindicoProfissional.sexo}"
+						required="true" label="#{msg['sindicoProfissional.sexo.label']}">	
+						<f:selectItems value="#{sindicoProfissionalMB.listaSISexo}" />					
+					</h:selectOneRadio>
+					<h:panelGroup id="idDataNascimento">
+						<h:selectOneMenu
+							value="#{sindicoProfissionalMB.sindicoProfissional.dataNascimentoDia}">
+							<f:selectItem itemLabel="#{msg['sindicoProfissional.dataNascimento.dia']}" noSelectionOption="false" />
+							<f:selectItems value="#{sindicoProfissionalMB.listaSIDias}" />
+						</h:selectOneMenu>
+						<h:selectOneMenu value="#{sindicoProfissionalMB.sindicoProfissional.dataNascimentoMes}">
+							<f:selectItem itemLabel="#{msg['sindicoProfissional.dataNascimento.mes']}" noSelectionOption="false" />
+							<f:selectItems value="#{sindicoProfissionalMB.listaSIMeses}" />
+						</h:selectOneMenu>
+						<h:selectOneMenu
+							value="#{sindicoProfissionalMB.sindicoProfissional.dataNascimentoAno}">
+							<f:selectItem itemLabel="#{msg['sindicoProfissional.dataNascimento.ano']}" noSelectionOption="false" />
+							<f:selectItems value="#{sindicoProfissionalMB.listaSIAnos}" />
+						</h:selectOneMenu>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['sindicoProfissional.email']}:" for="idEmail" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:outputLabel value="#{msg['sindicoProfissional.site']}:" for="idSite" />
+					<h:outputLabel value="#{msg['sindicoProfissional.telefoneComercial']}:" for="idTelefoneComercial" />					
+					<h:inputText id="idEmail" value="#{sindicoProfissionalMB.sindicoProfissional.email.email}" required="true" size="40" label="#{msg['sindicoProfissional.email.label']}"/>
+					<h:inputText id="idSite" value="#{sindicoProfissionalMB.sindicoProfissional.site}" size="40" label="#{msg['sindicoProfissional.site.label']}"/>
+					<h:panelGroup>
+						<h:inputText id="idTelefoneComercial" value="#{sindicoProfissionalMB.sindicoProfissional.telefoneComercial}" size="15" maxlength="15" label="#{msg['sindicoProfissional.telefoneComercial.label']}" />
+						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
+					</h:panelGroup>
+					<h:outputLabel for="idTelefoneCelular1" value="#{msg['sindicoProfissional.telefoneCelular1']}:" />
+					<h:outputLabel for="idTelefoneCelular2" value="#{msg['sindicoProfissional.telefoneCelular2']}:" />
+					<h:outputLabel for="idTelefoneCelular3" value="#{msg['sindicoProfissional.telefoneCelular3']}:" />			
+					<h:panelGroup>
+						<h:inputText id="idTelefoneCelular1" value="#{sindicoProfissionalMB.sindicoProfissional.telefoneCelular1}" size="15" maxlength="15" label="#{msg['sindicoProfissional.telefoneCelular1.label']}" />
+						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:inputText id="idTelefoneCelular2" value="#{sindicoProfissionalMB.sindicoProfissional.telefoneCelular2}" size="15" maxlength="15" label="#{msg['sindicoProfissional.telefoneComercial2.label']}" />
+						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:inputText id="idTelefoneCelular3" value="#{sindicoProfissionalMB.sindicoProfissional.telefoneCelular3}" size="15" maxlength="15" label="#{msg['sindicoProfissional.telefoneComercial3.label']}" />
+						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
+					</h:panelGroup>
+				</h:panelGrid>
+			</rich:panel>
+			<rich:panel header="Associar Condomínios">
+				<rich:pickList addAllText="#{msg.adicionarTodos}" listWidth="350px" targetCaption="Condomínios Associados" sourceCaption="Condomínios Ativos"
+						addText="#{msg.adicionar}" var="condominio" id="idCondominio"  removeAllText="#{msg.removerTodos}" removeText="#{msg.remover}"
+						rendered="true" converter="condominioConversor" value="#{sindicoProfissionalMB.listaDeCondominiosAssociados}">
+					<f:selectItems value="#{sindicoProfissionalMB.listaDeCondominios}" var="condominio" itemValue="#{condominio}"  itemLabel="#{condominio.nome}" />
+				</rich:pickList>	
+			</rich:panel>			
+			<h:panelGrid columns="1" styleClass="msgAsterisco">
+				<h:panelGroup>
+					<h:outputLabel value="#{msg['regraSenha']}" for="idRegraSenhaSindicoProfissional" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idRegraSenhaSindicoProfissional" styleClass="asterisco" />
+				</h:panelGroup>
+				<h:panelGroup>
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
+				</h:panelGroup>
+			</h:panelGrid>
+			<br></br>
+			<h:panelGrid columns="3">
+				<h:commandButton value="#{msg.botaoAtualizar}" action="#{sindicoProfissionalMB.atualizar}"/>
+				<h:commandButton value="#{msg.botaoLimpar}" action="#{sindicoProfissionalMB.limparCadastroSindicoProfissional}" immediate="false" />
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{sindicoProfissionalMB.cancelarCadastroSindicoProfissional}" immediate="true" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

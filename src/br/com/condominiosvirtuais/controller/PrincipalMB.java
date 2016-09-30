@@ -283,6 +283,10 @@ public class PrincipalMB  implements Serializable{
 	public String cadastrarSindicoProfissional(){
 		return "cadastrarSindicoProfissional";
 	}
+	
+	public String listarSindicoProfissional(){
+		return "listarSindicoProfissional";
+	}
 
 	private void iniciaThreads(){				
 		emailThread.start();

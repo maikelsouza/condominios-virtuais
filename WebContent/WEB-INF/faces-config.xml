@@ -128,6 +128,11 @@
   <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaObraMB</managed-bean-class>
   <managed-bean-scope>view</managed-bean-scope>
  </managed-bean>
+ <managed-bean>
+  <managed-bean-name>ordenaSindicoProfissionalMB</managed-bean-name>
+  <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaSindicoProfissionalMB</managed-bean-class>
+  <managed-bean-scope>view</managed-bean-scope>
+ </managed-bean>
  
  <navigation-rule>
   <navigation-case>
@@ -398,6 +403,12 @@
    <from-action>#{principalMB.cadastrarSindicoProfissional}</from-action>
    <from-outcome>cadastrarSindicoProfissional</from-outcome>
    <to-view-id>/pages/formCadastroSindicoProfissional.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-action>#{principalMB.listarSindicoProfissional}</from-action>
+   <from-outcome>listarSindicoProfissional</from-outcome>
+   <to-view-id>/pages/formListaSindicoProfissional.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
  </navigation-rule>
@@ -1602,6 +1613,21 @@
    <from-action>#{sindicoProfissionalMB.cancelarCadastroSindicoProfissional}</from-action>
    <from-outcome>cancelar</from-outcome>
    <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formListaSindicoProfissional.xhtml</from-view-id>  
+  <navigation-case>                              
+   <from-action>#{sindicoProfissionalMB.cancelarFiltroSindicoProfissional}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>                              
+   <from-action>#{sindicoProfissionalMB.editarSindicoProfissional}</from-action>
+   <from-outcome>editar</from-outcome>
+   <to-view-id>/pages/formEditaSindicoProfissional.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
  </navigation-rule> 

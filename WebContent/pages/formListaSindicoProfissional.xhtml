@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormListaSindicoProfissional" styleClass="content">
+			<rich:panel header="#{msg.filtroSindicoProfissional}">				
+				<h:panelGrid columns="1">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['sindicoProfissional.situacao']}" for="idSituacao"/>
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:selectOneMenu id="idSituacao" value="#{sindicoProfissionalMB.sindicoProfissional.situacao}"
+						label="#{msg['sindicoProfissional.situacao.label']}" required="true">
+						<f:selectItems value="#{sindicoProfissionalMB.listaSISituacao}" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+				
+				<h:panelGrid columns="2" styleClass="msgAsterisco"> 
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
+				</h:panelGrid>
+			</rich:panel>
+			<div>
+				<h:panelGrid columns="1">
+					<h:commandButton value="#{msg.botaoPesquisar}" actionListener="#{sindicoProfissionalMB.pesquisar}" />
+				</h:panelGrid>
+			</div>
+			<rich:panel header="#{msg.listaSindicoProfissional}">					
+				<rich:dataTable value="#{sindicoProfissionalMB.listaSindicoProfissionalDataModel}"
+					var="sindicoProfissional" rowClasses="odd-row, even-row" rows="10"
+					styleClass="stable" id="tableSindicoProfissional" style="width:100%;"
+					rendered="#{sindicoProfissionalMB.listaSindicoProfissionalDataModel.rowCount > 0}">
+					<rich:column sortBy="#{sindicoProfissional.nome}" sortOrder="#{ordenaSindicoProfissionalMB.nomeSindicoProfissional}">
+						<f:facet name="header">
+							<a4j:commandLink value="#{msg['sindicoProfissional.nome']}" render="tableSindicoProfissional" action="#{ordenaSindicoProfissionalMB.ordenarPorNomeSindicoProfissional}" />
+						</f:facet>
+						<h:outputText value="#{sindicoProfissional.nome}" />
+					</rich:column>
+					<rich:column sortBy="#{sindicoProfissional.email.email}" sortOrder="#{ordenaSindicoProfissionalMB.emailSindicoProfissional}">
+						<f:facet name="header">
+							<a4j:commandLink value="#{msg['sindicoProfissional.email']}" render="tableSindicoProfissional" action="#{ordenaSindicoProfissionalMB.ordenarPorNomeSindicoProfissional}" />
+						</f:facet>
+						<h:outputText value="#{sindicoProfissional.email.email}" />
+					</rich:column>
+					<rich:column sortBy="#{sindicoProfissional.site}" sortOrder="#{ordenaSindicoProfissionalMB.siteSindicoProfissional}">
+						 <f:facet name="header">                                                                                    
+							<a4j:commandLink value="#{msg['sindicoProfissional.site']}" render="tableSindicoProfissional" action="#{ordenaSindicoProfissionalMB.ordenarPorSiteSindicoProfissional}" />
+						</f:facet>
+						<h:outputText value="#{sindicoProfissional.site}" />								
+					</rich:column>
+					<rich:column sortBy="#{sindicoProfissional.telefoneComercial}" sortOrder="#{ordenaSindicoProfissionalMB.telefoneComercialSindicoProfissional}">
+						<f:facet name="header">
+							<a4j:commandLink value="#{msg['sindicoProfissional.telefoneComercial']}" render="tableSindicoProfissional" action="#{ordenaSindicoProfissionalMB.ordenarPorTelefoneComercialSindicoProfissional}" />
+						</f:facet>
+						<h:outputText value="#{sindicoProfissional.telefoneComercial}" />
+					</rich:column>
+					<rich:column sortBy="#{sindicoProfissional.telefoneCelular1}" sortOrder="#{ordenaSindicoProfissionalMB.telefoneCelular1SindicoProfissional}">
+						<f:facet name="header">                                                                                         
+							<a4j:commandLink value="#{msg['sindicoProfissional.telefoneCelular1']}" render="tableSindicoProfissional" action="#{ordenaSindicoProfissionalMB.ordenarPorTelefoneCelular1SindicoProfissional}" />
+						</f:facet>
+						<h:outputText value="#{sindicoProfissional.telefoneCelular1}" />
+					</rich:column>
+					<rich:column> 
+						<f:facet name="header">
+							<h:outputText value="#{msg.rotuloAcao}" />
+						</f:facet>
+						<a4j:commandLink value="#{msg.linkEditar}"  action="#{sindicoProfissionalMB.editarSindicoProfissional}"  immediate="true" />
+						#{' '}
+						<a4j:commandLink value="#{msg.linkExcluir}"  action="#{sindicoProfissionalMB.excluir}"  immediate="true" />
+					</rich:column>		
+					<f:facet name="footer">
+             			<rich:dataScroller for="tableSindicoProfissional"  fastControls="hide" renderIfSinglePage="false" />
+          			</f:facet>	
+				</rich:dataTable>
+			</rich:panel>
+			<h:panelGrid columns="1">
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{sindicoProfissionalMB.cancelarFiltroSindicoProfissional}" immediate="true"></h:commandButton>
+			</h:panelGrid>
+		</h:form>
+
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseover" query="jQuery(this).addClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseout" query="jQuery(this).removeClass('active-row')" />
+	</ui:define>
+
+</ui:composition>

@@ -104,7 +104,8 @@
 				<rich:menuItem label="#{msg['cadastro.obra.listar']}" action="#{principalMB.listarObra}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,5') and loginMB.sindicoGeralAssociado()}"/>				
 			</rich:menuGroup>									
 			<rich:menuGroup label="#{msg.sindicoProfissional}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1')}">
-				<rich:menuItem label="#{msg['cadastro.sindicoProfissional.cadastrar']}" action="#{principalMB.cadastrarSindicoProfissional}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1')}"/>								
+				<rich:menuItem label="#{msg['cadastro.sindicoProfissional.cadastrar']}" action="#{principalMB.cadastrarSindicoProfissional}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1')}"/>
+				<rich:menuItem label="#{msg['cadastro.sindicoProfissional.listar']}" action="#{principalMB.listarSindicoProfissional}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1')}"/>								
 			</rich:menuGroup>									
 		</rich:dropDownMenu>
 		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,6') and loginMB.sindicoGeralAssociado()}">
