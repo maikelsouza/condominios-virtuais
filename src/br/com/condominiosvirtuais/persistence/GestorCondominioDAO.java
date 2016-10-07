@@ -16,4 +16,8 @@ public interface GestorCondominioDAO {
 	
 	public abstract List<GestorCondominio> buscarListaGestoresCondominioPorCondominio(Condominio condominio) throws SQLException, Exception;
 	
+	public abstract void excluirPorIdUsuario(Integer idUsuario, Connection con) throws SQLException, Exception;
+	
+	public abstract void atualizarGestorCondominioPorCondominio(GestorCondominio gestorCondominio, Connection con) throws SQLException, Exception;
+	
 }

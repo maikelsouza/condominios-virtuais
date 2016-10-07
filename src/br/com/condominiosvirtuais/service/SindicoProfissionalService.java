@@ -11,5 +11,7 @@ public interface SindicoProfissionalService {
 	public abstract void salvar(SindicoProfissional sindicoProfissional) throws SQLException, Exception;
 	
 	public abstract List<SindicoProfissional> buscarPorSituacao(Integer situacao) throws SQLException, Exception;
-
+	
+	public abstract void atualizar(SindicoProfissional sindicoProfissional) throws SQLException, Exception;
+	
 }

@@ -1630,6 +1630,20 @@
    <to-view-id>/pages/formEditaSindicoProfissional.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formEditaSindicoProfissional.xhtml</from-view-id>  
+  <navigation-case>                              
+   <from-action>#{sindicoProfissionalMB.atualizarSindicoProfissional}</from-action>
+   <from-outcome>atualizar</from-outcome>
+   <to-view-id>/pages/formListaSindicoProfissional.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>                     
+   <from-action>#{sindicoProfissionalMB.voltarAtualizarSindicoProfissional}</from-action>
+   <from-outcome>voltar</from-outcome>
+   <to-view-id>/pages/formListaSindicoProfissional.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
  </navigation-rule> 
  
  

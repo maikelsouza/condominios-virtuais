@@ -98,15 +98,15 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 		GestorCondominio gestorCondominio = null;
 		try {
 			preparedStatement = con.prepareStatement(query.toString());
-			preparedStatement.setInt(1, condominio.getId());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, condominio.getId(), java.sql.Types.INTEGER);
 			resultSet = preparedStatement.executeQuery();
 			while(resultSet.next()){
 				gestorCondominio = new GestorCondominio();
-				gestorCondominio.setId(resultSet.getInt(ID));
-				gestorCondominio.setIdCondominio(resultSet.getInt(ID_CONDOMINIO));
-				gestorCondominio.setIdUsuario(resultSet.getInt(ID_USUARIO));
-				gestorCondominio.setIdBloco(resultSet.getInt(ID_BLOCO));
-				gestorCondominio.setTipoCondomino(resultSet.getInt(TIPO_CONDOMINO));
+				gestorCondominio.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				gestorCondominio.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
+				gestorCondominio.setIdUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_USUARIO, java.sql.Types.INTEGER));
+				gestorCondominio.setIdBloco((Integer) SQLUtil.getValorResultSet(resultSet, ID_BLOCO, java.sql.Types.INTEGER));
+				gestorCondominio.setTipoCondomino((Integer) SQLUtil.getValorResultSet(resultSet, TIPO_CONDOMINO, java.sql.Types.INTEGER));
 				listaGestorCondominio.add(gestorCondominio);
 			}
 		} catch (SQLException e) {
@@ -240,10 +240,10 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 		PreparedStatement statement = null;
 		try {			
 			statement = con.prepareStatement(query.toString());
-			statement.setInt(1,gestorCondominio.getIdUsuario());
-			statement.setInt(2,gestorCondominio.getTipoCondomino());
-			statement.setInt(3,gestorCondominio.getIdBloco());
-			statement.setInt(4,gestorCondominio.getIdCondominio());
+			SQLUtil.setValorPpreparedStatement(statement,1,gestorCondominio.getIdUsuario(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement,2,gestorCondominio.getTipoCondomino(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement,3,gestorCondominio.getIdBloco(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement,4,gestorCondominio.getIdCondominio(), java.sql.Types.INTEGER);
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			con.rollback();
@@ -410,4 +410,26 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 			throw e;
 		}		
 	}
+
+	@Override
+	public void excluirPorIdUsuario(Integer idUsuario, Connection con) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		PreparedStatement statement = null;
+		try {			
+			query.append("DELETE FROM ");
+			query.append(GESTOR_CONDOMINIO);
+			query.append(" WHERE ");		
+			query.append(ID_USUARIO);
+			query.append(" = ?");			
+			statement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(statement, 1, idUsuario, java.sql.Types.INTEGER);
+			statement.executeUpdate();			
+		} catch (SQLException e) {
+			con.rollback();
+			throw e;			
+		} catch (Exception e) {
+			con.rollback();
+			throw e;	
+		}
+	}	
 }

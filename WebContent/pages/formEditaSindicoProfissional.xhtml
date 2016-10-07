@@ -51,13 +51,16 @@
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 					<h:outputLabel value="#{msg['sindicoProfissional.site']}:" for="idSite" />
-					<h:outputLabel value="#{msg['sindicoProfissional.telefoneComercial']}:" for="idTelefoneComercial" />					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['sindicoProfissional.situacao']}:" for="idSituacao" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>	
 					<h:inputText id="idEmail" value="#{sindicoProfissionalMB.sindicoProfissional.email.email}" required="true" size="40" label="#{msg['sindicoProfissional.email.label']}"/>
 					<h:inputText id="idSite" value="#{sindicoProfissionalMB.sindicoProfissional.site}" size="40" label="#{msg['sindicoProfissional.site.label']}"/>
-					<h:panelGroup>
-						<h:inputText id="idTelefoneComercial" value="#{sindicoProfissionalMB.sindicoProfissional.telefoneComercial}" size="15" maxlength="15" label="#{msg['sindicoProfissional.telefoneComercial.label']}" />
-						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
-					</h:panelGroup>
+					<h:selectOneRadio id="idSituacao" value="#{sindicoProfissionalMB.sindicoProfissional.situacao}"
+						required="true" label="#{msg['sindicoProfissional.situacao.label']}">	
+						<f:selectItems value="#{sindicoProfissionalMB.listaSISituacao}" />					
+					</h:selectOneRadio>
 					<h:outputLabel for="idTelefoneCelular1" value="#{msg['sindicoProfissional.telefoneCelular1']}:" />
 					<h:outputLabel for="idTelefoneCelular2" value="#{msg['sindicoProfissional.telefoneCelular2']}:" />
 					<h:outputLabel for="idTelefoneCelular3" value="#{msg['sindicoProfissional.telefoneCelular3']}:" />			
@@ -74,12 +77,19 @@
 						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
 					</h:panelGroup>
 				</h:panelGrid>
+				<h:panelGrid>
+					<h:outputLabel value="#{msg['sindicoProfissional.telefoneComercial']}:" for="idTelefoneComercial" />	
+					<h:panelGroup>
+						<h:inputText id="idTelefoneComercial" value="#{sindicoProfissionalMB.sindicoProfissional.telefoneComercial}" size="15" maxlength="15" label="#{msg['sindicoProfissional.telefoneComercial.label']}" />
+						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
+					</h:panelGroup>					
+				</h:panelGrid>
 			</rich:panel>
-			<rich:panel header="Associar Condomínios">
-				<rich:pickList addAllText="#{msg.adicionarTodos}" listWidth="350px" targetCaption="Condomínios Associados" sourceCaption="Condomínios Ativos"
-						addText="#{msg.adicionar}" var="condominio" id="idCondominio"  removeAllText="#{msg.removerTodos}" removeText="#{msg.remover}"
-						rendered="true" converter="condominioConversor" value="#{sindicoProfissionalMB.listaDeCondominiosAssociados}">
-					<f:selectItems value="#{sindicoProfissionalMB.listaDeCondominios}" var="condominio" itemValue="#{condominio}"  itemLabel="#{condominio.nome}" />
+			<rich:panel header="#{msg['sindicoProfissional.associarCondominios']}">
+				<rich:pickList addAllText="#{msg.adicionarTodos}" listWidth="350px" targetCaption="#{msg['sindicoProfissional.condominiosAssociados']}" sourceCaption="#{msg['sindicoProfissional.condominiosAtivos']}"
+						addText="#{msg.adicionar}" var="condominio" id="idCondominio"  removeAllText="#{msg.removerTodos}" removeText="#{msg.remover}" required="true"
+						rendered="true" converter="condominioConversor" value="#{sindicoProfissionalMB.listaDeCondominiosAssociados}" label="#{msg['sindicoProfissional.associarCondominios.label']}">
+					<f:selectItems value="#{sindicoProfissionalMB.listaDeCondominiosAtivo}" var="condominio" itemValue="#{condominio}"  itemLabel="#{condominio.nome}" />
 				</rich:pickList>	
 			</rich:panel>			
 			<h:panelGrid columns="1" styleClass="msgAsterisco">
@@ -93,10 +103,9 @@
 				</h:panelGroup>
 			</h:panelGrid>
 			<br></br>
-			<h:panelGrid columns="3">
-				<h:commandButton value="#{msg.botaoAtualizar}" action="#{sindicoProfissionalMB.atualizar}"/>
-				<h:commandButton value="#{msg.botaoLimpar}" action="#{sindicoProfissionalMB.limparCadastroSindicoProfissional}" immediate="false" />
-				<h:commandButton value="#{msg.botaoCancelar}" action="#{sindicoProfissionalMB.cancelarCadastroSindicoProfissional}" immediate="true" />
+			<h:panelGrid columns="2">
+				<h:commandButton value="#{msg.botaoAtualizar}" action="#{sindicoProfissionalMB.atualizarSindicoProfissional}"/>
+				<h:commandButton value="#{msg.botaoVoltar}" action="#{sindicoProfissionalMB.voltarAtualizarSindicoProfissional}" immediate="true" />
 			</h:panelGrid>
 		</h:form>
 	</ui:define>

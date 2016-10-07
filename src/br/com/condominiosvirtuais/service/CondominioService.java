@@ -34,5 +34,7 @@ public interface CondominioService {
 	public abstract void popularBlocoEUnidadeDoCondominio(Condominio condominio) throws SQLException, Exception;
 	
 	public abstract List<Condominio> buscarPorSituacaoESemGestores(Integer situacao) throws SQLException, Exception;
+	
+	public abstract List<Condominio> buscarPorSituacao(Integer situacao) throws SQLException, Exception;
 
 }

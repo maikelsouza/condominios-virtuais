@@ -18,6 +18,7 @@ import br.com.condominiosvirtuais.entity.Bloco;
 import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.Condomino;
 import br.com.condominiosvirtuais.entity.GestorCondominio;
+import br.com.condominiosvirtuais.entity.SindicoProfissional;
 import br.com.condominiosvirtuais.entity.Unidade;
 import br.com.condominiosvirtuais.entity.Usuario;
 import br.com.condominiosvirtuais.entity.UsuarioCondominio;
@@ -26,8 +27,8 @@ import br.com.condominiosvirtuais.enumeration.TipoGestorCondominioEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.persistence.ArquivoDAO;
 import br.com.condominiosvirtuais.persistence.CondominioDAO;
+import br.com.condominiosvirtuais.persistence.SindicoProfissionalDAO;
 import br.com.condominiosvirtuais.persistence.UsuarioCondominioDAO;
-import br.com.condominiosvirtuais.persistence.UsuarioDAO;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
 import br.com.condominiosvirtuais.util.SQLUtil;
 
@@ -88,6 +89,11 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 	
 	@Inject
 	private Instance<UsuarioDAOImpl>  usuarioDAO = null;
+	
+	@Inject
+	private SindicoProfissionalDAO sindicoProfissionalDAO;
+	
+	
 		
 	
 	/**
@@ -408,8 +414,12 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 		query.append("= ?");
 		Connection con = Conexao.getConexao();
 		PreparedStatement statement = null;
+		List<GestorCondominio> listaGestorCondominio = null;
+		SindicoProfissional sindicoProfissional = null;
+		List<UsuarioCondominio> listaUsuarioCondominio = null;
+		Boolean ehGestorDoCondominio = Boolean.FALSE;
 		try {
-			con.setAutoCommit(false);
+			con.setAutoCommit(Boolean.FALSE);
 			statement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(statement, 1, condominio.getNome(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement, 2, condominio.getSituacao(), java.sql.Types.INTEGER);
@@ -421,6 +431,26 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 			this.enderecoDAO.atualizarEndereco(condominio.getEndereco(), con);	
 			this.gestorCondominioDAO.get().excluirGestorCondominioPorCondominio(condominio, con);
 			this.salvarGestoresCondominio(condominio, con);
+			listaUsuarioCondominio = this.usuarioCondominioDAO.get().buscarListaPorIdCondominio(condominio.getId(), con);			
+			listaGestorCondominio = this.gestorCondominioDAO.get().buscarListaGestoresCondominioPorCondominio(condominio,con);
+			// Verificar se tem algum usuário do condomínio que é um síndico profissional. Num caso positivo, veja se ele ainda é um gestor desse condomínio. 
+			// Em caso negativo excluir esse usuário do condomínio. Regra necessára para garantir que o síndico profissional não seja mais 
+			// gestor e usuário desse condomínio.
+			for (UsuarioCondominio usuarioCondominio : listaUsuarioCondominio) {
+				sindicoProfissional = this.sindicoProfissionalDAO.buscarPorId(usuarioCondominio.getIdUsuario(), con);
+				if(sindicoProfissional != null){
+					ehGestorDoCondominio = Boolean.FALSE;
+					for (GestorCondominio gestorCondominio : listaGestorCondominio) {
+						if(gestorCondominio.getIdUsuario().intValue() == sindicoProfissional.getId().intValue()){
+							ehGestorDoCondominio = Boolean.TRUE;
+						}						
+					}
+					// Caso o síndico profissional não seja um gestor do condomínio, então esse deve ser excluído do condomínio
+					if(ehGestorDoCondominio == Boolean.FALSE){
+						this.usuarioCondominioDAO.get().excluirPorUsuario(sindicoProfissional, con);
+					}
+				}
+			}
 			con.commit();
 		} catch (SQLException e) {
 			throw e;	
@@ -725,6 +755,51 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 				if (listaGestorCondominio.isEmpty()){
 					listaDeCondominios.add(condominio);					
 				}
+			}
+		} catch (SQLException e) {			
+			throw e;
+		} catch (Exception e) {			
+			throw e;
+		}finally{
+			try {
+				preparedStatement.close();
+				con.close();				
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);				
+			}
+		}	
+		return listaDeCondominios;
+	}
+
+	@Override
+	public List<Condominio> buscarPorSituacao(Integer situacao) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(CONDOMINIO);
+		query.append(" WHERE ");
+		query.append(SITUACAO);	
+		query.append(" = ?");
+		query.append(" ORDER BY ");
+		query.append(NOME);
+		Connection con = Conexao.getConexao();
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		Condominio condominio = null;
+		List<Condominio> listaDeCondominios = new ArrayList<Condominio>();
+		try {
+			preparedStatement = con.prepareStatement(query.toString());		
+			SQLUtil.setValorPpreparedStatement(preparedStatement,1, situacao, java.sql.Types.INTEGER);
+			resultSet = preparedStatement.executeQuery();			
+			while(resultSet.next()){
+				condominio = new Condominio();
+				condominio.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				condominio.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+				condominio.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
+				condominio.setCnpj((Long) SQLUtil.getValorResultSet(resultSet, CNPJ, java.sql.Types.BIGINT));
+				condominio.setTelefoneCelular((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_CELULAR, java.sql.Types.BIGINT));
+				condominio.setTelefoneFixo((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_FIXO, java.sql.Types.BIGINT));
+				condominio.setCodigo((Integer) SQLUtil.getValorResultSet(resultSet, CODIGO, java.sql.Types.INTEGER));
+				listaDeCondominios.add(condominio);					
 			}
 		} catch (SQLException e) {			
 			throw e;

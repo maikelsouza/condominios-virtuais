@@ -56,7 +56,7 @@ public class SindicoProfissionalDAOImpl implements SindicoProfissionalDAO, Seria
 		GestorCondominio gestorCondominio = null;
 		try {
 			con = Conexao.getConexao();
-			con.setAutoCommit(false);
+			con.setAutoCommit(Boolean.FALSE);
 			this.usuarioDAO.salvarUsuario(sindicoProfissional,con);
 			StringBuffer query = new StringBuffer();
 			query.append("INSERT INTO "); 
@@ -156,5 +156,108 @@ public class SindicoProfissionalDAOImpl implements SindicoProfissionalDAO, Seria
 		}		
 		return listaSindicoProfissional;
 	}
+
+
+
+	@Override
+	public void atualizar(SindicoProfissional sindicoProfissional) throws SQLException, Exception {
+		GestorCondominio gestorCondominio = null;
+		Connection con = Conexao.getConexao();
+		con.setAutoCommit(Boolean.FALSE);
+		this.usuarioDAO.atualizarUsuario(sindicoProfissional, con);
+		StringBuffer query = new StringBuffer();
+		query.append("UPDATE ");
+		query.append(SINDICO_PROFISSIONAL);
+		query.append(" SET ");
+		query.append(SITE); 
+		query.append(" = ?,");		
+		query.append(TELEFONE_COMERCIAL); 
+		query.append(" = ?,");
+		query.append(TELEFONE_CELULAR1); 
+		query.append(" = ?, ");
+		query.append(TELEFONE_CELULAR2); 
+		query.append(" = ?, ");
+		query.append(TELEFONE_CELULAR3); 
+		query.append(" = ? ");		
+		query.append("WHERE ");
+		query.append(ID);
+		query.append(" = ? ");		
+		PreparedStatement statement = null;
+		try {			
+			statement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(statement, 1, sindicoProfissional.getSite(), java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 2, sindicoProfissional.getTelefoneComercial(), java.sql.Types.BIGINT);
+			SQLUtil.setValorPpreparedStatement(statement, 3, sindicoProfissional.getTelefoneCelular1(), java.sql.Types.BIGINT);
+			SQLUtil.setValorPpreparedStatement(statement, 4, sindicoProfissional.getTelefoneCelular2(), java.sql.Types.BIGINT);
+			SQLUtil.setValorPpreparedStatement(statement, 5, sindicoProfissional.getTelefoneCelular3(), java.sql.Types.BIGINT);
+			SQLUtil.setValorPpreparedStatement(statement, 6, sindicoProfissional.getId(), java.sql.Types.INTEGER);			
+			statement.executeUpdate();
+			for (Condominio condominio : sindicoProfissional.getListaCondominio()) {
+				gestorCondominio = new GestorCondominio();
+				gestorCondominio.setIdCondominio(condominio.getId());
+				gestorCondominio.setIdUsuario(sindicoProfissional.getId());
+				gestorCondominio.setTipoCondomino(TipoGestorCondominioEnum.SINDICO_GERAL.getGestorCondominio());
+				this.gestorCondominioDAO.atualizarGestorCondominioPorCondominio(gestorCondominio, con);
+			}
+			con.commit();
+		} catch (SQLException e) {
+			throw e;
+		} catch (Exception e) {
+			throw e;
+		}finally{
+			try {
+				statement.close();
+				con.close();				
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);
+			}
+		}
+	}
+
+
+
+	@Override
+	public SindicoProfissional buscarPorId(Integer idSindicoProfissinal, Connection con) throws SQLException, Exception {
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		SindicoProfissional sindicoProfissional = null;
+		try {
+			con = Conexao.getConexao();
+			StringBuffer query = new StringBuffer();
+			query.append("SELECT * FROM "); 
+			query.append(SINDICO_PROFISSIONAL);
+			query.append(" WHERE ");
+			query.append(ID);
+			query.append(" = ? ");
+			statement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(statement, 1, idSindicoProfissinal, java.sql.Types.INTEGER);
+			resultSet = statement.executeQuery();
+			while(resultSet.next()){
+				sindicoProfissional = new SindicoProfissional();				
+				sindicoProfissional.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				sindicoProfissional.setSite(String.valueOf(SQLUtil.getValorResultSet(resultSet, SITE, java.sql.Types.VARCHAR)));
+				sindicoProfissional.setTelefoneComercial((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_COMERCIAL, java.sql.Types.BIGINT));
+				sindicoProfissional.setTelefoneCelular1((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_CELULAR1, java.sql.Types.BIGINT));
+				sindicoProfissional.setTelefoneCelular2((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_CELULAR2, java.sql.Types.BIGINT));
+				sindicoProfissional.setTelefoneCelular3((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_CELULAR3, java.sql.Types.BIGINT));
+				this.usuarioDAO.buscarEPopularUsuarioPeloId(sindicoProfissional, con);
+			}
+				
+		} catch (SQLException e) {
+			con.rollback();
+			throw e;
+		} catch (BusinessException e) {
+			con.rollback();
+			throw e;
+		} catch (Exception e) {
+			con.rollback();
+			throw e;
+		}		
+		return sindicoProfissional;
+	}
+
+
+
+	
 
 }

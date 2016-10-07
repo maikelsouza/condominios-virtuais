@@ -100,10 +100,10 @@
 					<div></div>
 				</h:panelGrid>
 			</rich:panel>
-			<rich:panel header="Associar Condomínios">
-				<rich:pickList addAllText="#{msg.adicionarTodos}" listWidth="350px" targetCaption="Condomínios Associados" sourceCaption="Condomínios Ativos"
-						addText="#{msg.adicionar}" var="condominio" id="idCondominio"  removeAllText="#{msg.removerTodos}" removeText="#{msg.remover}"
-						rendered="true" converter="condominioConversor" value="#{sindicoProfissionalMB.listaDeCondominiosAssociados}">
+			<rich:panel header="#{msg['sindicoProfissional.associarCondominios']}">
+				<rich:pickList addAllText="#{msg.adicionarTodos}" listWidth="350px" targetCaption="#{msg['sindicoProfissional.condominiosAssociados']}" sourceCaption="#{msg['sindicoProfissional.condominiosAtivos']}"
+						addText="#{msg.adicionar}" var="condominio" id="idCondominio"  removeAllText="#{msg.removerTodos}" removeText="#{msg.remover}" label="#{msg['sindicoProfissional.associarCondominios.label']}"
+						rendered="true" converter="condominioConversor" value="#{sindicoProfissionalMB.listaDeCondominiosAssociados}" required="true">
 					<f:selectItems value="#{sindicoProfissionalMB.listaDeCondominios}" var="condominio" itemValue="#{condominio}"  itemLabel="#{condominio.nome}" />
 				</rich:pickList>			
 			</rich:panel>			

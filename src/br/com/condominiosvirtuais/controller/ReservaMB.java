@@ -24,7 +24,6 @@ import br.com.condominiosvirtuais.entity.Ambiente;
 import br.com.condominiosvirtuais.entity.Bloco;
 import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.Condomino;
-import br.com.condominiosvirtuais.entity.Enquete;
 import br.com.condominiosvirtuais.entity.Reserva;
 import br.com.condominiosvirtuais.entity.Unidade;
 import br.com.condominiosvirtuais.enumeration.ReservaSituacaoEnum;

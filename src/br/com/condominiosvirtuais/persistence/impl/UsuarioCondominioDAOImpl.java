@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import br.com.condominiosvirtuais.entity.Usuario;
 import br.com.condominiosvirtuais.entity.UsuarioCondominio;
 import br.com.condominiosvirtuais.persistence.UsuarioCondominioDAO;
+import br.com.condominiosvirtuais.util.SQLUtil;
 
 public class UsuarioCondominioDAOImpl implements UsuarioCondominioDAO, Serializable {
 	
@@ -173,6 +174,41 @@ public class UsuarioCondominioDAOImpl implements UsuarioCondominioDAO, Serializa
 			con.rollback();
 			throw e;
 		}		
+	}
+
+	@Override
+	public List<UsuarioCondominio> buscarListaPorIdCondominio(Integer idCondominio, Connection con)
+			throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(USUARIO_CONDOMINIO);
+		query.append(" WHERE ");
+		query.append(ID_CONDOMINIO);
+		query.append(" = ? ");		
+		query.append(";");		
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		List<UsuarioCondominio> listaUsuarioCondominio = new ArrayList<UsuarioCondominio>();
+		UsuarioCondominio usuarioCondominio = null;
+		try {
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, idCondominio, java.sql.Types.INTEGER);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				usuarioCondominio = new UsuarioCondominio();
+				usuarioCondominio.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				usuarioCondominio.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
+				usuarioCondominio.setIdUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_USUARIO, java.sql.Types.INTEGER));
+				listaUsuarioCondominio.add(usuarioCondominio);
+			}
+		} catch (SQLException e) {
+			con.rollback();
+			throw e;
+		} catch (Exception e) {
+			con.rollback();
+			throw e;
+		}
+		return listaUsuarioCondominio;
 	}
 
 }
