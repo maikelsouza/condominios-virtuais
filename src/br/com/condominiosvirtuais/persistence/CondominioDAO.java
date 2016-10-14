@@ -1,5 +1,6 @@
 package br.com.condominiosvirtuais.persistence;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -14,5 +15,9 @@ public interface CondominioDAO {
 	public abstract List<Condominio> buscarPorSituacaoESemGestores(Integer situacao) throws SQLException, Exception;
 	
 	public abstract List<Condominio> buscarPorSituacao(Integer situacao) throws SQLException, Exception;
+	
+	public abstract Condominio buscarCondominioPorId(Integer id) throws SQLException, Exception;
+	
+    public abstract Condominio buscarCondominioPorId(Integer id, Connection con) throws SQLException, Exception;
 
 }

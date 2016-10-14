@@ -127,18 +127,10 @@
 					<h:outputText value="#{msg.reserva}" />
 				</h:panelGroup>
 			</f:facet>
-			<rich:menuItem label="#{msg['reserva.cadastrar']}"
-				action="#{principalMB.cadastroListarReserva}"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('4,5')}" />
-			<rich:menuItem label="#{msg['reserva.listar']}"
-				action="#{principalMB.listarReserva}"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,3,4')}" />
-			<rich:menuItem label="#{msg['reserva.cadastrar']}"
-				action="#{principalMB.cadastrarReserva}"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('6')}" />
-			<rich:menuItem label="#{msg['reserva.aprovar']}"
-				action="#{principalMB.aprovarReserva}"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,3,4')}" />
+			<rich:menuItem label="#{msg['reserva.cadastrar']}" action="#{principalMB.cadastroListarReserva}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('4,5')}" />
+			<rich:menuItem label="#{msg['reserva.listar']}" action="#{principalMB.listarReserva}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,4')}" />
+			<rich:menuItem label="#{msg['reserva.cadastrar']}" action="#{principalMB.cadastrarReserva}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('6')}" />
+			<rich:menuItem label="#{msg['reserva.aprovar']}" action="#{principalMB.aprovarReserva}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,3,4')}" />
 		</rich:dropDownMenu>
 		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,3,4,5') and loginMB.sindicoGeralAssociado() and !loginMB.exibeMenuFinanceiro()}">
 			<f:facet name="label">

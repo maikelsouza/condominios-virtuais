@@ -40,7 +40,7 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 	private static final String  TIPO_CONDOMINO = "TIPO_CONDOMINO";
 	
 	@Inject
-	private UsuarioDAOImpl usuarioDAO = null;
+	private UsuarioDAOImpl usuarioDAO = null;	
 	
 	
 	public List<GestorCondominio> buscarListaGestoresCondominioPorCondominio(Condominio condominio) throws SQLException, Exception{		
@@ -224,6 +224,14 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 	}
 	
 	public void atualizarGestorCondominioPorCondominio(GestorCondominio gestorCondominio, Connection con) throws SQLException, Exception{
+		Condominio condominio = new Condominio();
+		condominio.setId(gestorCondominio.getIdCondominio());
+		Usuario sindicoGeral = this.usuarioDAO.buscarSindicoGeralPorCondominio(condominio, con);
+		// Modifica o grupo do usuário para condômino somente se esse não é um Síndico Profissional. Caso seja ele somente deve deixar de ser gestor do condomínio
+		if(sindicoGeral.getIdGrupoUsuario() != TipoGrupoUsuarioEnum.SINDICO_PROFISSIONAL.getGrupoUsuario()){
+			sindicoGeral.setIdGrupoUsuario(TipoGrupoUsuarioEnum.CONDOMINO.getGrupoUsuario());
+			this.usuarioDAO.atualizarUsuario(sindicoGeral,con);
+		}
 		StringBuffer query = new StringBuffer();
 		query.append("UPDATE ");
 		query.append(GESTOR_CONDOMINIO);
@@ -262,7 +270,10 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 		Usuario usuario = null;
 		for (GestorCondominio gestorCondominio : listaGestores) {
 			usuario = this.usuarioDAO.buscarPorId(gestorCondominio.getIdUsuario());
-			usuario.setIdGrupoUsuario(TipoGrupoUsuarioEnum.CONDOMINO.getGrupoUsuario());
+			// Caso o usuário seja um síndico profissional ele não muda o grupo, apenas saí da gestão do condomínio.
+			if(usuario.getIdGrupoUsuario() != TipoGrupoUsuarioEnum.SINDICO_PROFISSIONAL.getGrupoUsuario()){
+				usuario.setIdGrupoUsuario(TipoGrupoUsuarioEnum.CONDOMINO.getGrupoUsuario());
+			}
 			this.usuarioDAO.atualizarUsuario(usuario, con);		
 		}
 		try {			
@@ -272,7 +283,7 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 			query.append(ID_CONDOMINIO);
 			query.append(" = ?");
 			statement = con.prepareStatement(query.toString());
-			statement.setInt(1, condominio.getId());
+			SQLUtil.setValorPpreparedStatement(statement, 1, condominio.getId(), java.sql.Types.INTEGER);
 			statement.executeUpdate();			
 		} catch (SQLException e) {
 			con.rollback();

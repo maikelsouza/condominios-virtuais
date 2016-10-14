@@ -668,6 +668,8 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 		}		
 		return usuario;
 	}
+	
+	
 
 
 	public Instance<EmailUsuarioDAOImpl> getEmailUsuarioDAO() {

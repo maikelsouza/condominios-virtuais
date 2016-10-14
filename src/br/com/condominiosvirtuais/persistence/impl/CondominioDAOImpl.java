@@ -466,6 +466,7 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 		}	
 	}	
 	
+	@Override
 	public Condominio buscarCondominioPorId(Integer id) throws SQLException, Exception{
 		StringBuffer query = new StringBuffer();
 		query.append("SELECT * FROM ");
@@ -511,7 +512,7 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 		return condominio;
 	}
 	
-	
+	@Override
 	public Condominio buscarCondominioPorId(Integer id, Connection con) throws SQLException, Exception{		
 		StringBuffer query = new StringBuffer();
 		query.append("SELECT * FROM ");

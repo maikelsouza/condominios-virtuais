@@ -196,7 +196,7 @@ public class SindicoProfissionalDAOImpl implements SindicoProfissionalDAO, Seria
 				gestorCondominio = new GestorCondominio();
 				gestorCondominio.setIdCondominio(condominio.getId());
 				gestorCondominio.setIdUsuario(sindicoProfissional.getId());
-				gestorCondominio.setTipoCondomino(TipoGestorCondominioEnum.SINDICO_GERAL.getGestorCondominio());
+				gestorCondominio.setTipoCondomino(TipoGestorCondominioEnum.SINDICO_GERAL.getGestorCondominio());				
 				this.gestorCondominioDAO.atualizarGestorCondominioPorCondominio(gestorCondominio, con);
 			}
 			con.commit();
