@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import br.com.condominiosvirtuais.entity.SindicoProfissional;
 import br.com.condominiosvirtuais.persistence.SindicoProfissionalDAO;
+import br.com.condominiosvirtuais.persistence.UsuarioDAO;
 import br.com.condominiosvirtuais.service.SindicoProfissionalService;
 
 public class SindicoProfissionalServiceImpl implements SindicoProfissionalService, Serializable {
@@ -17,6 +18,9 @@ public class SindicoProfissionalServiceImpl implements SindicoProfissionalServic
 	
 	@Inject
 	private SindicoProfissionalDAO sindicoProfissionalDAO;
+	
+	@Inject
+	private UsuarioDAO usuarioDAO;
 
 	@Override
 	public void salvar(SindicoProfissional sindicoProfissional) throws SQLException, Exception {
@@ -31,6 +35,17 @@ public class SindicoProfissionalServiceImpl implements SindicoProfissionalServic
 	@Override
 	public void atualizar(SindicoProfissional sindicoProfissional) throws SQLException, Exception {
 		this.sindicoProfissionalDAO.atualizar(sindicoProfissional);
+	}
+
+	@Override
+	public SindicoProfissional buscarPorId(Integer idSindicoProfissinal) throws SQLException, Exception {
+		return this.sindicoProfissionalDAO.buscarPorId(idSindicoProfissinal);
+	}
+
+	@Override
+	public void atualizarSenha(SindicoProfissional sindicoProfissional) throws SQLException, Exception {
+		this.usuarioDAO.atualizarSenha(sindicoProfissional);
+		
 	}
 
 }

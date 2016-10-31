@@ -68,7 +68,7 @@ public class UsuarioCondominioDAOImpl implements UsuarioCondominioDAO, Serializa
 		return listaUsuarioCondominio;
 	}
 	
-	public List<UsuarioCondominio> buscarListaPorUsuario(Usuario usuario, Connection con) throws SQLException, Exception{		
+	public List<UsuarioCondominio> buscarListaPorIdUsuario(Integer idUsuario, Connection con) throws SQLException, Exception{		
 		StringBuffer query = new StringBuffer();
 		query.append("SELECT * FROM ");
 		query.append(USUARIO_CONDOMINIO);
@@ -82,13 +82,13 @@ public class UsuarioCondominioDAOImpl implements UsuarioCondominioDAO, Serializa
 		UsuarioCondominio usuarioCondominio = null;
 		try {
 			preparedStatement = con.prepareStatement(query.toString());
-			preparedStatement.setInt(1, usuario.getId());
+			SQLUtil.setValorPpreparedStatement(preparedStatement,1, idUsuario, java.sql.Types.INTEGER);
 			resultSet = preparedStatement.executeQuery();
 			while(resultSet.next()){
 				usuarioCondominio = new UsuarioCondominio();
-				usuarioCondominio.setId(resultSet.getInt(ID));
-				usuarioCondominio.setIdCondominio(resultSet.getInt(ID_CONDOMINIO));
-				usuarioCondominio.setIdUsuario(resultSet.getInt(ID_USUARIO));				
+				usuarioCondominio.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				usuarioCondominio.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
+				usuarioCondominio.setIdUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_USUARIO, java.sql.Types.INTEGER));				
 				listaUsuarioCondominio.add(usuarioCondominio);
 			}
 		} catch (SQLException e) {

@@ -13,7 +13,7 @@ public interface UsuarioCondominioDAO {
 	
 	public abstract List<UsuarioCondominio> buscarListaPorUsuario(Usuario usuario) throws SQLException, Exception;
 	
-	public abstract List<UsuarioCondominio> buscarListaPorUsuario(Usuario usuario, Connection con) throws SQLException, Exception;
+	public abstract List<UsuarioCondominio> buscarListaPorIdUsuario(Integer idUsuario, Connection con) throws SQLException, Exception;
 	
 	public abstract List<UsuarioCondominio> buscarListaPorIdCondominio(Integer idCondominio, Connection con) throws SQLException, Exception;
 	

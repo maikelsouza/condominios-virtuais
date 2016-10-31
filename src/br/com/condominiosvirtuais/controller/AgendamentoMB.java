@@ -19,11 +19,15 @@ import org.apache.log4j.Logger;
 import br.com.condominiosvirtuais.entity.Agendamento;
 import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.Condomino;
+import br.com.condominiosvirtuais.entity.SindicoProfissional;
+import br.com.condominiosvirtuais.entity.Usuario;
 import br.com.condominiosvirtuais.enumeration.AgendamentoSituacaoEnum;
+import br.com.condominiosvirtuais.enumeration.TipoGrupoUsuarioEnum;
 import br.com.condominiosvirtuais.service.AgendamentoService;
 import br.com.condominiosvirtuais.service.BlocoService;
 import br.com.condominiosvirtuais.service.CondominioService;
 import br.com.condominiosvirtuais.service.CondominoService;
+import br.com.condominiosvirtuais.service.SindicoProfissionalService;
 import br.com.condominiosvirtuais.service.UnidadeService;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
 import br.com.condominiosvirtuais.util.ManagedBeanUtil;
@@ -50,6 +54,8 @@ public class AgendamentoMB implements Serializable {
 	
 	private Condomino condomino;
 	
+	private Usuario usuario;
+	
 	private List<SelectItem> listaSIHoraInicial = null;
 	
 	private List<SelectItem> listaSIHoraFinal = null;
@@ -70,6 +76,9 @@ public class AgendamentoMB implements Serializable {
 	private CondominoService condominoService;
 	
 	@Inject
+	private SindicoProfissionalService sindicoProfissionalService;
+	
+	@Inject
 	private UnidadeService unidadeService;
 	
 	@Inject
@@ -80,7 +89,8 @@ public class AgendamentoMB implements Serializable {
 	
 	
 	@PostConstruct
-	public void populaHoraInicialEFinal(){		 
+	public void populaHoraInicialEFinal(){
+		this.condominio = new Condominio();
 		this.agendamento = new Agendamento();
 		if (diaSemana == 1){
 			this.popularHoraInicialEFinalDiaSemana();
@@ -88,8 +98,12 @@ public class AgendamentoMB implements Serializable {
 			this.popularHoraInicialEFinalSabado();
 		}
 		try {
-			this.descobrirCondominio();
-			this.popularListaMeusAgendamentos();
+			if(AplicacaoUtil.getUsuarioAutenticado().getIdGrupoUsuario() == TipoGrupoUsuarioEnum.SINDICO_PROFISSIONAL.getGrupoUsuario()){
+				this.descobrirCondominioSindicoProfissional();
+			}else{
+				this.descobrirCondominio();
+				this.popularListaMeusAgendamentos();
+			}
 			this.populaSituacao();
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
@@ -314,6 +328,20 @@ public class AgendamentoMB implements Serializable {
 	private void descobrirCondominio() throws SQLException, Exception{
 		this.condomino = this.condominoService.buscarPorId(AplicacaoUtil.getUsuarioAutenticado().getId());
 		this.condominio = this.condominioService.buscarPorCondomino(this.condomino);
+	}
+	
+	private void descobrirCondominioSindicoProfissional() throws SQLException, Exception{
+		Condominio condominioLocal = null;
+		Boolean encontrou = Boolean.FALSE;
+		Integer idSindicoProfissional = 0;
+		SindicoProfissional sindicoProfissional = this.sindicoProfissionalService.buscarPorId(AplicacaoUtil.getUsuarioAutenticado().getId());
+		while(encontrou == Boolean.FALSE && this.condominio.getId() != null){
+			condominioLocal = sindicoProfissional.getListaCondominio().get(idSindicoProfissional++);
+			if(condominioLocal.getId().intValue() == this.condominio.getId().intValue()){
+				this.condominio = condominioLocal;
+				encontrou = Boolean.TRUE;
+			}			
+		}
 	}
 	
 	private Boolean validaHoraFinalMaiorQueHoraInicial(){

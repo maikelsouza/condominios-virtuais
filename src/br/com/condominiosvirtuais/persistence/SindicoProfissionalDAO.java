@@ -15,5 +15,8 @@ public interface SindicoProfissionalDAO {
 	public abstract void atualizar(SindicoProfissional sindicoProfissional) throws SQLException, Exception;
 	
 	public abstract SindicoProfissional buscarPorId(Integer idSindicoProfissinal, Connection con) throws SQLException, Exception;
+	
+	public abstract SindicoProfissional buscarPorId(Integer idSindicoProfissinal) throws SQLException, Exception; 
+	
 
 }

@@ -818,6 +818,114 @@
 				</h:form>
 			</rich:tab>
 		</rich:tabPanel>
+		<rich:tabPanel styleClass="content" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('3')}" switchType="client" activeItem="#{meuPainelMB.tabSelecionada}" > 
+		
+		  <rich:tab header="#{msg['meuPainel.sindicoProfissional.dadosPessoais']}" id="idTabDadosPessoaisSindicoProfissional">
+			<h:form id="idFormDadosPessoaisSindicoProfissional">
+				<h:panelGrid columns="3">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['meuPainel.sindicoProfissional.nome']}:" for="idNomeSindicoProfissional" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['meuPainel.sindicoProfissional.sexo']}:" for="idSexoSindicoProfissional" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:outputLabel value="#{msg['meuPainel.sindicoProfissional.dataNascimento']}:" for="idDataNascimentoSindicoProfissional" />
+					<h:inputText id="idNomeSindicoProfissional" value="#{meuPainelMB.sindicoProfissional.nome}" size="40" />
+					<h:selectOneRadio id="idSexoSindicoProfissional" value="#{meuPainelMB.sindicoProfissional.sexo}">
+						<f:selectItems value="#{meuPainelMB.listaSexo}" />
+					</h:selectOneRadio>
+					<h:panelGroup id="idDataNascimentoSindicoProfissional">
+						<h:selectOneMenu value="#{meuPainelMB.sindicoProfissional.dataNascimentoDia}" defaultLabel="#{msg['meuPainel.sindicoProfissional.dataNascimento.dia']}">
+							<f:selectItem itemLabel="#{msg['meuPainel.sindicoProfissional.dataNascimento.dia']}" noSelectionOption="false" />
+							<f:selectItems value="#{meuPainelMB.listaSIDias}" />
+						</h:selectOneMenu>
+						<h:selectOneMenu value="#{meuPainelMB.sindicoProfissional.dataNascimentoMes}" defaultLabel="#{msg['meuPainel.sindicoProfissional.dataNascimento.mes']}">
+							<f:selectItem itemLabel="#{msg['meuPainel.sindicoProfissional.dataNascimento.mes']}" noSelectionOption="false" />
+							<f:selectItems value="#{meuPainelMB.listaSIMeses}" />
+						</h:selectOneMenu>
+						<h:selectOneMenu value="#{meuPainelMB.sindicoProfissional.dataNascimentoAno}" defaultLabel="#{msg['meuPainel.sindicoProfissional.dataNascimento.ano']}">
+							<f:selectItem itemLabel="#{msg['meuPainel.sindicoProfissional.dataNascimento.ano']}" noSelectionOption="false" />
+							<f:selectItems value="#{meuPainelMB.listaSIAnos}" />
+						</h:selectOneMenu>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['meuPainel.sindicoProfissional.email']}:" for="idEmailSindicoProfissional"/>
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:outputLabel value="#{msg['meuPainel.sindicoProfissional.site']}:" for="idSiteSindicoProfissional" />
+					<h:outputLabel value="#{msg['meuPainel.sindicoProfissional.telefoneComercial']}:" for="idTelefoneComercial" />
+					<h:inputText id="idEmailSindicoProfissional" value="#{meuPainelMB.sindicoProfissional.email.email}" size="40" />
+					<h:inputText id="idSiteSindicoProfissional" value="#{meuPainelMB.sindicoProfissional.site}" size="40" />
+					<h:panelGroup>
+						<h:inputText id="idTelefoneComercial" value="#{meuPainelMB.telefoneComercialSindicoProfissional}" size="15" maxlength="15" />
+						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
+					</h:panelGroup>
+					<h:outputLabel value="#{msg['meuPainel.sindicoProfissional.telefoneCelular1']}:" for="idTelefoneCelular1" />
+					<h:outputLabel value="#{msg['meuPainel.sindicoProfissional.telefoneCelular2']}:" for="idTelefoneCelular2" />
+					<h:outputLabel value="#{msg['meuPainel.sindicoProfissional.telefoneCelular3']}:" for="idTelefoneCelular3" />
+					<h:panelGroup>
+						<h:inputText id="idTelefoneCelular1" value="#{meuPainelMB.telefoneCelular1SindicoProfissional}" size="15" maxlength="15" />
+						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:inputText id="idTelefoneCelular2" value="#{meuPainelMB.telefoneCelular2SindicoProfissional}" size="15" maxlength="15" />
+						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
+					</h:panelGroup>	
+					<h:panelGroup>
+						<h:inputText id="idTelefoneCelular3" value="#{meuPainelMB.telefoneCelular3SindicoProfissional}" size="15" maxlength="15" />
+						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
+					</h:panelGroup>
+				</h:panelGrid>
+				
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+				    <h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
+				</h:panelGrid>
+				<br />
+				<h:commandButton value="#{msg.botaoAtualizar}" action="#{meuPainelMB.atualizarDadosPessoaisSindicoProfissional}" />
+				</h:form>
+			</rich:tab>
+			
+		
+			
+			<rich:tab header="#{msg['meuPainel.sindicoProfissional.alterarSenha']}" id="idTabAlterarSenhaSindicoProfissional">
+				<h:form id="idFormAlterarSenhaSindicoProfissional">
+					<h:panelGrid columns="3">
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.sindicoProfissional.senhaAtual']}:" for="idSenhaAtualSindicoProfissional" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.sindicoProfissional.novaSenha']}:" for="idNovaSenhaSindicoProfissional" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.sindicoProfissional.confirmarNovaSenha']}:" for="idConfirmarNovaSenhaSindicoProfissional" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:inputSecret id="idSenhaAtualSindicoProfissional" value="#{meuPainelMB.senhaAtualSindicoProfissional}" size="15" maxlength="15"/>
+						<h:inputSecret id="idNovaSenhaSindicoProfissional" value="#{meuPainelMB.senhaSindicoProfissional}" size="15" maxlength="15" />
+						<h:inputSecret id="idConfirmarNovaSenhaCondomino" value="#{meuPainelMB.confirmarSenhaSindicoProfissional}" size="15" maxlength="15" />
+					</h:panelGrid>
+					<h:panelGrid columns="1" styleClass="msgAsterisco">
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['regraSenha']}" for="idRegraSenha" styleClass="camposObrigatorios" />
+							<h:outputLabel value="*" id="idRegraSenha" styleClass="asterisco" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+							<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
+						</h:panelGroup>
+					</h:panelGrid>
+					<br />
+					<h:commandButton value="#{msg.botaoAtualizar}" action="#{meuPainelMB.atualizarSenhaSindicoProfissional}" />
+				</h:form>
+			</rich:tab>
+		</rich:tabPanel>
+			
+		
 	</ui:define>
 
 </ui:composition>

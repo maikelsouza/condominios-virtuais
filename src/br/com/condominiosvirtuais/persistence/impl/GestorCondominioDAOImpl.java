@@ -120,12 +120,14 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 	}
 	
 	public void salvarGestorCondominio(GestorCondominio gestorCondominio, Connection con) throws SQLException, Exception{
-		// Código que atualiza o grupo de usuários do usuário que virou um gestor do condomínio. 		
+		 		
 		Usuario usuario = this.usuarioDAO.buscarPorId(gestorCondominio.getIdUsuario());
-		if(gestorCondominio.getTipoCondomino() == TipoGestorCondominioEnum.SINDICO_GERAL.getGestorCondominio()){
+		// Código que atualiza o grupo de usuários do usuário que virou um gestor do condomínio. Ou ele é condômino ou síndico. O Síndico Profissional não modifica o seu grupo
+		if(gestorCondominio.getTipoCondomino() != TipoGestorCondominioEnum.SINDICO_GERAL.getGestorCondominio()){
+			usuario.setIdGrupoUsuario(TipoGrupoUsuarioEnum.CONDOMINO.getGrupoUsuario());
+		}else if (gestorCondominio.getTipoCondomino() == TipoGestorCondominioEnum.SINDICO_GERAL.getGestorCondominio() && 
+				usuario.getIdGrupoUsuario() != TipoGrupoUsuarioEnum.SINDICO_PROFISSIONAL.getGrupoUsuario()){
 			usuario.setIdGrupoUsuario(TipoGrupoUsuarioEnum.SINDICO.getGrupoUsuario());
-		}else{
-			usuario.setIdGrupoUsuario(TipoGrupoUsuarioEnum.CONDOMINO.getGrupoUsuario());	
 		}
 		this.usuarioDAO.atualizarUsuario(usuario, con);
 		StringBuffer query = new StringBuffer();

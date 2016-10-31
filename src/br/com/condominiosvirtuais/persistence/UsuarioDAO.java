@@ -21,5 +21,7 @@ public interface UsuarioDAO {
 	public abstract Usuario buscarSindicoGeralPorCondominio(Condominio condominio) throws SQLException, Exception;
 	
 	public abstract Boolean buscarPorIdESituacaoEPopularUsuarioPeloId(Usuario usuario, Connection con ) throws SQLException, Exception;
+	
+	public abstract void atualizarSenha(Usuario usuario) throws SQLException, Exception;
 
 }

@@ -193,7 +193,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
 				usuario.setSenha(String.valueOf(SQLUtil.getValorResultSet(resultSet, SENHA, java.sql.Types.VARCHAR)));	
 				usuario.setEmail(this.emailUsuarioDAO.get().buscarEmailPrincipalPorUsuario(usuario,con));
-				listaUsuarioCondominio = this.usuarioCondominioDAO.get().buscarListaPorUsuario(usuario,con);
+				listaUsuarioCondominio = this.usuarioCondominioDAO.get().buscarListaPorIdUsuario(usuario.getId(),con);
 				for (UsuarioCondominio usuarioCondominio : listaUsuarioCondominio) {
 					Condominio condominio = new Condominio();
 					condominio.setId(usuarioCondominio.getIdCondominio());				
@@ -240,7 +240,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
 				usuario.setSenha(String.valueOf(SQLUtil.getValorResultSet(resultSet, SENHA, java.sql.Types.VARCHAR)));	
 				usuario.setEmail(this.emailUsuarioDAO.get().buscarEmailPrincipalPorUsuario(usuario,con));
-				listaUsuarioCondominio = this.usuarioCondominioDAO.get().buscarListaPorUsuario(usuario,con);
+				listaUsuarioCondominio = this.usuarioCondominioDAO.get().buscarListaPorIdUsuario(usuario.getId(),con);
 				for (UsuarioCondominio usuarioCondominio : listaUsuarioCondominio) {
 					Condominio condominio = new Condominio();
 					condominio.setId(usuarioCondominio.getIdCondominio());
@@ -537,6 +537,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 		return usuario;
 	}
 	
+	@Override
 	public void atualizarSenha(Usuario usuario) throws SQLException, Exception{
 		StringBuffer query = new StringBuffer();
 		query.append("UPDATE ");
@@ -634,6 +635,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 		
 	}
 	
+	@Override
 	public Usuario buscarSindicoGeralPorCondominio(Condominio condominio, Connection con) throws SQLException, Exception{
 		Usuario usuario = null;
 		Boolean encontrou = Boolean.FALSE;                   
@@ -650,6 +652,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 		}		
 		return usuario;
 	}
+	
 	
 	public Usuario buscarSindicoGeralPorCondominio(Condominio condominio) throws SQLException, Exception{
 		Usuario usuario = null;

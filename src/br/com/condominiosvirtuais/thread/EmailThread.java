@@ -51,7 +51,7 @@ public class EmailThread extends Thread {
 					//this.emailService.enviar(email);
 					//email.setPara("maikel.souza@gmail.com");
 					this.emailService.enviarHTML(email, principalMB.getCaminhoAplicacao());
-					this.emailService.excluir(email);					 
+					//this.emailService.excluir(email);					 
 				 }
 				logger.info("Fim do processo para envio de email em : " + new Date());
 			}

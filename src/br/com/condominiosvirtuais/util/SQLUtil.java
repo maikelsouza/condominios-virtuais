@@ -130,11 +130,13 @@ public abstract class SQLUtil {
 	 * @return sintaxe sql. Exemplo: "?,?,?"
 	 */
 	public static String popularInterrocacoes(Integer numeroInterrogacoes){
-		String interrogacoes = "";		
-		for (int i = 1 ; i < numeroInterrogacoes; i++) {
-			interrogacoes+= "?,";
+		String interrogacoes = "";	
+		if(numeroInterrogacoes > 0){
+			for (int i = 1 ; i < numeroInterrogacoes; i++) {
+				interrogacoes+= "?,";
+			}
+			interrogacoes+= "?";
 		}
-		interrogacoes+= "?";
 		return interrogacoes;
 	}
 }

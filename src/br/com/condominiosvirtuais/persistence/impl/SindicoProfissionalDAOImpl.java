@@ -256,8 +256,49 @@ public class SindicoProfissionalDAOImpl implements SindicoProfissionalDAO, Seria
 		return sindicoProfissional;
 	}
 
-
-
 	
-
+	@Override
+	public SindicoProfissional buscarPorId(Integer idSindicoProfissinal) throws SQLException, Exception {
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		SindicoProfissional sindicoProfissional = null;
+		Connection con = Conexao.getConexao();
+		try {
+			con = Conexao.getConexao();
+			StringBuffer query = new StringBuffer();
+			query.append("SELECT * FROM "); 
+			query.append(SINDICO_PROFISSIONAL);
+			query.append(" WHERE ");
+			query.append(ID);
+			query.append(" = ? ");
+			statement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(statement, 1, idSindicoProfissinal, java.sql.Types.INTEGER);
+			resultSet = statement.executeQuery();
+			while(resultSet.next()){
+				sindicoProfissional = new SindicoProfissional();				
+				sindicoProfissional.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				sindicoProfissional.setSite(String.valueOf(SQLUtil.getValorResultSet(resultSet, SITE, java.sql.Types.VARCHAR)));
+				sindicoProfissional.setTelefoneComercial((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_COMERCIAL, java.sql.Types.BIGINT));
+				sindicoProfissional.setTelefoneCelular1((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_CELULAR1, java.sql.Types.BIGINT));
+				sindicoProfissional.setTelefoneCelular2((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_CELULAR2, java.sql.Types.BIGINT));
+				sindicoProfissional.setTelefoneCelular3((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_CELULAR3, java.sql.Types.BIGINT));
+				this.usuarioDAO.buscarEPopularUsuarioPeloId(sindicoProfissional, con);
+			}
+				
+		} catch (SQLException e) {
+			throw e;
+		} catch (BusinessException e) {
+			throw e;
+		} catch (Exception e) {
+			throw e;
+		}finally{
+			try {				
+				con.close();	
+				statement.close();
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);		
+			}
+		}	
+		return sindicoProfissional;
+	}
 }

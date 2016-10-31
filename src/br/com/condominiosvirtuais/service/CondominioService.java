@@ -5,6 +5,7 @@ import java.util.List;
 
 import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.Condomino;
+import br.com.condominiosvirtuais.entity.SindicoProfissional;
 
 public interface CondominioService {
 	
@@ -36,5 +37,9 @@ public interface CondominioService {
 	public abstract List<Condominio> buscarPorSituacaoESemGestores(Integer situacao) throws SQLException, Exception;
 	
 	public abstract List<Condominio> buscarPorSituacao(Integer situacao) throws SQLException, Exception;
+	
+	// TODO: Código comentado em 24/10/2016. Apagar em 90 dias
+	//public abstract List<Condominio> buscarPorSindicoProfissional(SindicoProfissional sindicoProfissional) throws SQLException, Exception;
+	
 
 }

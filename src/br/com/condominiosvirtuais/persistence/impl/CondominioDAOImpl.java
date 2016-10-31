@@ -523,9 +523,10 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		Condominio condominio = null;
+		Usuario sindicoGeral = null;
 		try {
-			preparedStatement = con.prepareStatement(query.toString());		
-			preparedStatement.setInt(1, id);
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement,1, id, java.sql.Types.INTEGER);
 			resultSet = preparedStatement.executeQuery();	
 			while(resultSet.next()){
 				condominio = new Condominio();
@@ -535,7 +536,12 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 				condominio.setCnpj((Long) SQLUtil.getValorResultSet(resultSet, CNPJ, java.sql.Types.BIGINT));
 				condominio.setTelefoneCelular((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_CELULAR, java.sql.Types.BIGINT));
 				condominio.setTelefoneFixo((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_FIXO, java.sql.Types.BIGINT));
-				Condomino sindicoGeral = this.condominoDAO.get().buscarSindicoGeralPorCondominio(condominio,con);
+				sindicoGeral = this.condominoDAO.get().buscarSindicoGeralPorCondominio(condominio,con);
+				// Caso o sindico geral não seja um condômino.
+				if(sindicoGeral == null){
+					sindicoGeral = this.usuarioDAO.get().buscarSindicoGeralPorCondominio(condominio,con);
+				}
+				this.condominoDAO.get().buscarSindicoGeralPorCondominio(condominio,con);
 				sindicoGeral.setEmail(this.emailUsuarioDAO.get().buscarEmailPrincipalPorUsuario(sindicoGeral,con));
 				// Condição criada para garantir que ao atualizar o condomínio o síndico geral não seja null 
 				condominio.setSindicoGeral(sindicoGeral == null ? new Condomino() : sindicoGeral);
@@ -594,15 +600,50 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 			Unidade unidade = this.unidadeDAO.get().buscarPorId(condomino.getIdUnidade(), con);
 			Bloco bloco = this.blocoDAO.get().buscarPorId(unidade.getIdBloco(), con);
 			condominio = this.buscarCondominioPorId(bloco.getIdCondominio(), con);
-		} catch (SQLException e) {	
-			con.rollback();	
+		} catch (SQLException e) {
 			throw e;
 		} catch (Exception e) {
-			con.rollback();			
 			throw e;			
-		}	
+		}finally{
+			try {
+				con.close();				
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);				
+			}
+		}		
 		return condominio;
-	}	
+	}
+	
+	
+// TODO: Código comentado em 24/10/2016. Apagar em 90 dias	
+//	@Override
+//	public List<Condominio> buscarPorSindicoProfissional(SindicoProfissional sindicoProfissional) throws SQLException, Exception{
+//		Condominio condominio = null;
+//		List<UsuarioCondominio> listaUsuarioCondominio = null;
+//		List<Condominio> listaCondominio = new ArrayList<Condominio>();
+//		Connection con = Conexao.getConexao();
+//		con.setAutoCommit(Boolean.FALSE);
+//		try {
+//			listaUsuarioCondominio = this.usuarioCondominioDAO.get().buscarListaPorIdUsuario(sindicoProfissional.getId(), con);
+//			for (UsuarioCondominio usuarioCondominio : listaUsuarioCondominio) {
+//				condominio = this.buscarCondominioPorId(usuarioCondominio.getIdCondominio(), con);
+//				if (condominio.getSindicoGeral().getId().intValue() == sindicoProfissional.getId().intValue()){
+//					listaCondominio.add(condominio);
+//				}
+//			}			
+//		} catch (SQLException e) {
+//			throw e;
+//		} catch (Exception e) {
+//			throw e;			
+//		}finally{
+//			try {
+//				con.close();				
+//			} catch (SQLException e) {
+//				logger.error("erro sqlstate "+e.getSQLState(), e);				
+//			}
+//		}		
+//		return listaCondominio;
+//	}	
 	
 	public void popularCondominioPorNomeCondominos(String nomeCondominos, Condominio condominio) throws SQLException, Exception{		
 		List<Bloco> listaDeBlocos = null;

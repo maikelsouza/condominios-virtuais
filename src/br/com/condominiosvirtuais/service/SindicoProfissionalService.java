@@ -14,4 +14,8 @@ public interface SindicoProfissionalService {
 	
 	public abstract void atualizar(SindicoProfissional sindicoProfissional) throws SQLException, Exception;
 	
+	public abstract SindicoProfissional buscarPorId(Integer idSindicoProfissinal) throws SQLException, Exception;
+	
+	public abstract void atualizarSenha(SindicoProfissional sindicoProfissional) throws SQLException, Exception;
+	
 }

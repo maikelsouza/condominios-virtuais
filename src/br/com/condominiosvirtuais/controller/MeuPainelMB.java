@@ -28,6 +28,7 @@ import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.Condomino;
 import br.com.condominiosvirtuais.entity.Funcionario;
 import br.com.condominiosvirtuais.entity.Garagem;
+import br.com.condominiosvirtuais.entity.SindicoProfissional;
 import br.com.condominiosvirtuais.entity.Unidade;
 import br.com.condominiosvirtuais.entity.Usuario;
 import br.com.condominiosvirtuais.entity.Veiculo;
@@ -42,6 +43,7 @@ import br.com.condominiosvirtuais.service.CondominioService;
 import br.com.condominiosvirtuais.service.CondominoService;
 import br.com.condominiosvirtuais.service.FuncionarioService;
 import br.com.condominiosvirtuais.service.GaragemService;
+import br.com.condominiosvirtuais.service.SindicoProfissionalService;
 import br.com.condominiosvirtuais.service.UnidadeService;
 import br.com.condominiosvirtuais.service.UsuarioService;
 import br.com.condominiosvirtuais.service.VeiculoService;
@@ -67,6 +69,12 @@ public class MeuPainelMB implements  Serializable{
 	
 	private static final String ID_TAB_DADOS_PESSOAIS_FUNCIONARIO = "idTabDadosPessoaisFuncionario";
 	
+	private static final String ID_TAB_DADOS_PESSOAIS_SINDICO_PROFISSIONAL = "idTabDadosPessoaisSindicoProfissional";
+	
+	private static final String ID_TAB_ALTERAR_SENHA_SINDICO_PROFISSIONAL = "idTabAlterarSenhaSindicoProfissional";	
+	
+	private static final String ID_TAB_ALTERAR_IMAGEM_SINDICO_PROFISSIONAL = "idTabAlterarImagemSindicoProfissional";
+	
 	private static final String ID_TAB_ALTERAR_SENHA_FUNCIONARIO = "idTabAlterarSenhaFuncionario";	
 	
 	private static final String ID_TAB_NOVA_GARAGEM = "idTabNovaGaragem";	
@@ -82,6 +90,8 @@ public class MeuPainelMB implements  Serializable{
 	private Veiculo veiculo;
 	
 	private Funcionario funcionario;
+	
+	private SindicoProfissional sindicoProfissional;
 	
 	@Inject
 	private UsuarioService usuarioService;
@@ -110,6 +120,9 @@ public class MeuPainelMB implements  Serializable{
 	@Inject
 	private VeiculoService veiculoService;
 	
+	@Inject
+	private SindicoProfissionalService sindicoProfissionalService;
+	
 	private String senhaAtualCondomino;
 	
 	private String senhaCondomino;
@@ -121,6 +134,12 @@ public class MeuPainelMB implements  Serializable{
 	private String senhaFuncionario;
 	
 	private String confirmarSenhaFuncionario;
+	
+	private String senhaAtualSindicoProfissional;
+	
+	private String senhaSindicoProfissional;
+	
+	private String confirmarSenhaSindicoProfissional;
 	
 	private String telefoneResidencialNovoCondomino = "0";
 	
@@ -135,6 +154,14 @@ public class MeuPainelMB implements  Serializable{
 	private String telefoneComercialCondomino;	
 	
 	private String telefoneCelularFuncionario;
+	
+	private String telefoneComercialSindicoProfissional;
+	
+	private String telefoneCelular1SindicoProfissional;
+	
+	private String telefoneCelular2SindicoProfissional;
+	
+	private String telefoneCelular3SindicoProfissional;
 	
 	private String telefoneResidencialFuncionario = "0";	
 	
@@ -213,7 +240,17 @@ public class MeuPainelMB implements  Serializable{
 				ManagedBeanUtil.popularSIDias(this.listaSIDias);
 				ManagedBeanUtil.popularSIMeses(this.listaSIMeses);
 				ManagedBeanUtil.popularSIAnos(this.listaSIAnos);
-			}			
+			}if(usuario.getIdGrupoUsuario().equals(TipoGrupoUsuarioEnum.SINDICO_PROFISSIONAL.getGrupoUsuario())){
+				this.sindicoProfissional = this.sindicoProfissionalService.buscarPorId(usuario.getId());
+				this.setTabSelecionada(ID_TAB_DADOS_PESSOAIS_SINDICO_PROFISSIONAL);
+				this.telefoneComercialSindicoProfissional = String.valueOf(this.sindicoProfissional.getTelefoneComercial() == null ? "" : this.sindicoProfissional.getTelefoneComercial());
+				this.telefoneCelular1SindicoProfissional = String.valueOf(this.sindicoProfissional.getTelefoneCelular1()  == null ? "" : this.sindicoProfissional.getTelefoneCelular1());
+				this.telefoneCelular2SindicoProfissional = String.valueOf(this.sindicoProfissional.getTelefoneCelular2() == null ? "" : this.sindicoProfissional.getTelefoneCelular2());
+				this.telefoneCelular3SindicoProfissional = String.valueOf(this.sindicoProfissional.getTelefoneCelular3() == null ? "" : this.sindicoProfissional.getTelefoneCelular3());
+				ManagedBeanUtil.popularSIDias(this.listaSIDias);
+				ManagedBeanUtil.popularSIMeses(this.listaSIMeses);
+				ManagedBeanUtil.popularSIAnos(this.listaSIAnos);
+			}
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");				
@@ -234,6 +271,27 @@ public class MeuPainelMB implements  Serializable{
 				this.condomino.setTelefoneResidencial(this.telefoneResidencialCondomino == "" ? null : Long.valueOf(this.telefoneResidencialCondomino));
 				this.condominoService.atualizar(this.condomino);
 				ManagedBeanUtil.setMensagemInfo("msg.meuPainel.condomino.atualizadoSucesso");				
+			}
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}		
+		return null;
+	}
+	
+	public String atualizarDadosPessoaisSindicoProfissional(){
+		this.setTabSelecionada(ID_TAB_DADOS_PESSOAIS_SINDICO_PROFISSIONAL);
+		try {
+			if(this.validaDadosPessoaisSindicoProfissional()){
+				this.sindicoProfissional.setTelefoneComercial(this.telefoneComercialSindicoProfissional == "" ? null : Long.valueOf(this.telefoneComercialSindicoProfissional));
+				this.sindicoProfissional.setTelefoneCelular1(this.telefoneCelular1SindicoProfissional == "" ? null : Long.valueOf(this.telefoneCelular1SindicoProfissional));
+				this.sindicoProfissional.setTelefoneCelular2(this.telefoneCelular2SindicoProfissional == "" ? null : Long.valueOf(this.telefoneCelular2SindicoProfissional));
+				this.sindicoProfissional.setTelefoneCelular3(this.telefoneCelular3SindicoProfissional == "" ? null : Long.valueOf(this.telefoneCelular3SindicoProfissional));
+				this.sindicoProfissionalService.atualizar(sindicoProfissional);
+				ManagedBeanUtil.setMensagemInfo("msg.meuPainel.sindicoProfissional.atualizadoSucesso");				
 			}
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
@@ -311,6 +369,46 @@ public class MeuPainelMB implements  Serializable{
 				}
 				ManagedBeanUtil.setMensagemInfo("msg.meuPainel.alterarImagemCondomino.imagemAtualizadaSucesso");
 			}			
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}		
+		return null;
+	}
+	
+	public String atualizarImagemSindicoProfissional(){	
+		try {			
+			this.setTabSelecionada(ID_TAB_ALTERAR_IMAGEM_SINDICO_PROFISSIONAL);
+			if(this.validaImagemSindicoProfissional()){
+				if(this.sindicoProfissional.getImagem().getId() != -1){					
+					this.arquivoService.atualizarArquivoCondomino(this.sindicoProfissional.getImagem());				
+				}else{
+					this.arquivoService.salvarArquivoCondomino(this.sindicoProfissional.getImagem());	
+				}
+				ManagedBeanUtil.setMensagemInfo("msg.meuPainel.alterarImagemSindicoProfissional.imagemAtualizadaSucesso");
+			}			
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}		
+		return null;
+	}
+	
+	
+	public String atualizarSenhaSindicoProfissional(){	
+		this.setTabSelecionada(ID_TAB_ALTERAR_SENHA_SINDICO_PROFISSIONAL);
+		try {			
+			if(this.validaAtualizarSenhaSindicoProfissional()){
+				this.sindicoProfissional.setSenha(this.senhaSindicoProfissional);
+				this.sindicoProfissionalService.atualizarSenha(this.sindicoProfissional);
+				ManagedBeanUtil.setMensagemInfo("msg.meuPainel.alterarSenhaSindicoProfissional.novaSenhaAtualizada");				
+			}
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
@@ -560,6 +658,32 @@ public class MeuPainelMB implements  Serializable{
 	public void paintFuncionario(OutputStream stream, Object object)   {
 		try {
 			this.funcionario.setImagem(this.arquivos.get(0));
+			stream.write(this.arquivos.get(0).getDadosArquivo());
+			stream.close();
+		} catch (IOException e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}
+	}
+	
+	public void listenerSindicoProfissional(FileUploadEvent event)  {
+		 UploadedFile item = event.getUploadedFile();
+		 Arquivo arquivo =  new Arquivo();		 
+		 arquivo.setId(this.sindicoProfissional.getImagem() != null ? this.sindicoProfissional.getImagem().getId() : null);
+		 arquivo.setIdUsuario(this.sindicoProfissional.getId());
+		 arquivo.setDadosArquivo(item.getData());
+		 arquivo.setNome(event.getUploadedFile().getName());
+		 arquivo.setMimeType(event.getUploadedFile().getContentType());
+		 this.arquivos.clear();
+	     this.arquivos.add(arquivo);	
+	}
+	
+	public void paintSindicoProfissional(OutputStream stream, Object object)   {
+		try {
+			this.sindicoProfissional.setImagem(this.arquivos.get(0));
 			stream.write(this.arquivos.get(0).getDadosArquivo());
 			stream.close();
 		} catch (IOException e) {
@@ -943,12 +1067,80 @@ public class MeuPainelMB implements  Serializable{
 
 	public void setRenderedCadastroNovoVeiculo(Boolean renderedCadastroNovoVeiculo) {
 		this.renderedCadastroNovoVeiculo = renderedCadastroNovoVeiculo;
-	}
+	}	
 	
+	public String getTelefoneComercialSindicoProfissional() {
+		return telefoneComercialSindicoProfissional;
+	}
+
+	public void setTelefoneComercialSindicoProfissional(String telefoneComercialSindicoProfissional) {
+		this.telefoneComercialSindicoProfissional = telefoneComercialSindicoProfissional;
+	}
+
+	public String getTelefoneCelular1SindicoProfissional() {
+		return telefoneCelular1SindicoProfissional;
+	}
+
+	public void setTelefoneCelular1SindicoProfissional(String telefoneCelular1SindicoProfissional) {
+		this.telefoneCelular1SindicoProfissional = telefoneCelular1SindicoProfissional;
+	}
+
+	public String getTelefoneCelular2SindicoProfissional() {
+		return telefoneCelular2SindicoProfissional;
+	}
+
+	public void setTelefoneCelular2SindicoProfissional(String telefoneCelular2SindicoProfissional) {
+		this.telefoneCelular2SindicoProfissional = telefoneCelular2SindicoProfissional;
+	}
+
+	public String getTelefoneCelular3SindicoProfissional() {
+		return telefoneCelular3SindicoProfissional;
+	}
+
+	public void setTelefoneCelular3SindicoProfissional(String telefoneCelular3SindicoProfissional) {
+		this.telefoneCelular3SindicoProfissional = telefoneCelular3SindicoProfissional;
+	}	
+
+	public SindicoProfissional getSindicoProfissional() {
+		return sindicoProfissional;
+	}
+
+	public void setSindicoProfissional(SindicoProfissional sindicoProfissional) {
+		this.sindicoProfissional = sindicoProfissional;
+	}	
+
+	public String getSenhaAtualSindicoProfissional() {
+		return senhaAtualSindicoProfissional;
+	}
+
+	public void setSenhaAtualSindicoProfissional(String senhaAtualSindicoProfissional) {
+		this.senhaAtualSindicoProfissional = senhaAtualSindicoProfissional;
+	}
+
+	public String getSenhaSindicoProfissional() {
+		return senhaSindicoProfissional;
+	}
+
+	public void setSenhaSindicoProfissional(String senhaSindicoProfissional) {
+		this.senhaSindicoProfissional = senhaSindicoProfissional;
+	}
+
+	public String getConfirmarSenhaSindicoProfissional() {
+		return confirmarSenhaSindicoProfissional;
+	}
+
+	public void setConfirmarSenhaSindicoProfissional(String confirmarSenhaSindicoProfissional) {
+		this.confirmarSenhaSindicoProfissional = confirmarSenhaSindicoProfissional;
+	}
+
 	public void carregarGaragens(){
 		try {
-			this.popularDMGaragem();
-			this.popularSIGaragem();
+			Usuario usuario = AplicacaoUtil.getUsuarioAutenticado();
+			if(usuario.getIdGrupoUsuario().equals(TipoGrupoUsuarioEnum.CONDOMINO.getGrupoUsuario()) || 
+					usuario.getIdGrupoUsuario().equals(TipoGrupoUsuarioEnum.SINDICO.getGrupoUsuario())){
+				this.popularDMGaragem();
+				this.popularSIGaragem();
+			}
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");				
@@ -1014,6 +1206,54 @@ public class MeuPainelMB implements  Serializable{
 		// Regra somente números
 		if(AplicacaoUtil.validaExpressaoRegular("[^0-9]+", this.telefoneResidencialCondomino)){
 			ManagedBeanUtil.setMensagemErro("msg.meuPainel.condomino.telefoneResidencialSomenteNumero");
+			quantidadeErros++;		
+		}
+		return quantidadeErros == 0 ? Boolean.TRUE : Boolean.FALSE;
+	}
+	
+	private Boolean validaDadosPessoaisSindicoProfissional() {
+		Integer quantidadeErros = 0; 
+		if(this.sindicoProfissional.getNome().trim().equals("")){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.sindicoProfissional.nomeRequerido");
+			quantidadeErros++;			
+		}
+		if(this.sindicoProfissional.getNome().length() > 150){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.sindicoProfissional.nome");
+			quantidadeErros++;			
+		}
+		// Regra de valicação tamanho de campos
+		if(this.sindicoProfissional.getEmail().getEmail().equals("")){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.sindicoProfissional.emailRequerido");
+			quantidadeErros++;		
+		}		
+		// Regra de valicação tamanho de campos
+		if(this.sindicoProfissional.getEmail().getEmail().length() > 150){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.sindicoProfissional.email");
+			quantidadeErros++;		
+		}
+		// Regra formato de email
+		if (!ManagedBeanUtil.validaEmail(this.sindicoProfissional.getEmail().getEmail())){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.sindicoProfissional.formatoEmailInvalido");
+			quantidadeErros++;
+		}
+		// Regra somente números
+		if(AplicacaoUtil.validaExpressaoRegular("[^0-9]+", this.telefoneComercialSindicoProfissional)){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.sindicoProfissional.telefoneComercialSomenteNumero");
+			quantidadeErros++;					
+		}
+		// Regra somente números
+		if(AplicacaoUtil.validaExpressaoRegular("[^0-9]+", this.telefoneCelular1SindicoProfissional)){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.sindicoProfissional.telefoneCelular1SomenteNumero");
+			quantidadeErros++;		
+		}
+		// Regra somente números
+		if(AplicacaoUtil.validaExpressaoRegular("[^0-9]+", this.telefoneCelular2SindicoProfissional)){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.sindicoProfissional.telefoneCelular2SomenteNumero");
+			quantidadeErros++;		
+		}
+		// Regra somente números
+		if(AplicacaoUtil.validaExpressaoRegular("[^0-9]+", this.telefoneCelular3SindicoProfissional)){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.sindicoProfissional.telefoneCelular3SomenteNumero");
 			quantidadeErros++;		
 		}
 		return quantidadeErros == 0 ? Boolean.TRUE : Boolean.FALSE;
@@ -1137,6 +1377,47 @@ public class MeuPainelMB implements  Serializable{
 		return quantidadeErros == 0 ? Boolean.TRUE : Boolean.FALSE;
 	}
 	
+	private Boolean validaAtualizarSenhaSindicoProfissional() throws NoSuchAlgorithmException {
+		Integer quantidadeErros = 0;		
+		// Regra campo obrigatório
+		if(this.senhaAtualSindicoProfissional.trim().equals("")){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.alterarSenha.senhaAtualRequerida");
+			quantidadeErros++;
+		}
+		// Regra campo obrigatório
+		if(this.senhaSindicoProfissional.trim().equals("")){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.alterarSenha.novaSenhaRequerida");	
+			quantidadeErros++;
+		}
+		// Regra campo senha atual deve conferir com a senha da base de dados
+		if (!this.sindicoProfissional.getSenha().equals(AplicacaoUtil.gerarHashMD5(this.senhaAtualSindicoProfissional))){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.alterarSenha.senhasAtualIncorreta");
+			quantidadeErros++;
+		}
+		// Regra campo obrigatório
+		if(this.confirmarSenhaSindicoProfissional.trim().equals("")){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.alterarSenha.ConfirmarSenhaRequerida");
+			quantidadeErros++;
+		}
+		// Regra para verificar se o usuário não digitou a nova senha errada e não percebeu
+		if(!this.senhaSindicoProfissional.equals(this.confirmarSenhaSindicoProfissional)){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.alterarSenha.senhasNaoCorrespondem");
+			quantidadeErros++;
+		}
+		// Regra valicação tamanho de campos
+		if(this.senhaSindicoProfissional.length() < 6 || this.senhaSindicoProfissional.length() > 15){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.alterarSenha.novaSenha");
+			quantidadeErros++;
+		}
+		// Regra somente letras e/ou números e valicação tamanho de campos
+		if(this.confirmarSenhaSindicoProfissional.length() < 6 || this.confirmarSenhaSindicoProfissional.length() > 15){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.alterarSenha.confirmarSenha");
+			quantidadeErros++;
+		}
+		return quantidadeErros == 0 ? Boolean.TRUE : Boolean.FALSE;
+	}
+	
+	
 	private Boolean validaNovoCondomino() {
 		Integer quantidadeErros = 0;
 		// Regra campo obrigatório
@@ -1235,6 +1516,25 @@ public class MeuPainelMB implements  Serializable{
 		}	
 		return quantidadeErros == 0 ? Boolean.TRUE : Boolean.FALSE;
 	}
+	
+	// Regra campo imagem condômino		
+		private Boolean validaImagemSindicoProfissional() throws Exception {
+			Integer quantidadeErros = 0;		
+			try {
+				if (Arrays.equals(this.sindicoProfissional.getImagem().getDadosArquivo(), ManagedBeanUtil.popularImagemNaoDisponivel())){
+					ManagedBeanUtil.setMensagemErro("msg.meuPainel.alterarImagemCondomino.imagemRequerida");
+					//ManagedBeanUtil.limpaMensagens();
+					quantidadeErros++;
+				}
+			} catch (FileNotFoundException e) {
+				logger.error("", e);
+				ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+			} catch (IOException e) {
+				logger.error("", e);
+				ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+			}	
+			return quantidadeErros == 0 ? Boolean.TRUE : Boolean.FALSE;
+		}
 	
 	// Regra campo imagem funcionário		
 	private Boolean validaImagemFuncionario() throws Exception {

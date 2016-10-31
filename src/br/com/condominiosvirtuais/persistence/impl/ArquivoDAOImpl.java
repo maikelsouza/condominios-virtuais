@@ -651,21 +651,12 @@ public class ArquivoDAOImpl implements ArquivoDAO, Serializable {
 			while(resultSet.next()){
 				arquivo = new Arquivo();				
 				arquivo.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
-// TODO: Código comentado em 01/10/2014. Apagar em 180 dias				
-//				arquivo.setIdAmbiente((Integer) SQLUtil.getValorResultSet(resultSet, ID_AMBIENTE, java.sql.Types.INTEGER));
 				arquivo.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
 				arquivo.setIdUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_USUARIO, java.sql.Types.INTEGER));
 				arquivo.setIdClassificados((Integer) SQLUtil.getValorResultSet(resultSet, ID_CLASSIFICADOS, java.sql.Types.INTEGER));
 				arquivo.setMimeType(String.valueOf(SQLUtil.getValorResultSet(resultSet, MIME_TYPE, java.sql.Types.VARCHAR)));
 				arquivo.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
-				condominio = this.recuperaCondominio(arquivo, con);
-//				file = new File(this.enderecoArquivos+File.separator+condominio.getId()+File.separator+arquivo.getId()+File.separator+arquivo.getNome());
-//				dadosArquivo = new byte[(int) file.length()];
-//				InputStream ios = new FileInputStream(file);
-//				DataInputStream dis = new DataInputStream (ios);			      
-//				dis.readFully(dadosArquivo);			        
-//				dis.close();
-//				ios.close();		
+				condominio = this.recuperaCondominio(arquivo, con);		
 				arquivo.setDadosArquivo(this.fileDAO.buscaDadosFile(arquivo, condominio.getId()));
 			}    
 		} catch (FileNotFoundException e) {			

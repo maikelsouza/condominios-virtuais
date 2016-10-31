@@ -426,7 +426,7 @@ public class ReservaDAOImpl implements ReservaDAO, Serializable {
 		query.append(SQLUtil.popularInterrocacoes(listaAmbiente.size()));
 		query.append(" ) AND ");
 		query.append(SITUACAO);
-		query.append("= ? ");
+		query.append(" = ? ");
 		query.append("ORDER BY ");
 		query.append(DATA);
 		query.append(" DESC ");
@@ -517,110 +517,113 @@ public class ReservaDAOImpl implements ReservaDAO, Serializable {
 				List<Reserva> listaReserva = new ArrayList<Reserva>();		
 				Connection con = Conexao.getConexao();
 				List<Ambiente> listaAmbiente = this.ambienteDAO.get().buscarPorCondominioENomeAmbiente(condominio,null);
-				StringBuffer query = new StringBuffer();
-				query.append("SELECT * FROM ");
-				query.append(RESERVA);
-				query.append(" WHERE ");
-				query.append(ID_AMBIENTE);		
-				query.append(" in (");
-				query.append(SQLUtil.popularInterrocacoes(listaAmbiente.size()));
-				query.append(") AND ");
-				query.append(SITUACAO);
-				query.append(" in (");
-				query.append(SQLUtil.popularInterrocacoes(listaSituacao.size()));
-				query.append(") AND ");
-				query.append(DATA);
-				query.append(" >= ?");
-				query.append(" ORDER BY ");
-				query.append(SITUACAO);
-				query.append(" DESC, ");
-				query.append(DATA);
-				query.append(" DESC ");
-				query.append(";");		
-				PreparedStatement preparedStatement = null;
-				ResultSet resultSet = null;
-				Reserva reservaCondominio = null;	
-				Reserva reservaConjuntoBloco = null;
-				Integer contador = 1;
-				Boolean encontrouAmbiente = null;
-				Integer idAmbienteBanco = null;
-				try {			
-					preparedStatement = con.prepareStatement(query.toString());
-					for (Ambiente ambienteCondominio : listaAmbiente) {
-						SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, ambienteCondominio.getId(), java.sql.Types.INTEGER);
-					}	
-					for (String situacao : listaSituacao) {
-						SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, situacao, java.sql.Types.VARCHAR);
-					}	
-					SQLUtil.setValorPpreparedStatement(preparedStatement, contador, data, java.sql.Types.DATE);
-					resultSet = preparedStatement.executeQuery();				
-					while(resultSet.next()){		
-						encontrouAmbiente = Boolean.FALSE;
-						contador = 0;
-						reservaCondominio = new Reserva();				
-						reservaCondominio.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
-						reservaCondominio.setData((Date)(SQLUtil.getValorResultSet(resultSet, DATA, java.sql.Types.DATE)));
-						reservaCondominio.setSituacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.VARCHAR)));
-						reservaCondominio.setMotivoReprovacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, MOTIVO_REPROVACAO, java.sql.Types.VARCHAR)));
-						reservaCondominio.setMotivoSuspensao(String.valueOf(SQLUtil.getValorResultSet(resultSet, MOTIVO_SUSPENSAO, java.sql.Types.VARCHAR)));
-						Condomino condomino = this.condominoDAO.get().buscarCondominoPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINO, java.sql.Types.INTEGER));
-						reservaCondominio.setCondomino(condomino);				
-						while(encontrouAmbiente == Boolean.FALSE){
-							Integer idAmbiente = (Integer) SQLUtil.getValorResultSet(resultSet, ID_AMBIENTE, java.sql.Types.INTEGER);
-							idAmbienteBanco = listaAmbiente.get(contador).getId();
-							if (idAmbienteBanco == idAmbiente){
-								reservaCondominio.setAmbiente(listaAmbiente.get(contador));
-								encontrouAmbiente = Boolean.TRUE;
+				// Caso não exista um ambiente cadastrado no condomínio, então a consulta de ambiente não será realizada
+				if (listaAmbiente.size() > 0){
+					StringBuffer query = new StringBuffer();
+					query.append("SELECT * FROM ");
+					query.append(RESERVA);
+					query.append(" WHERE ");
+					query.append(ID_AMBIENTE);		
+					query.append(" in (");
+					query.append(SQLUtil.popularInterrocacoes(listaAmbiente.size()));
+					query.append(") AND ");
+					query.append(SITUACAO);
+					query.append(" in (");
+					query.append(SQLUtil.popularInterrocacoes(listaSituacao.size()));
+					query.append(") AND ");
+					query.append(DATA);
+					query.append(" >= ?");
+					query.append(" ORDER BY ");
+					query.append(SITUACAO);
+					query.append(" DESC, ");
+					query.append(DATA);
+					query.append(" DESC ");
+					query.append(";");		
+					PreparedStatement preparedStatement = null;
+					ResultSet resultSet = null;
+					Reserva reservaCondominio = null;	
+					Reserva reservaConjuntoBloco = null;
+					Integer contador = 1;
+					Boolean encontrouAmbiente = null;
+					Integer idAmbienteBanco = null;
+					try {			
+						preparedStatement = con.prepareStatement(query.toString());
+						for (Ambiente ambienteCondominio : listaAmbiente) {
+							SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, ambienteCondominio.getId(), java.sql.Types.INTEGER);
+						}	
+						for (String situacao : listaSituacao) {
+							SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, situacao, java.sql.Types.VARCHAR);
+						}	
+						SQLUtil.setValorPpreparedStatement(preparedStatement, contador, data, java.sql.Types.DATE);
+						resultSet = preparedStatement.executeQuery();				
+						while(resultSet.next()){		
+							encontrouAmbiente = Boolean.FALSE;
+							contador = 0;
+							reservaCondominio = new Reserva();				
+							reservaCondominio.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+							reservaCondominio.setData((Date)(SQLUtil.getValorResultSet(resultSet, DATA, java.sql.Types.DATE)));
+							reservaCondominio.setSituacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.VARCHAR)));
+							reservaCondominio.setMotivoReprovacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, MOTIVO_REPROVACAO, java.sql.Types.VARCHAR)));
+							reservaCondominio.setMotivoSuspensao(String.valueOf(SQLUtil.getValorResultSet(resultSet, MOTIVO_SUSPENSAO, java.sql.Types.VARCHAR)));
+							Condomino condomino = this.condominoDAO.get().buscarCondominoPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINO, java.sql.Types.INTEGER));
+							reservaCondominio.setCondomino(condomino);				
+							while(encontrouAmbiente == Boolean.FALSE){
+								Integer idAmbiente = (Integer) SQLUtil.getValorResultSet(resultSet, ID_AMBIENTE, java.sql.Types.INTEGER);
+								idAmbienteBanco = listaAmbiente.get(contador).getId();
+								if (idAmbienteBanco == idAmbiente){
+									reservaCondominio.setAmbiente(listaAmbiente.get(contador));
+									encontrouAmbiente = Boolean.TRUE;
+								}
+								contador++;
 							}
-							contador++;
+							listaReserva.add(reservaCondominio);
 						}
-						listaReserva.add(reservaCondominio);
+						List<Bloco> listaBloco = this.blocoDAO.get().buscarListaBlocosPorCondominioENome(condominio,null);
+						List<BlocoConjuntoBloco> listaBlocoConjuntoBlocos = null;		
+						Set<Integer> listaIdConjuntoBloco = new HashSet<Integer>();
+						for (Bloco bloco : listaBloco) {
+							listaBlocoConjuntoBlocos =  this.blocoConjuntoBlocoDAO.buscarPorIdBloco(bloco.getId(), con);
+							for (BlocoConjuntoBloco blocoConjuntoBloco : listaBlocoConjuntoBlocos) {
+								listaIdConjuntoBloco.add(blocoConjuntoBloco.getConjuntoBloco().getId());
+							}				
+						}
+						for (Integer idConjuntoBloco : listaIdConjuntoBloco) {					
+							ConjuntoBloco conjuntoBloco = this.conjuntoBlocoDAO.buscarPorId(idConjuntoBloco, con);					
+							for (TipoConjuntoBloco tipoConjuntoBloco : conjuntoBloco.getListaTipoConjuntoBlocos()) {
+								Ambiente ambienteConjuntoBloco = (Ambiente) tipoConjuntoBloco;
+								preparedStatement = con.prepareStatement(query.toString());
+								SQLUtil.setValorPpreparedStatement(preparedStatement, 1, ambienteConjuntoBloco.getId(), java.sql.Types.INTEGER);
+								contador = 2;
+								for (String situacao : listaSituacao) {
+									SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, situacao, java.sql.Types.VARCHAR);
+								}
+								resultSet = preparedStatement.executeQuery();
+								while(resultSet.next()){				
+									reservaConjuntoBloco = new Reserva();				
+									reservaConjuntoBloco.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+									reservaConjuntoBloco.setData((Date)(SQLUtil.getValorResultSet(resultSet, DATA, java.sql.Types.DATE)));
+									reservaConjuntoBloco.setSituacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.VARCHAR)));
+									reservaConjuntoBloco.setMotivoReprovacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, MOTIVO_REPROVACAO, java.sql.Types.VARCHAR)));
+									Condomino condomino = this.condominoDAO.get().buscarCondominoPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINO, java.sql.Types.INTEGER));
+									reservaConjuntoBloco.setCondomino(condomino);				
+									reservaConjuntoBloco.setAmbiente(ambienteConjuntoBloco);
+									listaReserva.add(reservaConjuntoBloco);
+								}
+							}							
+						}
+					} catch (SQLException e) {					
+						throw e;
+					} catch (Exception e) {					
+						throw e;	
+					}finally{
+						try{				
+							preparedStatement.close();
+							con.close();				
+						}catch (SQLException e) {
+							logger.error("erro sqlstate "+e.getSQLState(), e);
+					    }
 					}
-					List<Bloco> listaBloco = this.blocoDAO.get().buscarListaBlocosPorCondominioENome(condominio,null);
-					List<BlocoConjuntoBloco> listaBlocoConjuntoBlocos = null;		
-					Set<Integer> listaIdConjuntoBloco = new HashSet<Integer>();
-					for (Bloco bloco : listaBloco) {
-						listaBlocoConjuntoBlocos =  this.blocoConjuntoBlocoDAO.buscarPorIdBloco(bloco.getId(), con);
-						for (BlocoConjuntoBloco blocoConjuntoBloco : listaBlocoConjuntoBlocos) {
-							listaIdConjuntoBloco.add(blocoConjuntoBloco.getConjuntoBloco().getId());
-						}				
-					}
-					for (Integer idConjuntoBloco : listaIdConjuntoBloco) {					
-						ConjuntoBloco conjuntoBloco = this.conjuntoBlocoDAO.buscarPorId(idConjuntoBloco, con);					
-						for (TipoConjuntoBloco tipoConjuntoBloco : conjuntoBloco.getListaTipoConjuntoBlocos()) {
-							Ambiente ambienteConjuntoBloco = (Ambiente) tipoConjuntoBloco;
-							preparedStatement = con.prepareStatement(query.toString());
-							SQLUtil.setValorPpreparedStatement(preparedStatement, 1, ambienteConjuntoBloco.getId(), java.sql.Types.INTEGER);
-							contador = 2;
-							for (String situacao : listaSituacao) {
-								SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, situacao, java.sql.Types.VARCHAR);
-							}
-							resultSet = preparedStatement.executeQuery();
-							while(resultSet.next()){				
-								reservaConjuntoBloco = new Reserva();				
-								reservaConjuntoBloco.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
-								reservaConjuntoBloco.setData((Date)(SQLUtil.getValorResultSet(resultSet, DATA, java.sql.Types.DATE)));
-								reservaConjuntoBloco.setSituacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.VARCHAR)));
-								reservaConjuntoBloco.setMotivoReprovacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, MOTIVO_REPROVACAO, java.sql.Types.VARCHAR)));
-								Condomino condomino = this.condominoDAO.get().buscarCondominoPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINO, java.sql.Types.INTEGER));
-								reservaConjuntoBloco.setCondomino(condomino);				
-								reservaConjuntoBloco.setAmbiente(ambienteConjuntoBloco);
-								listaReserva.add(reservaConjuntoBloco);
-							}
-						}							
-					}
-				} catch (SQLException e) {					
-					throw e;
-				} catch (Exception e) {					
-					throw e;	
-				}finally{
-					try{				
-						preparedStatement.close();
-						con.close();				
-					}catch (SQLException e) {
-						logger.error("erro sqlstate "+e.getSQLState(), e);
-				    }
-				}		
+				}				
 				return listaReserva;
 			}
 	

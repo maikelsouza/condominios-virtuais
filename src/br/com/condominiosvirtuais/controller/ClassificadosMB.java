@@ -255,7 +255,7 @@ public class ClassificadosMB implements Serializable {
 	
 	public Boolean classificadosPertenceAoUsuarioLogado(){
 		Boolean pertenceUsuarioLogado = Boolean.FALSE;
-		if (this.listaClassificados.getRowData().getIdUsuario() == AplicacaoUtil.getUsuarioAutenticado().getId()){			
+		if (this.listaClassificados.getRowData().getIdUsuario().intValue() == AplicacaoUtil.getUsuarioAutenticado().getId().intValue()){			
 			pertenceUsuarioLogado = Boolean.TRUE;
 		}
 		return pertenceUsuarioLogado;
