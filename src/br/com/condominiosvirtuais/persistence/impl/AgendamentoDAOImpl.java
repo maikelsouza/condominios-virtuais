@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
@@ -28,9 +27,6 @@ public class AgendamentoDAOImpl implements AgendamentoDAO, Serializable {
 	
 	
 	private static final long serialVersionUID = 1L;
-	
-	@Inject
-	private Instance<CondominioDAOImpl> condominioDAO;
 	
 	@Inject
 	private UnidadeDAO unidadeDAO;
@@ -57,7 +53,9 @@ public class AgendamentoDAOImpl implements AgendamentoDAO, Serializable {
 	
 	private static final String MOTIVO_REPROVACAO = "MOTIVO_REPROVACAO";
 	
-	private static final String SITUACAO = "SITUACAO";	
+	private static final String SITUACAO = "SITUACAO";
+	
+	private static final String TIPO = "TIPO";
 	
 	private static final String ID_CONDOMINO = "ID_CONDOMINO";
 	
@@ -78,11 +76,13 @@ public class AgendamentoDAOImpl implements AgendamentoDAO, Serializable {
 		query.append(",");		
 		query.append(MOTIVO_REPROVACAO);
 		query.append(", ");
+		query.append(TIPO);
+		query.append(", ");
 		query.append(SITUACAO);
 		query.append(",");		
 		query.append(ID_CONDOMINO);
 		query.append(")");		
-		query.append("VALUES(?,?,?,?,?,?,?)");
+		query.append("VALUES(?,?,?,?,?,?,?,?)");
 		PreparedStatement statement = null;		
 		Connection con = Conexao.getConexao();
 		try {
@@ -92,8 +92,9 @@ public class AgendamentoDAOImpl implements AgendamentoDAO, Serializable {
 			SQLUtil.setValorPpreparedStatement(statement, 3, agendamento.getHoraFinal(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement, 4, agendamento.getObservacao(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement, 5, agendamento.getMotivoReprovacao(), java.sql.Types.VARCHAR);
-			SQLUtil.setValorPpreparedStatement(statement, 6, agendamento.getSituacao(), java.sql.Types.VARCHAR);
-			SQLUtil.setValorPpreparedStatement(statement, 7, agendamento.getCondomino().getId(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 6, agendamento.getTipo(), java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 7, agendamento.getSituacao(), java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 8, agendamento.getCondomino().getId(), java.sql.Types.INTEGER);
 			statement.executeUpdate();
 		} catch (SQLException e) {			
 			throw e;			
@@ -178,6 +179,7 @@ public class AgendamentoDAOImpl implements AgendamentoDAO, Serializable {
 				agendamento.setData((Date)(SQLUtil.getValorResultSet(resultSet, DATA, java.sql.Types.DATE)));
 				agendamento.setHoraInicial(String.valueOf(SQLUtil.getValorResultSet(resultSet, HORA_INICIAL, java.sql.Types.VARCHAR)));
 				agendamento.setHoraFinal(String.valueOf(SQLUtil.getValorResultSet(resultSet, HORA_FINAL, java.sql.Types.VARCHAR)));			
+				agendamento.setTipo(String.valueOf(SQLUtil.getValorResultSet(resultSet, TIPO, java.sql.Types.VARCHAR)));
 				agendamento.setSituacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.VARCHAR)));
 				agendamento.setObservacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, OBSERVACAO, java.sql.Types.VARCHAR)));			
 				agendamento.setMotivoReprovacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, MOTIVO_REPROVACAO, java.sql.Types.VARCHAR)));
@@ -340,6 +342,7 @@ public class AgendamentoDAOImpl implements AgendamentoDAO, Serializable {
 				agendamento.setData((Date)(SQLUtil.getValorResultSet(resultSet, DATA, java.sql.Types.DATE)));
 				agendamento.setHoraInicial(String.valueOf(SQLUtil.getValorResultSet(resultSet, HORA_INICIAL, java.sql.Types.VARCHAR)));
 				agendamento.setHoraFinal(String.valueOf(SQLUtil.getValorResultSet(resultSet, HORA_FINAL, java.sql.Types.VARCHAR)));			
+				agendamento.setTipo(String.valueOf(SQLUtil.getValorResultSet(resultSet, TIPO, java.sql.Types.VARCHAR)));
 				agendamento.setSituacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.VARCHAR)));
 				agendamento.setObservacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, OBSERVACAO, java.sql.Types.VARCHAR)));			
 				agendamento.setMotivoReprovacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, MOTIVO_REPROVACAO, java.sql.Types.VARCHAR)));
@@ -399,6 +402,7 @@ public class AgendamentoDAOImpl implements AgendamentoDAO, Serializable {
 				agendamento.setData((Date)(SQLUtil.getValorResultSet(resultSet, DATA, java.sql.Types.DATE)));
 				agendamento.setHoraInicial(String.valueOf(SQLUtil.getValorResultSet(resultSet, HORA_INICIAL, java.sql.Types.VARCHAR)));
 				agendamento.setHoraFinal(String.valueOf(SQLUtil.getValorResultSet(resultSet, HORA_FINAL, java.sql.Types.VARCHAR)));			
+				agendamento.setTipo(String.valueOf(SQLUtil.getValorResultSet(resultSet, TIPO, java.sql.Types.VARCHAR)));
 				agendamento.setSituacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.VARCHAR)));
 				agendamento.setObservacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, OBSERVACAO, java.sql.Types.VARCHAR)));			
 				agendamento.setMotivoReprovacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, MOTIVO_REPROVACAO, java.sql.Types.VARCHAR)));				

@@ -20,6 +20,8 @@ public class AgendamentoVO {
 	
 	private String situacao;
 	
+	private String tipo;
+	
 	private String motivoReprovacao;
 	
 	private Bloco bloco;
@@ -66,6 +68,14 @@ public class AgendamentoVO {
 
 	public void setObservacao(String observacao) {
 		this.observacao = observacao;
+	}	
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 
 	public String getSituacao() {

@@ -21,6 +21,8 @@ public class Agendamento {
 	
 	private String situacao;
 	
+	private String tipo;
+	
 	private String motivoReprovacao;
 	
 	private Bloco bloco;
@@ -64,6 +66,14 @@ public class Agendamento {
 	public void setObservacao(String observacao) {
 		this.observacao = observacao;
 	}	
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
 
 	public String getSituacao() {
 		return situacao;
@@ -129,6 +139,14 @@ public class Agendamento {
 	 */
 	public String getSituacaoI18n() {
 		return AplicacaoUtil.i18n(this.situacao);
+	}
+	
+	/* Existe dois tipos de agendamento: entrada e saída.
+	 * Para que seja possíve exibir esses dois tipos em um único campo e em momentos diferentes, foi
+	 * gravado a string no banco. 
+	 */
+	public String getTipoI18n() {
+		return AplicacaoUtil.i18n(this.tipo);
 	}
 
 	

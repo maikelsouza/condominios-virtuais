@@ -115,13 +115,16 @@
 									action="#{ordenaAgendamentoMB.ordenarPorHoraFinal}" />
 							</f:facet>
 							<h:outputText value="#{agendamentoVO.horaFinal}h"/>								
-						</rich:column>						
-						<rich:column sortBy="#{agendamentoVO.situacao}"
-							sortOrder="#{ordenaAgendamentoMB.situacao}">
+						</rich:column>	
+						<rich:column sortBy="#{agendamentoVO.tipo}" sortOrder="#{ordenaAgendamentoMB.tipo}">
 							<f:facet name="header">
-								<a4j:commandLink value="#{msg['agendamentoMudança.situacao']}"
-									render="tableAgendamentoVO"
-									action="#{ordenaAgendamentoMB.ordenarPorSituacao}" />
+								<a4j:commandLink value="#{msg['agendamentoMudança.tipo']}" render="tableAgendamentoVO" action="#{ordenaAgendamentoMB.ordenarPorTipo}" />
+							</f:facet>
+							<h:outputText value="#{agendamentoVO.tipo}" />
+						</rich:column>					
+						<rich:column sortBy="#{agendamentoVO.situacao}" sortOrder="#{ordenaAgendamentoMB.situacao}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['agendamentoMudança.situacao']}" render="tableAgendamentoVO" action="#{ordenaAgendamentoMB.ordenarPorSituacao}" />
 							</f:facet>
 							<h:outputText value="#{agendamentoVO.situacao}" />
 						</rich:column>	

@@ -16,47 +16,38 @@
 					<h:outputText value="#{msg.solicitacaoAgendamentoMudança}" />
 				</f:facet>
 				<h:outputLabel value="Horário para mudanças: de segunda a sexta-feira das 08h às 12h e das 13h às 17h, ou aos sábados das 09h às 13h." style="color: red !important;" rendered="#{agendamentoMB.condominio.id == 8 ? true: false}"/>
-				<h:panelGrid columns="3">
-				
-					<h:panelGroup>
-						<h:outputLabel value="#{msg['agendamentoMudança.tipo']}" for="idTipo" />
-						<span class="asterisco">*</span>
-					</h:panelGroup>	
-					
+				<h:panelGrid columns="2">
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['agendamentoMudança.sabado']}?" for="idDiaSemana" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 					
 					<h:panelGroup>
-						<h:outputLabel value="#{msg['agendamentoMudança.data']}:" for="idCalendarData" />
+						<h:outputLabel value="#{msg['agendamentoMudança.tipo']}" for="idTipo" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>	
 					
-					<h:selectOneMenu id="idTipo" value="#{agendamentoMB.agendamento.tipo}"
-						required="true" label="#{msg['agendamentoMudança.tipo.label']}">
-						<f:selectItems value="#{agendamentoMB.listaSITipo}" />
-					</h:selectOneMenu>	
-					
-					<h:selectOneMenu id="idDiaSemana" value="#{agendamentoMB.diaSemana}"
+					<h:selectOneRadio id="idDiaSemana" value="#{agendamentoMB.diaSemana}"
 						required="true" label="#{msg['agendamentoMudança.sabado.label']}">
 						<f:selectItem itemLabel="#{msg['sim']}" itemValue="0" />
 						<f:selectItem itemLabel="#{msg['nao']}" itemValue="1" />
 						<f:ajax render="@form" listener="#{agendamentoMB.populaHoraInicialEFinal}" />
-					</h:selectOneMenu>				
+					</h:selectOneRadio>	
+					
+					<h:selectOneMenu id="idTipo" value="#{agendamentoMB.agendamento.tipo}"
+						required="true" label="#{msg['agendamentoMudança.tipo.label']}">
+						<f:selectItems value="#{agendamentoMB.listaSITipo}" />
+					</h:selectOneMenu>					
+										
 								
-					<rich:calendar value="#{agendamentoMB.agendamento.data}" id="idCalendarData"
-						locale="pt_BR" popup="true" mode="ajax"
-						label="#{msg['agendamentoMudança.data.label']}"
-						datePattern="#{msg['formatoData']}"
-						cellWidth="24px" cellHeight="22px" style="width:200px" 
-						required="true" boundaryDatesMode="scroll"
-						dataModel="#{calendarioAgendamentoMB}" 
-						showFooter="false">
-					</rich:calendar>
 				</h:panelGrid>
-				
-				<h:panelGrid columns="2">					
+									
+				<h:panelGrid columns="3">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['agendamentoMudança.data']}:" for="idCalendarData" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['agendamentoMudança.horaInicial']}:" for="idSelectHoraInicial" />
 						<span class="asterisco">*</span>						
@@ -66,6 +57,16 @@
 						<h:outputLabel value="#{msg['agendamentoMudança.horaFinal']}:" for="idSelectHoraFinal" />
 						<span class="asterisco">*</span>						
 					</h:panelGroup>
+											
+					<rich:calendar value="#{agendamentoMB.agendamento.data}" id="idCalendarData"
+						locale="pt_BR" popup="true" mode="ajax"
+						label="#{msg['agendamentoMudança.data.label']}"
+						datePattern="#{msg['formatoData']}"
+						cellWidth="24px" cellHeight="22px" style="width:200px" 
+						required="true" boundaryDatesMode="scroll"
+						dataModel="#{calendarioAgendamentoMB}" 
+						showFooter="false">
+					</rich:calendar>
 					
 					<h:selectOneMenu value="#{agendamentoMB.agendamento.horaInicial}"
 						id="idSelectHoraInicial" required="true">
@@ -137,12 +138,6 @@
 							</f:facet>
 							<h:outputText value="#{agendamento.horaFinal}h"/>
 						</rich:column>						
-						<rich:column sortBy="#{agendamento.tipoI18n}" sortOrder="#{ordenaAgendamentoMB.tipo}">
-							<f:facet name="header">
-								<a4j:commandLink value="#{msg['agendamentoMudança.tipo']}" render="tableAgendamento" action="#{ordenaAgendamentoMB.ordenarPorTipo}" />
-							</f:facet>
-							<h:outputText value="#{agendamento.tipoI18n}" />
-						</rich:column>
 						<rich:column sortBy="#{agendamento.situacaoI18n}"
 							sortOrder="#{ordenaAgendamentoMB.situacao}">
 							<f:facet name="header">

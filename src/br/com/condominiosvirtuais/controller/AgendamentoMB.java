@@ -20,8 +20,8 @@ import br.com.condominiosvirtuais.entity.Agendamento;
 import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.Condomino;
 import br.com.condominiosvirtuais.entity.SindicoProfissional;
-import br.com.condominiosvirtuais.entity.Usuario;
 import br.com.condominiosvirtuais.enumeration.AgendamentoSituacaoEnum;
+import br.com.condominiosvirtuais.enumeration.AgendamentoTipoEnum;
 import br.com.condominiosvirtuais.enumeration.TipoGrupoUsuarioEnum;
 import br.com.condominiosvirtuais.service.AgendamentoService;
 import br.com.condominiosvirtuais.service.BlocoService;
@@ -54,13 +54,13 @@ public class AgendamentoMB implements Serializable {
 	
 	private Condomino condomino;
 	
-	private Usuario usuario;
-	
 	private List<SelectItem> listaSIHoraInicial = null;
 	
 	private List<SelectItem> listaSIHoraFinal = null;
 	 
 	private List<SelectItem> listaSICondominios  = new ArrayList<SelectItem>();
+	
+	private List<SelectItem> listaSITipo  = new ArrayList<SelectItem>();
 	
 	private List<SelectItem> listaSISituacaoAgendamento = null;
 	
@@ -105,6 +105,7 @@ public class AgendamentoMB implements Serializable {
 				this.popularListaMeusAgendamentos();
 			}
 			this.populaSituacao();
+			this.popularTipo();
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
@@ -158,6 +159,7 @@ public class AgendamentoMB implements Serializable {
 				agendamentoVO.setHoraInicial(agendamento.getHoraInicial());
 				agendamentoVO.setHoraFinal(agendamento.getHoraFinal());
 				agendamentoVO.setSituacao(agendamento.getSituacaoI18n());
+				agendamentoVO.setTipo(agendamento.getTipoI18n());
 				agendamentoVO.setUnidade(agendamento.getUnidade());				
 				agendamentoVO.setBloco(agendamento.getBloco());
 				agendamentoVO.setCondomino(agendamento.getCondomino());
@@ -220,6 +222,7 @@ public class AgendamentoMB implements Serializable {
 				agendamentoVO.setHoraInicial(agendamento.getHoraInicial());
 				agendamentoVO.setHoraFinal(agendamento.getHoraFinal());
 				agendamentoVO.setSituacao(agendamento.getSituacaoI18n());
+				agendamentoVO.setTipo(agendamento.getTipoI18n());
 				agendamentoVO.setUnidade(agendamento.getUnidade());				
 				agendamentoVO.setBloco(agendamento.getBloco());
 				agendamentoVO.setCondomino(agendamento.getCondomino());
@@ -243,7 +246,8 @@ public class AgendamentoMB implements Serializable {
 		AgendamentoVO agendamentoVO = this.listaDeAgendamentoPendentesVOs.getRowData();
 		try {
 			Agendamento agendamentoLocal = new Agendamento();
-			agendamentoLocal.setId(agendamentoVO.getId());			
+			agendamentoLocal.setId(agendamentoVO.getId());		
+			agendamentoLocal.setTipo(agendamentoVO.getTipo());
 			agendamentoLocal.setSituacao(AgendamentoSituacaoEnum.APROVADA.getSituacao());
 			agendamentoLocal.setBloco(agendamentoVO.getBloco());
 			agendamentoLocal.setUnidade(agendamentoVO.getUnidade());
@@ -264,21 +268,26 @@ public class AgendamentoMB implements Serializable {
 	}
 	
 	public void reprovarAgendamento(ActionEvent event){		
-		AgendamentoVO agendamentoVO = this.listaDeAgendamentoPendentesVOs.getRowData();
+		AgendamentoVO agendamentoVO = this.listaDeAgendamentoPendentesVOs.getRowData();		
 		try {
-			Agendamento agendamentoLocal = new Agendamento();
-			agendamentoLocal.setId(agendamentoVO.getId());			
-			agendamentoLocal.setSituacao(AgendamentoSituacaoEnum.REPROVADA.getSituacao());	
-			agendamentoLocal.setBloco(agendamentoVO.getBloco());
-			agendamentoLocal.setUnidade(agendamentoVO.getUnidade());
-			agendamentoLocal.setCondomino(agendamentoVO.getCondomino());
-			agendamentoLocal.setData(agendamentoVO.getData());
-			agendamentoLocal.setHoraInicial(agendamentoVO.getHoraInicial());
-			agendamentoLocal.setHoraFinal(agendamentoVO.getHoraFinal());
-			agendamentoLocal.setMotivoReprovacao(agendamentoVO.getMotivoReprovacao());
-			agendamentoService.reprovar(agendamentoLocal);			
-			this.buscarListaAprovarAgendamento();
-			ManagedBeanUtil.setMensagemInfo("msg.agendamentoMudança.reprovadaSucesso");
+			if(agendamentoVO.getMotivoReprovacao().trim().equals("")){
+				ManagedBeanUtil.setMensagemErro("msg.agendamentoMudança.motivoReprovacaoObrigatorio");
+			}else{
+				Agendamento agendamentoLocal = new Agendamento();
+				agendamentoLocal.setId(agendamentoVO.getId());	
+				agendamentoLocal.setTipo(agendamentoVO.getTipo());
+				agendamentoLocal.setSituacao(AgendamentoSituacaoEnum.REPROVADA.getSituacao());	
+				agendamentoLocal.setBloco(agendamentoVO.getBloco());
+				agendamentoLocal.setUnidade(agendamentoVO.getUnidade());
+				agendamentoLocal.setCondomino(agendamentoVO.getCondomino());
+				agendamentoLocal.setData(agendamentoVO.getData());
+				agendamentoLocal.setHoraInicial(agendamentoVO.getHoraInicial());
+				agendamentoLocal.setHoraFinal(agendamentoVO.getHoraFinal());
+				agendamentoLocal.setMotivoReprovacao(agendamentoVO.getMotivoReprovacao());
+				this.agendamentoService.reprovar(agendamentoLocal);			
+				this.buscarListaAprovarAgendamento();
+				ManagedBeanUtil.setMensagemInfo("msg.agendamentoMudança.reprovadaSucesso");
+			}
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
@@ -380,6 +389,12 @@ public class AgendamentoMB implements Serializable {
 		return ehDiaSemana;		
 	}
 	
+	private void popularTipo(){
+		this.listaSITipo = new ArrayList<SelectItem>();
+		this.listaSITipo.add(new SelectItem(AgendamentoTipoEnum.ENTRADA.getTipo(), AplicacaoUtil.i18n(AgendamentoTipoEnum.ENTRADA.getTipo())));
+		this.listaSITipo.add(new SelectItem(AgendamentoTipoEnum.SAIDA.getTipo(), AplicacaoUtil.i18n(AgendamentoTipoEnum.SAIDA.getTipo())));
+	}
+	
 	private void populaSituacao(){
 		this.listaSISituacaoAgendamento = new ArrayList<SelectItem>();
 		this.listaSISituacaoAgendamento.add(new SelectItem(AgendamentoSituacaoEnum.APROVADA.getSituacao(), AplicacaoUtil.i18n(AgendamentoSituacaoEnum.APROVADA.getSituacao())));
@@ -467,6 +482,14 @@ public class AgendamentoMB implements Serializable {
 
 	public void setListaDeAgendamentoPendentesVOs(ListDataModel<AgendamentoVO> listaDeAgendamentoPendentesVOs) {
 		this.listaDeAgendamentoPendentesVOs = listaDeAgendamentoPendentesVOs;
+	}
+	
+	public List<SelectItem> getListaSITipo() {
+		return listaSITipo;
+	}
+
+	public void setListaSITipo(List<SelectItem> listaSITipo) {
+		this.listaSITipo = listaSITipo;
 	}
 	
 

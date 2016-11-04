@@ -25,6 +25,8 @@ public class OrdenaAgendamentoMB implements Serializable {
 	
 	private SortOrder situacao = SortOrder.unsorted;
 	
+	private SortOrder tipo = SortOrder.unsorted;
+	
 	private SortOrder motivoReprovacao = SortOrder.unsorted;
 	
 	private SortOrder condomino = SortOrder.unsorted;
@@ -37,6 +39,7 @@ public class OrdenaAgendamentoMB implements Serializable {
 		this.setSituacao(SortOrder.unsorted);
 		this.setMotivoReprovacao(SortOrder.unsorted);
 		this.setCondomino(SortOrder.unsorted);
+		this.setTipo(SortOrder.unsorted);
 		if (this.bloco.equals(SortOrder.ascending)) {
 			 this.setBloco(SortOrder.descending);
 		} else {
@@ -50,6 +53,7 @@ public class OrdenaAgendamentoMB implements Serializable {
 		this.setHoraInicial(SortOrder.unsorted);
 		this.setHoraFinal(SortOrder.unsorted);
 		this.setSituacao(SortOrder.unsorted);
+		this.setTipo(SortOrder.unsorted);
 		this.setMotivoReprovacao(SortOrder.unsorted);
 		this.setCondomino(SortOrder.unsorted);
 		if (this.unidade.equals(SortOrder.ascending)) {
@@ -65,6 +69,7 @@ public class OrdenaAgendamentoMB implements Serializable {
 		this.setHoraInicial(SortOrder.unsorted);
 		this.setHoraFinal(SortOrder.unsorted);
 		this.setSituacao(SortOrder.unsorted);
+		this.setTipo(SortOrder.unsorted);
 		this.setMotivoReprovacao(SortOrder.unsorted);
 		this.setCondomino(SortOrder.unsorted);
 		if (this.data.equals(SortOrder.ascending)) {
@@ -81,6 +86,7 @@ public class OrdenaAgendamentoMB implements Serializable {
 		this.setHoraFinal(SortOrder.unsorted);
 		this.setSituacao(SortOrder.unsorted);
 		this.setCondomino(SortOrder.unsorted);
+		this.setTipo(SortOrder.unsorted);
 		this.setMotivoReprovacao(SortOrder.unsorted);
 		if (this.horaInicial.equals(SortOrder.ascending)) {
 			 this.setHoraInicial(SortOrder.descending);
@@ -96,6 +102,7 @@ public class OrdenaAgendamentoMB implements Serializable {
 		this.setHoraInicial(SortOrder.unsorted);
 		this.setSituacao(SortOrder.unsorted);
 		this.setCondomino(SortOrder.unsorted);
+		this.setTipo(SortOrder.unsorted);
 		this.setMotivoReprovacao(SortOrder.unsorted);
 		if (this.horaFinal.equals(SortOrder.ascending)) {
 			 this.setHoraFinal(SortOrder.descending);
@@ -112,10 +119,27 @@ public class OrdenaAgendamentoMB implements Serializable {
 		this.setHoraFinal(SortOrder.unsorted);		
 		this.setMotivoReprovacao(SortOrder.unsorted);
 		this.setCondomino(SortOrder.unsorted);
+		this.setTipo(SortOrder.unsorted);
 		if (this.situacao.equals(SortOrder.ascending)) {
 			 this.setSituacao(SortOrder.descending);
 		} else {
 			 this.setSituacao(SortOrder.ascending);
+		}
+	}
+	
+	public void ordenarPorTipo(){
+		this.setBloco(SortOrder.unsorted);
+		this.setUnidade(SortOrder.unsorted);		
+		this.setData(SortOrder.descending);
+		this.setHoraInicial(SortOrder.unsorted);
+		this.setHoraFinal(SortOrder.unsorted);		
+		this.setMotivoReprovacao(SortOrder.unsorted);
+		this.setCondomino(SortOrder.unsorted);
+		this.setCondomino(SortOrder.unsorted);
+		if (this.tipo.equals(SortOrder.ascending)) {
+			this.setTipo(SortOrder.descending);
+		} else {
+			this.setTipo(SortOrder.ascending);
 		}
 	}
 	
@@ -126,6 +150,7 @@ public class OrdenaAgendamentoMB implements Serializable {
 		this.setHoraInicial(SortOrder.unsorted);
 		this.setHoraFinal(SortOrder.unsorted);		
 		this.setSituacao(SortOrder.unsorted);
+		this.setTipo(SortOrder.unsorted);
 		this.setCondomino(SortOrder.unsorted);
 		if (this.motivoReprovacao.equals(SortOrder.ascending)) {
 			 this.setMotivoReprovacao(SortOrder.descending);
@@ -141,6 +166,7 @@ public class OrdenaAgendamentoMB implements Serializable {
 		this.setHoraInicial(SortOrder.unsorted);
 		this.setHoraFinal(SortOrder.unsorted);
 		this.setSituacao(SortOrder.unsorted);
+		this.setTipo(SortOrder.unsorted);
 		this.setMotivoReprovacao(SortOrder.unsorted);
 		if (this.condomino.equals(SortOrder.ascending)) {
 			 this.setCondomino(SortOrder.descending);
@@ -197,6 +223,14 @@ public class OrdenaAgendamentoMB implements Serializable {
 
 	public void setSituacao(SortOrder situacao) {
 		this.situacao = situacao;
+	}	
+
+	public SortOrder getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(SortOrder tipo) {
+		this.tipo = tipo;
 	}
 
 	public SortOrder getMotivoReprovacao() {
