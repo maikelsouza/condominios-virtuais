@@ -15,14 +15,17 @@
 				<f:facet name="header">
 					<h:outputText value="#{msg.listarAgendamento}" />
 				</f:facet>
-				<h:panelGrid columns="2">
+				<h:panelGrid columns="3">
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['condominio']}:" for="idCondominio" />
 						<span class="asterisco">*</span>
-					</h:panelGroup>
-					
+					</h:panelGroup>					
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['agendamentoMudança.situacao']}:" for="idSituacao" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['agendamentoMudança.tipo']}:" for="idTipo" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 					<h:selectOneMenu value="#{agendamentoMB.condominio.id}"
@@ -37,6 +40,12 @@
 						<f:selectItem itemLabel="#{msg['agendamentoMudança.situacao.DefaultLabel']}"
 							noSelectionOption="true" />
 						<f:selectItems value="#{agendamentoMB.listaSISituacaoAgendamento}" />
+					</h:selectOneMenu>
+					<h:selectOneMenu value="#{agendamentoMB.agendamento.tipo}"
+						id="idTipo" label="#{msg['agendamentoMudança.tipo.label']}" required="true">
+						<f:selectItem itemLabel="#{msg['agendamentoMudança.tipo.DefaultLabel']}" noSelectionOption="true" />
+						<f:selectItems value="#{agendamentoMB.listaSITipo}" />
+						<f:selectItem itemLabel="#{msg['todos']}" itemValue="TODOS" />
 					</h:selectOneMenu>
 					</h:panelGrid>
 					<h:panelGrid columns="2">					

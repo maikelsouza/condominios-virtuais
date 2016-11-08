@@ -42,6 +42,8 @@ public class AgendamentoMB implements Serializable {
 	
 	private static final String TODAS = "TODAS";
 	
+	private static final String TODOS = "TODOS";
+	
 	private ListDataModel<AgendamentoVO> listaDeAgendamentoVOs = null;
 	
 	private ListDataModel<AgendamentoVO> listaDeAgendamentoPendentesVOs = null;
@@ -211,9 +213,17 @@ public class AgendamentoMB implements Serializable {
 		AgendamentoVO agendamentoVO = null;
 		try {
 			if (this.agendamento.getSituacao().equals(TODAS)){
-				listaDeAgendamentoLocal = this.agendamentoService.buscarPorCondominio(this.condominio);				
+				if(this.agendamento.getTipo().equals(TODOS)){
+					listaDeAgendamentoLocal = this.agendamentoService.buscarPorCondominio(this.condominio);
+				}else{
+					listaDeAgendamentoLocal = this.agendamentoService.buscarPorCondominioETipo(this.condominio, this.agendamento.getTipo());
+				}
 			}else{
-				listaDeAgendamentoLocal = this.agendamentoService.buscarPorCondominioESituacao(this.condominio, this.agendamento.getSituacao());	
+				if(this.agendamento.getTipo().equals(TODOS)){
+					listaDeAgendamentoLocal = this.agendamentoService.buscarPorCondominioESituacao(this.condominio, this.agendamento.getSituacao());
+				}else{
+					listaDeAgendamentoLocal = this.agendamentoService.buscarPorCondominioESituacaoETipo(this.condominio, this.agendamento.getSituacao(),this.agendamento.getTipo());
+				}
 			}
 			for (Agendamento agendamento : listaDeAgendamentoLocal) {
 				agendamentoVO = new AgendamentoVO();
@@ -394,6 +404,7 @@ public class AgendamentoMB implements Serializable {
 		this.listaSITipo.add(new SelectItem(AgendamentoTipoEnum.ENTRADA.getTipo(), AplicacaoUtil.i18n(AgendamentoTipoEnum.ENTRADA.getTipo())));
 		this.listaSITipo.add(new SelectItem(AgendamentoTipoEnum.SAIDA.getTipo(), AplicacaoUtil.i18n(AgendamentoTipoEnum.SAIDA.getTipo())));
 	}
+	
 	
 	private void populaSituacao(){
 		this.listaSISituacaoAgendamento = new ArrayList<SelectItem>();

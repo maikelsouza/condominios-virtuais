@@ -198,8 +198,8 @@ public class EmailServiceImpl implements EmailService, Serializable {
 						ConfiguracaoAplicacaoEnum.USUARIO_EMAIL.getChave()), 
 						this.configuracaoAplicacaoService.getConfiguracoes().get(
 								ConfiguracaoAplicacaoEnum.SENHA_EMAIL.getChave()));
-		tr.sendMessage(msg, msg.getAllRecipients());		
-		tr.close();		
+		tr.sendMessage(msg, msg.getAllRecipients());
+		tr.close();
 	}
 	
 	

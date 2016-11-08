@@ -2,15 +2,11 @@ package br.com.condominiosvirtuais.persistence.impl;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 
 import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
-
-import com.amazonaws.services.simpleworkflow.flow.worker.SynchronousActivityTaskPoller;
 
 public class Conexao {
 	
@@ -32,9 +28,9 @@ public class Conexao {
 			//ds = (DataSource) cxt.lookup("java:/comp/env/jdbc/postgres")
 			//ds = (DataSource) cxt.lookup("java:/comp/env/jdbc/mysql");
 			//conexao = DriverManager.getConnection("jdbc:mysql://localhost:3306/condvirtuais", "root", "AQKpza87141");		
-			conexao = DriverManager.getConnection("jdbc:mysql://localhost:3306/condvirtuais", "aplicacao", "mkl862");			
+			//conexao = DriverManager.getConnection("jdbc:mysql://localhost:3306/condvirtuais", "aplicacao", "mkl862");			
 			//conexao = DriverManager.getConnection("jdbc:mysql://179.188.20.249:3306/condvirtuais", "root", "AQKpza87141");
-			//conexao = DriverManager.getConnection("jdbc:mysql://179.188.20.249:3306/condvirtuais", "aplicacao", "mkl862");
+			conexao = DriverManager.getConnection("jdbc:mysql://179.188.20.249:3306/condvirtuais", "aplicacao", "mkl862");
 				//conexao = ds.getConnection();					
 		
 		}catch (Exception e){

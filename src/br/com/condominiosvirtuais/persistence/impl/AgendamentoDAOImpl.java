@@ -205,6 +205,88 @@ public class AgendamentoDAOImpl implements AgendamentoDAO, Serializable {
 		}		
 		return listaAgendamento;
 	}
+	@Override
+	public List<Agendamento> buscarPorCondominioESituacaoETipo(Condominio condominio, String situacao, String tipo) throws SQLException, Exception {
+		List<Agendamento> listaAgendamento = new ArrayList<Agendamento>();
+		String pontoInterrogacao = "";
+		List<Integer> listIdsBlocos = null;
+		List<Integer> listIdsUnidades = null;
+		List<Integer> listIdsCondomino = new ArrayList<Integer>();
+		listIdsBlocos = this.blocoDAO.buscarListaIdsBlocosPorIdCondominio(condominio.getId());
+		for (Integer idBloco : listIdsBlocos) {
+			listIdsUnidades  = this.unidadeDAO.buscarListaIdsUnidadesPorIdBloco(idBloco);
+			for (Integer idUnidade : listIdsUnidades) {
+				listIdsCondomino.addAll(this.condominoDAO.buscarListaIdsCondominosPorIdUnidade(idUnidade));
+			}
+		}
+		pontoInterrogacao = SQLUtil.popularInterrocacoes(listIdsCondomino.size());
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(AGENDAMENTO);
+		query.append(" WHERE ");
+		query.append(ID_CONDOMINO);
+		query.append(" in (");
+		query.append(pontoInterrogacao);
+		query.append(") ");
+		query.append("AND ");
+		query.append(SITUACAO);		
+		query.append("=  ? ");
+		query.append("AND ");
+		query.append(TIPO);		
+		query.append("=  ? ");
+		query.append("ORDER BY ");
+		query.append(DATA);
+		query.append(" DESC, ");
+		query.append(HORA_INICIAL);
+		query.append(";");		
+		Bloco bloco;
+		Unidade unidade;		
+		Condomino condomino;
+		Integer contador = 1;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		Agendamento agendamento = null;
+		Connection con = Conexao.getConexao();
+		preparedStatement = con.prepareStatement(query.toString());
+		try {
+			for (Integer idCondomino : listIdsCondomino) {
+				SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, idCondomino, java.sql.Types.INTEGER);				
+			}	
+			SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, situacao, java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, tipo, java.sql.Types.VARCHAR);
+			resultSet = preparedStatement.executeQuery();				
+			while(resultSet.next()){				
+				agendamento = new Agendamento();				
+				agendamento.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				agendamento.setData((Date)(SQLUtil.getValorResultSet(resultSet, DATA, java.sql.Types.DATE)));
+				agendamento.setHoraInicial(String.valueOf(SQLUtil.getValorResultSet(resultSet, HORA_INICIAL, java.sql.Types.VARCHAR)));
+				agendamento.setHoraFinal(String.valueOf(SQLUtil.getValorResultSet(resultSet, HORA_FINAL, java.sql.Types.VARCHAR)));			
+				agendamento.setTipo(String.valueOf(SQLUtil.getValorResultSet(resultSet, TIPO, java.sql.Types.VARCHAR)));
+				agendamento.setSituacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.VARCHAR)));
+				agendamento.setObservacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, OBSERVACAO, java.sql.Types.VARCHAR)));			
+				agendamento.setMotivoReprovacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, MOTIVO_REPROVACAO, java.sql.Types.VARCHAR)));
+				condomino = this.condominoDAO.buscarCondominoPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINO, java.sql.Types.INTEGER), con);
+				unidade = this.unidadeDAO.buscarPorId (condomino.getIdUnidade(), con);
+				bloco = this.blocoDAO.buscarPorId(unidade.getIdBloco(), con);
+				agendamento.setBloco(bloco);
+				agendamento.setUnidade(unidade);
+				agendamento.setCondomino(condomino);
+				listaAgendamento.add(agendamento);
+			}	
+		} catch (SQLException e) {					
+			throw e;
+		} catch (Exception e) {					
+			throw e;	
+		}finally{
+			try{				
+				preparedStatement.close();
+				con.close();				
+			}catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);
+			}
+		}		
+		return listaAgendamento;
+	}
 
 
 	@Override
@@ -365,6 +447,85 @@ public class AgendamentoDAOImpl implements AgendamentoDAO, Serializable {
 			}catch (SQLException e) {
 				logger.error("erro sqlstate "+e.getSQLState(), e);
 		    }
+		}		
+		return listaAgendamento;
+	}
+	
+	@Override
+	public List<Agendamento> buscarPorCondominioETipo(Condominio condominio, String tipo) throws SQLException, Exception {
+		List<Agendamento> listaAgendamento = new ArrayList<Agendamento>();
+		String pontoInterrogacao = "";
+		List<Integer> listIdsBlocos = null;
+		List<Integer> listIdsUnidades = null;
+		List<Integer> listIdsCondomino = new ArrayList<Integer>();
+		listIdsBlocos = this.blocoDAO.buscarListaIdsBlocosPorIdCondominio(condominio.getId());
+		for (Integer idBloco : listIdsBlocos) {
+			listIdsUnidades  = this.unidadeDAO.buscarListaIdsUnidadesPorIdBloco(idBloco);
+			for (Integer idUnidade : listIdsUnidades) {
+				listIdsCondomino.addAll(this.condominoDAO.buscarListaIdsCondominosPorIdUnidade(idUnidade));
+			}
+		}
+		pontoInterrogacao = SQLUtil.popularInterrocacoes(listIdsCondomino.size());
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(AGENDAMENTO);
+		query.append(" WHERE ");
+		query.append(ID_CONDOMINO);
+		query.append(" in (");
+		query.append(pontoInterrogacao);
+		query.append(") ");
+		query.append(" AND ");
+		query.append(TIPO);
+		query.append(" = ? ");
+		query.append(" ORDER BY ");
+		query.append(DATA);
+		query.append(" DESC, ");
+		query.append(HORA_INICIAL);
+		query.append(";");
+		Bloco bloco;
+		Unidade unidade;		
+		Condomino condomino;
+		Integer contador = 1;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		Agendamento agendamento = null;
+		Connection con = Conexao.getConexao();
+		preparedStatement = con.prepareStatement(query.toString());
+		try {
+			for (Integer idCondomino : listIdsCondomino) {
+				SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, idCondomino, java.sql.Types.INTEGER);				
+			}
+			SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, tipo, java.sql.Types.VARCHAR);
+			resultSet = preparedStatement.executeQuery();				
+			while(resultSet.next()){				
+				agendamento = new Agendamento();				
+				agendamento.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				agendamento.setData((Date)(SQLUtil.getValorResultSet(resultSet, DATA, java.sql.Types.DATE)));
+				agendamento.setHoraInicial(String.valueOf(SQLUtil.getValorResultSet(resultSet, HORA_INICIAL, java.sql.Types.VARCHAR)));
+				agendamento.setHoraFinal(String.valueOf(SQLUtil.getValorResultSet(resultSet, HORA_FINAL, java.sql.Types.VARCHAR)));			
+				agendamento.setTipo(String.valueOf(SQLUtil.getValorResultSet(resultSet, TIPO, java.sql.Types.VARCHAR)));
+				agendamento.setSituacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.VARCHAR)));
+				agendamento.setObservacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, OBSERVACAO, java.sql.Types.VARCHAR)));			
+				agendamento.setMotivoReprovacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, MOTIVO_REPROVACAO, java.sql.Types.VARCHAR)));
+				condomino = this.condominoDAO.buscarCondominoPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINO, java.sql.Types.INTEGER), con);
+				unidade = this.unidadeDAO.buscarPorId (condomino.getIdUnidade(), con);
+				bloco = this.blocoDAO.buscarPorId(unidade.getIdBloco(), con);
+				agendamento.setBloco(bloco);
+				agendamento.setUnidade(unidade);
+				agendamento.setCondomino(condomino);
+				listaAgendamento.add(agendamento);
+			}	
+		} catch (SQLException e) {					
+			throw e;
+		} catch (Exception e) {					
+			throw e;	
+		}finally{
+			try{				
+				preparedStatement.close();
+				con.close();				
+			}catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);
+			}
 		}		
 		return listaAgendamento;
 	}

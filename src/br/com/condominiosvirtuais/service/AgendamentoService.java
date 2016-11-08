@@ -20,5 +20,9 @@ public interface AgendamentoService {
 	public abstract void aprovar(Agendamento agendamento) throws SQLException, Exception;
 	
 	public abstract void reprovar(Agendamento agendamento) throws SQLException, Exception;
+	
+	public abstract List<Agendamento> buscarPorCondominioESituacaoETipo(Condominio condominio, String situacao, String tipo) throws SQLException, Exception;
+	
+	public abstract List<Agendamento> buscarPorCondominioETipo(Condominio condominio, String tipo) throws SQLException, Exception;
 
 }

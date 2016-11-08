@@ -49,8 +49,8 @@ public class EmailThread extends Thread {
 				for (Email email : listaEmail) {
 // TODO: Código comentado em 06/08/2016. Apagar em 180 dias					
 					//this.emailService.enviar(email);
-					email.setPara("maikel.souza@gmail.com");
-					//this.emailService.enviarHTML(email, principalMB.getCaminhoAplicacao());
+					//email.setPara("maikel.souza@gmail.com");
+					this.emailService.enviarHTML(email, principalMB.getCaminhoAplicacao());
 					this.emailService.excluir(email);					 
 				 }
 				logger.info("Fim do processo para envio de email em : " + new Date());

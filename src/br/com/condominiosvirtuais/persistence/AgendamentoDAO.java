@@ -13,6 +13,11 @@ public interface AgendamentoDAO {
 	
 	public abstract List<Agendamento> buscarPorCondominioESituacao(Condominio condominio, String Situacao) throws SQLException, Exception;
 	
+	public abstract List<Agendamento> buscarPorCondominioESituacaoETipo(Condominio condominio, String situacao, String tipo) throws SQLException, Exception;
+	
+	public abstract List<Agendamento> buscarPorCondominioETipo(Condominio condominio, String tipo) throws SQLException, Exception;
+	 
+	
 	public abstract List<Agendamento> buscarPorCondominio(Condominio condominio) throws SQLException, Exception;
 	
 	public abstract List<Agendamento> buscarPorCondomino(Condomino condomino) throws SQLException, Exception;
