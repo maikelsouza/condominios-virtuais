@@ -173,14 +173,12 @@
 					<h:outputText value="#{msg.financeiro}" />
 				</h:panelGroup>
 			</f:facet>
-			<rich:menuItem label="#{msg['despesas.cadastrarCondominio']}"
-				action="#{principalMB.cadastrarDespesasCondominio}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4')}"/>
-			<rich:menuItem label="#{msg['despesas.cadastrarCondomino']}"
-				action="#{principalMB.cadastrarDespesasCondomino}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4')}"/>
-			<rich:menuItem label="#{msg['despesas.cadastrarTodosCondominos']}"
-				action="#{principalMB.cadastrarDespesasTodosCondominos}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4')}"/>
-			<rich:menuItem label="#{msg['despesas.listarDespesasCondominio']}"
-				action="#{principalMB.listarDespesasCondominio}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4,5')}"/>					
+			<rich:menuItem label="#{msg['despesas.cadastrarCondominio']}" action="#{principalMB.cadastrarDespesasCondominio}" rendered="false"/>
+			<rich:menuItem label="#{msg['despesas.cadastrarCondomino']}" action="#{principalMB.cadastrarDespesasCondomino}" rendered="false"/>
+			<rich:menuItem label="#{msg['despesas.cadastrarTodosCondominos']}" action="#{principalMB.cadastrarDespesasTodosCondominos}" rendered="false"/>
+			<rich:menuItem label="#{msg['despesas.listarDespesasCondominio']}" action="#{principalMB.listarDespesasCondominio}" rendered="false"/>
+			<rich:menuItem label="#{msg['receitaDespesa.cadastrarReceitaDespesa']}" action="#{principalMB.cadastrarReceitaDespesa}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4')}"/>
+			<rich:menuItem label="#{msg['receitaDespesa.listarReceitaDespesa']}" action="#{principalMB.listarReceitaDespesa}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4,5')}"/>					
 		</rich:dropDownMenu>
 		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4,5') and loginMB.sindicoGeralAssociado()}">
 			<f:facet name="label">

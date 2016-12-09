@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormListaReceitaDespesa" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.filtroReceitaDespesa}" />
+				</f:facet>
+				<h:panelGrid columns="2">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio']}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['receitaDespesa.mesAnoReferencia']}:"/>
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					
+					<h:selectOneMenu id="idCondominio" value="#{receitaDespesaMB.idCondominio}"
+						defaultLabel="#{msg['condominio.DefaultLabel']}" label="#{msg['condominio.label']}" required="true">
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" itemValue="0" noSelectionOption="true" />
+						<f:selectItems value="#{receitaDespesaMB.listaSICondominios}" />
+					</h:selectOneMenu>
+					
+					<h:panelGroup>				
+						<h:selectOneMenu id="idSIMesReferencia" value="#{receitaDespesaMB.mesReferencia}"
+							required="true" label="#{msg['receitaDespesa.mesReferencia.label']}">
+							<f:selectItems value="#{receitaDespesaMB.listaSIMesReferencia}" />
+						</h:selectOneMenu>					
+						<h:selectOneMenu id="idSIAnoReferencia" value="#{receitaDespesaMB.anoReferencia}"							
+							required="true" label="#{msg['receitaDespesa.anoReferencia.label']}">
+							<f:selectItems value="#{receitaDespesaMB.listaSIAnoReferencia}" />
+						</h:selectOneMenu>
+					</h:panelGroup>		
+					
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
+				</h:panelGrid>
+				
+			</rich:panel>
+			<div>
+				<h:panelGrid columns="2">
+					<h:commandButton value="#{msg.botaoPesquisar}" actionListener="#{receitaDespesaMB.pesquisarReceitaDespesa}" />
+					<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{telefonesUteisMB.limparFiltroTelefonesUteis}" immediate="true" />
+				</h:panelGrid>
+			</div>
+			<rich:panel>
+
+			<f:facet name="header">
+				<h:outputText value="#{msg.listarReceita}" />
+			</f:facet>
+			<div>
+				<rich:dataTable value="#{receitaDespesaMB.listarReceita}" var="receita" rowClasses="odd-row, even-row" rows="10"
+					styleClass="stable" id="tableReceita" style="width:100%;" rendered="#{receitaDespesaMB.listarReceita.rowCount > 0}">
+					<rich:column sortBy="#{receita.nome}" sortOrder="#{ordenaReceitaMB.nomeReceita}">
+						<f:facet name="header">
+							<a4j:commandLink value="#{msg['receitaDespesa.nome']}" render="tableReceita" action="#{ordenaReceitaMB.ordenarPorNomeReceita}" />
+						</f:facet>
+						<h:outputText value="#{receita.nome}" />
+					</rich:column>
+					<rich:column sortBy="#{receita.valor}" sortOrder="#{ordenaReceitaMB.valorReceita}">
+						<f:facet name="header">
+							<a4j:commandLink value="#{msg['receitaDespesa.valor']}" render="tableReceita" action="#{ordenaReceitaMB.ordenarPorValorReceita}" />
+						</f:facet>
+						<h:outputText value="#{receita.valor}" >
+							<f:convertNumber currencySymbol="#{msg.moeda}" type="currency" />
+						</h:outputText>
+					</rich:column>
+					<rich:column style="width:5%;" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}">
+						<f:facet name="header">
+							<h:outputText value="#{msg.rotuloAcao}" />
+						</f:facet>
+						<a4j:commandLink value="#{msg.linkEditar}" render="tableReceita"  action="#{receitaDespesaMB.editarReceita}" immediate="true" />
+					</rich:column>
+					<f:facet name="footer">
+             				<rich:dataScroller for="tableReceita"  fastControls="hide" renderIfSinglePage="false" />
+          			</f:facet>
+				</rich:dataTable>
+			</div>
+			</rich:panel>
+			
+			<rich:panel>
+
+			<f:facet name="header">
+				<h:outputText value="#{msg.listarDespesa}" />
+			</f:facet>
+			<div>
+				<rich:dataTable value="#{receitaDespesaMB.listarDespesa}" var="despesa" rowClasses="odd-row, even-row" rows="10"
+					styleClass="stable" id="tableDespesa" style="width:100%;" rendered="#{receitaDespesaMB.listarDespesa.rowCount > 0}">
+					<rich:column sortBy="#{despesa.nome}" sortOrder="#{ordenaDespesaMB.nomeDespesa}">
+						<f:facet name="header">
+							<a4j:commandLink value="#{msg['receitaDespesa.nome']}" render="tableDespesa" action="#{ordenaDespesaMB.ordenarPorNomeDespesa}" />
+						</f:facet>
+						<h:outputText value="#{despesa.nome}" />
+					</rich:column>
+					<rich:column sortBy="#{despesa.valor}" sortOrder="#{ordenaDespesaMB.valorDespesa}">
+						<f:facet name="header">
+							<a4j:commandLink value="#{msg['receitaDespesa.valor']}" render="tableDespesa" action="#{ordenaDespesaMB.ordenarPorValorDespesa}" />
+						</f:facet>
+						<h:outputText value="#{despesa.valor}" >
+							<f:convertNumber currencySymbol="#{msg.moeda}" type="currency" />
+						</h:outputText>
+					</rich:column>
+					<rich:column style="width:5%;" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}">
+						<f:facet name="header">
+							<h:outputText value="#{msg.rotuloAcao}" />
+						</f:facet>
+						<a4j:commandLink value="#{msg.linkEditar}" render="tableDespesa"  action="#{receitaDespesaMB.editarDespesa}" immediate="true" />
+					</rich:column>
+					<f:facet name="footer">
+             			<rich:dataScroller for="tableDespesa"  fastControls="hide" renderIfSinglePage="false" />
+          			</f:facet>
+				</rich:dataTable>
+			</div>
+			</rich:panel>
+			
+		</h:form>
+
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseover" query="jQuery(this).addClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseout" query="jQuery(this).removeClass('active-row')" />
+	</ui:define>
+
+</ui:composition>

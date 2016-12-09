@@ -139,7 +139,7 @@ public class LoginMB implements Serializable{
 	public Boolean exibeMenuFinanceiro(){
 		Boolean exibeMenuFianceiro = Boolean.FALSE;		
 		for (Condominio condominio : this.usuario.getListaCondominio()) {
-			if (condominio.getId() == 10){
+			if (condominio.getId() == 22 || condominio.getId() == 23){
 				exibeMenuFianceiro = Boolean.TRUE;
 			}
 		}

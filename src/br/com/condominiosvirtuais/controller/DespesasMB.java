@@ -217,47 +217,7 @@ public class DespesasMB implements Serializable {
 		}			
 	}
 	
-// TODO: Método comentado em 08/05/2016. Apagar em 90 dias	
-//	public void pesquisarDespesasCondominio(){
-//		try {
-//			this.totalDespesasCondominio = 0.0;
-//			this.totalDespesasCondomino = 0.0;			
-//			List<Despesas> listaDespesasCondominio = new ArrayList<Despesas>();
-//			List<Despesas> listaDespesasUnidadeCondomino = new ArrayList<Despesas>();
-//			List<Unidade> listaDespesasUnidade = new ArrayList<Unidade>();			
-//			List<Despesas> listaDespesasCondominioEUnidades = null;			
-//			Calendar mesAnoReferencia = GregorianCalendar.getInstance();			
-//			mesAnoReferencia.set(Calendar.DAY_OF_MONTH,1);
-//			mesAnoReferencia.set(Calendar.MONTH,this.getMesReferencia());
-//			mesAnoReferencia.set(Calendar.YEAR,this.getAnoReferencia());
-//			this.despesas.setMesAnoReferencia(mesAnoReferencia.getTime());			
-//			listaDespesasCondominioEUnidades = this.despesasService.buscarPorIdCondominioEMesAnoReferencia(this.despesas.getCondominio().getId(), this.despesas.getMesAnoReferencia());
-//			for (Despesas despesas : listaDespesasCondominioEUnidades) {
-//				if(despesas.getCondominio().getId() != null){
-//					this.totalDespesasCondominio+=despesas.getValor();
-//					listaDespesasCondominio.add(despesas);
-//				}else{
-//					//FIXME: Deve ser considerado o bloco também, pois na tela precisamos fazer a destinção por bloco e unidade					
-//					if(!listaDespesasUnidade.contains(despesas.getUnidade())){
-//						this.totalDespesasCondomino+=despesas.getValor();
-//						listaDespesasUnidade.add(despesas.getUnidade());						
-//					}					
-//					listaDespesasUnidadeCondomino.add(despesas);
-//				}
-//			}
-//			
-//			
-//			this.listaDespesasCondominio = new ListDataModel<Despesas>(listaDespesasCondominio);
-//			this.listaDespesasUnidade = new ListDataModel<Unidade>(listaDespesasUnidade);
-//			this.listaDespesasUnidadeCondomino = new ListDataModel<Despesas>(listaDespesasUnidadeCondomino);		
-//		} catch (SQLException e) {
-//			logger.error("erro sqlstate "+e.getSQLState(), e);	
-//			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
-//		} catch (Exception e) {
-//			logger.error("", e);
-//			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
-//		}			
-//	}
+
 	
 	public void excluirDespesa(ActionEvent actionEvent){
 		try {
@@ -277,33 +237,7 @@ public class DespesasMB implements Serializable {
 	}
 	
 
-// TODO: Códigos comentados em 08/06/2016. Apagar após 90 dias	
-//	public String atualizarDespesaCondominio(){
-//		try {
-//			this.despesasService.atualizarDespesasCondominio(this.despesas);	
-//			ManagedBeanUtil.setMensagemInfo("msg.despesas.atualizadoSucesso");
-//		} catch (SQLException e) {
-//			logger.error("erro sqlstate "+e.getSQLState(), e);	
-//			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
-//		} catch (BusinessException e) {				
-//			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage());
-//			return null;		
-//		} catch (Exception e) {
-//			logger.error("", e);
-//			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
-//		}
-//		return "atualizar";		
-//	}
-	
-//	public String editarDespesaCondominio(){
-//		this.despesas = (Despesas) this.listaDespesasCondominio.getRowData();
-//		Calendar mesAnoReferencia = GregorianCalendar.getInstance();
-//		mesAnoReferencia.setTime(this.despesas.getMesAnoReferencia());
-//		this.mesReferencia = mesAnoReferencia.get(Calendar.MONTH);
-//		this.anoReferencia = mesAnoReferencia.get(Calendar.YEAR);
-//		return "editar";
-//	}
-//	
+
 	
 	public void limparCadastrarDespesasCondominio(ActionEvent actionEvent){
 		this.despesas = new Despesas();

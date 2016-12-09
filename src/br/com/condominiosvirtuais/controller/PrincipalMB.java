@@ -256,6 +256,14 @@ public class PrincipalMB  implements Serializable{
 		return "listarDespesasCondominio";
 	}
 	
+	public String cadastrarReceitaDespesa(){
+		return "cadastrarReceitaDespesa";
+	}
+	
+	public String listarReceitaDespesa(){
+		return "listarReceitaDespesa";
+	}
+	
 	public String cadastrarChamado(){
 		return "cadastrarChamado";
 	}
@@ -442,6 +450,8 @@ public class PrincipalMB  implements Serializable{
 	public void setObraMB(ObraMB obraMB) {
 		this.obraMB = obraMB;
 	}
+	
+	
 	
 	
 	

@@ -133,6 +133,16 @@
   <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaSindicoProfissionalMB</managed-bean-class>
   <managed-bean-scope>view</managed-bean-scope>
  </managed-bean>
+ <managed-bean>
+  <managed-bean-name>ordenaReceitaMB</managed-bean-name>
+  <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaReceitaMB</managed-bean-class>
+  <managed-bean-scope>view</managed-bean-scope>
+ </managed-bean>
+ <managed-bean>
+  <managed-bean-name>ordenaDespesaMB</managed-bean-name>
+  <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaDespesaMB</managed-bean-class>
+  <managed-bean-scope>view</managed-bean-scope>
+ </managed-bean>
  
  <navigation-rule>
   <navigation-case>
@@ -409,6 +419,18 @@
    <from-action>#{principalMB.listarSindicoProfissional}</from-action>
    <from-outcome>listarSindicoProfissional</from-outcome>
    <to-view-id>/pages/formListaSindicoProfissional.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-action>#{principalMB.cadastrarReceitaDespesa}</from-action>
+   <from-outcome>cadastrarReceitaDespesa</from-outcome>
+   <to-view-id>/pages/formCadastroReceitaDespesa.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-action>#{principalMB.listarReceitaDespesa}</from-action>
+   <from-outcome>listarReceitaDespesa</from-outcome>
+   <to-view-id>/pages/formListaReceitaDespesa.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
  </navigation-rule>
@@ -1642,6 +1664,15 @@
    <from-action>#{sindicoProfissionalMB.voltarAtualizarSindicoProfissional}</from-action>
    <from-outcome>voltar</from-outcome>
    <to-view-id>/pages/formListaSindicoProfissional.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formCadastroReceitaDespesa.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{receitaDespesaMB.cancelarCadastroReceitaDespesa}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
  </navigation-rule> 

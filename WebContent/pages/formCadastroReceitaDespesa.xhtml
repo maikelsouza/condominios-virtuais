@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormCadastroReceitaDespesa" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.cadastroReceitaDespesa}" />
+				</f:facet>
+				<h:panelGrid columns="3">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg.condominio}:" for="idSICondominios" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['receitaDespesa.tipo']}:" for="idSIEhReceita" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['receitaDespesa.nome']}:" for="idReceitaDespesaNome" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+				
+					<h:selectOneMenu id="idSICondominios" value="#{receitaDespesaMB.idCondominio}"
+						defaultLabel="#{msg['condominio.DefaultLabel']}" required="true" label="#{msg['condominio.label']}">
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="true" />
+						<f:selectItems value="#{receitaDespesaMB.listaSICondominios}" />						
+					</h:selectOneMenu>						
+					
+					<h:selectOneMenu id="idSIEhReceita" value="#{receitaDespesaMB.ehReceita}" 
+						required="true" label="#{msg['receitaDespesa.tipo.label']}">
+						<f:selectItem itemValue="true" itemLabel="#{msg['receitaDespesa.tipo.0']}"/>
+						<f:selectItem itemValue="false"  itemLabel="#{msg['receitaDespesa.tipo.1']}"/>
+						
+					</h:selectOneMenu>
+					
+					<h:inputText id="idReceitaDespesaNome" value="#{receitaDespesaMB.nome}" size="20" label="#{msg['receitaDespesa.nome.label']}" 
+							required="true" validatorMessage="#{msg['msg.receitaDespesa.nome']}">
+							<f:validateLength maximum="150" for="idReceitaDespesaNome"/>
+					</h:inputText>
+						
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['receitaDespesa.mesAnoReferencia']}:" for="idReceitaDespesaMesAnoReferencia" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['receitaDespesa.valor']}:" for="idReceitaDespesasValor" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<div />		
+					<h:panelGroup id="idReceitaDespesaMesAnoReferencia">				
+						<h:selectOneMenu id="idMesReferencia" value="#{receitaDespesaMB.mesReferencia}"
+							defaultLabel="#{msg['receitaDespesaMB.mesReferencia.label.DefaultLabel']}"
+							required="true" label="#{msg['receitaDespesa.mesReferencia.label']}">
+							<f:selectItems value="#{receitaDespesaMB.listaSIMesReferencia}" />
+						</h:selectOneMenu>					
+						<h:selectOneMenu id="idSIAnoReferencia" value="#{receitaDespesaMB.anoReferencia}"
+							defaultLabel="#{msg['receitaDespesa.anoReferencia.label.DefaultLabel']}"
+							required="true" label="#{msg['receitaDespesa.anoReferencia.label']}">
+							<f:selectItems value="#{receitaDespesaMB.listaSIAnoReferencia}" />
+						</h:selectOneMenu>
+					</h:panelGroup>
+					
+					<h:inputText id="idReceitaDespesasValor" value="#{receitaDespesaMB.valor}" size="15" label="#{msg['receitaDespesa.valor.label']}" required="true"
+						validatorMessage="#{msg['msg.receitaDespesa.valor']}">
+						<f:validateDoubleRange minimum="0" for="idReceitaDespesasValor" />
+						<f:convertNumber pattern="#{msg.formatoMoeda}" />
+					</h:inputText>	
+						
+				</h:panelGrid>					
+				
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
+				</h:panelGrid>
+			</rich:panel>
+			<h:panelGrid columns="3">
+				<h:commandButton value="#{msg.botaoSalvar}"
+					action="#{receitaDespesaMB.salvarReceitaDespesa}" />
+				<h:commandButton value="#{msg.botaoLimpar}"
+					actionListener="#{receitaDespesaMB.limparCadastroReceitaDespesa}" immediate="false" />
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{receitaDespesaMB.cancelarCadastroReceitaDespesa}" immediate="true" />
+				
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

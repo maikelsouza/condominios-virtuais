@@ -95,7 +95,12 @@ public enum PathTelasAplicacaoEnum {
 	FORM_VISUALIZAR_OBRA(PREFIXO.getPathTelas()+"formVisualizaObra.xhtml"),
 	FORM_CADASTRO_SINDICO_PROFISSIONAL(PREFIXO.getPathTelas()+"formCadastroSindicoProfissional.xhtml"),
 	FORM_LISTA_SINDICO_PROFISSIONAL(PREFIXO.getPathTelas()+"formListaSindicoProfissional.xhtml"),
-	FORM_EDITA_SINDICO_PROFISSIONAL(PREFIXO.getPathTelas()+"formEditaSindicoProfissional.xhtml");
+	FORM_EDITA_SINDICO_PROFISSIONAL(PREFIXO.getPathTelas()+"formEditaSindicoProfissional.xhtml"),
+	FORM_CADASTRO_RECEITA_DESPESA(PREFIXO.getPathTelas()+"formCadastroReceitaDespesa.xhtml"),
+	FORM_LISTA_RECEITA_DESPESA(PREFIXO.getPathTelas()+"formListaReceitaDespesa.xhtml");
+	
+	
+	
 	
 	
 	                                             
