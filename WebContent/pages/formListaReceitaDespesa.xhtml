@@ -14,14 +14,19 @@
 				<f:facet name="header">
 					<h:outputText value="#{msg.filtroReceitaDespesa}" />
 				</f:facet>
-				<h:panelGrid columns="2">
+				<h:panelGrid columns="3">
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['condominio']}:" for="idCondominio" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 					
 					<h:panelGroup>
-						<h:outputLabel value="#{msg['receitaDespesa.mesAnoReferencia']}:"/>
+						<h:outputLabel value="#{msg['receitaDespesa.dataDe']}:" for="idReceitaDespesaDataDe"/>
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['receitaDespesa.dataAte']}:" for="idReceitaDespesaDataAte"/>
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 					
@@ -31,16 +36,19 @@
 						<f:selectItems value="#{receitaDespesaMB.listaSICondominios}" />
 					</h:selectOneMenu>
 					
-					<h:panelGroup>				
-						<h:selectOneMenu id="idSIMesReferencia" value="#{receitaDespesaMB.mesReferencia}"
-							required="true" label="#{msg['receitaDespesa.mesReferencia.label']}">
-							<f:selectItems value="#{receitaDespesaMB.listaSIMesReferencia}" />
-						</h:selectOneMenu>					
-						<h:selectOneMenu id="idSIAnoReferencia" value="#{receitaDespesaMB.anoReferencia}"							
-							required="true" label="#{msg['receitaDespesa.anoReferencia.label']}">
-							<f:selectItems value="#{receitaDespesaMB.listaSIAnoReferencia}" />
-						</h:selectOneMenu>
-					</h:panelGroup>		
+					
+					<rich:calendar value="#{receitaDespesaMB.dataDe}" id="idReceitaDespesaDataDe" locale="#{msg.locale}" popup="true" label="#{msg['receitaDespesa.dataDe.label']}" 
+							boundaryDatesMode="scroll" showFooter="false" required="true"
+							datePattern="#{msg['formatoData']}" cellWidth="24px"
+							cellHeight="22px" style="width:200px" mode="ajax">
+					</rich:calendar>
+					
+					
+					<rich:calendar value="#{receitaDespesaMB.dataAte}" id="idReceitaDespesaDataAte" locale="#{msg.locale}" popup="true" label="#{msg['receitaDespesa.dataAte.label']}" 
+							boundaryDatesMode="scroll" showFooter="false" required="true"
+							datePattern="#{msg['formatoData']}" cellWidth="24px"
+							cellHeight="22px" style="width:200px" mode="ajax">
+					</rich:calendar>
 					
 				</h:panelGrid>
 
@@ -53,7 +61,7 @@
 			<div>
 				<h:panelGrid columns="2">
 					<h:commandButton value="#{msg.botaoPesquisar}" actionListener="#{receitaDespesaMB.pesquisarReceitaDespesa}" />
-					<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{telefonesUteisMB.limparFiltroTelefonesUteis}" immediate="true" />
+					<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{receitaDespesaMB.LimparPesquisarReceitaDespesa}" immediate="true" />
 				</h:panelGrid>
 			</div>
 			<rich:panel>
@@ -62,13 +70,21 @@
 				<h:outputText value="#{msg.listarReceita}" />
 			</f:facet>
 			<div>
-				<rich:dataTable value="#{receitaDespesaMB.listarReceita}" var="receita" rowClasses="odd-row, even-row" rows="10"
-					styleClass="stable" id="tableReceita" style="width:100%;" rendered="#{receitaDespesaMB.listarReceita.rowCount > 0}">
-					<rich:column sortBy="#{receita.nome}" sortOrder="#{ordenaReceitaMB.nomeReceita}">
+				<rich:dataTable value="#{receitaDespesaMB.listaReceita}" var="receita" rowClasses="odd-row, even-row" rows="10"
+					styleClass="stable" id="tableReceita" style="width:100%;" rendered="#{receitaDespesaMB.listaReceita.rowCount > 0}">
+					<rich:column sortBy="#{receita.nome}" sortOrder="#{ordenaReceitaMB.descricaoReceita}">
 						<f:facet name="header">
-							<a4j:commandLink value="#{msg['receitaDespesa.nome']}" render="tableReceita" action="#{ordenaReceitaMB.ordenarPorNomeReceita}" />
+							<a4j:commandLink value="#{msg['receitaDespesa.descricao']}" render="tableReceita" action="#{ordenaReceitaMB.ordenarPorDescricaoReceita}" />
 						</f:facet>
-						<h:outputText value="#{receita.nome}" />
+						<h:outputText value="#{receita.descricao}" />
+					</rich:column>
+					<rich:column sortBy="#{receita.data}" sortOrder="#{ordenaReceitaMB.dataReceita}">
+						<f:facet name="header">
+							<a4j:commandLink value="#{msg['receitaDespesa.data']}" render="tableReceita" action="#{ordenaReceitaMB.ordenarPorDataReceita}" />
+						</f:facet>
+						<h:outputText value="#{receita.data}" >
+							<f:convertDateTime pattern="#{msg.formatoData}" timeZone="#{msg.timeZone}"/>
+						</h:outputText>
 					</rich:column>
 					<rich:column sortBy="#{receita.valor}" sortOrder="#{ordenaReceitaMB.valorReceita}">
 						<f:facet name="header">
@@ -78,32 +94,54 @@
 							<f:convertNumber currencySymbol="#{msg.moeda}" type="currency" />
 						</h:outputText>
 					</rich:column>
+					<rich:column sortBy="#{receita.numeroDocumento}" sortOrder="#{ordenaReceitaMB.numeroDocumentoReceita}">
+						<f:facet name="header">
+							<a4j:commandLink value="#{msg['receitaDespesa.numeroDocumento']}" render="tableReceita" action="#{ordenaReceitaMB.ordenarPorNumeroDocumentoReceita}" />
+						</f:facet>
+						<h:outputText value="#{receita.numeroDocumento}" />
+					</rich:column>
+					<rich:column sortBy="#{receita.meioPagamento}" sortOrder="#{ordenaReceitaMB.meioPagamentoReceita}">
+						<f:facet name="header">
+							<a4j:commandLink value="#{msg['receitaDespesa.meioPagamento']}" render="tableReceita" action="#{ordenaReceitaMB.ordenarPorMeioPagamentoReceita}" />
+						</f:facet>
+						<h:outputText value="#{receita.meioPagamento.nomeI18n}" />
+					</rich:column>
+					<rich:column sortBy="#{receita.observacao}" sortOrder="#{ordenaReceitaMB.observacaoReceita}">
+						<f:facet name="header">
+							<a4j:commandLink value="#{msg['receitaDespesa.observacao']}" render="tableReceita" action="#{ordenaReceitaMB.ordenarPorObservacaoReceita}" />
+						</f:facet>
+						<h:outputText value="#{receita.observacao}" />
+					</rich:column>
 					<rich:column style="width:5%;" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}">
 						<f:facet name="header">
 							<h:outputText value="#{msg.rotuloAcao}" />
 						</f:facet>
 						<a4j:commandLink value="#{msg.linkEditar}" render="tableReceita"  action="#{receitaDespesaMB.editarReceita}" immediate="true" />
 					</rich:column>
-					<f:facet name="footer">
-             				<rich:dataScroller for="tableReceita"  fastControls="hide" renderIfSinglePage="false" />
+					<f:facet name="footer">						
+             			<rich:dataScroller for="tableReceita"  fastControls="hide" renderIfSinglePage="false" />
           			</f:facet>
 				</rich:dataTable>
 			</div>
 			</rich:panel>
 			
-			<rich:panel>
-
-			<f:facet name="header">
-				<h:outputText value="#{msg.listarDespesa}" />
-			</f:facet>
+			<rich:panel header="#{msg.listarDespesa}">
 			<div>
-				<rich:dataTable value="#{receitaDespesaMB.listarDespesa}" var="despesa" rowClasses="odd-row, even-row" rows="10"
-					styleClass="stable" id="tableDespesa" style="width:100%;" rendered="#{receitaDespesaMB.listarDespesa.rowCount > 0}">
-					<rich:column sortBy="#{despesa.nome}" sortOrder="#{ordenaDespesaMB.nomeDespesa}">
+				<rich:dataTable value="#{receitaDespesaMB.listaDespesa}" var="despesa" rowClasses="odd-row, even-row" rows="10"
+					styleClass="stable" id="tableDespesa" style="width:100%;" rendered="#{receitaDespesaMB.listaDespesa.rowCount > 0}">
+					<rich:column sortBy="#{despesa.descricao}" sortOrder="#{ordenaDespesaMB.descricaoDespesa}">
 						<f:facet name="header">
-							<a4j:commandLink value="#{msg['receitaDespesa.nome']}" render="tableDespesa" action="#{ordenaDespesaMB.ordenarPorNomeDespesa}" />
+							<a4j:commandLink value="#{msg['receitaDespesa.descricao']}" render="tableDespesa" action="#{ordenaDespesaMB.ordenarPorDescricaoDespesa}" />
 						</f:facet>
-						<h:outputText value="#{despesa.nome}" />
+						<h:outputText value="#{despesa.descricao}" />
+					</rich:column>
+					<rich:column sortBy="#{despesa.data}" sortOrder="#{ordenaDespesaMB.dataDespesa}">
+						<f:facet name="header">
+							<a4j:commandLink value="#{msg['receitaDespesa.data']}" render="tableDespesa" action="#{ordenaDespesaMB.ordenarPorDataDespesa}" />
+						</f:facet>
+						<h:outputText value="#{despesa.data}" >
+							<f:convertDateTime pattern="#{msg.formatoData}" timeZone="#{msg.timeZone}"/>
+						</h:outputText>
 					</rich:column>
 					<rich:column sortBy="#{despesa.valor}" sortOrder="#{ordenaDespesaMB.valorDespesa}">
 						<f:facet name="header">
@@ -112,6 +150,24 @@
 						<h:outputText value="#{despesa.valor}" >
 							<f:convertNumber currencySymbol="#{msg.moeda}" type="currency" />
 						</h:outputText>
+					</rich:column>
+					<rich:column sortBy="#{despesa.numeroDocumento}" sortOrder="#{ordenaDespesaMB.numeroDocumentoDespesa}">
+						<f:facet name="header">
+							<a4j:commandLink value="#{msg['receitaDespesa.numeroDocumento']}" render="tableDespesa" action="#{ordenaDespesaMB.ordenarPorNumeroDocumentoDespesa}" />
+						</f:facet>
+						<h:outputText value="#{despesa.numeroDocumento}" />
+					</rich:column>
+					<rich:column sortBy="#{despesa.meioPagamento}" sortOrder="#{ordenaDespesaMB.meioPagamentoDespesa}">
+						<f:facet name="header">
+							<a4j:commandLink value="#{msg['receitaDespesa.meioPagamento']}" render="tableDespesa" action="#{ordenaDespesaMB.ordenarPorMeioPagamentoDespesa}" />
+						</f:facet>
+						<h:outputText value="#{despesa.meioPagamento.nomeI18n}" />
+					</rich:column>
+					<rich:column sortBy="#{despesa.observacao}" sortOrder="#{ordenaDespesaMB.observacaoDespesa}">
+						<f:facet name="header">
+							<a4j:commandLink value="#{msg['receitaDespesa.observacao']}" render="tableDespesa" action="#{ordenaDespesaMB.ordenarPorObservacaoDespesa}" />
+						</f:facet>
+						<h:outputText value="#{despesa.observacao}" />
 					</rich:column>
 					<rich:column style="width:5%;" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}">
 						<f:facet name="header">
@@ -125,6 +181,34 @@
 				</rich:dataTable>
 			</div>
 			</rich:panel>
+			
+			<rich:panel header="#{msg.totaisReceitaEDespesa}">
+			<div>
+				<rich:dataTable value="#{receitaDespesaMB.listaTotaisReceitasDespesas}" var="receitaDespesaVO" rowClasses="odd-row, even-row" rows="10"
+					styleClass="stable" id="tableTotalReceitaDespesa" style="width:100%;" rendered="#{receitaDespesaMB.listaTotaisReceitasDespesas.rowCount > 0}">
+					<rich:column style="width:60%">
+						<f:facet name="header">
+							<h:outputLabel value="#{msg['descricao']}"/>
+						</f:facet>
+						<h:outputText value="#{receitaDespesaVO.descricao}" />
+							
+					</rich:column>
+					<rich:column style="text-align: center;">
+						<f:facet name="header">
+							<h:outputLabel value="#{msg['total']}"/>
+						</f:facet>                              
+						<h:outputText value="#{receitaDespesaVO.valor}" style="#{receitaDespesaVO.valor >= 0 ? '': 'color: red !important;'}">
+							<f:convertNumber currencySymbol="#{msg.moeda}" type="currency" />
+						</h:outputText>
+					</rich:column>
+					
+					<f:facet name="footer">
+             			<rich:dataScroller for="tableDespesa"  fastControls="hide" renderIfSinglePage="false" />
+          			</f:facet>
+				</rich:dataTable>
+			</div>
+			</rich:panel>
+			
 			
 		</h:form>
 

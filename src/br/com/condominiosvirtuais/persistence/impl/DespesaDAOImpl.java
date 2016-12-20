@@ -9,10 +9,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.enterprise.inject.Instance;
+import javax.inject.Inject;
+
 import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Despesa;
 import br.com.condominiosvirtuais.persistence.DespesaDAO;
+import br.com.condominiosvirtuais.persistence.MeioPagamentoDAO;
 import br.com.condominiosvirtuais.util.SQLUtil;
 
 public class DespesaDAOImpl implements DespesaDAO, Serializable {
@@ -25,38 +29,55 @@ private static final long serialVersionUID = 1L;
 	
 	private static final String ID = "ID";
 	
-	private static final String NOME = "NOME";
+	private static final String DESCRICAO = "DESCRICAO";
+	
+	private static final String OBSERVACAO = "OBSERVACAO";
+	
+	private static final String NUMERO_DOCUMENTO = "NUMERO_DOCUMENTO";
 	
 	private static final String VALOR = "VALOR";
 	
-	private static final String MES_ANO_REFERENCIA = "MES_ANO_REFERENCIA";
+	private static final String DATA = "DATA";
 	
 	private static final String ID_CONDOMINIO = "ID_CONDOMINIO";
 	
+	private static final String ID_MEIO_PAGAMENTO = "ID_MEIO_PAGAMENTO";
+	
+	@Inject
+	private Instance<MeioPagamentoDAO> meioPagamentoDAO;
 	
 	@Override
-	public void salvarDespesa(Despesa despesa) throws SQLException, Exception {
+	public void salvar(Despesa despesa) throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
 		query.append("INSERT INTO "); 
 		query.append(DESPESA);
 		query.append("(");
-		query.append(NOME);
+		query.append(DESCRICAO);
 		query.append(",");
 		query.append(VALOR);
 		query.append(",");
-		query.append(MES_ANO_REFERENCIA);
+		query.append(DATA);
+		query.append(",");	
+		query.append(OBSERVACAO);
+		query.append(",");	
+		query.append(NUMERO_DOCUMENTO);
 		query.append(",");	
 		query.append(ID_CONDOMINIO);
+		query.append(",");
+		query.append(ID_MEIO_PAGAMENTO);
 		query.append(") ");
-		query.append("VALUES(?,?,?,?)");
+		query.append("VALUES(?,?,?,?,?,?,?)");
 		PreparedStatement statement = null;		
 		Connection con = Conexao.getConexao();
 		try {
 			statement = con.prepareStatement(query.toString());
-			SQLUtil.setValorPpreparedStatement(statement, 1, despesa.getNome(), java.sql.Types.VARCHAR);			
+			SQLUtil.setValorPpreparedStatement(statement, 1, despesa.getDescricao(), java.sql.Types.VARCHAR);			
 			SQLUtil.setValorPpreparedStatement(statement, 2, despesa.getValor(), java.sql.Types.DOUBLE);
-			SQLUtil.setValorPpreparedStatement(statement, 3, despesa.getMesAnoReferencia(), java.sql.Types.DATE);			
-			SQLUtil.setValorPpreparedStatement(statement, 4, despesa.getIdCondominio(), java.sql.Types.INTEGER);			
+			SQLUtil.setValorPpreparedStatement(statement, 3, despesa.getData(), java.sql.Types.DATE);
+			SQLUtil.setValorPpreparedStatement(statement, 4, despesa.getObservacao(), java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 5, despesa.getNumeroDocumento(), java.sql.Types.VARCHAR);			
+			SQLUtil.setValorPpreparedStatement(statement, 6, despesa.getIdCondominio(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 7, despesa.getMeioPagamento().getId(), java.sql.Types.INTEGER);
 			statement.executeUpdate();
 		} catch (SQLException e) {			
 			throw e;
@@ -73,35 +94,40 @@ private static final long serialVersionUID = 1L;
 	}
 	
 	@Override
-	public List<Despesa> pesquisarPorMesAnoReferenciaEIdCondominio(Date mesAnoReferencia, Integer idCondominio) throws SQLException, Exception {
+	public List<Despesa> buscarPorDataDeEDataAteEIdCondominio(Date dataDe, Date dataAte, Integer idCondominio) throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
 		query.append("SELECT * FROM ");
 		query.append(DESPESA);
 		query.append(" WHERE ");
-		query.append(MES_ANO_REFERENCIA);
-		query.append(" = ?");
+		query.append(DATA);
+		query.append(" BETWEEN ");
+		query.append("? AND ?");
 		query.append(" AND ");
 		query.append(ID_CONDOMINIO);
 		query.append(" = ?");
 		query.append(" ORDER BY ");
-		query.append(NOME);
+		query.append(DESCRICAO);
 		query.append(";");
 		Connection con = Conexao.getConexao();
 		PreparedStatement preparedStatement = null;		
 		List<Despesa> listaDespesa = new ArrayList<Despesa>();
 		try {
 			preparedStatement = con.prepareStatement(query.toString());
-			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, mesAnoReferencia, java.sql.Types.DATE);
-			SQLUtil.setValorPpreparedStatement(preparedStatement, 2, idCondominio, java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, dataDe, java.sql.Types.DATE);
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 2, dataAte, java.sql.Types.DATE);
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 3, idCondominio, java.sql.Types.INTEGER);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			Despesa despesa = null;
 			while(resultSet.next()){
 				despesa = new Despesa();								
 				despesa.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));				
-				despesa.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+				despesa.setDescricao(String.valueOf(SQLUtil.getValorResultSet(resultSet, DESCRICAO, java.sql.Types.VARCHAR)));
+				despesa.setObservacao(String.valueOf(SQLUtil.getValorResultSet(resultSet, OBSERVACAO, java.sql.Types.VARCHAR)));
 				despesa.setValor((Double) (SQLUtil.getValorResultSet(resultSet, VALOR, java.sql.Types.DOUBLE)));
-				despesa.setMesAnoReferencia((Date) SQLUtil.getValorResultSet(resultSet, MES_ANO_REFERENCIA, java.sql.Types.DATE));
+				despesa.setNumeroDocumento(String.valueOf(SQLUtil.getValorResultSet(resultSet, NUMERO_DOCUMENTO, java.sql.Types.VARCHAR)));				
+				despesa.setData((Date) SQLUtil.getValorResultSet(resultSet, DATA, java.sql.Types.DATE));
 				despesa.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
+				despesa.setMeioPagamento(this.meioPagamentoDAO.get().buscaPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_MEIO_PAGAMENTO, java.sql.Types.INTEGER), con));
 				listaDespesa.add(despesa);
 			}
 		} catch (NumberFormatException e) {
@@ -119,6 +145,84 @@ private static final long serialVersionUID = 1L;
 		    }
 		}
 		return listaDespesa;
+	}
+
+	@Override
+	public void atualizar(Despesa despesa) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("UPDATE ");
+		query.append(DESPESA);
+		query.append(" SET ");
+		query.append(DESCRICAO);
+		query.append("= ?, ");
+		query.append(VALOR); 
+		query.append("= ?, ");
+		query.append(DATA); 
+		query.append("= ?, ");
+		query.append(OBSERVACAO);
+		query.append("= ?, ");
+		query.append(NUMERO_DOCUMENTO);	
+		query.append("= ?, ");		
+		query.append(ID_CONDOMINIO);
+		query.append("= ?, ");
+		query.append(ID_MEIO_PAGAMENTO);
+		query.append("= ? ");		
+		query.append("WHERE ");
+		query.append(ID);
+		query.append("= ?");
+		Connection con = Conexao.getConexao();
+		PreparedStatement statement = null;
+		try {			
+			statement = con.prepareStatement(query.toString());			
+			SQLUtil.setValorPpreparedStatement(statement,1, despesa.getDescricao(), java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement,2, despesa.getValor(), java.sql.Types.DOUBLE);
+			SQLUtil.setValorPpreparedStatement(statement,3, despesa.getData(), java.sql.Types.DATE);
+			SQLUtil.setValorPpreparedStatement(statement,4, despesa.getObservacao(), java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement,5, despesa.getNumeroDocumento(), java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement,6, despesa.getIdCondominio(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement,7, despesa.getMeioPagamento().getId(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement,8, despesa.getId(), java.sql.Types.INTEGER);
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			throw e;
+		}catch (Exception e) {		
+			throw e;
+		}finally {
+			try {		
+				statement.close();
+				con.close();				
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);
+			}
+		}		
+	}
+
+	@Override
+	public void excluir(Despesa despesa) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("DELETE FROM ");
+		query.append(DESPESA);
+		query.append(" WHERE ");
+		query.append(ID);
+		query.append("= ?");
+		PreparedStatement statement = null;
+		Connection con = Conexao.getConexao();
+		try {
+			statement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(statement, 1, despesa.getId(), java.sql.Types.INTEGER);			
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			throw e;
+		} catch (Exception e) {
+			throw e;
+		}finally{
+			try {
+				statement.close();
+				con.close();				
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);	
+			}
+		}			
 	}
 	
 

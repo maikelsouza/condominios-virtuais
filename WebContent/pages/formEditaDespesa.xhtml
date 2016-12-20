@@ -9,24 +9,24 @@
 	template="/templates/templatePrincipal.xhtml">
 
 	<ui:define name="conteudo">
-		<h:form id="idFormCadastroReceitaDespesa" styleClass="content">
+		<h:form id="idFormEditaDespesa" styleClass="content">
 			<rich:panel>
 				<f:facet name="header">
-					<h:outputText value="#{msg.cadastroReceitaDespesa}" />
+					<h:outputText value="#{msg.editaDespesa}" />
 				</f:facet>
 				<h:panelGrid columns="3">
 					<h:panelGroup>
 						<h:outputLabel value="#{msg.condominio}:" for="idSICondominios" />
 						<span class="asterisco">*</span>
-					</h:panelGroup>
+					</h:panelGroup>					
 					
 					<h:panelGroup>
-						<h:outputLabel value="#{msg['receitaDespesa.tipo']}:" for="idSIEhReceita" />
+						<h:outputLabel value="#{msg['receitaDespesa.descricao']}:" for="idReceitaDespesaDescricao" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 					
 					<h:panelGroup>
-						<h:outputLabel value="#{msg['receitaDespesa.descricao']}:" for="idReceitaDespesaDescricao" />
+						<h:outputLabel value="#{msg['receitaDespesa.data']}:" for="idReceitaDespesaData" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 				
@@ -35,36 +35,30 @@
 						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="true" />
 						<f:selectItems value="#{receitaDespesaMB.listaSICondominios}" />						
 					</h:selectOneMenu>						
-					
-					<h:selectOneMenu id="idSIEhReceita" value="#{receitaDespesaMB.ehReceita}" 
-						required="true" label="#{msg['receitaDespesa.tipo.label']}">
-						<f:selectItem itemValue="true" itemLabel="#{msg['receitaDespesa.tipo.0']}"/>
-						<f:selectItem itemValue="false"  itemLabel="#{msg['receitaDespesa.tipo.1']}"/>
-					</h:selectOneMenu>
-					
+									
 					<h:inputText id="idReceitaDespesaDescricao" value="#{receitaDespesaMB.descricao}" size="20" label="#{msg['receitaDespesa.descricao.label']}" 
 							required="true" validatorMessage="#{msg['msg.receitaDespesa.descricao']}">
 							<f:validateLength maximum="150" for="idReceitaDespesaDescricao"/>
 					</h:inputText>
-						
-					<h:panelGroup>
-						<h:outputLabel value="#{msg['receitaDespesa.data']}:" for="idReceitaDespesaData" />
-						<span class="asterisco">*</span>
-					</h:panelGroup>
-					
-					<h:panelGroup>
-						<h:outputLabel value="#{msg['receitaDespesa.valor']}:" for="idReceitaDespesasValor" />
-						<span class="asterisco">*</span>
-					</h:panelGroup>
-					
-				
-					<h:outputLabel value="#{msg['receitaDespesa.numeroDocumento']}:" for="idReceitaDespesaNumeroDocumento" />
 					
 					<rich:calendar value="#{receitaDespesaMB.data}" id="idReceitaDespesaData" locale="#{msg.locale}" popup="true" label="#{msg['receitaDespesa.data.label']}" 
 							boundaryDatesMode="scroll" showFooter="false" required="true"
 							datePattern="#{msg['formatoData']}" cellWidth="24px"
 							cellHeight="22px" style="width:200px" mode="ajax">
 					</rich:calendar>
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['receitaDespesa.valor']}:" for="idReceitaDespesasValor" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>				
+				
+					<h:outputLabel value="#{msg['receitaDespesa.numeroDocumento']}:" for="idReceitaDespesaNumeroDocumento" />
+					
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['receitaDespesa.meioPagamento']}:" for="idReceitaDespesaMeioPagamento" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
 					
 					<h:inputText id="idReceitaDespesasValor" value="#{receitaDespesaMB.valor}" size="20" label="#{msg['receitaDespesa.valor.label']}" required="true"
 						validatorMessage="#{msg['msg.receitaDespesa.valor']}">
@@ -77,39 +71,40 @@
 						<f:validateLength maximum="70" for="idReceitaDespesaDescricao"/>
 					</h:inputText>	
 					
-					<h:panelGroup>
-						<h:outputLabel value="#{msg['receitaDespesa.meioPagamento']}:" for="idReceitaDespesaMeioPagamento" />
-						<span class="asterisco">*</span>
-					</h:panelGroup>
-					
-					<h:outputLabel value="#{msg['receitaDespesa.observacao']}:" for="idReceitaDespesaObservacao" />
-					
-					<div/>
-					
 					<h:selectOneMenu id="idReceitaDespesaMeioPagamento" value="#{receitaDespesaMB.meioPagamento.id}" 
 						required="true" label="#{msg['receitaDespesa.meioPagamento.label']}">						
 						<f:selectItems value="#{receitaDespesaMB.listaSIMeioPagamento}" />
 					</h:selectOneMenu>
-								 
+					
+					<h:outputLabel value="#{msg['receitaDespesa.observacao']}:" for="idReceitaDespesaObservacao" />
+					<h:panelGroup />
+					<h:panelGroup />						 
 					<h:inputTextarea id="idReceitaDespesaObservacao" value="#{receitaDespesaMB.observacao}" rows="3" cols="30"  label="#{msg['receitaDespesa.observacao.label']}"
 						validatorMessage="#{msg['msg.receitaDespesa.observacao']}" >
 						<f:validateLength maximum="200" for="idReceitaDespesaObservacao"/>
-					</h:inputTextarea>
-					
-						
+					</h:inputTextarea>						
 				</h:panelGrid>					
 				
 				<h:panelGrid columns="2" styleClass="msgAsterisco">
 					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
 					<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
 				</h:panelGrid>
+				
+				<rich:popupPanel id="confirmaExcluirDespesa" autosized="true">
+         			#{msg['msg.receitaDespesa.confirmacaoExcluirDespesa']}
+         			  <h:panelGrid columns="2">         			  
+						<h:commandButton value="#{msg.botaoExcluir}" action="#{receitaDespesaMB.excluirDespesa}" onclick=" #{rich:component('confirmaExcluirDespesa')}.hide();  return true;" />
+						<h:commandButton value="#{msg.botaoCancelar}" onclick="#{rich:component('confirmaExcluirDespesa')}.hide(); return false;" />
+					</h:panelGrid>	
+				</rich:popupPanel>
+				
 			</rich:panel>
 			<h:panelGrid columns="3">
-				<h:commandButton value="#{msg.botaoSalvar}"
-					action="#{receitaDespesaMB.salvarReceitaDespesa}" />
-				<h:commandButton value="#{msg.botaoLimpar}"
-					actionListener="#{receitaDespesaMB.limparCadastroReceitaDespesa}" immediate="false" />
-				<h:commandButton value="#{msg.botaoCancelar}" action="#{receitaDespesaMB.cancelarCadastroReceitaDespesa}" immediate="true" />
+				<h:commandButton value="#{msg.botaoAtualizar}" action="#{receitaDespesaMB.atualizarDespesa}" />
+				<h:commandButton value="#{msg.botaoExcluir}" immediate="false" >
+					<rich:componentControl target="confirmaExcluirDespesa" operation="show" />
+				</h:commandButton>
+				<h:commandButton value="#{msg.botaoVoltar}" action="#{receitaDespesaMB.voltarListaReceitaDespesa}" immediate="true" />
 				
 			</h:panelGrid>
 		</h:form>

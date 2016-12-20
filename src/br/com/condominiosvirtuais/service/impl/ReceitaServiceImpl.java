@@ -19,14 +19,26 @@ public class ReceitaServiceImpl implements ReceitaService, Serializable {
 	private ReceitaDAO receitaDAO;
 
 	@Override
-	public void salvarReceita(Receita receita) throws SQLException, Exception {
-		this.receitaDAO.salvarReceita(receita);
+	public void salvar(Receita receita) throws SQLException, Exception {
+		this.receitaDAO.salvar(receita);
 		
 	}
 
 	@Override
-	public List<Receita> pesquisarPorMesAnoReferenciaEIdCondominio(Date mesAnoReferencia, Integer idCondominio) throws SQLException, Exception {
-		return this.receitaDAO.pesquisarPorMesAnoReferenciaEIdCondominio(mesAnoReferencia, idCondominio);
+	public List<Receita> buscarPorDataDeEDataAteEIdCondominio(Date dataDe, Date dataAte, Integer idCondominio) throws SQLException, Exception {		
+		return this.receitaDAO.buscarPorDataDeEDataAteEIdCondominio(dataDe, dataAte, idCondominio);
 	}
+
+	@Override
+	public void atualizar(Receita receita) throws SQLException, Exception {
+		this.receitaDAO.atualizar(receita);		
+	}
+
+	@Override
+	public void excluir(Receita receita) throws SQLException, Exception {
+		this.receitaDAO.excluir(receita);		
+	}
+	
+	
 
 }

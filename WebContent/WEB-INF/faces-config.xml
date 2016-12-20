@@ -1675,6 +1675,63 @@
    <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
+  <navigation-case>                  
+   <from-action>#{receitaDespesaMB.editarCadastroReceitaDespesa}</from-action>
+   <from-outcome>editar</from-outcome>
+   <to-view-id>/pages/formEditaReceitaDespesa.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule> 
+ <navigation-rule>                       
+  <from-view-id>/pages/formEditaDespesa.xhtml</from-view-id>  
+  <navigation-case>                
+   <from-action>#{receitaDespesaMB.atualizarDespesa}</from-action>
+   <from-outcome>atualizar</from-outcome>
+   <to-view-id>/pages/formListaReceitaDespesa.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>                
+   <from-action>#{receitaDespesaMB.excluirDespesa}</from-action>
+   <from-outcome>excluir</from-outcome>
+   <to-view-id>/pages/formListaReceitaDespesa.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>                
+   <from-action>#{receitaDespesaMB.voltarListaReceitaDespesa}</from-action>
+   <from-outcome>voltar</from-outcome>
+   <to-view-id>/pages/formListaReceitaDespesa.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formEditaReceita.xhtml</from-view-id>  
+  <navigation-case>                
+   <from-action>#{receitaDespesaMB.atualizarReceita}</from-action>
+   <from-outcome>atualizar</from-outcome>
+   <to-view-id>/pages/formListaReceitaDespesa.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>                
+   <from-action>#{receitaDespesaMB.excluirReceita}</from-action>
+   <from-outcome>excluir</from-outcome>
+   <to-view-id>/pages/formListaReceitaDespesa.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>                
+   <from-action>#{receitaDespesaMB.voltarListaReceitaDespesa}</from-action>
+   <from-outcome>voltar</from-outcome>
+   <to-view-id>/pages/formListaReceitaDespesa.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule> 
+ <navigation-rule>                       
+  <from-view-id>/pages/formListaReceitaDespesa.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{receitaDespesaMB.editarDespesa}</from-action>
+   <from-outcome>editar</from-outcome>
+   <to-view-id>/pages/formEditaDespesa.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>                  
+   <from-action>#{receitaDespesaMB.editarReceita}</from-action>
+   <from-outcome>editar</from-outcome>
+   <to-view-id>/pages/formEditaReceita.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
  </navigation-rule> 
  
  

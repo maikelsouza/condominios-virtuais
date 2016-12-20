@@ -11,13 +11,20 @@ public class Despesa {
 	
 	private Integer id;
 	
-	private String nome;
+	private String descricao;
+	
+	private String observacao;
 	
 	private Double valor;
 	
-	private Date mesAnoReferencia;
+	private Date data;
+	
+	private String numeroDocumento;
 	
 	private Integer idCondominio;
+	
+	private MeioPagamento meioPagamento;
+	
 
 	public Integer getId() {
 		return id;
@@ -27,29 +34,13 @@ public class Despesa {
 		this.id = id;
 	}	
 
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
 	public Double getValor() {
 		return valor;
 	}
 
 	public void setValor(Double valor) {
 		this.valor = valor;
-	}
-
-	public Date getMesAnoReferencia() {
-		return mesAnoReferencia;
-	}
-
-	public void setMesAnoReferencia(Date mesAnoReferencia) {
-		this.mesAnoReferencia = mesAnoReferencia;
-	}
+	}	
 
 	public Integer getIdCondominio() {
 		return idCondominio;
@@ -57,6 +48,46 @@ public class Despesa {
 
 	public void setIdCondominio(Integer idCondominio) {
 		this.idCondominio = idCondominio;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public String getObservacao() {
+		return observacao;
+	}
+
+	public void setObservacao(String observacao) {
+		this.observacao = observacao;
+	}
+
+	public Date getData() {
+		return data;
+	}
+
+	public void setData(Date data) {
+		this.data = data;
+	}
+
+	public String getNumeroDocumento() {
+		return numeroDocumento;
+	}
+
+	public void setNumeroDocumento(String numeroDocumento) {
+		this.numeroDocumento = numeroDocumento;
+	}
+
+	public MeioPagamento getMeioPagamento() {
+		return meioPagamento;
+	}
+
+	public void setMeioPagamento(MeioPagamento meioPagamento) {
+		this.meioPagamento = meioPagamento;
 	}
 	
 

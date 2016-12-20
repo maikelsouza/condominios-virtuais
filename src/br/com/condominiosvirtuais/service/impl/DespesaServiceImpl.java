@@ -19,14 +19,26 @@ public class DespesaServiceImpl implements DespesaService, Serializable {
 	private DespesaDAO despesaDAO;
 
 	@Override
-	public void salvarDespesa(Despesa despesa) throws SQLException, Exception {
-		this.despesaDAO.salvarDespesa(despesa);		
+	public void salvar(Despesa despesa) throws SQLException, Exception {
+		this.despesaDAO.salvar(despesa);		
 	}
 	
+	
+	@Override
+	public List<Despesa> buscarPorDataDeEDataAteEIdCondominio(Date dataDe, Date dataAte, Integer idCondominio) throws SQLException, Exception {		
+		return despesaDAO.buscarPorDataDeEDataAteEIdCondominio(dataDe, dataAte, idCondominio);
+	}
+
 
 	@Override
-	public List<Despesa> pesquisarPorMesAnoReferenciaEIdCondominio(Date mesAnoReferencia, Integer idCondominio) throws SQLException, Exception {
-		return this.despesaDAO.pesquisarPorMesAnoReferenciaEIdCondominio(mesAnoReferencia, idCondominio);
+	public void atualizar(Despesa despesa) throws SQLException, Exception {
+		this.despesaDAO.atualizar(despesa);		
+	}
+
+
+	@Override
+	public void excluir(Despesa despesa) throws SQLException, Exception {
+		this.despesaDAO.excluir(despesa);		
 	}
 
 }

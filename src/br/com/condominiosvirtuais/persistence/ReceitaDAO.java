@@ -8,8 +8,16 @@ import br.com.condominiosvirtuais.entity.Receita;
 
 public interface ReceitaDAO {
 	
-	public abstract void salvarReceita(Receita receita) throws SQLException, Exception;
+	public abstract void salvar(Receita receita) throws SQLException, Exception;
 	
-	public abstract List<Receita> pesquisarPorMesAnoReferenciaEIdCondominio(Date mesAnoReferencia, Integer idCondominio) throws SQLException, Exception;
+	public abstract List<Receita> buscarPorDataDeEDataAteEIdCondominio(Date dataDe, Date dataAte, Integer idCondominio) throws SQLException, Exception;
+	
+	public abstract void atualizar(Receita receita) throws SQLException, Exception;
+	
+	public abstract void excluir(Receita receita) throws SQLException, Exception;
+	
+	
+	
+	
 
 }
