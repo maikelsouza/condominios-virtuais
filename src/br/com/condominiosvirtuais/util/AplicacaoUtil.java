@@ -2,6 +2,7 @@ package br.com.condominiosvirtuais.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -80,5 +81,12 @@ public abstract class AplicacaoUtil {
 		SimpleDateFormat spd = new SimpleDateFormat(formatoData);
 		return spd.format(data);
 	}
+	
+	public static String formatarMoeda(String formatoMoeda, Double valor){		
+		 DecimalFormat df = new DecimalFormat(formatoMoeda);
+		return df.format(valor);
+	}
+	
+	
 
 }

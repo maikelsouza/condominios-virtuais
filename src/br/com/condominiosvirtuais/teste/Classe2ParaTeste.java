@@ -3,7 +3,12 @@ package br.com.condominiosvirtuais.teste;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import org.jrimum.bopepo.BancosSuportados;
 import org.jrimum.bopepo.Boleto;
@@ -22,121 +27,92 @@ import org.jrimum.domkee.financeiro.banco.febraban.TipoDeTitulo;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo.Aceite;
 
+import jxl.Workbook;
+import jxl.WorkbookSettings;
+import jxl.write.DateFormats;
+import jxl.write.DateTime;
+import jxl.write.Label;
+import jxl.write.WritableCell;
+import jxl.write.WritableCellFormat;
+import jxl.write.WritableFont;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
+import jxl.write.WriteException;
+import jxl.write.biff.WritableFonts;
+
 public class Classe2ParaTeste {
 
-	public static void main(String[] args) {
-
-        /*
-         * INFORMANDO DADOS SOBRE O CEDENTE.
-         */
-        Cedente cedente = new Cedente("PROJETO JRimum", "00.000.208/0001-00");
-
-        /*
-         * INFORMANDO DADOS SOBRE O SACADO.
-         */
-        Sacado sacado = new Sacado("JavaDeveloper Pronto Para Férias", "222.222.222-22");
-
-        // Informando o endereço do sacado.
-        Endereco enderecoSac = new Endereco();
-        enderecoSac.setUF(UnidadeFederativa.RN);
-        enderecoSac.setLocalidade("Natal");
-        enderecoSac.setCep(new CEP("59064-120"));
-        enderecoSac.setBairro("Grande Centro");
-        enderecoSac.setLogradouro("Rua poeta dos programas");
-        enderecoSac.setNumero("1");
-        sacado.addEndereco(enderecoSac);
-
-        /*
-         * INFORMANDO DADOS SOBRE O SACADOR AVALISTA.
-         */
-        SacadorAvalista sacadorAvalista = new SacadorAvalista("JRimum Enterprise", "00.000.000/0001-91");
-
-        // Informando o endereço do sacador avalista.
-        Endereco enderecoSacAval = new Endereco();
-        enderecoSacAval.setUF(UnidadeFederativa.DF);
-        enderecoSacAval.setLocalidade("Brasília");
-        enderecoSacAval.setCep(new CEP("59000-000"));
-        enderecoSacAval.setBairro("Grande Centro");
-        enderecoSacAval.setLogradouro("Rua Eternamente Principal");
-        enderecoSacAval.setNumero("001");
-        sacadorAvalista.addEndereco(enderecoSacAval);
-
-        /*
-         * INFORMANDO OS DADOS SOBRE O TÍTULO.
-         */
-        
-        // Informando dados sobre a conta bancária do título.
-        ContaBancaria contaBancaria = new ContaBancaria(BancosSuportados.BANCO_DO_BRASIL.create());
-        contaBancaria.setNumeroDaConta(new NumeroDaConta(123456, "0"));
-        contaBancaria.setCarteira(new Carteira(30));
-        contaBancaria.setAgencia(new Agencia(1234, "1"));
-        
-        Titulo titulo = new Titulo(contaBancaria, sacado, cedente, sacadorAvalista);
-        titulo.setNumeroDoDocumento("123456");
-        titulo.setNossoNumero("99345678912");
-        titulo.setDigitoDoNossoNumero("5");
-        titulo.setValor(BigDecimal.valueOf(0.23));
-        titulo.setDataDoDocumento(new Date());
-        titulo.setDataDoVencimento(new Date());
-        titulo.setTipoDeDocumento(TipoDeTitulo.DM_DUPLICATA_MERCANTIL);
-        titulo.setAceite(Aceite.A);
-        titulo.setDesconto(new BigDecimal(0.05));
-        titulo.setDeducao(BigDecimal.ZERO);
-        titulo.setMora(BigDecimal.ZERO);
-        titulo.setAcrecimo(BigDecimal.ZERO);
-        titulo.setValorCobrado(BigDecimal.ZERO);
-
-        /*
-         * INFORMANDO OS DADOS SOBRE O BOLETO.
-         */
-        Boleto boleto = new Boleto(titulo);
-        
-        boleto.setLocalPagamento("Pagável preferencialmente na Rede X ou em " +
-                        "qualquer Banco até o Vencimento.");
-        boleto.setInstrucaoAoSacado("Senhor sacado, sabemos sim que o valor " +
-                        "cobrado não é o esperado, aproveite o DESCONTÃO!");
-        boleto.setInstrucao1("PARA PAGAMENTO 1 até Hoje não cobrar nada!");
-        boleto.setInstrucao2("PARA PAGAMENTO 2 até Amanhã Não cobre!");
-        boleto.setInstrucao3("PARA PAGAMENTO 3 até Depois de amanhã, OK, não cobre.");
-        boleto.setInstrucao4("PARA PAGAMENTO 4 até 04/xx/xxxx de 4 dias atrás COBRAR O VALOR DE: R$ 01,00");
-        boleto.setInstrucao5("PARA PAGAMENTO 5 até 05/xx/xxxx COBRAR O VALOR DE: R$ 02,00");
-        boleto.setInstrucao6("PARA PAGAMENTO 6 até 06/xx/xxxx COBRAR O VALOR DE: R$ 03,00");
-        boleto.setInstrucao7("PARA PAGAMENTO 7 até xx/xx/xxxx COBRAR O VALOR QUE VOCÊ QUISER!");
-        boleto.setInstrucao8("APÓS o Vencimento, Pagável Somente na Rede X.");
-
-        /*
-         * GERANDO O BOLETO BANCÁRIO.
-         */
-        // Instanciando um objeto "BoletoViewer", classe responsável pela
-        // geração do boleto bancário.
-        BoletoViewer boletoViewer = new BoletoViewer(boleto);
-
-        // Gerando o arquivo. No caso o arquivo mencionado será salvo na mesma
-        // pasta do projeto. Outros exemplos:
-        // WINDOWS: boletoViewer.getAsPDF("C:/Temp/MeuBoleto.pdf");
-        // LINUX: boletoViewer.getAsPDF("/home/temp/MeuBoleto.pdf");
-        File arquivoPdf = boletoViewer.getPdfAsFile("MeuPrimeiroBoleto.pdf");
-
-        // Mostrando o boleto gerado na tela.
-        mostreBoletoNaTela(arquivoPdf);
-}
-
-/**
- * Exibe o arquivo na tela.
- * 
- * @param arquivoBoleto
- */
-private static void mostreBoletoNaTela(File arquivoBoleto) {
-
-        java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
-        
-        try {
-                desktop.open(arquivoBoleto);
-        } catch (IOException e) {
-                e.printStackTrace();
-        }
-}
+	public static void main(String[] args) throws IOException, WriteException {
 		
-	}
+		
+		List<Integer> listaInteger = new ArrayList<>(); 
+			listaInteger.add(5);
+			listaInteger.add(2);
+			listaInteger.add(500);
+			listaInteger.add(10);
+			listaInteger.add(501);
+			
+			System.out.println(Collections.max(listaInteger));
+			
+			
+		}
+		
+		
+//		BigDecimal valor = new BigDecimal ("RS 12000000.12");  
+//		NumberFormat nf = NumberFormat.getCurrencyInstance();  
+//		String formatado = nf.format (valor);
+//		System.out.println(formatado);
+//
+//		String filename = "entrada.xls";
+//		 WorkbookSettings ws = new WorkbookSettings();
+//		 ws.setLocale(new Locale("pt", "BR"));
+//		 WritableWorkbook workbook =  Workbook.createWorkbook(new File(filename), ws);
+//		 WritableSheet s = workbook.createSheet("Folha1", 0);
+//		 
+//		 WritableFont wf = new WritableFont(WritableFont.ARIAL,  12, WritableFont.BOLD);
+//		 WritableFont wf2 = new WritableFont(WritableFont.ARIAL,  12, WritableFont.BOLD);
+//		 WritableFont wf3 = new WritableFont(WritableFont.ARIAL,  10, WritableFont.BOLD);
+//		 WritableCellFormat cf = new WritableCellFormat(wf);
+//		 cf.setWrap(true);
+//		 
+//		 Label l = new Label(0,0,"Receitas e Despesas - Condomínio XYZ - 01/12/2016 Até 21/12/2016",cf);
+//		 s.mergeCells(0, 0, 6, 0);
+//		 s.addCell(l);
+//		 
+//		 WritableCellFormat cf1 = new WritableCellFormat(wf2);
+//		 Label l2 = new Label(0,1,"Lista De Receitas",cf1);
+//		 s.mergeCells(0, 1, 3, 1);
+//		 s.addCell(l2);
+//		 
+//		 WritableCellFormat cf4 = new WritableCellFormat(wf3);
+//		 Label l3 = new Label(0,3,"Descrição",cf4);		 
+//		 s.addCell(l3);
+//		 
+//		 WritableCellFormat cf5 = new WritableCellFormat(wf3);
+//		 Label l4 = new Label(1,3,"Data",cf5);		 
+//		 s.addCell(l4);
+//		 
+//		 WritableCellFormat cf6 = new WritableCellFormat(wf3);
+//		 Label l5 = new Label(2,3,"Valor",cf6);		 
+//		 s.addCell(l5);
+//		 
+//		 WritableCellFormat cf7 = new WritableCellFormat(wf3);
+//		 Label l6 = new Label(3,3,"Número Documento",cf7);		 
+//		 s.addCell(l6);
+//		 
+//		 WritableCellFormat cf8 = new WritableCellFormat(wf3);
+//		 Label l7 = new Label(4,3,"Meio Pagamento",cf8);		 
+//		 s.addCell(l7);
+//		 
+//		 WritableCellFormat cf9 = new WritableCellFormat(wf3);
+//		 Label l8 = new Label(3,3,"Observação",cf9);		 
+//		 s.addCell(l8);
+//		 
+//		 
+//		 workbook.write();
+//		 workbook.close();
+		
+	//}
+}
 
 
