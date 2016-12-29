@@ -2,7 +2,6 @@ package br.com.condominiosvirtuais.service.impl;
 
 import java.io.Serializable;
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -21,7 +20,6 @@ public class MeioPagamentoServiceImpl implements MeioPagamentoService, Serializa
 	@Override
 	public List<MeioPagamento> buscarTodos() throws SQLException, Exception {
 		List<MeioPagamento> listaMeioPagamento = this.meioPagamentoDAO.buscarTodos();
-		Collections.sort(listaMeioPagamento);		
 		return listaMeioPagamento;
 	}
 

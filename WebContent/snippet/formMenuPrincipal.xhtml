@@ -107,7 +107,7 @@
 			<rich:menuItem label="#{msg['reserva.cadastrar']}" action="#{principalMB.cadastrarReserva}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('6')}" />
 			<rich:menuItem label="#{msg['reserva.aprovar']}" action="#{principalMB.aprovarReserva}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,3,4')}" />
 		</rich:dropDownMenu>
-		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,3,4,5') and loginMB.sindicoGeralAssociado() and !loginMB.exibeMenuFinanceiro()}">
+		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,3,4,5') and loginMB.sindicoGeralAssociado()}">
 			<f:facet name="label">
 				<h:panelGroup
 					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,3,4,5') and loginMB.sindicoGeralAssociado()}">
@@ -167,7 +167,7 @@
 			<rich:menuItem label="#{msg['telefonesUteis.listarTelefonesUteis']}" action="#{principalMB.listarTelefonesUteis}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,5,6')}" />
 			<rich:menuItem label="#{msg['telefonesUteis.cadastrarTelefonesUteis']}" action="#{principalMB.cadastrarTelefonesUteis}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}" />
 		</rich:dropDownMenu>
-		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.exibeMenuFinanceiro() and loginMB.sindicoGeralAssociado()}">
+		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5')}">
 			<f:facet name="label">
 				<h:panelGroup>
 					<h:outputText value="#{msg.financeiro}" />

@@ -60,6 +60,8 @@ public class MeioPagamentoDAOImpl implements MeioPagamentoDAO, Serializable {
 		StringBuffer query = new StringBuffer();
 		query.append("SELECT * FROM ");
 		query.append(MEIO_PAGAMENTO);
+		query.append(" ORDER BY ");
+		query.append(NOME);
 		query.append(";");
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;		

@@ -431,7 +431,7 @@
    <from-action>#{principalMB.listarReceitaDespesa}</from-action>
    <from-outcome>listarReceitaDespesa</from-outcome>
    <to-view-id>/pages/formListaReceitaDespesa.xhtml</to-view-id>
-   <redirect/>
+    <redirect/>
   </navigation-case>
  </navigation-rule>
  <navigation-rule>
@@ -1730,6 +1730,12 @@
    <from-action>#{receitaDespesaMB.editarReceita}</from-action>
    <from-outcome>editar</from-outcome>
    <to-view-id>/pages/formEditaReceita.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+   <navigation-case>                  
+   <from-action>#{receitaDespesaMB.cadastroReceitaDespesa}</from-action>
+   <from-outcome>cadastrar</from-outcome>
+   <to-view-id>/pages/formCadastroReceitaDespesa.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
  </navigation-rule> 

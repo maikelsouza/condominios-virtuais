@@ -23,11 +23,8 @@
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 					<h:outputLabel value="#{msg['enquete.pergunta']}:" for="idPergunta" />
-					<h:selectOneMenu id="idCondominio"
-						value="#{enqueteMB.enquete.idCondominio}"
-						label="#{msg['condominio.label']}" required="true">
-						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}"
-							noSelectionOption="true" />
+					<h:selectOneMenu id="idCondominio" value="#{enqueteMB.enquete.idCondominio}" label="#{msg['condominio.label']}" required="true">
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="true" />
 						<f:selectItems value="#{enqueteMB.listaCondominios}" />
 					</h:selectOneMenu>
 					<h:inputText id="idPergunta" value="#{enqueteMB.enquete.pergunta}"

@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS MEIO_PAGAMENTO(
 	ID integer NOT NULL AUTO_INCREMENT,	
 	NOME varchar(100) NOT NULL,
+	CONSTRAINT UQ_MEIO_PAGAMENTO_NOME UNIQUE (NOME),
 	PRIMARY KEY(ID)
 );
 
@@ -34,4 +35,7 @@ CREATE TABLE IF NOT EXISTS RECEITA(
 );
 
 
-INSERT INTO MEIO_PAGAMENTO (ID, NOME)  VALUES (DEFAULT, 'meioPagamento.bancoSicoob'), (DEFAULT, 'meioPagamento.dinheiro');
+INSERT INTO MEIO_PAGAMENTO (ID, NOME)  VALUES (DEFAULT, 'Dinheiro'), (DEFAULT, 'Sicoob'), (DEFAULT, 'Banco do Brasil'),
+(DEFAULT, 'Bradesco'),(DEFAULT, 'Caixa'),(DEFAULT, 'Itaú'),(DEFAULT, 'Safra'),(DEFAULT, 'Santander'),(DEFAULT, 'Sicredi'),
+(DEFAULT, 'Banrisul'),(DEFAULT, 'Unicredi'),(DEFAULT, 'HSBC');
+

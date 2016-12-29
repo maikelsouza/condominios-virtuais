@@ -136,15 +136,16 @@ public class LoginMB implements Serializable{
 	 * FIXME: Método criado para não exibir o menu financeiro.
 	 * Esse deve ser apagado após mudar o layout do menu
 	 */
-	public Boolean exibeMenuFinanceiro(){
-		Boolean exibeMenuFianceiro = Boolean.FALSE;		
-		for (Condominio condominio : this.usuario.getListaCondominio()) {
-			if (condominio.getId() == 22 || condominio.getId() == 23){
-				exibeMenuFianceiro = Boolean.TRUE;
-			}
-		}
-		return exibeMenuFianceiro;
-	}    
+// Código comentado em 28/12/2016. Apagar em 180 dias	
+//	public Boolean exibeMenuFinanceiro(){
+//		Boolean exibeMenuFianceiro = Boolean.FALSE;		
+//		for (Condominio condominio : this.usuario.getListaCondominio()) {
+//			if (condominio.getId() == 22 || condominio.getId() == 23){
+//				exibeMenuFianceiro = Boolean.TRUE;
+//			}
+//		}
+//		return exibeMenuFianceiro;
+//	}    
 	
 	
 	public Boolean sindicoGeralAssociado(){

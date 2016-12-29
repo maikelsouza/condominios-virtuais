@@ -1,8 +1,6 @@
 package br.com.condominiosvirtuais.entity;
 
-import br.com.condominiosvirtuais.util.AplicacaoUtil;
-
-public class MeioPagamento implements Comparable<MeioPagamento> {
+public class MeioPagamento  {
 	
 	private Integer id;
 	
@@ -24,16 +22,6 @@ public class MeioPagamento implements Comparable<MeioPagamento> {
 		this.nome = nome;
 	}
 	
-	/* As opções estão no arquivo Messages_pt_BR.properties. A chave será gravada no banco.
-	 */
-	public String getNomeI18n() {
-		return  AplicacaoUtil.i18n(this.nome);
-	}
-
-	@Override
-	public int compareTo(MeioPagamento meioPagamento) {
-		return  meioPagamento.getNome().compareTo(getNomeI18n());       
-	}
 	
 
 }

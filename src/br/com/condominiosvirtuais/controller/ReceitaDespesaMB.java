@@ -6,9 +6,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -26,7 +29,6 @@ import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.Despesa;
 import br.com.condominiosvirtuais.entity.MeioPagamento;
 import br.com.condominiosvirtuais.entity.Receita;
-import br.com.condominiosvirtuais.enumeration.MeioPagamentoNomeEnum;
 import br.com.condominiosvirtuais.service.CondominioService;
 import br.com.condominiosvirtuais.service.DespesaService;
 import br.com.condominiosvirtuais.service.MeioPagamentoService;
@@ -219,8 +221,7 @@ public class ReceitaDespesaMB implements Serializable {
 	
 	public void pesquisarReceitaDespesa(){	
 		List<Receita> listaReceitaLocal = null;
-		List<Despesa> listaDespesaLocal = null;		
-		
+		List<Despesa> listaDespesaLocal = null;				
 		try {			
 			if(this.dataDe.after(this.dataAte)){
 				ManagedBeanUtil.setMensagemErro("msg.receitaDespesa.dataDeMaiorDataAte");
@@ -246,68 +247,150 @@ public class ReceitaDespesaMB implements Serializable {
 		}		
 	}	
 	
-	private void calcularTotal(List<Receita> listaReceita, List<Despesa> listaDespesa){
+//	private void calcularTotal2(List<Receita> listaReceita, List<Despesa> listaDespesa){
+//		List<ReceitaDespesaVO> listaTotaisReceitasDespesasLocal = new ArrayList<ReceitaDespesaVO>();
+//		Double totalSicoob = 0.0;
+//		Double totalDinheiro = 0.0;
+//		Double totalReceitaSicoobDinheiro = 0.0;
+//		ReceitaDespesaVO receitaDespesaVO = null;
+//		
+//		if(!listaReceita.isEmpty() || !listaDespesa.isEmpty()){
+//			
+//			for (Receita receitaLocal : listaReceita) {
+//				if(receitaLocal.getMeioPagamento().getNome().equals(MeioPagamentoNomeEnum.DINHEIRO.getNome())){
+//					totalDinheiro+= receitaLocal.getValor();
+//				}else{
+//					totalSicoob+= receitaLocal.getValor();
+//				}
+//			}				
+//			
+//			receitaDespesaVO = new ReceitaDespesaVO();
+//			receitaDespesaVO.setDescricao(AplicacaoUtil.i18n("msg.receitaDespesa.receitaTotalSicoob"));
+//			receitaDespesaVO.setValor(totalSicoob);
+//			listaTotaisReceitasDespesasLocal.add(receitaDespesaVO);
+//			receitaDespesaVO = new ReceitaDespesaVO();
+//			receitaDespesaVO.setDescricao(AplicacaoUtil.i18n("msg.receitaDespesa.receitaTotalDinheiro"));
+//			receitaDespesaVO.setValor(totalDinheiro);
+//			listaTotaisReceitasDespesasLocal.add(receitaDespesaVO);
+//			receitaDespesaVO = new ReceitaDespesaVO();
+//			receitaDespesaVO.setDescricao(AplicacaoUtil.i18n("msg.receitaDespesa.receitaTotalSicobobDinheiro"));
+//			totalReceitaSicoobDinheiro = totalSicoob+totalDinheiro;
+//			receitaDespesaVO.setValor(totalReceitaSicoobDinheiro);
+//			listaTotaisReceitasDespesasLocal.add(receitaDespesaVO);
+//				
+//			totalSicoob = 0.0;
+//			totalDinheiro = 0.0;
+//			for (Despesa despesaLocal : listaDespesa) {
+//				if(despesaLocal.getMeioPagamento().getNome().equals(MeioPagamentoNomeEnum.DINHEIRO.getNome())){
+//					totalDinheiro+= despesaLocal.getValor();
+//				}else{
+//					totalSicoob+= despesaLocal.getValor();
+//				}
+//			}
+//			receitaDespesaVO = new ReceitaDespesaVO();
+//			receitaDespesaVO.setDescricao(AplicacaoUtil.i18n("msg.receitaDespesa.despesaTotalSicoob"));
+//			receitaDespesaVO.setValor(totalSicoob);		
+//			listaTotaisReceitasDespesasLocal.add(receitaDespesaVO);
+//			
+//			receitaDespesaVO = new ReceitaDespesaVO();
+//			receitaDespesaVO.setDescricao(AplicacaoUtil.i18n("msg.receitaDespesa.despesaTotalDinheiro"));
+//			receitaDespesaVO.setValor(totalDinheiro);
+//			listaTotaisReceitasDespesasLocal.add(receitaDespesaVO);
+//			
+//			receitaDespesaVO = new ReceitaDespesaVO();
+//			receitaDespesaVO.setDescricao(AplicacaoUtil.i18n("msg.receitaDespesa.despesaTotalSicobobDinheiro"));
+//			receitaDespesaVO.setValor(totalSicoob+totalDinheiro);
+//			listaTotaisReceitasDespesasLocal.add(receitaDespesaVO);
+//			
+//			receitaDespesaVO = new ReceitaDespesaVO();
+//			receitaDespesaVO.setDescricao(AplicacaoUtil.i18n("msg.receitaDespesa.receitaMenosDespesa"));
+//			receitaDespesaVO.setValor(totalReceitaSicoobDinheiro - (totalSicoob+totalDinheiro));
+//			listaTotaisReceitasDespesasLocal.add(receitaDespesaVO);
+//		}
+//		this.listaTotaisReceitasDespesas = new ListDataModel<ReceitaDespesaVO>(listaTotaisReceitasDespesasLocal);
+//	}
+	
+	@SuppressWarnings("rawtypes")
+	private void calcularTotal(List<Receita> listaReceita, List<Despesa> listaDespesa) throws SQLException, Exception{
 		List<ReceitaDespesaVO> listaTotaisReceitasDespesasLocal = new ArrayList<ReceitaDespesaVO>();
-		Double totalSicoob = 0.0;
-		Double totalDinheiro = 0.0;
-		Double totalReceitaSicoobDinheiro = 0.0;
+		List<MeioPagamento> listaMeioPagamento = this.meioPagamentoService.buscarTodos();		
+		Map<String, Double> mapMeioPagamentoValor = new HashMap<String, Double>();
+		Double totalGeralReceita = 0.0;
+		Double totalGeralDespesa = 0.0;
+		Double total = 0.0;
+		
 		ReceitaDespesaVO receitaDespesaVO = null;
 		
-		if(!listaReceita.isEmpty() || !listaDespesa.isEmpty()){
-			
-			for (Receita receitaLocal : listaReceita) {
-				if(receitaLocal.getMeioPagamento().getNome().equals(MeioPagamentoNomeEnum.DINHEIRO.getNome())){
-					totalDinheiro+= receitaLocal.getValor();
-				}else{
-					totalSicoob+= receitaLocal.getValor();
-				}
-			}				
-			
-			receitaDespesaVO = new ReceitaDespesaVO();;
-			receitaDespesaVO.setDescricao(AplicacaoUtil.i18n("msg.receitaDespesa.receitaTotalSicoob"));
-			receitaDespesaVO.setValor(totalSicoob);
-			listaTotaisReceitasDespesasLocal.add(receitaDespesaVO);
-			receitaDespesaVO = new ReceitaDespesaVO();
-			receitaDespesaVO.setDescricao(AplicacaoUtil.i18n("msg.receitaDespesa.receitaTotalDinheiro"));
-			receitaDespesaVO.setValor(totalDinheiro);
-			listaTotaisReceitasDespesasLocal.add(receitaDespesaVO);
-			receitaDespesaVO = new ReceitaDespesaVO();
-			receitaDespesaVO.setDescricao(AplicacaoUtil.i18n("msg.receitaDespesa.receitaTotalSicobobDinheiro"));
-			totalReceitaSicoobDinheiro = totalSicoob+totalDinheiro;
-			receitaDespesaVO.setValor(totalReceitaSicoobDinheiro);
-			listaTotaisReceitasDespesasLocal.add(receitaDespesaVO);
-				
-			totalSicoob = 0.0;
-			totalDinheiro = 0.0;
-			for (Despesa despesaLocal : listaDespesa) {
-				if(despesaLocal.getMeioPagamento().getNome().equals(MeioPagamentoNomeEnum.DINHEIRO.getNome())){
-					totalDinheiro+= despesaLocal.getValor();
-				}else{
-					totalSicoob+= despesaLocal.getValor();
+		for (MeioPagamento meioPagamento : listaMeioPagamento) {
+			mapMeioPagamentoValor.put(meioPagamento.getNome(), 0.0);
+		}
+		
+		if(!listaReceita.isEmpty() || !listaDespesa.isEmpty()){			
+			for (Receita receitaLocal : listaReceita) {				
+				for (MeioPagamento meioPagamento : listaMeioPagamento) {
+					if(receitaLocal.getMeioPagamento().getId().equals(meioPagamento.getId())){
+						total = mapMeioPagamentoValor.get(receitaLocal.getMeioPagamento().getNome()).doubleValue() + receitaLocal.getValor();
+						mapMeioPagamentoValor.put(receitaLocal.getMeioPagamento().getNome(), total);
+					}
 				}
 			}
+			
+			Iterator<Entry<String, Double>> entries = mapMeioPagamentoValor.entrySet().iterator();
+			while (entries.hasNext()) {
+			    Map.Entry entry = (Map.Entry) entries.next();
+			    receitaDespesaVO = new ReceitaDespesaVO();
+			    if (!((Double) entry.getValue()).equals(0.0)){
+			    	receitaDespesaVO.setDescricao(AplicacaoUtil.i18n("msg.receitaDespesa.receita")+" " +(String) entry.getKey());
+			    	receitaDespesaVO.setValor((Double) entry.getValue());
+			    	totalGeralReceita += (Double) entry.getValue();
+			    	listaTotaisReceitasDespesasLocal.add(receitaDespesaVO);
+			    }
+			}			
 			receitaDespesaVO = new ReceitaDespesaVO();
-			receitaDespesaVO.setDescricao(AplicacaoUtil.i18n("msg.receitaDespesa.despesaTotalSicoob"));
-			receitaDespesaVO.setValor(totalSicoob);		
+			receitaDespesaVO.setDescricao(AplicacaoUtil.i18n("msg.receitaDespesa.totalReceita"));			
+			receitaDespesaVO.setValor(totalGeralReceita);
 			listaTotaisReceitasDespesasLocal.add(receitaDespesaVO);
+						
+			mapMeioPagamentoValor = new HashMap<String, Double>();		
+			for (MeioPagamento meioPagamento : listaMeioPagamento) {
+				mapMeioPagamentoValor.put(meioPagamento.getNome(), 0.0);
+			}
+				
+			total = 0.0;
+			for (Despesa despesaLocal : listaDespesa) {				
+				for (MeioPagamento meioPagamento : listaMeioPagamento) {
+					if(despesaLocal.getMeioPagamento().getId().equals(meioPagamento.getId())){
+						total = mapMeioPagamentoValor.get(despesaLocal.getMeioPagamento().getNome()).doubleValue() + despesaLocal.getValor();
+						mapMeioPagamentoValor.put(despesaLocal.getMeioPagamento().getNome(), total);
+					}
+				}
+			}		
+			
+			entries = mapMeioPagamentoValor.entrySet().iterator();
+			while (entries.hasNext()) {
+			    Map.Entry entry = (Map.Entry) entries.next();
+			    if (!((Double) entry.getValue()).equals(0.0)){
+			    	receitaDespesaVO = new ReceitaDespesaVO();
+			    	receitaDespesaVO.setDescricao(AplicacaoUtil.i18n("msg.receitaDespesa.despesa")+" " +(String) entry.getKey());
+			    	receitaDespesaVO.setValor((Double) entry.getValue());
+			    	totalGeralDespesa += (Double) entry.getValue();
+			    	listaTotaisReceitasDespesasLocal.add(receitaDespesaVO);
+			    }
+			}
 			
 			receitaDespesaVO = new ReceitaDespesaVO();
-			receitaDespesaVO.setDescricao(AplicacaoUtil.i18n("msg.receitaDespesa.despesaTotalDinheiro"));
-			receitaDespesaVO.setValor(totalDinheiro);
-			listaTotaisReceitasDespesasLocal.add(receitaDespesaVO);
-			
-			receitaDespesaVO = new ReceitaDespesaVO();
-			receitaDespesaVO.setDescricao(AplicacaoUtil.i18n("msg.receitaDespesa.despesaTotalSicobobDinheiro"));
-			receitaDespesaVO.setValor(totalSicoob+totalDinheiro);
+			receitaDespesaVO.setDescricao(AplicacaoUtil.i18n("msg.receitaDespesa.totalDespesa"));		
+			receitaDespesaVO.setValor(totalGeralDespesa);
 			listaTotaisReceitasDespesasLocal.add(receitaDespesaVO);
 			
 			receitaDespesaVO = new ReceitaDespesaVO();
 			receitaDespesaVO.setDescricao(AplicacaoUtil.i18n("msg.receitaDespesa.receitaMenosDespesa"));
-			receitaDespesaVO.setValor(totalReceitaSicoobDinheiro - (totalSicoob+totalDinheiro));
+			receitaDespesaVO.setValor(totalGeralReceita - totalGeralDespesa);
 			listaTotaisReceitasDespesasLocal.add(receitaDespesaVO);
 		}
 		this.listaTotaisReceitasDespesas = new ListDataModel<ReceitaDespesaVO>(listaTotaisReceitasDespesasLocal);
 	}
+
 	
 	public void gerarExcel() throws SQLException, Exception{
 		
@@ -418,8 +501,8 @@ public class ReceitaDespesaMB implements Serializable {
 			label = new Label(3,linha,String.valueOf(receita.getNumeroDocumento()),cfLinha);	
 			listaTamanhoLinhasColunaTres.add(receita.getNumeroDocumento().length());
 			abaFolha1.addCell(label);
-			label = new Label(4,linha,String.valueOf(receita.getMeioPagamento().getNomeI18n()),cfLinha);
-			listaTamanhoLinhasColunaQuatro.add(receita.getMeioPagamento().getNomeI18n().length());
+			label = new Label(4,linha,String.valueOf(receita.getMeioPagamento().getNome()),cfLinha);
+			listaTamanhoLinhasColunaQuatro.add(receita.getMeioPagamento().getNome().length());
 			abaFolha1.addCell(label);
 			label = new Label(5,linha,receita.getObservacao(),cfLinha);		
 			listaTamanhoLinhasColunaCinco.add(receita.getObservacao().length());
@@ -475,8 +558,8 @@ public class ReceitaDespesaMB implements Serializable {
 			 label = new Label(3,linha,String.valueOf(despesa.getNumeroDocumento()),cfLinha);
 			 listaTamanhoLinhasColunaTres.add(despesa.getNumeroDocumento().length());
 			 abaFolha1.addCell(label);
-			 label = new Label(4,linha,String.valueOf(despesa.getMeioPagamento().getNomeI18n()),cfLinha);	
-			 listaTamanhoLinhasColunaQuatro.add(despesa.getMeioPagamento().getNomeI18n().length());
+			 label = new Label(4,linha,String.valueOf(despesa.getMeioPagamento().getNome()),cfLinha);	
+			 listaTamanhoLinhasColunaQuatro.add(despesa.getMeioPagamento().getNome().length());
 			 abaFolha1.addCell(label);
 			 label = new Label(5,linha,despesa.getObservacao(),cfLinha);	
 			 listaTamanhoLinhasColunaCinco.add(despesa.getObservacao().length());
@@ -520,6 +603,12 @@ public class ReceitaDespesaMB implements Serializable {
 		 FacesContext.getCurrentInstance().responseComplete();
 		 workbook.close();
 	}
+	
+	
+	public String cadastroReceitaDespesa(){
+		this.limparCadastroReceitaDespesa();
+		return "cadastrar"; 
+	}
 
 	
 	public String cancelarCadastroReceitaDespesa(){
@@ -534,7 +623,7 @@ public class ReceitaDespesaMB implements Serializable {
 		this.valor = this.despesa.getValor();
 		this.numeroDocumento = this.despesa.getNumeroDocumento();
 		this.meioPagamento = new MeioPagamento();
-		this.meioPagamento.setId(this.getMeioPagamento().getId());	
+		this.meioPagamento.setId(this.despesa.getMeioPagamento().getId());	
 		this.observacao = this.despesa.getObservacao();
 		return "editar";
 	}
@@ -547,7 +636,7 @@ public class ReceitaDespesaMB implements Serializable {
 		this.valor = this.receita.getValor();
 		this.numeroDocumento = this.receita.getNumeroDocumento();
 		this.meioPagamento = new MeioPagamento();
-		this.meioPagamento.setId(this.getMeioPagamento().getId());	
+		this.meioPagamento.setId(this.receita.getMeioPagamento().getId());	
 		this.observacao = this.receita.getObservacao();
 		return "editar";
 	}
@@ -596,6 +685,9 @@ public class ReceitaDespesaMB implements Serializable {
 		this.listaReceita = new ListDataModel<Receita>();
 		this.listaTotaisReceitasDespesas = new ListDataModel<ReceitaDespesaVO>();
 		this.exibeBotaoExcel = Boolean.FALSE;
+		this.dataDe = null;
+		this.dataAte = null;
+		this.idCondominio = null;
 	}
 	
 	private void limparTelaCadastroReceitaDespesa(){
@@ -617,7 +709,7 @@ public class ReceitaDespesaMB implements Serializable {
 			listaMeioPagamento = this.meioPagamentoService.buscarTodos();
 			this.listaSIMeioPagamento = new ArrayList<SelectItem>();
 			for (MeioPagamento meioPagamento : listaMeioPagamento) {
-				this.listaSIMeioPagamento.add(new SelectItem(meioPagamento.getId(),meioPagamento.getNomeI18n()));	
+				this.listaSIMeioPagamento.add(new SelectItem(meioPagamento.getId(),meioPagamento.getNome()));	
 			}			
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
