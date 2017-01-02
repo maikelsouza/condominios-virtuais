@@ -22,7 +22,7 @@
 					<h:selectOneMenu id="idCondominio" value="#{arquivoMB.condominio.id}"
 						defaultLabel="#{msg['condominio.DefaultLabel']}"
 						label="#{msg['condominio.label']}" required="true">
-						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" itemValue="0" noSelectionOption="true" />
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="true" />
 						<f:selectItems value="#{arquivoMB.listaCondominios}" />
 					</h:selectOneMenu>
 				</h:panelGrid>
