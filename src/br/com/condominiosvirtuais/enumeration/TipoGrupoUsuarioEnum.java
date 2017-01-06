@@ -115,7 +115,7 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_RECEITA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_CONTADOR.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_CONTADOR.getPathTelas());
-			
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_CONTADOR.getPathTelas());
 			
 			
 			

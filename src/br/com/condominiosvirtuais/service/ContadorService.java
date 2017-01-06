@@ -10,5 +10,7 @@ public interface ContadorService {
 	public abstract void salvar(Contador contador) throws SQLException, Exception;
 	
 	public abstract List<Contador> buscarPorIdEscritorioContabilidadeESituacao(Integer idEscritorioContabilidade, Integer situacao) throws SQLException, Exception;
+	
+	public abstract void atualizar(Contador contador) throws SQLException, Exception;
 
 }

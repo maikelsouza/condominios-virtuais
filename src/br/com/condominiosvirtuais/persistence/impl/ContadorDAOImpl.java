@@ -122,8 +122,11 @@ public class ContadorDAOImpl implements ContadorDAO, Serializable {
 				contador = new Contador();
 				contador.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
 				contador.setIdEscritorioContabilidade((Integer) SQLUtil.getValorResultSet(resultSet, ID_ESCRITORIO_CONTABILIDADE, java.sql.Types.INTEGER));
-				this.usuarioDAO.buscarPorIdESituacaoEPopularUsuarioPeloId(contador, con);
-				listaContador.add(contador);
+				contador.setSituacao(situacao);
+				if(this.usuarioDAO.buscarPorIdESituacaoEPopularUsuarioPeloId(contador, con)){
+					listaContador.add(contador);				
+				}
+				
 			}
 		} catch (NumberFormatException e) {
 			throw e;
@@ -140,6 +143,12 @@ public class ContadorDAOImpl implements ContadorDAO, Serializable {
 			}
 		}	
 		return listaContador;
+	}
+
+	@Override
+	public void atualizar(Contador contador) throws SQLException, Exception {
+		// TODO Auto-generated method stub
+		
 	}
 	
 

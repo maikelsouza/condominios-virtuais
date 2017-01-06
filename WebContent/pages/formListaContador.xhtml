@@ -17,15 +17,17 @@
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 					<h:panelGroup>
-						<h:outputLabel value="#{msg['contador.situacao']}" for="idContador"/>
+						<h:outputLabel value="#{msg['contador.situacao']}" for="idSituacao"/>
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 					<h:selectOneMenu id="idEscritorioContabilidade" value="#{contadorMB.contador.idEscritorioContabilidade}"
-						label="#{msg['contador.situacao.label']}" required="true">
+						label="#{msg['contador.escritorioContabilidade.label']}" required="true">
+						<f:selectItem itemLabel="#{msg['escritorioContabilidade.DefaultLabel']}" noSelectionOption="true" />
 						<f:selectItems value="#{contadorMB.listaSIEscritorioContabilidade}" />
 					</h:selectOneMenu>
 					<h:selectOneMenu id="idSituacao" value="#{contadorMB.contador.situacao}"
 						label="#{msg['contador.situacao.label']}" required="true">
+						<f:selectItem itemLabel="#{msg['contador.situacao.DefaultLabel']}" noSelectionOption="true" />
 						<f:selectItems value="#{contadorMB.listaSISituacao}" />
 					</h:selectOneMenu>
 				</h:panelGrid>
@@ -40,14 +42,16 @@
 					<h:commandButton value="#{msg.botaoPesquisar}" actionListener="#{contadorMB.pesquisar}" />
 				</h:panelGrid>
 			</div>
-			<rich:panel header="#{msg.listaContador}">					
+			<rich:panel header="#{msg.listaContador}">		
+						
 				<rich:dataTable value="#{contadorMB.listaContadorDataModel}" var="contador" rowClasses="odd-row, even-row" rows="10" styleClass="stable" 
 					id="tableContador" style="width:100%;" rendered="#{contadorMB.listaContadorDataModel.rowCount > 0}">
+					
 					<rich:column sortBy="#{contador.nome}" sortOrder="#{ordenaContadorMB.nomeContador}">
 						<f:facet name="header">
 							<a4j:commandLink value="#{msg['contador.nome']}" render="tableContador" action="#{ordenaContadorMB.ordenarPorNomeContador}" />
 						</f:facet>
-						<h:outputText value="#{contador.nome}" />
+						<h:outputText value="#{contador.nome}" />						
 					</rich:column>
 					<rich:column sortBy="#{contador.email.email}" sortOrder="#{ordenaContadorMB.emailContador}">
 						<f:facet name="header">
@@ -55,23 +59,25 @@
 						</f:facet>
 						<h:outputText value="#{contador.email.email}" />
 					</rich:column>					
-					<rich:column sortBy="#{contador.sexo}" sortOrder="#{ordenaContadorMB.sexoContador}">
+					<rich:column sortBy="#{contador.sexo == 0 ? msg['contador.sexo.0'] : msg['contador.sexo.1']}" sortOrder="#{ordenaContadorMB.sexoContador}">
 						<f:facet name="header">
 							<a4j:commandLink value="#{msg['contador.sexo']}" render="tableContador" action="#{ordenaContadorMB.ordenarPorSexoContador}" />
-						</f:facet>
-						<h:outputText value="#{contador.sexo}" />
-					</rich:column>
-					<rich:column sortBy="#{contador.dataNascimento}" sortOrder="#{ordenaContadorMB.ordenarPorDataNascimentoContador}">
-						          <f:facet name="header">                                                                                          
+						</f:facet>						
+						<h:outputText value="#{contador.sexo == 0 ? msg['contador.sexo.0'] : msg['contador.sexo.1']}" />
+					</rich:column>                  
+					<rich:column sortBy="#{contador.dataNascimento}" sortOrder="#{ordenaContadorMB.dataNascimentoContador}">
+						  <f:facet name="header">                                                                                          
 							<a4j:commandLink value="#{msg['contador.dataNascimento']}" render="tableContador" action="#{ordenaContadorMB.ordenarPorDataNascimentoContador}" />
 						</f:facet>
-						<h:outputText value="#{contador.dataNascimento}" />
+						<h:outputText value="#{contador.dataNascimento}" >
+							<f:convertDateTime pattern="#{msg['formatoData']}" />
+						</h:outputText>
 					</rich:column>
-					<rich:column sortBy="#{contador.situacao}" sortOrder="#{ordenaContadorMB.ordenarPorSituacaoContador}">
+					<rich:column sortBy="#{contador.situacao == 0 ? msg['contador.situacao.0'] : msg['contador.situacao.1']}" sortOrder="#{ordenaContadorMB.situacaoContador}">
 						<f:facet name="header">                                                                                         
 							<a4j:commandLink value="#{msg['contador.situacao']}" render="tableContador" action="#{ordenaContadroMB.ordenarPorSituacaoContador}" />
 						</f:facet>
-						<h:outputText value="#{contador.situacao}" />
+						<h:outputText value="#{contador.situacao == 0 ? msg['contador.situacao.0'] : msg['contador.situacao.1']}" />
 					</rich:column>
 					<rich:column> 
 						<f:facet name="header">

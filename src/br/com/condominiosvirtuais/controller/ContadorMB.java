@@ -16,7 +16,6 @@ import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Contador;
 import br.com.condominiosvirtuais.entity.EscritorioContabilidade;
-import br.com.condominiosvirtuais.entity.SindicoProfissional;
 import br.com.condominiosvirtuais.enumeration.EscritorioContabilidadeSituacaoEnum;
 import br.com.condominiosvirtuais.enumeration.TipoGrupoUsuarioEnum;
 import br.com.condominiosvirtuais.enumeration.UsuarioEnum;
@@ -42,8 +41,7 @@ public class ContadorMB implements Serializable {
 	
 	private List<SelectItem> listaSIAnos = new ArrayList<SelectItem>();
 	
-	private ListDataModel<Contador> listaContadorDataModel = null;	
-	                                
+	private ListDataModel<Contador> listaContadorDataModel = null;		                                
 	
 	private List<SelectItem> listaSISexo;
 	
@@ -76,8 +74,7 @@ public class ContadorMB implements Serializable {
 			listaDeEscritoriosContabilidadeAtivos = this.escritorioContabilidadeService.buscarPorSituacao(EscritorioContabilidadeSituacaoEnum.ATIVO.getSituacao());
 			this.listaSIEscritorioContabilidade = new ArrayList<SelectItem>();
 			for (EscritorioContabilidade escritorioContabilidade : listaDeEscritoriosContabilidadeAtivos) {
-				this.listaSIEscritorioContabilidade.add(new SelectItem(escritorioContabilidade.getId(), escritorioContabilidade.getNome()));
-				
+				this.listaSIEscritorioContabilidade.add(new SelectItem(escritorioContabilidade.getId(), escritorioContabilidade.getNome()));				
 			}
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
@@ -113,8 +110,27 @@ public class ContadorMB implements Serializable {
 		return null;		
 	}
 	
-	public String pesquisar(){
+	public String editarContador(){
+		this.contador = this.listaContadorDataModel.getRowData();
 		try {			
+			if (!ManagedBeanUtil.validaEmail(this.contador.getEmail().getEmail())){
+				ManagedBeanUtil.setMensagemErro("msg.contador.formatoEmailInvalido");
+				return null;
+			}
+			this.contadorService.atualizar(this.contador);
+			ManagedBeanUtil.setMensagemInfo("msg.contador.atualizadoSucesso");
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");				
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}	
+		return "editar";		
+	}
+	
+	public String pesquisar(){
+		try {                         
 			this.listaContadorDataModel = new ListDataModel<Contador>(this.contadorService.buscarPorIdEscritorioContabilidadeESituacao(this.contador.getIdEscritorioContabilidade(), this.contador.getSituacao()));
 			if(this.listaContadorDataModel.getRowCount() == 0){
 				ManagedBeanUtil.setMensagemInfo("msg.contador.semContador");
@@ -211,7 +227,7 @@ public class ContadorMB implements Serializable {
 		this.listaSISituacao = listaSISituacao;
 	}
 
-	public ListDataModel<Contador> getListaContadorDataModel() {
+	public ListDataModel<Contador> getListaContadorDataModel() {		
 		return listaContadorDataModel;
 	}
 

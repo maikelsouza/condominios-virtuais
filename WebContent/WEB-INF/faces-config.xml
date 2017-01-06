@@ -1763,7 +1763,16 @@
    <from-outcome>cancelar</from-outcome>
    <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
    <redirect/>
-  </navigation-case>
+  </navigation-case>  
+ </navigation-rule> 
+ <navigation-rule>                       
+  <from-view-id>/pages/formListaContador.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{contadorMB.editarContador}</from-action>
+   <from-outcome>editar</from-outcome>
+   <to-view-id>/pages/formEditaContador.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>  
  </navigation-rule> 
  
  

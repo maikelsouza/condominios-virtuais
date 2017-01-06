@@ -31,6 +31,11 @@ public class ContadorServiceImpl implements Serializable, ContadorService {
 	public List<Contador> buscarPorIdEscritorioContabilidadeESituacao(Integer idEscritorioContabilidade, Integer situacao) throws SQLException, Exception {
 		return this.contadorDAO.buscarPorIdEscritorioContabilidadeESituacao(idEscritorioContabilidade, situacao);
 	}
+
+	@Override
+	public void atualizar(Contador contador) throws SQLException, Exception {
+		this.contadorDAO.atualizar(contador);		
+	}
 	
 	
 
