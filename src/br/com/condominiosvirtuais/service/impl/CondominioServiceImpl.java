@@ -128,6 +128,12 @@ public class CondominioServiceImpl implements CondominioService, Serializable{
 	@Override
 	public List<Condominio> buscarPorSituacao(Integer situacao) throws SQLException, Exception {
 		return this.condominioDAO.buscarPorSituacao(situacao);
+	}
+
+	@Override
+	public List<Condominio> buscarPorIdEscritorioContabilidade(Integer idEscritorioContabilidade)
+			throws SQLException, Exception {		
+		return this.condominioDAO.buscarPorIdEscritorioContabilidade(idEscritorioContabilidade);
 	}	
 
 }

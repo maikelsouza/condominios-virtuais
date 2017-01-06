@@ -102,7 +102,7 @@ public class Usuario {
 		/* Essa validação (diferente null e zero), se faz necessária, pois no caso de uma inserção/atualização o zero é para garantir a data null
 		 e o null é a recuperação da informação do banco. */
 		if(this.getDataNascimentoAno() != null && this.getDataNascimentoAno() != 0 
-				&& this.getDataNascimentoMes() != null && this.getDataNascimentoMes() != 0  && 
+				&& this.getDataNascimentoMes() != null  && 
 				this.getDataNascimentoDia() != null && this.getDataNascimentoDia() != 0){
 			Calendar calendar = Calendar.getInstance();	
 			calendar.set(this.getDataNascimentoAno(), this.getDataNascimentoMes(), this.getDataNascimentoDia(),0,0);

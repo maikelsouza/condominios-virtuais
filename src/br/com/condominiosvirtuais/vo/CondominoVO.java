@@ -177,7 +177,7 @@ public class CondominoVO {
 		/* Essa validação (diferente null e zero), se faz necessária, pois no caso de uma inserção/atualização o zero é para garantir a data null
 		 e o null é a recuperação da informação do banco. */
 		if(this.getDataNascimentoAnoCondomino() != null && this.getDataNascimentoAnoCondomino() != 0
-				&& this.getDataNascimentoMesCondomino() != null && this.getDataNascimentoMesCondomino() != 0 && 
+				&& this.getDataNascimentoMesCondomino() != null && 
 				this.getDataNascimentoDiaCondomino() != null && this.getDataNascimentoDiaCondomino() != 0){
 			Calendar calendar = Calendar.getInstance();			
 			calendar.set(this.getDataNascimentoAnoCondomino(), this.getDataNascimentoMesCondomino(), this.getDataNascimentoDiaCondomino(),0,0);			

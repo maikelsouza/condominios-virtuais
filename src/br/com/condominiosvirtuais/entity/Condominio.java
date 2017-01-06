@@ -34,6 +34,8 @@ public class Condominio{
 	
 	private Long telefoneCelular;
 	
+	private Integer idEscritorioContabilidade;
+	
 	// Atributo criado para guardar um código, que deverá ser único e gerado randomicamente. Inicialmente gerado para que o usuário possa fazer o seu cadastro.
 	private Integer codigo;
 		
@@ -145,6 +147,14 @@ public class Condominio{
 
 	public void setCodigo(Integer codigo) {
 		this.codigo = codigo;
+	}	
+
+	public Integer getIdEscritorioContabilidade() {
+		return idEscritorioContabilidade;
+	}
+
+	public void setIdEscritorioContabilidade(Integer idEscritorioContabilidade) {
+		this.idEscritorioContabilidade = idEscritorioContabilidade;
 	}
 
 	@Override
@@ -155,6 +165,7 @@ public class Condominio{
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
 		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
+		result = prime * result + ((idEscritorioContabilidade == null) ? 0 : idEscritorioContabilidade.hashCode());
 		result = prime * result
 				+ ((situacao == null) ? 0 : situacao.hashCode());
 		result = prime * result
@@ -163,8 +174,12 @@ public class Condominio{
 				+ ((telefoneFixo == null) ? 0 : telefoneFixo.hashCode());
 		result = prime * result
 				+ ((codigo == null) ? 0 : codigo.hashCode());
+		result = prime * result
+				+ ((idEscritorioContabilidade == null) ? 0 : idEscritorioContabilidade.hashCode());
 		return result;
 	}
+	
+	
 
 	@Override
 	public boolean equals(Object obj) {
@@ -209,6 +224,11 @@ public class Condominio{
 			if (other.codigo != null)
 				return false;
 		} else if (!codigo.equals(other.codigo))
+			return false;
+		if (idEscritorioContabilidade == null) {
+			if (other.idEscritorioContabilidade != null)
+				return false;
+		} else if (!idEscritorioContabilidade.equals(other.idEscritorioContabilidade))
 			return false;
 		return true;
 	}	

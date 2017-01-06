@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+	
+		<h:form id="idFormCadastroContador" styleClass="content">
+			<rich:panel header="#{msg.cadastroContador}">
+				<h:panelGrid columns="3">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['contador.nome']}:" for="idNome" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['contador.sexo']}:" for="idSexo" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:outputLabel value="#{msg['contador.dataNascimento']}:" for="idDataNascimento" />					
+					<h:inputText id="idNome" value="#{contadorMB.contador.nome}"
+						required="true" size="40" label="#{msg['contador.nome.label']}"
+						validatorMessage="#{msg['msg.contador.nome']}">
+						<f:validateLength minimum="1" maximum="150" />
+					</h:inputText>
+					<h:selectOneRadio id="idSexo" value="#{contadorMB.contador.sexo}"
+						required="true" label="#{msg['contador.sexo.label']}">	
+						<f:selectItems value="#{contadorMB.listaSISexo}" />					
+					</h:selectOneRadio>
+					<h:panelGroup id="idDataNascimento">
+						<h:selectOneMenu
+							value="#{contadorMB.contador.dataNascimentoDia}">
+							<f:selectItem itemLabel="#{msg['contador.dataNascimento.dia']}" noSelectionOption="false" />
+							<f:selectItems value="#{contadorMB.listaSIDias}" />
+						</h:selectOneMenu>
+						<h:selectOneMenu value="#{contadorMB.contador.dataNascimentoMes}">
+							<f:selectItem itemLabel="#{msg['contador.dataNascimento.mes']}" noSelectionOption="false" />
+							<f:selectItems value="#{contadorMB.listaSIMeses}" />
+						</h:selectOneMenu>
+						<h:selectOneMenu
+							value="#{contadorMB.contador.dataNascimentoAno}">
+							<f:selectItem itemLabel="#{msg['contador.dataNascimento.ano']}" noSelectionOption="false" />
+							<f:selectItems value="#{contadorMB.listaSIAnos}" />
+						</h:selectOneMenu>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['contador.email']}:" for="idEmail" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['contador.senha']}:" for="idSenha" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['contador.confirmarSenha']}:" for="idConfirmarSenha" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+										
+					<h:inputText id="idEmail" value="#{contadorMB.contador.email.email}" required="true" size="40" label="#{msg['contador.email.label']}"/>
+					
+					<h:panelGroup>
+						<h:inputSecret id="idSenha" value="#{contadorMB.contador.senha}" required="true" label="#{msg['contador.senha.label']}"
+							validatorMessage="#{msg['msg.contador.senha']}">
+							<f:validateLength minimum="6" maximum="15" />
+						</h:inputSecret>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:inputSecret id="idConfirmarSenha" value="#{contadorMB.contador.confirmarSenha}" required="true" label="#{msg['contador.confirmarSenha.label']}"
+							validatorMessage="#{msg['msg.contador.confirmarSenha']}">
+							<f:validateLength minimum="6" maximum="15" />
+						</h:inputSecret>
+					</h:panelGroup>
+					<div></div>
+				</h:panelGrid>
+			</rich:panel>
+			<rich:panel header="#{msg['contador.associarEscritorioContabilidade']}">
+				<h:panelGrid columns="1">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['contador.escritorioContabilidade']}:" for="idEscritorioContabilidade"  />
+						<span class="asterisco">*</span>
+					</h:panelGroup>	
+					<h:selectOneMenu id="idEscritorioContabilidade" value="#{contadorMB.contador.idEscritorioContabilidade}" required="true" label="#{msg['contador.escritorioContabilidade.label']}">
+						<f:selectItem itemLabel="#{msg['escritorioContabilidade.DefaultLabel']}" noSelectionOption="true" />
+						<f:selectItems value="#{contadorMB.listaSIEscritorioContabilidade}" />
+					</h:selectOneMenu>
+				</h:panelGrid>		
+			</rich:panel>
+						
+			<h:panelGrid columns="1" styleClass="msgAsterisco">
+				<h:panelGroup>
+					<h:outputLabel value="#{msg['regraSenha']}" for="idRegraSenhaContador" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idRegraSenhaContador" styleClass="asterisco" />
+				</h:panelGroup>
+				<h:panelGroup>
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
+				</h:panelGroup>
+			</h:panelGrid>
+			<br></br>
+			<h:panelGrid columns="3">
+				<h:commandButton value="#{msg.botaoSalvar}" action="#{contadorMB.salvar}" />
+				<h:commandButton value="#{msg.botaoLimpar}" action="#{contadorMB.limparCadastroContador}" immediate="false" />
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{contadorMB.cancelarCadastroContador}" immediate="true" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

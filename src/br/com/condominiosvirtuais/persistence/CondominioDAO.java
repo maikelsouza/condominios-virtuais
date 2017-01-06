@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import br.com.condominiosvirtuais.entity.Condominio;
-import br.com.condominiosvirtuais.entity.SindicoProfissional;
 
 public interface CondominioDAO {
 	
@@ -20,6 +19,10 @@ public interface CondominioDAO {
 	public abstract Condominio buscarCondominioPorId(Integer id) throws SQLException, Exception;
 	
     public abstract Condominio buscarCondominioPorId(Integer id, Connection con) throws SQLException, Exception;
+    
+    public abstract List<Condominio> buscarPorIdEscritorioContabilidade(Integer idEscritorioContabilidade, Connection con) throws SQLException, Exception;
+    
+    public abstract List<Condominio> buscarPorIdEscritorioContabilidade(Integer idEscritorioContabilidade) throws SQLException, Exception;
     
  // TODO: Código comentado em 24/10/2016. Apagar em 90 dias   
   //  public abstract List<Condominio> buscarPorSindicoProfissional(SindicoProfissional sindicoProfissional) throws SQLException, Exception;

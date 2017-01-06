@@ -143,6 +143,11 @@
   <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaDespesaMB</managed-bean-class>
   <managed-bean-scope>view</managed-bean-scope>
  </managed-bean>
+ <managed-bean>
+  <managed-bean-name>ordenaContadorMB</managed-bean-name>
+  <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaContadorMB</managed-bean-class>
+  <managed-bean-scope>view</managed-bean-scope>
+ </managed-bean>
  
  <navigation-rule>
   <navigation-case>
@@ -431,6 +436,18 @@
    <from-action>#{principalMB.listarReceitaDespesa}</from-action>
    <from-outcome>listarReceitaDespesa</from-outcome>
    <to-view-id>/pages/formListaReceitaDespesa.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-action>#{principalMB.cadastrarContador}</from-action>
+   <from-outcome>cadastrarContador</from-outcome>
+   <to-view-id>/pages/formCadastroContador.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case>
+   <navigation-case>
+   <from-action>#{principalMB.listarContador}</from-action>
+   <from-outcome>listarContador</from-outcome>
+   <to-view-id>/pages/formListaContador.xhtml</to-view-id>
     <redirect/>
   </navigation-case>
  </navigation-rule>
@@ -1736,6 +1753,15 @@
    <from-action>#{receitaDespesaMB.cadastroReceitaDespesa}</from-action>
    <from-outcome>cadastrar</from-outcome>
    <to-view-id>/pages/formCadastroReceitaDespesa.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formCadastroContador.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{contadorMB.cancelarCadastroContador}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
  </navigation-rule> 

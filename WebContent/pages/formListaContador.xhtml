@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormListaContador" styleClass="content">
+			<rich:panel header="#{msg.filtroContador}">				
+				<h:panelGrid columns="2">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['contador.escritorioContabilidade']}" for="idEscritorioContabilidade"/>
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['contador.situacao']}" for="idContador"/>
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:selectOneMenu id="idEscritorioContabilidade" value="#{contadorMB.contador.idEscritorioContabilidade}"
+						label="#{msg['contador.situacao.label']}" required="true">
+						<f:selectItems value="#{contadorMB.listaSIEscritorioContabilidade}" />
+					</h:selectOneMenu>
+					<h:selectOneMenu id="idSituacao" value="#{contadorMB.contador.situacao}"
+						label="#{msg['contador.situacao.label']}" required="true">
+						<f:selectItems value="#{contadorMB.listaSISituacao}" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+				
+				<h:panelGrid columns="2" styleClass="msgAsterisco"> 
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
+				</h:panelGrid>
+			</rich:panel>
+			<div>
+				<h:panelGrid columns="1">
+					<h:commandButton value="#{msg.botaoPesquisar}" actionListener="#{contadorMB.pesquisar}" />
+				</h:panelGrid>
+			</div>
+			<rich:panel header="#{msg.listaContador}">					
+				<rich:dataTable value="#{contadorMB.listaContadorDataModel}" var="contador" rowClasses="odd-row, even-row" rows="10" styleClass="stable" 
+					id="tableContador" style="width:100%;" rendered="#{contadorMB.listaContadorDataModel.rowCount > 0}">
+					<rich:column sortBy="#{contador.nome}" sortOrder="#{ordenaContadorMB.nomeContador}">
+						<f:facet name="header">
+							<a4j:commandLink value="#{msg['contador.nome']}" render="tableContador" action="#{ordenaContadorMB.ordenarPorNomeContador}" />
+						</f:facet>
+						<h:outputText value="#{contador.nome}" />
+					</rich:column>
+					<rich:column sortBy="#{contador.email.email}" sortOrder="#{ordenaContadorMB.emailContador}">
+						<f:facet name="header">
+							<a4j:commandLink value="#{msg['contador.email']}" render="tableContador" action="#{ordenaContadorMB.ordenarPorEmailContador}" />
+						</f:facet>
+						<h:outputText value="#{contador.email.email}" />
+					</rich:column>					
+					<rich:column sortBy="#{contador.sexo}" sortOrder="#{ordenaContadorMB.sexoContador}">
+						<f:facet name="header">
+							<a4j:commandLink value="#{msg['contador.sexo']}" render="tableContador" action="#{ordenaContadorMB.ordenarPorSexoContador}" />
+						</f:facet>
+						<h:outputText value="#{contador.sexo}" />
+					</rich:column>
+					<rich:column sortBy="#{contador.dataNascimento}" sortOrder="#{ordenaContadorMB.ordenarPorDataNascimentoContador}">
+						          <f:facet name="header">                                                                                          
+							<a4j:commandLink value="#{msg['contador.dataNascimento']}" render="tableContador" action="#{ordenaContadorMB.ordenarPorDataNascimentoContador}" />
+						</f:facet>
+						<h:outputText value="#{contador.dataNascimento}" />
+					</rich:column>
+					<rich:column sortBy="#{contador.situacao}" sortOrder="#{ordenaContadorMB.ordenarPorSituacaoContador}">
+						<f:facet name="header">                                                                                         
+							<a4j:commandLink value="#{msg['contador.situacao']}" render="tableContador" action="#{ordenaContadroMB.ordenarPorSituacaoContador}" />
+						</f:facet>
+						<h:outputText value="#{contador.situacao}" />
+					</rich:column>
+					<rich:column> 
+						<f:facet name="header">
+							<h:outputText value="#{msg.rotuloAcao}" />
+						</f:facet>
+						<a4j:commandLink value="#{msg.linkEditar}"  action="#{contadorMB.editarContador}"  immediate="true" />
+					</rich:column>		
+					<f:facet name="footer">
+             			<rich:dataScroller for="tableContador"  fastControls="hide" renderIfSinglePage="false" />
+          			</f:facet>	
+				</rich:dataTable>
+			</rich:panel>
+			<h:panelGrid columns="1">
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{contadorMB.cancelarFiltroContador}" immediate="true"/>
+			</h:panelGrid>
+		</h:form>
+
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseover" query="jQuery(this).addClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseout" query="jQuery(this).removeClass('active-row')" />
+	</ui:define>
+
+</ui:composition>

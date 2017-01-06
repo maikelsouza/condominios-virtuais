@@ -1,5 +1,6 @@
 package br.com.condominiosvirtuais.persistence;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -23,5 +24,7 @@ public interface UsuarioDAO {
 	public abstract Boolean buscarPorIdESituacaoEPopularUsuarioPeloId(Usuario usuario, Connection con ) throws SQLException, Exception;
 	
 	public abstract void atualizarSenha(Usuario usuario) throws SQLException, Exception;
+	
+	public void salvarUsuario(Usuario usuario, Connection con) throws NoSuchAlgorithmException, NumberFormatException, SQLException, Exception;
 
 }

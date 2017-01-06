@@ -10,28 +10,28 @@
 	<h:form id="idFormConteudoTelaPrincipal" styleClass="content">
 		<a4j:outputPanel id="gallery" styleClass="menuAtalho">
 			<a4j:commandLink action="#{principalMB.listarCondominio}"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}">
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}">
 				<h:graphicImage title="#{msg['cadastro.condominio']}"
 					url="/imagens/menu_condominio_n.png" />
 				<h:outputLabel value="#{msg['cadastro.condominio']}" />
 			</a4j:commandLink>
 			
 			<a4j:commandLink action="#{principalMB.listarBloco}"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}">
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}">
 				<h:graphicImage title="#{msg['cadastro.bloco']}"
 					url="/imagens/menu_bloco_n.png" />
 				<h:outputLabel value="#{msg['cadastro.bloco']}" />
 			</a4j:commandLink>
 			
 			<a4j:commandLink action="#{principalMB.listarUnidade}"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}">
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}">
 				<h:graphicImage title="#{msg['cadastro.unidade']}"
 					url="/imagens/menu_unidade_n.png" />
 				<h:outputLabel value="#{msg['cadastro.unidade']}" />
 			</a4j:commandLink>
 			
 			<a4j:commandLink action="#{principalMB.listarCondomino}"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}">
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}">
 				<h:graphicImage title="#{msg['cadastro.condomino']}"
 					url="/imagens/menu_condomino_n.png" />
 				<h:outputLabel value="#{msg['cadastro.condomino']}" />

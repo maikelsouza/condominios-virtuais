@@ -10,11 +10,6 @@ public interface MeioPagamentoDAO {
 	
 	public abstract MeioPagamento buscaPorId(Integer id, Connection con) throws SQLException, Exception;
 	
-	public abstract List<MeioPagamento> buscarTodos()  throws SQLException, Exception;
-	
-	
-	
-	
-	
+	public abstract List<MeioPagamento> buscarTodos()  throws SQLException, Exception;	
 
 }

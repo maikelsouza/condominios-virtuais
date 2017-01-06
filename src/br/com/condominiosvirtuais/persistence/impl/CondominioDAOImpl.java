@@ -54,6 +54,8 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 	
 	private static final String CODIGO = "CODIGO";
 	
+	private static final String ID_ESCRITORIO_CONTABILIDADE = "ID_ESCRITORIO_CONTABILIDADE"; 
+	
 	// Constraint referente a integridade do condomínio e bloco
 	private static final String FK_BLOCO_ID_CONDOMINIO_CONDOMINIO_ID = "FK_BLOCO_ID_CONDOMINIO_CONDOMINIO_ID";
 	
@@ -492,10 +494,7 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 				condominio.setTelefoneCelular((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_CELULAR, java.sql.Types.BIGINT));
 				condominio.setTelefoneFixo((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_FIXO, java.sql.Types.BIGINT));
 				sindicoGeral = this.usuarioDAO.get().buscarSindicoGeralPorCondominio(condominio,con);
-//				if(sindicoGeral != null){
-//					sindicoGeral.setEmail(this.emailUsuarioDAO.get().buscarEmailPrincipalPorUsuario(sindicoGeral));					
-					condominio.setSindicoGeral(sindicoGeral);					
-			//	}
+				condominio.setSindicoGeral(sindicoGeral);					
 			}
 		} catch (SQLException e) {			
 			throw e;
@@ -857,5 +856,88 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 		}	
 		return listaDeCondominios;
 	}
+
+	@Override
+	public List<Condominio> buscarPorIdEscritorioContabilidade(Integer idEscritorioContabilidade, Connection con) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(CONDOMINIO);
+		query.append(" WHERE ");
+		query.append(ID_ESCRITORIO_CONTABILIDADE);	
+		query.append(" = ?");
+		query.append(" ORDER BY ");
+		query.append(NOME);		
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		Condominio condominio = null;
+		List<Condominio> listaDeCondominios = new ArrayList<Condominio>();
+		try {
+			preparedStatement = con.prepareStatement(query.toString());		
+			SQLUtil.setValorPpreparedStatement(preparedStatement,1, idEscritorioContabilidade, java.sql.Types.INTEGER);
+			resultSet = preparedStatement.executeQuery();			
+			while(resultSet.next()){
+				condominio = new Condominio();
+				condominio.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				condominio.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+				condominio.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
+				condominio.setCnpj((Long) SQLUtil.getValorResultSet(resultSet, CNPJ, java.sql.Types.BIGINT));
+				condominio.setTelefoneCelular((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_CELULAR, java.sql.Types.BIGINT));
+				condominio.setTelefoneFixo((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_FIXO, java.sql.Types.BIGINT));
+				condominio.setCodigo((Integer) SQLUtil.getValorResultSet(resultSet, CODIGO, java.sql.Types.INTEGER));
+				listaDeCondominios.add(condominio);					
+			}
+		} catch (SQLException e) {			
+			throw e;
+		} catch (Exception e) {			
+			throw e;
+		}	
+		return listaDeCondominios;
+	}
+	
+	@Override
+	public List<Condominio> buscarPorIdEscritorioContabilidade(Integer idEscritorioContabilidade) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(CONDOMINIO);
+		query.append(" WHERE ");
+		query.append(ID_ESCRITORIO_CONTABILIDADE);	
+		query.append(" = ?");
+		query.append(" ORDER BY ");
+		query.append(NOME);		
+		PreparedStatement preparedStatement = null;
+		Connection con = Conexao.getConexao();
+		ResultSet resultSet = null;
+		Condominio condominio = null;
+		List<Condominio> listaDeCondominios = new ArrayList<Condominio>();
+		try {
+			preparedStatement = con.prepareStatement(query.toString());		
+			SQLUtil.setValorPpreparedStatement(preparedStatement,1, idEscritorioContabilidade, java.sql.Types.INTEGER);
+			resultSet = preparedStatement.executeQuery();			
+			while(resultSet.next()){
+				condominio = new Condominio();
+				condominio.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				condominio.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+				condominio.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
+				condominio.setCnpj((Long) SQLUtil.getValorResultSet(resultSet, CNPJ, java.sql.Types.BIGINT));
+				condominio.setTelefoneCelular((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_CELULAR, java.sql.Types.BIGINT));
+				condominio.setTelefoneFixo((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_FIXO, java.sql.Types.BIGINT));
+				condominio.setCodigo((Integer) SQLUtil.getValorResultSet(resultSet, CODIGO, java.sql.Types.INTEGER));
+				listaDeCondominios.add(condominio);					
+			}
+		} catch (SQLException e) {			
+			throw e;
+		} catch (Exception e) {			
+			throw e;
+		}finally{
+			try {
+				preparedStatement.close();
+				con.close();				
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);				
+			}
+		}	
+		return listaDeCondominios;
+	}
+
 	
 }

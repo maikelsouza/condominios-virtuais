@@ -60,6 +60,7 @@ public class SindicoProfissionalMB implements Serializable {
 	private ListDataModel<SindicoProfissional> listaSindicoProfissionalDataModel = null;
 	
 	
+	
 	@PostConstruct
 	public void iniciarSindicoProfissionalMB(){
 		this.popularListaSISexo();

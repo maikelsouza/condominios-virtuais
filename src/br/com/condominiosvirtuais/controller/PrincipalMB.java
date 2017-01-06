@@ -73,8 +73,6 @@ public class PrincipalMB  implements Serializable{
 	@Inject
 	private ObraMB obraMB;
 	
-	@Inject
-	private SindicoProfissionalMB sindicoProfissionalMB; 
 	
 	@PostConstruct
 	public void init() {
@@ -295,6 +293,16 @@ public class PrincipalMB  implements Serializable{
 	public String listarSindicoProfissional(){
 		return "listarSindicoProfissional";
 	}
+	
+	public String cadastrarContador(){
+		return "cadastrarContador";
+	}
+	
+	public String listarContador(){
+		return "listarContador";
+	}
+	
+	
 
 	private void iniciaThreads(){				
 		emailThread.start();

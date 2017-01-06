@@ -113,8 +113,8 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 		return listaUsuario;
 	}
 	
-	public void salvarUsuario(Usuario usuario, Connection con) throws NoSuchAlgorithmException, NumberFormatException, 
-	SQLException, Exception {		
+	@Override
+	public void salvarUsuario(Usuario usuario, Connection con) throws NoSuchAlgorithmException, NumberFormatException,  SQLException, Exception {		
 		StringBuffer query = new StringBuffer();
 		query.append("INSERT INTO "); 
 		query.append(USUARIO);
@@ -182,7 +182,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 		ResultSet resultSet = null;
 		try {
 			preparedStatement = con.prepareStatement(query.toString());
-			preparedStatement.setInt(1,usuario.getId());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1,usuario.getId(), java.sql.Types.INTEGER);
 			resultSet = preparedStatement.executeQuery();
 			while(resultSet.next()){
 				listaCondominio = new ArrayList<Condominio>();				
@@ -226,8 +226,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		try {
-			preparedStatement = con.prepareStatement(query.toString());
-			preparedStatement.setInt(1,usuario.getId());
+			preparedStatement = con.prepareStatement(query.toString());			
 			SQLUtil.setValorPpreparedStatement(preparedStatement, 1,usuario.getId(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(preparedStatement, 2,usuario.getSituacao(), java.sql.Types.INTEGER);
 			resultSet = preparedStatement.executeQuery();

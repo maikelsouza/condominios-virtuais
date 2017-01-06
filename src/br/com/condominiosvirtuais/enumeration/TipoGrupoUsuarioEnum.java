@@ -17,8 +17,9 @@ public enum TipoGrupoUsuarioEnum {
 	
 	CONDOMINO(5),
 	
-	FUNCIONARIO(6);	
+	FUNCIONARIO(6),
 	
+	ESCRITORIO_CONTABILIDADE(7);	
 	
 	private Integer grupoUsuario = null;
 	
@@ -112,8 +113,8 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_RECEITA_DESPESA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_DESPESA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_RECEITA.getPathTelas());
-			
-			
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_CONTADOR.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_CONTADOR.getPathTelas());
 			
 			
 			
@@ -422,7 +423,7 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_RECEITA_DESPESA.getPathTelas());
 			
 			
-		}else{ // Funcionário
+		}else if (this.getGrupoUsuario() == 6){ // Funcionario
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_PRINCIPAL.getPathTelas());	
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_RESERVA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_ESQUECI_MINHA_SENHA.getPathTelas());
@@ -444,8 +445,38 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_VISITANTE.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_VISITANTE.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_VISITA.getPathTelas());
-			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_PRESTADOR_SERVICO.getPathTelas());			
-		}
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_PRESTADOR_SERVICO.getPathTelas());	
+			
+		} else if (this.getGrupoUsuario() == 7){ // Escritório Contabilidade
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_PRINCIPAL.getPathTelas());			
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZA_CONDOMINIO.getPathTelas());	
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_PESQUISA_CONDOMINIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_CONDOMINIO_PRIMEIRA_VEZ.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_BLOCO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_BLOCO.getPathTelas());			
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_BLOCO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZA_BLOCO.getPathTelas());			
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_UNIDADE.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_UNIDADE.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_UNIDADE.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZA_UNIDADE.getPathTelas());			
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_CONDOMINO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITAR_CONDOMINO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_CONDOMINO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZA_CONDOMINO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_ESQUECI_MINHA_SENHA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_FALE_COM_SINDICO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_ESCREVER_MENSAGEM.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_MENSAGENS_RECEBIDAS.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_MENSAGENS_ENVIADAS.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VER_MENSAGEM_RECEBIDA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VER_MENSAGEM_ENVIADA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_MEU_PAINEL.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_DOCUMENTO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_IMAGEM.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_RECEITA_DESPESA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_RECEITA_DESPESA.getPathTelas());
+	}
 		this.grupoUsuariosTelasAcesso.put(this.getGrupoUsuario(), this.telaAcesso);		
 	}
 
