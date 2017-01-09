@@ -26,6 +26,7 @@ import br.com.condominiosvirtuais.entity.Arquivo;
 import br.com.condominiosvirtuais.entity.Bloco;
 import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.Condomino;
+import br.com.condominiosvirtuais.entity.Contador;
 import br.com.condominiosvirtuais.entity.Funcionario;
 import br.com.condominiosvirtuais.entity.Garagem;
 import br.com.condominiosvirtuais.entity.SindicoProfissional;
@@ -41,6 +42,7 @@ import br.com.condominiosvirtuais.service.ArquivoService;
 import br.com.condominiosvirtuais.service.BlocoService;
 import br.com.condominiosvirtuais.service.CondominioService;
 import br.com.condominiosvirtuais.service.CondominoService;
+import br.com.condominiosvirtuais.service.ContadorService;
 import br.com.condominiosvirtuais.service.FuncionarioService;
 import br.com.condominiosvirtuais.service.GaragemService;
 import br.com.condominiosvirtuais.service.SindicoProfissionalService;
@@ -75,6 +77,12 @@ public class MeuPainelMB implements  Serializable{
 	
 	private static final String ID_TAB_ALTERAR_IMAGEM_SINDICO_PROFISSIONAL = "idTabAlterarImagemSindicoProfissional";
 	
+	private static final String ID_TAB_DADOS_PESSOAIS_CONTADOR = "idTabDadosPessoaisContador";
+	
+	private static final String ID_TAB_ALTERAR_SENHA_CONTADOR = "idTabAlterarSenhaContador";	
+	
+	private static final String ID_TAB_ALTERAR_IMAGEM_CONTADOR = "idTabAlterarImagemContador";	
+	
 	private static final String ID_TAB_ALTERAR_SENHA_FUNCIONARIO = "idTabAlterarSenhaFuncionario";	
 	
 	private static final String ID_TAB_NOVA_GARAGEM = "idTabNovaGaragem";	
@@ -92,6 +100,8 @@ public class MeuPainelMB implements  Serializable{
 	private Funcionario funcionario;
 	
 	private SindicoProfissional sindicoProfissional;
+	
+	private Contador contador;
 	
 	@Inject
 	private UsuarioService usuarioService;
@@ -123,6 +133,9 @@ public class MeuPainelMB implements  Serializable{
 	@Inject
 	private SindicoProfissionalService sindicoProfissionalService;
 	
+	@Inject
+	private ContadorService contadorService;
+	
 	private String senhaAtualCondomino;
 	
 	private String senhaCondomino;
@@ -138,6 +151,12 @@ public class MeuPainelMB implements  Serializable{
 	private String senhaAtualSindicoProfissional;
 	
 	private String senhaSindicoProfissional;
+	
+	private String senhaAtualContador;
+	
+	private String senhaContador;	
+	
+	private String confirmarSenhaContador;
 	
 	private String confirmarSenhaSindicoProfissional;
 	
@@ -250,6 +269,13 @@ public class MeuPainelMB implements  Serializable{
 				ManagedBeanUtil.popularSIDias(this.listaSIDias);
 				ManagedBeanUtil.popularSIMeses(this.listaSIMeses);
 				ManagedBeanUtil.popularSIAnos(this.listaSIAnos);
+				// O Usuário contador deve fazer parte do grupo escritorio de contabilidade. Num futuro deverá ser criados subgruos para os contadores.
+			}if(usuario.getIdGrupoUsuario().equals(TipoGrupoUsuarioEnum.ESCRITORIO_CONTABILIDADE.getGrupoUsuario())){	
+				this.contador = this.contadorService.buscarPorId(usuario.getId());
+				this.setTabSelecionada(ID_TAB_DADOS_PESSOAIS_CONTADOR);
+				ManagedBeanUtil.popularSIDias(this.listaSIDias);
+				ManagedBeanUtil.popularSIMeses(this.listaSIMeses);
+				ManagedBeanUtil.popularSIAnos(this.listaSIAnos);
 			}
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
@@ -303,6 +329,23 @@ public class MeuPainelMB implements  Serializable{
 		return null;
 	}
 	
+	public String atualizarDadosPessoaisContador(){
+		this.setTabSelecionada(ID_TAB_DADOS_PESSOAIS_CONTADOR);
+		try {
+			if(this.validaDadosContador()){
+				this.contadorService.atualizar(this.contador);
+				ManagedBeanUtil.setMensagemInfo("msg.meuPainel.contador.atualizadoSucesso");				
+			}
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}		
+		return null;
+	}
+	
 	public String atualizarDadosPessoaisFuncionario(){	
 		this.setTabSelecionada(ID_TAB_DADOS_PESSOAIS_FUNCIONARIO);		
 		try {
@@ -328,6 +371,24 @@ public class MeuPainelMB implements  Serializable{
 			if(this.validaAtualizarSenha()){				
 				this.condomino.setSenha(this.senhaCondomino);				
 				this.usuarioService.atualizarSenha(this.condomino);
+				ManagedBeanUtil.setMensagemInfo("msg.meuPainel.alterarSenha.novaSenhaAtualizada");				
+			}
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}		
+		return null;
+	}
+	
+	public String atualizarSenhaContador(){		
+		try {			
+			this.setTabSelecionada(ID_TAB_ALTERAR_SENHA_CONTADOR);						
+			if(this.validaAtualizarSenhaContador()){				
+				this.contador.setSenha(this.senhaCondomino);				
+				this.usuarioService.atualizarSenha(this.contador);
 				ManagedBeanUtil.setMensagemInfo("msg.meuPainel.alterarSenha.novaSenhaAtualizada");				
 			}
 		} catch (SQLException e) {
@@ -505,12 +566,6 @@ public class MeuPainelMB implements  Serializable{
 			if(validaDadosNovoVeiculo()){
 				this.veiculo.setTamanho(GaragemEnum.MEDIO.getTamanho());
 				this.veiculo.setCondomino(this.condomino);
-// TODO: Código comentado em 16/02/2016. Apagar em 90 dias				
-				// Se idGaragem == 0, significa que não foi selecionado uma garagem, logo deve ser inserido null 
-				// para não dar erro de violação de constraint 
-//				if(this.veiculo.getGaragem().getId() == 0){
-//					this.veiculo.getGaragem().setId(null);
-//				}						
 				this.veiculoService.salvar(this.veiculo);
 				this.veiculo = new Veiculo();
 				this.popularDMVeiculo();
@@ -568,12 +623,6 @@ public class MeuPainelMB implements  Serializable{
 			if(validaDadosNovoVeiculo()){
 				this.veiculo.setTamanho(GaragemEnum.MEDIO.getTamanho());
 				this.veiculo.setCondomino(this.condomino);
-// TODO: Código comentado em 16/02/2016. Apagar em 90 dias						
-				// Se idGaragem == 0, significa que não foi selecionado uma garagem, logo deve ser inserido null 
-				// para não dar erro de violação de constraint 
-//				if(this.veiculo.getGaragem().getId() == 0){
-//					this.veiculo.getGaragem().setId(null);
-//				}					
 				this.veiculoService.atualizar(this.veiculo);
 				this.popularDMVeiculo();
 				this.renderedCadastroNovoVeiculo = Boolean.TRUE;	
@@ -1131,6 +1180,38 @@ public class MeuPainelMB implements  Serializable{
 
 	public void setConfirmarSenhaSindicoProfissional(String confirmarSenhaSindicoProfissional) {
 		this.confirmarSenhaSindicoProfissional = confirmarSenhaSindicoProfissional;
+	}	
+	
+	public Contador getContador() {
+		return contador;
+	}
+
+	public void setContador(Contador contador) {
+		this.contador = contador;
+	}	
+
+	public String getSenhaAtualContador() {
+		return senhaAtualContador;
+	}
+
+	public void setSenhaAtualContador(String senhaAtualContador) {
+		this.senhaAtualContador = senhaAtualContador;
+	}
+
+	public String getSenhaContador() {
+		return senhaContador;
+	}
+
+	public void setSenhaContador(String senhaContador) {
+		this.senhaContador = senhaContador;
+	}	
+
+	public String getConfirmarSenhaContador() {
+		return confirmarSenhaContador;
+	}
+
+	public void setConfirmarSenhaContador(String confirmarSenhaContador) {
+		this.confirmarSenhaContador = confirmarSenhaContador;
 	}
 
 	public void carregarGaragens(){
@@ -1582,6 +1663,85 @@ public class MeuPainelMB implements  Serializable{
 			quantidadeErros++;			
 		}
 		return quantidadeErros == 0 ? Boolean.TRUE : Boolean.FALSE;
+	}
+	
+	private Boolean validaDadosContador() {
+		Integer quantidadeErros = 0;
+		// Regra campo obrigatório
+		if(this.contador.getNome().trim().equals("")){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.contador.nomeRequeido");
+			quantidadeErros++;
+		}
+		// Regra tamanho de campos
+		if(this.contador.getNome().length() > 150){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.contador.nome");
+			quantidadeErros++;
+		}
+		// Regra campo obrigatório
+		if(this.contador.getSexo() == null){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.contador.sexoRequerido");	
+			quantidadeErros++;
+		}		
+		// Regra campo obrigatório
+		if(this.contador.getEmail().getEmail().trim().equals("")){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.contador.emailRequerido");
+			quantidadeErros++;
+		}
+		// Regra de validação tamanho de campos
+		if(this.contador.getEmail().getEmail().length() > 150){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.contador.email");
+			quantidadeErros++;
+		}
+		// Regra formato de email
+		if (!ManagedBeanUtil.validaEmail(this.contador.getEmail().getEmail())){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.contador.formatoEmailInvalido");
+			quantidadeErros++;
+		}
+		return quantidadeErros == 0 ? Boolean.TRUE : Boolean.FALSE;
+	}
+	
+	private Boolean validaAtualizarSenhaContador() throws NoSuchAlgorithmException {
+		Integer quantidadeErros = 0;		
+		// Regra campo obrigatório
+		if(this.senhaAtualContador.trim().equals("")){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.alterarSenha.senhaAtualRequerida");
+			quantidadeErros++;
+		}
+		// Regra campo obrigatório
+		if(this.senhaContador.trim().equals("")){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.alterarSenha.novaSenhaRequerida");	
+			quantidadeErros++;
+		}
+		// Regra campo senha atual deve conferir com a senha da base de dados
+		if (this.senhaAtualCondomino != null && !this.senhaAtualCondomino.trim().equals("")){
+			 if (!this.contador.getSenha().equals(AplicacaoUtil.gerarHashMD5(this.senhaAtualCondomino))){
+				ManagedBeanUtil.setMensagemErro("msg.meuPainel.alterarSenha.senhasAtualIncorreta");
+				quantidadeErros++;
+			}
+		}
+			
+		// Regra campo obrigatório
+		if(this.confirmarSenhaContador.trim().equals("")){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.alterarSenha.ConfirmarSenhaRequerida");
+			quantidadeErros++;
+		}
+		// Regra para verificar se o usuário não digitou a nova senha errada e não percebeu
+		if(!this.senhaContador.equals(this.confirmarSenhaContador)){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.alterarSenha.senhasNaoCorrespondem");
+			quantidadeErros++;
+		}
+		// Regra valicação tamanho de campos
+		if(this.senhaContador.length() < 6 || this.senhaContador.length() > 15){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.alterarSenha.novaSenha");
+			quantidadeErros++;
+		}
+		// Regra somente letras e/ou números e valicação tamanho de campos
+		if(this.confirmarSenhaContador.length() < 6 || this.confirmarSenhaContador.length() > 15){
+			ManagedBeanUtil.setMensagemErro("msg.meuPainel.alterarSenha.confirmarSenha");
+			quantidadeErros++;
+		}
+		return quantidadeErros == 0 ? Boolean.TRUE : Boolean.FALSE;
+	
 	}
 	
 

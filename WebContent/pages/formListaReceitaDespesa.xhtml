@@ -112,11 +112,11 @@
 						</f:facet>
 						<h:outputText value="#{receita.observacao}" />
 					</rich:column>
-					<rich:column style="width:5%;" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}">
+					<rich:column style="width:5%;" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}">
 						<f:facet name="header">
 							<h:outputText value="#{msg.rotuloAcao}" />
 						</f:facet>
-						<a4j:commandLink value="#{msg.linkEditar}" render="tableReceita"  action="#{receitaDespesaMB.editarReceita}" immediate="true" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4')}" />
+						<a4j:commandLink value="#{msg.linkEditar}" render="tableReceita"  action="#{receitaDespesaMB.editarReceita}" immediate="true" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,7')}" />
 					</rich:column>
 					<f:facet name="footer">						
              			<rich:dataScroller for="tableReceita"  fastControls="hide" renderIfSinglePage="false" />
@@ -169,11 +169,11 @@
 						</f:facet>
 						<h:outputText value="#{despesa.observacao}" />
 					</rich:column>
-					<rich:column style="width:5%;" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}">
+					<rich:column style="width:5%;" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}">
 						<f:facet name="header">
 							<h:outputText value="#{msg.rotuloAcao}" />
 						</f:facet>
-						<a4j:commandLink value="#{msg.linkEditar}" render="tableDespesa"  action="#{receitaDespesaMB.editarDespesa}" immediate="true"  rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4')}"/>
+						<a4j:commandLink value="#{msg.linkEditar}" render="tableDespesa"  action="#{receitaDespesaMB.editarDespesa}" immediate="true"  rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,7')}"/>
 					</rich:column>
 					<f:facet name="footer">
              			<rich:dataScroller for="tableDespesa"  fastControls="hide" renderIfSinglePage="false" />
@@ -210,9 +210,9 @@
 			</rich:panel>
 			<h:panelGrid columns="2">
 				<h:commandButton value="#{msg.botaoGerarExcel}" action="#{receitaDespesaMB.gerarExcel}" immediate="true" 
-					rendered="#{receitaDespesaMB.exibeBotaoExcel and loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}" />
+					rendered="#{receitaDespesaMB.exibeBotaoExcel and loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}" />
 				<h:commandButton value="#{msg.botaoCadastrarReceitaDespesa}" action="#{receitaDespesaMB.cadastroReceitaDespesa}" immediate="true" 
-					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}" />	
+					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}" />	
 			</h:panelGrid>	
 			
 		</h:form>

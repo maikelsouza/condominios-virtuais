@@ -6,7 +6,7 @@ public enum PathTelasAplicacaoEnum {
 	PREFIXO("/pages/"),
 	
 	FORM_LOGIN("/security/formLogin.xhtml"),
-	FORM_PRINCIPAL(PREFIXO.getPathTelas()+"formPrincipal.xhtml"),
+	FORM_PRINCIPAL(PREFIXO.getPathTelas()+"formPrincipal.xhtml"),	                                              
 	FORM_LISTA_CONDOMINIO(PREFIXO.getPathTelas()+"formListaCondominio.xhtml"),	
 	FORM_EDITA_CONDOMINIO(PREFIXO.getPathTelas()+"formEditaCondominio.xhtml"),
 	FORM_CADASTRO_CONDOMINIO(PREFIXO.getPathTelas()+"formCadastroCondominio.xhtml"),

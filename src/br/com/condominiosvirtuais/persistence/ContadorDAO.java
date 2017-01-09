@@ -10,9 +10,12 @@ public interface ContadorDAO {
 
 	public abstract void salvar(Contador contador) throws SQLException, Exception;
 	
+	public abstract Contador buscarPorId(Integer id) throws SQLException, Exception;
+	
 	public abstract List<Contador> buscarPorIdEscritorioContabilidade(Integer idEscritorioContabilidade, Connection con) throws SQLException, Exception;
 	
 	public abstract List<Contador> buscarPorIdEscritorioContabilidadeESituacao(Integer idEscritorioContabilidade, Integer situacao) throws SQLException, Exception;
 	
 	public abstract void atualizar(Contador contador) throws SQLException, Exception;
+	
 }

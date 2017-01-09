@@ -147,8 +147,74 @@ public class ContadorDAOImpl implements ContadorDAO, Serializable {
 
 	@Override
 	public void atualizar(Contador contador) throws SQLException, Exception {
-		// TODO Auto-generated method stub
+		Connection con = Conexao.getConexao();
+		this.usuarioDAO.atualizarUsuario(contador, con);
+		StringBuffer query = new StringBuffer();
+		query.append("UPDATE ");
+		query.append(CONTADOR);
+		query.append(" SET ");
+		query.append(ID_ESCRITORIO_CONTABILIDADE);
+		query.append("= ? ");		
+		query.append("WHERE ");
+		query.append(ID);
+		query.append("= ?");
+		PreparedStatement statement = null;
+		try {			
+			statement = con.prepareStatement(query.toString());			
+			SQLUtil.setValorPpreparedStatement(statement,1, contador.getIdEscritorioContabilidade(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement,2, contador.getId(), java.sql.Types.INTEGER);
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			throw e;
+		}catch (Exception e) {		
+			throw e;
+		}finally {
+			try {		
+				statement.close();
+				con.close();				
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);
+			}
+		}		
 		
+	}
+
+	@Override
+	public Contador buscarPorId(Integer id) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(CONTADOR);
+		query.append(" WHERE ");
+		query.append(ID);
+		query.append(" = ?");		
+		PreparedStatement preparedStatement = null;		
+		Connection con = Conexao.getConexao();
+		Contador contador = null;
+		try {
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, id, java.sql.Types.INTEGER);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				contador = new Contador();
+				contador.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				contador.setIdEscritorioContabilidade((Integer) SQLUtil.getValorResultSet(resultSet, ID_ESCRITORIO_CONTABILIDADE, java.sql.Types.INTEGER));				
+				this.usuarioDAO.buscarEPopularUsuarioPeloId(contador, con);				
+			}
+		} catch (NumberFormatException e) {
+			throw e;
+		} catch (SQLException e) {					
+			throw e;
+		} catch (Exception e) {					
+			throw e;
+		}finally{
+			try {				
+				con.close();	
+				preparedStatement.close();
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);		
+			}
+		}	
+		return contador;
 	}
 	
 

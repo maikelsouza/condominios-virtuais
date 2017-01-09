@@ -425,6 +425,7 @@ public enum TipoGrupoUsuarioEnum {
 			
 		}else if (this.getGrupoUsuario() == 6){ // Funcionario
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_PRINCIPAL.getPathTelas());	
+			
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_RESERVA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_ESQUECI_MINHA_SENHA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_PESQUISA_CONDOMINIO.getPathTelas());
@@ -449,7 +450,10 @@ public enum TipoGrupoUsuarioEnum {
 			
 		} else if (this.getGrupoUsuario() == 7){ // Escritório Contabilidade
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_PRINCIPAL.getPathTelas());			
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_CONDOMINIO.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZA_CONDOMINIO.getPathTelas());	
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_CONDOMINIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_CONDOMINIO.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_PESQUISA_CONDOMINIO.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_CONDOMINIO_PRIMEIRA_VEZ.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_BLOCO.getPathTelas());
@@ -474,8 +478,16 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_MEU_PAINEL.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_DOCUMENTO.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_IMAGEM.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_ANEXA_DOCUMENTO.getPathTelas());			
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_ANEXA_IMAGEM.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_RECEITA_DESPESA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_RECEITA_DESPESA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_GARAGEM.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_GARAGEM.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_VEICULO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_DESPESA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_RECEITA.getPathTelas());
+			
 	}
 		this.grupoUsuariosTelasAcesso.put(this.getGrupoUsuario(), this.telaAcesso);		
 	}

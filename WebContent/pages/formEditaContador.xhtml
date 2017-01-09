@@ -76,9 +76,9 @@
 			</h:panelGrid>
 			<br></br>
 			<h:panelGrid columns="3">
-				<h:commandButton value="#{msg.botaoAtualizar}" action="#{contadorMB.atualizar}" />
+				<h:commandButton value="#{msg.botaoAtualizar}" action="#{contadorMB.atualizarContador}" />
 				<h:commandButton value="#{msg.botaoLimpar}" action="#{contadorMB.limparCadastroContador}" immediate="false" />
-				<h:commandButton value="#{msg.botaoVoltar}" action="#{contadorMB.cancelarCadastroContador}" immediate="true" />
+				<h:commandButton value="#{msg.botaoVoltar}" action="#{contadorMB.voltarAtualizarContador}" immediate="true" />
 			</h:panelGrid>
 		</h:form>
 	</ui:define>

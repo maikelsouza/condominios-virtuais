@@ -110,6 +110,25 @@ public class ContadorMB implements Serializable {
 		return null;		
 	}
 	
+	public String atualizarContador(){		
+		try {			
+			if (!ManagedBeanUtil.validaEmail(this.contador.getEmail().getEmail())){
+				ManagedBeanUtil.setMensagemErro("msg.contador.formatoEmailInvalido");
+				return null;
+			}
+			this.contadorService.atualizar(this.contador);
+			this.pesquisar();
+			ManagedBeanUtil.setMensagemInfo("msg.contador.atualizadoSucesso");			
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");				
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}	
+		return "atualizar";	
+	}
+	
 	public String editarContador(){
 		this.contador = this.listaContadorDataModel.getRowData();
 		try {			
@@ -127,6 +146,10 @@ public class ContadorMB implements Serializable {
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
 		}	
 		return "editar";		
+	}
+	
+	public String voltarAtualizarContador(){		
+		return "voltar";
 	}
 	
 	public String pesquisar(){
@@ -154,6 +177,10 @@ public class ContadorMB implements Serializable {
 	}
 	
 	public String cancelarCadastroContador(){
+		return "cancelar";
+	}
+	
+	public String cancelarFiltroContador(){
 		return "cancelar";
 	}
 	

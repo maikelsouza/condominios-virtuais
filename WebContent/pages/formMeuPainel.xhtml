@@ -924,6 +924,92 @@
 				</h:form>
 			</rich:tab>
 		</rich:tabPanel>
+		
+		
+		<rich:tabPanel styleClass="content" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('7')}" switchType="client" activeItem="#{meuPainelMB.tabSelecionada}" > 
+		
+		  <rich:tab header="#{msg['meuPainel.contador.dadosPessoais']}" id="idTabDadosPessoaisContador">
+			<h:form id="idFormDadosPessoaisContador">
+				<h:panelGrid columns="3">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['meuPainel.contador.nome']}:" for="idNomeContador" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['meuPainel.contador.sexo']}:" for="idSexoContador" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:outputLabel value="#{msg['meuPainel.contador.dataNascimento']}:" for="idDataNascimentoContador" />
+					<h:inputText id="idNomeContador" value="#{meuPainelMB.contador.nome}" size="40" />
+					<h:selectOneRadio id="idSexoContador" value="#{meuPainelMB.contador.sexo}">
+						<f:selectItems value="#{meuPainelMB.listaSexo}" />
+					</h:selectOneRadio>
+					<h:panelGroup id="idDataNascimentoContador">
+						<h:selectOneMenu value="#{meuPainelMB.contador.dataNascimentoDia}" defaultLabel="#{msg['meuPainel.contador.dataNascimento.dia']}">
+							<f:selectItem itemLabel="#{msg['meuPainel.contador.dataNascimento.dia']}" noSelectionOption="false" />
+							<f:selectItems value="#{meuPainelMB.listaSIDias}" />
+						</h:selectOneMenu>
+						<h:selectOneMenu value="#{meuPainelMB.contador.dataNascimentoMes}" defaultLabel="#{msg['meuPainel.contador.dataNascimento.mes']}">
+							<f:selectItem itemLabel="#{msg['meuPainel.contador.dataNascimento.mes']}" noSelectionOption="false" />
+							<f:selectItems value="#{meuPainelMB.listaSIMeses}" />
+						</h:selectOneMenu>
+						<h:selectOneMenu value="#{meuPainelMB.contador.dataNascimentoAno}" defaultLabel="#{msg['meuPainel.contador.dataNascimento.ano']}">
+							<f:selectItem itemLabel="#{msg['meuPainel.contador.dataNascimento.ano']}" noSelectionOption="false" />
+							<f:selectItems value="#{meuPainelMB.listaSIAnos}" />
+						</h:selectOneMenu>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['meuPainel.contador.email']}:" for="idEmailContador"/>
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					<h:inputText id="idEmailContador" value="#{meuPainelMB.contador.email.email}" size="40" />
+				</h:panelGrid>
+				
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+				    <h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
+				</h:panelGrid>
+				<br />
+				<h:commandButton value="#{msg.botaoAtualizar}" action="#{meuPainelMB.atualizarDadosPessoaisContador}" />
+				</h:form>
+			</rich:tab>
+			
+			<rich:tab header="#{msg['meuPainel.contador.alterarSenha']}" id="idTabAlterarSenhaContador">
+				<h:form id="idFormAlterarSenhaContador">
+					<h:panelGrid columns="3">
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.contador.senhaAtual']}:" for="idSenhaAtualContador" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.contador.novaSenha']}:" for="idNovaSenhaContador" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['meuPainel.contador.confirmarNovaSenha']}:" for="idConfirmarNovaSenhaContador" />
+							<span class="asterisco">*</span>
+						</h:panelGroup>
+						<h:inputSecret id="idSenhaAtualContador" value="#{meuPainelMB.senhaAtualContador}" size="15" maxlength="15"/>
+						<h:inputSecret id="idNovaSenhaContador" value="#{meuPainelMB.senhaContador}" size="15" maxlength="15" />
+						<h:inputSecret id="idConfirmarNovaSenhaContador" value="#{meuPainelMB.confirmarSenhaContador}" size="15" maxlength="15" />
+					</h:panelGrid>
+					<h:panelGrid columns="1" styleClass="msgAsterisco">
+						<h:panelGroup>
+							<h:outputLabel value="#{msg['regraSenha']}" for="idRegraSenha" styleClass="camposObrigatorios" />
+							<h:outputLabel value="*" id="idRegraSenha" styleClass="asterisco" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+							<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
+						</h:panelGroup>
+					</h:panelGrid>
+					<br />
+					<h:commandButton value="#{msg.botaoAtualizar}" action="#{meuPainelMB.atualizarSenhaContador}" />
+				</h:form>
+			</rich:tab>
+		</rich:tabPanel>
 			
 		
 	</ui:define>

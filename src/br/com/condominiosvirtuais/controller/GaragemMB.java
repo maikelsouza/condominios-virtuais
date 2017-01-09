@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.sql.SQLException;
 
 import javax.enterprise.context.Conversation;
-import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIInput;
 import javax.faces.event.ActionEvent;
@@ -76,7 +75,7 @@ public class GaragemMB implements Serializable{
 	public String atualizarGaragem(){
 		try {
 			this.garagemService.atualizar(this.garagem);
-			ManagedBeanUtil.setMensagemInfo("msg.garagem.atualizadoSucesso");
+			ManagedBeanUtil.setMensagemInfo("msg.garagem.atualizadaSucesso");			                                 
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");

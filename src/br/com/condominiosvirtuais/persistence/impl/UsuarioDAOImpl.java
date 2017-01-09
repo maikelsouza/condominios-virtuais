@@ -316,6 +316,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 		return populou;
 	}
 	
+	@Override
 	public void atualizarUsuario(Usuario usuario, Connection con) throws SQLException, Exception{
 		this.usuarioCondominioDAO.get().excluirPorUsuario(usuario, con);		
 		for (Condominio condominio : usuario.getListaCondominio()) {

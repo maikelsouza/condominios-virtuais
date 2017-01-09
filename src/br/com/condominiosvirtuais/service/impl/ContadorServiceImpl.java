@@ -36,6 +36,11 @@ public class ContadorServiceImpl implements Serializable, ContadorService {
 	public void atualizar(Contador contador) throws SQLException, Exception {
 		this.contadorDAO.atualizar(contador);		
 	}
+
+	@Override
+	public Contador buscarPorId(Integer id) throws SQLException, Exception {
+		return this.contadorDAO.buscarPorId(id);
+	}
 	
 	
 
