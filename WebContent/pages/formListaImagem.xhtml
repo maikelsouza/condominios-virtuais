@@ -52,7 +52,7 @@
 							style="height:100px;" />
 						<br />
 						<h:commandLink value="#{msg.linkExcluir}"
-							rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}">
+							rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}">
 							<rich:componentControl target="confirmaExcluirImagem"
 								operation="show" />
 						</h:commandLink>
@@ -76,7 +76,7 @@
 			</rich:panel>
 			<h:commandButton value="#{msg.botaoAnexarImagem}"
 				action="#{arquivoMB.abrirTelaAnexarImagem}" immediate="true"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}" />
+				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}" />
 		</h:form>
 	</ui:define>
 

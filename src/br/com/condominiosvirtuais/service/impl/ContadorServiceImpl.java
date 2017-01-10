@@ -7,9 +7,13 @@ import java.util.List;
 import javax.inject.Inject;
 
 import br.com.condominiosvirtuais.entity.Contador;
+import br.com.condominiosvirtuais.entity.Email;
 import br.com.condominiosvirtuais.persistence.ContadorDAO;
 import br.com.condominiosvirtuais.service.CondominioService;
 import br.com.condominiosvirtuais.service.ContadorService;
+import br.com.condominiosvirtuais.service.EmailService;
+import br.com.condominiosvirtuais.util.AplicacaoUtil;
+import br.com.condominiosvirtuais.util.MensagensEmailUtil;
 
 public class ContadorServiceImpl implements Serializable, ContadorService {
 
@@ -20,11 +24,19 @@ public class ContadorServiceImpl implements Serializable, ContadorService {
 	
 	@Inject
 	private ContadorDAO contadorDAO;
+	
+	@Inject
+	private EmailService emailService;
 
 	@Override
 	public void salvar(Contador contador) throws SQLException, Exception {
 		contador.setListaCondominio(this.condominioService.buscarPorIdEscritorioContabilidade(contador.getIdEscritorioContabilidade()));
-		this.contadorDAO.salvar(contador);		
+		this.contadorDAO.salvar(contador);	
+		Email email = new Email();			
+		email.setPara(contador.getEmail().getEmail());
+		email.setAssunto(AplicacaoUtil.i18n("msg.cadastroContador.assunto"));	
+		email.setMensagem(MensagensEmailUtil.confirmacaoDeCadastroContador(contador));
+		this.emailService.salvar(email);
 	}
 
 	@Override

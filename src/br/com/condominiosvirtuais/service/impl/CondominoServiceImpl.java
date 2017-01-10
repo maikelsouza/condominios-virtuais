@@ -13,7 +13,6 @@ import br.com.condominiosvirtuais.entity.Condomino;
 import br.com.condominiosvirtuais.entity.Email;
 import br.com.condominiosvirtuais.entity.Unidade;
 import br.com.condominiosvirtuais.exception.BusinessException;
-import br.com.condominiosvirtuais.persistence.UsuarioDAO;
 import br.com.condominiosvirtuais.persistence.impl.CondominoDAOImpl;
 import br.com.condominiosvirtuais.service.BlocoService;
 import br.com.condominiosvirtuais.service.CondominioService;
@@ -39,8 +38,6 @@ public class CondominoServiceImpl implements CondominoService, Serializable{
 	@Inject
 	private CondominoDAOImpl condominoDAO;
 	
-	@Inject
-	private UsuarioDAO usuarioDAO;
 	
 	public List<Condomino> buscarPorUnidade(Unidade unidade) throws SQLException, Exception{
 		return  this.condominoDAO.buscarListaCondominosPorUnidade(unidade);		
@@ -51,13 +48,7 @@ public class CondominoServiceImpl implements CondominoService, Serializable{
 		this.condominoDAO.salvarCondomino(condomino);
 		Email email = new Email();			
 		email.setPara(condomino.getEmail().getEmail());
-		email.setAssunto(AplicacaoUtil.i18n("msg.cadastroCondomino.assunto"));
-// TODO: Código comentado em 04/05/2016. Apagar em 90 dias		
-//		Object[] parametros = new Object[3];
-//		parametros[0] = condomino.getNome().toUpperCase();
-//		parametros[1] = condomino.getEmail().getEmail();
-//		parametros[2] = condomino.getSenha();
-//		email.setMensagem(AplicacaoUtil.i18n("msg.cadastroCondomino.texto", parametros));		
+		email.setAssunto(AplicacaoUtil.i18n("msg.cadastroCondomino.assunto"));	
 		email.setMensagem(MensagensEmailUtil.confirmacaoDeCadastro(condomino));
 		this.emailService.salvar(email);
 	}

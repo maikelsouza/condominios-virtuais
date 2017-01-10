@@ -112,7 +112,7 @@
 						</f:facet>
 						<h:outputText value="#{receita.observacao}" />
 					</rich:column>
-					<rich:column style="width:5%;" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}">
+					<rich:column style="width:5%;" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7') and loginMB.exibeMenuFinanceiro()}">
 						<f:facet name="header">
 							<h:outputText value="#{msg.rotuloAcao}" />
 						</f:facet>
@@ -169,7 +169,7 @@
 						</f:facet>
 						<h:outputText value="#{despesa.observacao}" />
 					</rich:column>
-					<rich:column style="width:5%;" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}">
+					<rich:column style="width:5%;" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7') and loginMB.exibeMenuFinanceiro()}">
 						<f:facet name="header">
 							<h:outputText value="#{msg.rotuloAcao}" />
 						</f:facet>
@@ -210,9 +210,9 @@
 			</rich:panel>
 			<h:panelGrid columns="2">
 				<h:commandButton value="#{msg.botaoGerarExcel}" action="#{receitaDespesaMB.gerarExcel}" immediate="true" 
-					rendered="#{receitaDespesaMB.exibeBotaoExcel and loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}" />
+					rendered="#{receitaDespesaMB.exibeBotaoExcel and loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7') and loginMB.exibeMenuFinanceiro()}" />
 				<h:commandButton value="#{msg.botaoCadastrarReceitaDespesa}" action="#{receitaDespesaMB.cadastroReceitaDespesa}" immediate="true" 
-					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}" />	
+					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7') and loginMB.exibeMenuFinanceiro()}" />	
 			</h:panelGrid>	
 			
 		</h:form>

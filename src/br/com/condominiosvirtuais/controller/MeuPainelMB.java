@@ -81,8 +81,6 @@ public class MeuPainelMB implements  Serializable{
 	
 	private static final String ID_TAB_ALTERAR_SENHA_CONTADOR = "idTabAlterarSenhaContador";	
 	
-	private static final String ID_TAB_ALTERAR_IMAGEM_CONTADOR = "idTabAlterarImagemContador";	
-	
 	private static final String ID_TAB_ALTERAR_SENHA_FUNCIONARIO = "idTabAlterarSenhaFuncionario";	
 	
 	private static final String ID_TAB_NOVA_GARAGEM = "idTabNovaGaragem";	
@@ -386,8 +384,8 @@ public class MeuPainelMB implements  Serializable{
 	public String atualizarSenhaContador(){		
 		try {			
 			this.setTabSelecionada(ID_TAB_ALTERAR_SENHA_CONTADOR);						
-			if(this.validaAtualizarSenhaContador()){				
-				this.contador.setSenha(this.senhaCondomino);				
+			if(this.validaAtualizarSenhaContador()){								
+				this.contador.setSenha(this.senhaContador);				
 				this.usuarioService.atualizarSenha(this.contador);
 				ManagedBeanUtil.setMensagemInfo("msg.meuPainel.alterarSenha.novaSenhaAtualizada");				
 			}
@@ -1713,8 +1711,8 @@ public class MeuPainelMB implements  Serializable{
 			quantidadeErros++;
 		}
 		// Regra campo senha atual deve conferir com a senha da base de dados
-		if (this.senhaAtualCondomino != null && !this.senhaAtualCondomino.trim().equals("")){
-			 if (!this.contador.getSenha().equals(AplicacaoUtil.gerarHashMD5(this.senhaAtualCondomino))){
+		if (this.senhaAtualContador != null && !this.senhaAtualContador.trim().equals("")){
+			 if (!this.contador.getSenha().equals(AplicacaoUtil.gerarHashMD5(this.senhaAtualContador))){
 				ManagedBeanUtil.setMensagemErro("msg.meuPainel.alterarSenha.senhasAtualIncorreta");
 				quantidadeErros++;
 			}

@@ -141,15 +141,9 @@
 					<h:outputText value="#{msg.enquete}" />
 				</h:panelGroup>
 			</f:facet>
-			<rich:menuItem label="#{msg['enquete.listarEnquete']}"
-				action="#{principalMB.listarEnquete}"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5')}" />
-			<rich:menuItem label="#{msg['enquete.cadastrarEnquete']}"
-				action="#{principalMB.cadastrarEnquete}"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4')}" />
-			<rich:menuItem label="#{msg['enquete.votarEnquete']}"
-				action="#{principalMB.votarEnquete}"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('4,5')}" />
+			<rich:menuItem label="#{msg['enquete.listarEnquete']}" action="#{principalMB.listarEnquete}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5')}" />
+			<rich:menuItem label="#{msg['enquete.cadastrarEnquete']}" action="#{principalMB.cadastrarEnquete}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4')}" />
+			<rich:menuItem label="#{msg['enquete.votarEnquete']}" action="#{principalMB.votarEnquete}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('4,5')}" />
 		</rich:dropDownMenu>
 		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,6') and loginMB.sindicoGeralAssociado()}">
 			<f:facet name="label">
@@ -182,7 +176,7 @@
 			<rich:menuItem label="#{msg['despesas.cadastrarCondomino']}" action="#{principalMB.cadastrarDespesasCondomino}" rendered="false"/>
 			<rich:menuItem label="#{msg['despesas.cadastrarTodosCondominos']}" action="#{principalMB.cadastrarDespesasTodosCondominos}" rendered="false"/>
 			<rich:menuItem label="#{msg['despesas.listarDespesasCondominio']}" action="#{principalMB.listarDespesasCondominio}" rendered="false"/>
-			<rich:menuItem label="#{msg['receitaDespesa.cadastrarReceitaDespesa']}" action="#{principalMB.cadastrarReceitaDespesa}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,7')}"/>
+			<rich:menuItem label="#{msg['receitaDespesa.cadastrarReceitaDespesa']}" action="#{principalMB.cadastrarReceitaDespesa}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,7') and loginMB.exibeMenuFinanceiro()}"/>
 			<rich:menuItem label="#{msg['receitaDespesa.listarReceitaDespesa']}" action="#{principalMB.listarReceitaDespesa}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,5,7')}"/>					
 		</rich:dropDownMenu>
 		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,5') and loginMB.sindicoGeralAssociado()}">
