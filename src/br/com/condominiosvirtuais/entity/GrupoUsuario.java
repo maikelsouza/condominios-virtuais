@@ -71,6 +71,7 @@ public class GrupoUsuario {
 			case 6 :					
 				listaTelas = TipoGrupoUsuarioEnum.FUNCIONARIO.getGrupoUsuariosTelasAcesso().get(this.getId()); 
 				temAcesso = this.contemTela(pagina, listaTelas);
+				break;
 			case 7 :					
 				listaTelas = TipoGrupoUsuarioEnum.ESCRITORIO_CONTABILIDADE.getGrupoUsuariosTelasAcesso().get(this.getId()); 
 				temAcesso = this.contemTela(pagina, listaTelas);	
