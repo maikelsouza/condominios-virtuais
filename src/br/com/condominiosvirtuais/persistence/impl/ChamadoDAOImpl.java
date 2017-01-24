@@ -268,7 +268,7 @@ public class ChamadoDAOImpl implements ChamadoDAO, Serializable {
 			while(resultSet.next()){
 				chamado = new Chamado();
 				chamado.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
-				chamado.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, DESCRICAO, java.sql.Types.VARCHAR)));
+				chamado.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
 				chamado.setDescricao(String.valueOf(SQLUtil.getValorResultSet(resultSet, DESCRICAO, java.sql.Types.VARCHAR)));
 				chamado.setStatus((Integer) (SQLUtil.getValorResultSet(resultSet, STATUS, java.sql.Types.INTEGER)));
 				chamado.setOutros(String.valueOf(SQLUtil.getValorResultSet(resultSet, OUTROS, java.sql.Types.VARCHAR)));
