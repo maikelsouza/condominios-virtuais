@@ -100,11 +100,12 @@
 							</h:outputText>
 						</rich:column>
 						<rich:column sortBy="#{obra.valor}" sortOrder="#{ordenaObraMB.valorObra}">
-							<f:facet name="header">
-							    
+							<f:facet name="header">							    
 								<a4j:commandLink value="#{msg['obra.valor']}" render="tableObra" action="#{ordenaObraMB.ordenarPorValorObra}" />
 							</f:facet>
-							<h:outputText value="#{obra.valor}" />
+							<h:outputText value="#{obra.valor}" >
+								<f:convertNumber pattern="#{msg.formatoMoeda}" />
+							</h:outputText>
 						</rich:column>						
 						<rich:column sortBy="#{obra.descricao}" sortOrder="#{ordenaObraMB.descricaoObra}" >
 							<f:facet name="header">
