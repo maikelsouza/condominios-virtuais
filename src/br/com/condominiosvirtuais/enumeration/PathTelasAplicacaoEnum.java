@@ -102,7 +102,8 @@ public enum PathTelasAplicacaoEnum {
 	FORM_EDITA_RECEITA(PREFIXO.getPathTelas()+"formEditaReceita.xhtml"),
 	FORM_CADASTRO_CONTADOR(PREFIXO.getPathTelas()+"formCadastroContador.xhtml"),
 	FORM_LISTA_CONTADOR(PREFIXO.getPathTelas()+"formListaContador.xhtml"),	
-	FORM_EDITA_CONTADOR(PREFIXO.getPathTelas()+"formEditaContador.xhtml");
+	FORM_EDITA_CONTADOR(PREFIXO.getPathTelas()+"formEditaContador.xhtml"),
+	FORM_CADASTRO_CONTA_BANCARIA(PREFIXO.getPathTelas()+"formCadastroContaBancaria.xhtml");
 	
 	
 	

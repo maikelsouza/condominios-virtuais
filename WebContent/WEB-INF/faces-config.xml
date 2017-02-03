@@ -449,7 +449,13 @@
    <from-outcome>listarContador</from-outcome>
    <to-view-id>/pages/formListaContador.xhtml</to-view-id>
     <redirect/>
-  </navigation-case>  
+  </navigation-case> 
+  <navigation-case>
+   <from-action>#{principalMB.cadastrarContaBancaria}</from-action>
+   <from-outcome>cadastrarContaBancaria</from-outcome>
+   <to-view-id>/pages/formCadastroContaBancaria.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case> 
  </navigation-rule>
  <navigation-rule>
   <from-view-id>/pages/*</from-view-id>

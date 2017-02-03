@@ -1,118 +1,86 @@
 package br.com.condominiosvirtuais.teste;
 
-import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
-import org.jrimum.bopepo.BancosSuportados;
-import org.jrimum.bopepo.Boleto;
-import org.jrimum.bopepo.view.BoletoViewer;
-import org.jrimum.domkee.comum.pessoa.endereco.CEP;
-import org.jrimum.domkee.comum.pessoa.endereco.Endereco;
-import org.jrimum.domkee.comum.pessoa.endereco.UnidadeFederativa;
-import org.jrimum.domkee.financeiro.banco.febraban.Agencia;
-import org.jrimum.domkee.financeiro.banco.febraban.Carteira;
-import org.jrimum.domkee.financeiro.banco.febraban.Cedente;
-import org.jrimum.domkee.financeiro.banco.febraban.ContaBancaria;
-import org.jrimum.domkee.financeiro.banco.febraban.NumeroDaConta;
-import org.jrimum.domkee.financeiro.banco.febraban.Sacado;
-import org.jrimum.domkee.financeiro.banco.febraban.SacadorAvalista;
-import org.jrimum.domkee.financeiro.banco.febraban.TipoDeTitulo;
-import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.jrimum.domkee.financeiro.banco.febraban.Titulo.Aceite;
-
-import jxl.Workbook;
-import jxl.WorkbookSettings;
-import jxl.write.DateFormats;
-import jxl.write.DateTime;
-import jxl.write.Label;
-import jxl.write.WritableCell;
-import jxl.write.WritableCellFormat;
-import jxl.write.WritableFont;
-import jxl.write.WritableSheet;
-import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
-import jxl.write.biff.WritableFonts;
 
 public class Classe2ParaTeste {
 
 	public static void main(String[] args) throws IOException, WriteException {
 		
-		
-		List<Integer> listaInteger = new ArrayList<>(); 
-			listaInteger.add(5);
-			listaInteger.add(2);
-			listaInteger.add(500);
-			listaInteger.add(10);
-			listaInteger.add(501);
+//		Form formData = new Form();
+//		formData.param("boleto.conta.banco","237");
+//		formData.param("boleto.conta.agencia","1234-5");
+//		formData.param("boleto.conta.numero","123456-0");
+//		formData.param("boleto.conta.carteira","12");
+//		formData.param("boleto.beneficiario.nome","DevAware Solutions");
+//		formData.param("boleto.beneficiario.cprf","15.719.277/0001-46");
+//		formData.param("boleto.beneficiario.endereco.cep","59020-000");
+//		formData.param("boleto.beneficiario.endereco.uf","RN");
+//		formData.param("boleto.beneficiario.endereco.localidade","Natal");
+//		formData.param("boleto.beneficiario.endereco.bairro","Petrópolis");
+//		formData.param("boleto.beneficiario.endereco.logradouro","Avenida Hermes da Fonseca");
+//		formData.param("boleto.beneficiario.endereco.numero","384");
+//		formData.param("boleto.beneficiario.endereco.complemento","Sala 2A, segundo andar");
+//		formData.param("boleto.emissao","2014-07-11");
+//		formData.param("boleto.vencimento","2020-05-30");
+//		formData.param("boleto.documento","EX1");
+//		formData.param("boleto.numero","12345678901-P");
+//		formData.param("boleto.titulo","DM");
+//		formData.param("boleto.valor","1250.43");
+//		formData.param("boleto.pagador.nome","Alberto Santos Dumont");
+//		formData.param("boleto.pagador.cprf","111.111.111-11");
+//		formData.param("boleto.pagador.endereco.cep","36240-000");
+//		formData.param("boleto.pagador.endereco.uf","MG");
+//		formData.param("boleto.pagador.endereco.localidade","Santos Dumont");
+//		formData.param("boleto.pagador.endereco.bairro","Casa Natal");
+//		formData.param("boleto.pagador.endereco.logradouro","BR-499");
+//		formData.param("boleto.pagador.endereco.numero","s/n");
+//		formData.param("boleto.pagador.endereco.complemento","Sítio - Subindo a serra da Mantiqueira");
+//		formData.param("boleto.instrucao","Atenção! NÃO RECEBER ESTE BOLETO.");
+//		formData.param("boleto.instrucao","Este é apenas um teste utilizando a API Boleto Cloud");
+//		formData.param("boleto.instrucao","Mais info em http://www.boletocloud.com/app/dev/api");
+//		/*
+//		 * Requisição para criação do boleto
+//		 */
+//		Response response = ClientBuilder
+//				.newClient()
+//				.target("https://sandbox.boletocloud.com/api/v1")
+//				.path("/boletos")
+//				.register(
+//						//Define o tipo de autenticação HTTP Basic 
+//						HttpAuthenticationFeature.basic("api-key_tC0Y8pmr3EUYefU7usFHRw4GyoDcWCisW7TaAV9xXjM=","token")
+//				)
+//				.request(WILDCARD)//Aceita qualquer resposta
+//				.post(Entity.form(formData));
+//		/*
+//		 * Dados da resposta
+//		 */
+//		System.out.println("HTTP Status Code: "+response.getStatus());
+//		System.out.println("Boleto Cloud Version: "+response.getHeaderString("X-BoletoCloud-Version"));
+//		System.out.println("Boleto Cloud Token: "+response.getHeaderString("X-BoletoCloud-Token"));
+//		/*
+//		 * Identifica se o boleto foi criado ou houve erro
+//		 */		
+//		if(response.getStatus() == CREATED.getStatusCode()){
+//			
+//			//Salva o arquivo do diretório corrente.
+//			Files.copy(response.readEntity(InputStream.class), Paths.get("arquivo-api-boleto-post-teste.pdf"), REPLACE_EXISTING);
+//			
+//			//Caso tenha leitor pdf no sistema..
+//			//Abrirá o arquivo PDF utilizando o leitor de PDF do sistema operacional
+//			//java.awt.Desktop.getDesktop().open(new File("arquivo-api-boleto-post-teste.pdf"));
+//			
+//		}else{
+//			System.err.println("Erro retornado em json: "+response.readEntity(String.class));
+//		}
+//		//Para saber mais sobre tratamento de erros veja a seção Status & Erros
+	}
 			
-			System.out.println(Collections.max(listaInteger));
-			
-			
-		}
 		
 		
-//		BigDecimal valor = new BigDecimal ("RS 12000000.12");  
-//		NumberFormat nf = NumberFormat.getCurrencyInstance();  
-//		String formatado = nf.format (valor);
-//		System.out.println(formatado);
-//
-//		String filename = "entrada.xls";
-//		 WorkbookSettings ws = new WorkbookSettings();
-//		 ws.setLocale(new Locale("pt", "BR"));
-//		 WritableWorkbook workbook =  Workbook.createWorkbook(new File(filename), ws);
-//		 WritableSheet s = workbook.createSheet("Folha1", 0);
-//		 
-//		 WritableFont wf = new WritableFont(WritableFont.ARIAL,  12, WritableFont.BOLD);
-//		 WritableFont wf2 = new WritableFont(WritableFont.ARIAL,  12, WritableFont.BOLD);
-//		 WritableFont wf3 = new WritableFont(WritableFont.ARIAL,  10, WritableFont.BOLD);
-//		 WritableCellFormat cf = new WritableCellFormat(wf);
-//		 cf.setWrap(true);
-//		 
-//		 Label l = new Label(0,0,"Receitas e Despesas - Condomínio XYZ - 01/12/2016 Até 21/12/2016",cf);
-//		 s.mergeCells(0, 0, 6, 0);
-//		 s.addCell(l);
-//		 
-//		 WritableCellFormat cf1 = new WritableCellFormat(wf2);
-//		 Label l2 = new Label(0,1,"Lista De Receitas",cf1);
-//		 s.mergeCells(0, 1, 3, 1);
-//		 s.addCell(l2);
-//		 
-//		 WritableCellFormat cf4 = new WritableCellFormat(wf3);
-//		 Label l3 = new Label(0,3,"Descrição",cf4);		 
-//		 s.addCell(l3);
-//		 
-//		 WritableCellFormat cf5 = new WritableCellFormat(wf3);
-//		 Label l4 = new Label(1,3,"Data",cf5);		 
-//		 s.addCell(l4);
-//		 
-//		 WritableCellFormat cf6 = new WritableCellFormat(wf3);
-//		 Label l5 = new Label(2,3,"Valor",cf6);		 
-//		 s.addCell(l5);
-//		 
-//		 WritableCellFormat cf7 = new WritableCellFormat(wf3);
-//		 Label l6 = new Label(3,3,"Número Documento",cf7);		 
-//		 s.addCell(l6);
-//		 
-//		 WritableCellFormat cf8 = new WritableCellFormat(wf3);
-//		 Label l7 = new Label(4,3,"Meio Pagamento",cf8);		 
-//		 s.addCell(l7);
-//		 
-//		 WritableCellFormat cf9 = new WritableCellFormat(wf3);
-//		 Label l8 = new Label(3,3,"Observação",cf9);		 
-//		 s.addCell(l8);
-//		 
-//		 
-//		 workbook.write();
-//		 workbook.close();
 		
-	//}
+
 }
 
 

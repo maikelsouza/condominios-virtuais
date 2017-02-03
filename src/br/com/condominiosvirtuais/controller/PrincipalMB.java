@@ -9,7 +9,6 @@ import javax.inject.Named;
 
 import org.apache.log4j.Logger;
 
-import br.com.condominiosvirtuais.thread.ClassificadosThread;
 import br.com.condominiosvirtuais.thread.EmailThread;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
 
@@ -56,9 +55,6 @@ public class PrincipalMB  implements Serializable{
 	private EmailThread emailThread;
 	
 	@Inject
-	private ClassificadosThread classificadosThread;
-	
-	@Inject
 	private AgendamentoMB agendamentoMB;
 	
 	@Inject
@@ -80,68 +76,55 @@ public class PrincipalMB  implements Serializable{
 		this.iniciaThreads();
     }
 	
-	public String principal(){
-		this.finalizaSessoes();	
+	public String principal(){		
 		return "principal";
 	}
 	              
-	public String listarDocumento(){
-		this.finalizaSessoes();
+	public String listarDocumento(){	
 		return "listarDocumento";
 	}
 	
-	public String anexarDocumento(){
-		this.finalizaSessoes();
+	public String anexarDocumento(){	
 		return "anexarDocumento";
 	}
 	
-	public String anexarImagem(){
-		this.finalizaSessoes();
+	public String anexarImagem(){		
 		return "anexarImagem";
 	}
 	
-	public String listarCondominio(){
-		this.finalizaSessoes();
+	public String listarCondominio(){		
 		return "listarCondominio"; 
 	}
 	
-	public String listarImagem(){
-		this.finalizaSessoes();
+	public String listarImagem(){		
 		return "listarImagem"; 
 	}
 	
-	public String listarBloco(){
-		this.finalizaSessoes();
+	public String listarBloco(){	
 		return "listarBloco";		        
 	}
 	
-	public String listarUnidade(){
-		this.finalizaSessoes();
+	public String listarUnidade(){		
 		return "listarUnidade";		        
 	}
 	
-	public String listarCondomino(){
-		this.finalizaSessoes();
+	public String listarCondomino(){		
 		return "listarCondomino";		        
 	}
 	
-	public String listarVeiculo(){
-		this.finalizaSessoes();
+	public String listarVeiculo(){		
 		return "listarVeiculo";		        
 	}
 	
-	public String listarAmbienteCondominio(){
-		this.finalizaSessoes();
+	public String listarAmbienteCondominio(){		
 		return "listarAmbienteCondominio";
 	}
 	              
-	public String listarAmbienteBloco(){
-		this.finalizaSessoes();
+	public String listarAmbienteBloco(){		
 		return "listarAmbienteBloco";
 	}
 	
-	public String listarFuncionarioCondominio(){
-		this.finalizaSessoes();
+	public String listarFuncionarioCondominio(){		
 		return "listarFuncionarioCondominio";
 	}
 	              
@@ -153,53 +136,43 @@ public class PrincipalMB  implements Serializable{
 		return "cadastroListarReserva";
 	}
 	
-	public String cadastrarReserva(){
-		this.finalizaSessoes();
+	public String cadastrarReserva(){		
 		return "cadastrarReserva";
 	}
 	
-	public String aprovarReserva(){
-		this.finalizaSessoes();
+	public String aprovarReserva(){		
 		return "aprovarReserva";
 	}
 	
-	public String listarReserva(){
-		this.finalizaSessoes();
+	public String listarReserva(){		
 		return "listarReserva";		        
 	}
 	
-	public String faleComSindico(){
-		this.finalizaSessoes();
+	public String faleComSindico(){		
 		return "faleComSindico";
 	}
 	
-	public String escreverMensagem(){
-		this.finalizaSessoes();
+	public String escreverMensagem(){		
 		return "escreverMensagem";
 	}
 	
-	public String mensagensRecebidas(){
-		this.finalizaSessoes();
+	public String mensagensRecebidas(){		
 		return "mensagensRecebidas"; 
 	}
 	
-	public String mensagensEnviadas(){
-		this.finalizaSessoes();
+	public String mensagensEnviadas(){		
 		return "mensagensEnviadas"; 
 	}
 	
-	public String listarEnquete(){
-		this.finalizaSessoes();
+	public String listarEnquete(){		
 		return "listarEnquete";
 	}
 	
-	public String cadastrarEnquete(){
-		this.finalizaSessoes();
+	public String cadastrarEnquete(){		
 		return "cadastrarEnquete"; 
 	}
 	
-	public String votarEnquete(){
-		this.finalizaSessoes();
+	public String votarEnquete(){		
 		return "votarEnquete"; 
 	}
 	
@@ -211,18 +184,15 @@ public class PrincipalMB  implements Serializable{
 		return "cadastrarClassificados"; 
 	}
 	
-	public String listarTelefonesUteis(){
-		this.finalizaSessoes();
+	public String listarTelefonesUteis(){		
 		return "listarTelefonesUteis"; 
 	}
 	
-	public String cadastrarTelefonesUteis(){
-		this.finalizaSessoes();
+	public String cadastrarTelefonesUteis(){		
 		return "cadastrarTelefonesUteis"; 
 	}
 	
-	public String meuPainel(){
-		this.finalizaSessoes();
+	public String meuPainel(){		
 		return "meuPainel"; 
 	}
 	
@@ -302,6 +272,10 @@ public class PrincipalMB  implements Serializable{
 		return "listarContador";
 	}
 	
+	public String cadastrarContaBancaria(){
+		return "cadastrarContaBancaria";
+	}
+	
 	
 
 	private void iniciaThreads(){				
@@ -311,21 +285,8 @@ public class PrincipalMB  implements Serializable{
 		//classificadosThread.start();
 		//logger.info("Start "+ ClassificadosThread.class);
 		this.caminhoAplicacao = AplicacaoUtil.getCaminhoAplicacao();		
-	}
+	}	
 	
-	private void finalizaSessoes(){
-// TODO: Código comentado em 09/09/2016. Apagar em 90 dias		
-//		this.condominioMB.fechaSessao();
-//		this.blocoMB.fechaSessao();
-//		this.unidadeMB.fechaSessao();
-//		this.ambienteMB.fechaSessao();
-//		this.itemAmbienteMB.fechaSessao();		
-//		this.ambienteMB.fechaSessao();
-//		this.reservaMB.fechaSessao();
-//		this.mensagemMB.fechaSessao();
-//		this.enqueteMB.fechaSessao();
-//		this.veiculoMB.fechaSessao();
-	}
 
 	public CondominioMB getCondominioMB() {
 		return condominioMB;
@@ -458,9 +419,6 @@ public class PrincipalMB  implements Serializable{
 	public void setObraMB(ObraMB obraMB) {
 		this.obraMB = obraMB;
 	}
-	
-	
-	
 	
 	
 	
