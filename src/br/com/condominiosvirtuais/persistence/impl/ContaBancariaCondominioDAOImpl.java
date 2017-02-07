@@ -13,8 +13,7 @@ import br.com.condominiosvirtuais.entity.ContaBancariaCondominio;
 import br.com.condominiosvirtuais.persistence.ContaBancariaCondominioDAO;
 import br.com.condominiosvirtuais.util.SQLUtil;
 
-public class ContaBancariaCondominioDAOImpl implements ContaBancariaCondominioDAO {
-	
+public class ContaBancariaCondominioDAOImpl implements ContaBancariaCondominioDAO {	
 
 	private static Logger logger = Logger.getLogger(ContaBancariaCondominioDAOImpl.class); 
 	
@@ -59,6 +58,7 @@ public class ContaBancariaCondominioDAOImpl implements ContaBancariaCondominioDA
 		query.append(CONTA_BANCARIA_CONDOMINIO);
 		query.append(" WHERE ");
 		query.append(ID_CONDOMINIO);
+		query.append(" = ?");
 		query.append(";");
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -72,24 +72,42 @@ public class ContaBancariaCondominioDAOImpl implements ContaBancariaCondominioDA
 				contaBancariaCondominio = new ContaBancariaCondominio();
 				contaBancariaCondominio.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
 				contaBancariaCondominio.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
-				contaBancariaCondominio.setIdContaBancaria((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
+				contaBancariaCondominio.setIdContaBancaria((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONTA_BANCARIA, java.sql.Types.INTEGER));
 				listaContaBancariaCondominio.add(contaBancariaCondominio);
 			}
 		} catch (SQLException e) {
 			throw e;
 		} catch (Exception e) {
-			throw e;		
-		}finally{
-			try {
-				preparedStatement.close();
-				con.close();				
-			} catch (SQLException e) {
-				logger.error("erro sqlstate "+e.getSQLState(), e);
-			}
+			throw e;
 		}				
 		return listaContaBancariaCondominio;
 	}
-    
+
+	@Override
+	public void atualizarPorIdContaBancaria(ContaBancariaCondominio contaBancariaCondominio, Connection con)
+			throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();		
+		query.append("UPDATE ");
+		query.append(CONTA_BANCARIA_CONDOMINIO);
+		query.append(" SET ");
+		query.append(ID_CONDOMINIO);
+		query.append(" = ? ");
+		query.append("WHERE ");
+		query.append(ID_CONTA_BANCARIA);
+		query.append("= ?");
+		PreparedStatement statement = null;
+		try {			
+			statement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(statement, 1, contaBancariaCondominio.getIdCondominio(), java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 2, contaBancariaCondominio.getIdContaBancaria(), java.sql.Types.INTEGER);
+			statement.executeUpdate();				
+		} catch (SQLException e) {							
+			throw e;
+		}catch (Exception e) {					
+			throw e;	
+		}	
+		
+	} 
     
 
 }

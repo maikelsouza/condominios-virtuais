@@ -276,6 +276,10 @@ public class PrincipalMB  implements Serializable{
 		return "cadastrarContaBancaria";
 	}
 	
+	public String listarContaBancaria(){
+		return "listarContaBancaria";
+	}
+	
 	
 
 	private void iniciaThreads(){				

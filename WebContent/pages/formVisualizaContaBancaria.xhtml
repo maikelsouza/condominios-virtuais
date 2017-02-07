@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">		
+		<h:form id="idFormVisualizaContaBancaria" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.visualizaContaBancaria}" />
+				</f:facet>
+				<h:panelGrid columns="2" >
+					<h:outputLabel value="#{msg.condominio}:" for="idCondominio" />
+					<h:outputText value="#{contaBancariaMB.nomeCondominio}"  id="idCondominio"/>	
+					<h:outputLabel value="#{msg['contaBancaria.banco']}:" for="idBanco" />						
+					<h:outputText id="idBanco" value="#{contaBancariaMB.contaBancaria.banco.nome}"  />
+					<h:outputLabel value="#{msg['contaBancaria.agencia']}:" for="idAgencia" />						
+					<h:outputText id="idAgencia" value="#{contaBancariaMB.contaBancaria.agencia}"  />
+					<h:outputLabel value="#{msg['contaBancaria.numero']}:" for="idNumero" />						
+				    <h:outputText id="idNumero" value="#{contaBancariaMB.contaBancaria.numero}"  />
+					<h:outputLabel value="#{msg['contaBancaria.carteira']}:" for="idCarteira" />
+					<h:outputText id="idCarteira" value="#{contaBancariaMB.contaBancaria.carteira}"  />
+				 </h:panelGrid> 
+			</rich:panel>			
+			
+			<h:panelGrid columns="1">
+				<h:commandButton value="#{msg.botaoVoltar}" action="#{contaBancariaMB.voltarVisualizarContaBancaria}" />				
+			</h:panelGrid>
+		</h:form>		
+	</ui:define>
+
+</ui:composition>

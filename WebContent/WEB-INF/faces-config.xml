@@ -148,6 +148,12 @@
   <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaContadorMB</managed-bean-class>
   <managed-bean-scope>view</managed-bean-scope>
  </managed-bean>
+ <managed-bean>
+  <managed-bean-name>ordenaContaBancariaMB</managed-bean-name>
+  <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaContaBancariaMB</managed-bean-class>
+  <managed-bean-scope>view</managed-bean-scope>
+ </managed-bean>
+ 
  
  <navigation-rule>
   <navigation-case>
@@ -454,6 +460,12 @@
    <from-action>#{principalMB.cadastrarContaBancaria}</from-action>
    <from-outcome>cadastrarContaBancaria</from-outcome>
    <to-view-id>/pages/formCadastroContaBancaria.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case> 
+  <navigation-case>
+   <from-action>#{principalMB.listarContaBancaria}</from-action>
+   <from-outcome>listarContaBancaria</from-outcome>
+   <to-view-id>/pages/formListaContaBancaria.xhtml</to-view-id>
     <redirect/>
   </navigation-case> 
  </navigation-rule>
@@ -1688,7 +1700,7 @@
    <from-outcome>voltar</from-outcome>
    <to-view-id>/pages/formListaSindicoProfissional.xhtml</to-view-id>
    <redirect/>
-  </navigation-case>
+  </navigation-case>  
  </navigation-rule>
  <navigation-rule>                       
   <from-view-id>/pages/formCadastroReceitaDespesa.xhtml</from-view-id>  
@@ -1799,6 +1811,48 @@
    <to-view-id>/pages/formListaContador.xhtml</to-view-id>
     <redirect/>
   </navigation-case>  
+ </navigation-rule> 
+ <navigation-rule>                       
+  <from-view-id>/pages/formCadastroContaBancaria.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{contaBancariaMB.cancelarSalvarContaBancaria}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
+  </navigation-case>  
+  <navigation-case>                  
+   <from-action>#{contadorMB.voltarAtualizarContador}</from-action>
+   <from-outcome>voltar</from-outcome>
+   <to-view-id>/pages/formListaContador.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case>  
+ </navigation-rule> 
+ <navigation-rule>                       
+  <from-view-id>/pages/formListaContaBancaria.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{contaBancariaMB.cadastroContaBancaria}</from-action>
+   <from-outcome>cadastrar</from-outcome>
+   <to-view-id>/pages/formCadastroContaBancaria.xhtml</to-view-id>
+  </navigation-case>
+   <navigation-case>                  
+   <from-action>#{contaBancariaMB.visualizarContaBancaria}</from-action>
+   <from-outcome>visualizar</from-outcome>
+   <to-view-id>/pages/formVisualizaContaBancaria.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+   <navigation-case>              
+   <from-action>#{contaBancariaMB.editaContaBancaria}</from-action>
+   <from-outcome>editar</from-outcome>
+   <to-view-id>/pages/formEditaContaBancaria.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formVisualizaContaBancaria.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{contaBancariaMB.voltarVisualizarContaBancaria}</from-action>
+   <from-outcome>voltar</from-outcome>
+   <to-view-id>/pages/formListaContaBancaria.xhtm</to-view-id>
+  </navigation-case>
  </navigation-rule> 
  
  

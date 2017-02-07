@@ -97,47 +97,104 @@ public class ContaBancariaDAOImpl implements ContaBancariaDAO, Serializable {
 		List<ContaBancaria> listaContaBancaria = new ArrayList<ContaBancaria>();
 		ContaBancaria contaBancaria = null;
 		List<ContaBancariaCondominio> listaContaBancariaCondominio = this.contaBancariaCondominioDAO.buscarPorIdCondominio(idCondominio, con);
-		Integer contador = 1;
-		pontoInterrogacao = SQLUtil.popularInterrocacoes(listaContaBancariaCondominio.size());
-		StringBuffer query = new StringBuffer();
-		query.append("SELECT * FROM ");
-		query.append(CONTA_BANCARIA);
-		query.append(" WHERE ");
-		query.append(ID);		
-		query.append(" IN (");
-		query.append(pontoInterrogacao);
-		query.append(" )");
-		query.append(";");		
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		try {
-			preparedStatement = con.prepareStatement(query.toString());
-			for (ContaBancariaCondominio contaBancariaCondominio : listaContaBancariaCondominio) {
-				SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, contaBancariaCondominio.getIdCondominio(), java.sql.Types.INTEGER);				
-			}
-			resultSet = preparedStatement.executeQuery();
-			while(resultSet.next()){
-				contaBancaria = new ContaBancaria();
-				contaBancaria.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
-				contaBancaria.setAgencia(String.valueOf(SQLUtil.getValorResultSet(resultSet, AGENCIA, java.sql.Types.VARCHAR)));
-				contaBancaria.setNumero(String.valueOf(SQLUtil.getValorResultSet(resultSet,NUMERO, java.sql.Types.VARCHAR)));
-				contaBancaria.setCarteira(String.valueOf(SQLUtil.getValorResultSet(resultSet,CARTEIRA, java.sql.Types.VARCHAR)));
-				contaBancaria.setBanco(this.bancoDAO.buscarPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_BANCO, java.sql.Types.INTEGER),con));				
-				listaContaBancaria.add(contaBancaria);
-			}
-		} catch (SQLException e) {
-			throw e;
-		} catch (Exception e) {
-			throw e;		
-		}finally{
+		if(listaContaBancariaCondominio.size() > 0){			
+			Integer contador = 1;
+			pontoInterrogacao = SQLUtil.popularInterrocacoes(listaContaBancariaCondominio.size());
+			StringBuffer query = new StringBuffer();
+			query.append("SELECT * FROM ");
+			query.append(CONTA_BANCARIA);
+			query.append(" WHERE ");
+			query.append(ID);		
+			query.append(" IN (");
+			query.append(pontoInterrogacao);
+			query.append(" )");
+			query.append(";");		
+			PreparedStatement preparedStatement = null;
+			ResultSet resultSet = null;
 			try {
-				preparedStatement.close();
+				preparedStatement = con.prepareStatement(query.toString());
+				for (ContaBancariaCondominio contaBancariaCondominio : listaContaBancariaCondominio) {
+					SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, contaBancariaCondominio.getIdContaBancaria(), java.sql.Types.INTEGER);				
+				}
+				resultSet = preparedStatement.executeQuery();
+				while(resultSet.next()){
+					contaBancaria = new ContaBancaria();
+					contaBancaria.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+					contaBancaria.setAgencia(String.valueOf(SQLUtil.getValorResultSet(resultSet, AGENCIA, java.sql.Types.VARCHAR)));
+					contaBancaria.setNumero(String.valueOf(SQLUtil.getValorResultSet(resultSet,NUMERO, java.sql.Types.VARCHAR)));
+					contaBancaria.setCarteira(String.valueOf(SQLUtil.getValorResultSet(resultSet,CARTEIRA, java.sql.Types.VARCHAR)));
+					contaBancaria.setIdCondominio(idCondominio);
+					contaBancaria.setBanco(this.bancoDAO.buscarPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_BANCO, java.sql.Types.INTEGER),con));				
+					listaContaBancaria.add(contaBancaria);
+				}
+			} catch (SQLException e) {
+				throw e;
+			} catch (Exception e) {
+				throw e;		
+			}finally{
+				try {
+					preparedStatement.close();
+					con.close();				
+				} catch (SQLException e) {
+					logger.error("erro sqlstate "+e.getSQLState(), e);
+				}
+			}				
+		}
+		return listaContaBancaria;
+	}
+
+	@Override
+	public void atualizar(ContaBancaria contaBancaria) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		Connection con = Conexao.getConexao();		
+		con.setAutoCommit(Boolean.FALSE);
+		ContaBancariaCondominio contaBancariaCondominio = new ContaBancariaCondominio();
+		contaBancariaCondominio.setIdCondominio(contaBancaria.getIdCondominio());
+		contaBancariaCondominio.setIdContaBancaria(contaBancaria.getBanco().getId());
+		this.contaBancariaCondominioDAO.atualizarPorIdContaBancaria(contaBancariaCondominio, con);
+		query.append("UPDATE ");
+		query.append(CONTA_BANCARIA);
+		query.append(" SET ");
+		query.append(AGENCIA);
+		query.append(" = ?, ");
+		query.append(CARTEIRA);
+		query.append(" = ?, ");
+		query.append(NUMERO);
+		query.append(" = ?, ");
+		query.append(ID_BANCO);
+		query.append(" = ? ");
+		query.append("WHERE ");
+		query.append(ID);
+		query.append("= ?");
+		PreparedStatement statement = null;
+		try {			
+			statement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(statement, 1, contaBancaria.getAgencia(), java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 2, contaBancaria.getCarteira(), java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 3, contaBancaria.getNumero(), java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 4, contaBancaria.getBanco().getId(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 5, contaBancaria.getId(), java.sql.Types.INTEGER);
+			statement.executeUpdate();
+			con.commit();
+		} catch (SQLException e) {							
+			throw e;
+		}catch (Exception e) {					
+			throw e;	
+		}finally {
+			try {
+				statement.close();
 				con.close();				
 			} catch (SQLException e) {
-				logger.error("erro sqlstate "+e.getSQLState(), e);
+				logger.error("erro sqlstate "+e.getSQLState(), e);			
 			}
-		}				
-		return listaContaBancaria;
+		}
+		
+	}
+
+	@Override
+	public void excluir(ContaBancaria contaBancaria) throws SQLException, Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
 
