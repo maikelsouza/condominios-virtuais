@@ -107,6 +107,26 @@ public class ContaBancariaCondominioDAOImpl implements ContaBancariaCondominioDA
 			throw e;	
 		}	
 		
+	}
+
+	@Override
+	public void excluirPorIdContaBancaria(Integer idContaBancaria, Connection con) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("DELETE FROM ");
+		query.append(CONTA_BANCARIA_CONDOMINIO);
+		query.append(" WHERE ");
+		query.append(ID_CONTA_BANCARIA);
+		query.append("= ?");
+		PreparedStatement statement = null;		
+		try {
+			statement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(statement, 1, idContaBancaria, java.sql.Types.INTEGER);			
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			throw e;
+		} catch (Exception e) {
+			throw e;
+		}	
 	} 
     
 

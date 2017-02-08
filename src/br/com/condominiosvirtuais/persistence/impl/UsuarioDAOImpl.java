@@ -44,7 +44,9 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 	
 	private static final String DATA_NASCIMENTO = "DATA_NASCIMENTO";
 	
-	private static final String SITUACAO = "SITUACAO";	
+	private static final String SITUACAO = "SITUACAO";
+	
+	private static final String CPF = "CPF";
 	
 	private static final String ULTIMO_LOGIN = "ULTIMO_LOGIN";
 	
@@ -96,6 +98,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 				usuario.setSexo((Integer) SQLUtil.getValorResultSet(resultSet, SEXO, java.sql.Types.INTEGER));
 				usuario.setDataNascimento((Date) SQLUtil.getValorResultSet(resultSet, DATA_NASCIMENTO, java.sql.Types.DATE));
 				usuario.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
+				usuario.setCpf((Long) SQLUtil.getValorResultSet(resultSet, CPF, java.sql.Types.BIGINT));
 				listaUsuario.add(usuario);
 			}
 		}catch (SQLException e) {			
@@ -130,8 +133,10 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 		query.append(SITUACAO);
 		query.append(",");
 		query.append(ID_GRUPO_USUARIO);
+		query.append(",");
+		query.append(CPF);
 		query.append(") ");
-		query.append("VALUES(?,?,?,?,?,?)");
+		query.append("VALUES(?,?,?,?,?,?,?)");
 		PreparedStatement statement = null;
 		try {			
 			statement = con.prepareStatement(query.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
@@ -141,6 +146,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 			SQLUtil.setValorPpreparedStatement(statement, 4, usuario.getDataNascimento(), java.sql.Types.DATE);
 			SQLUtil.setValorPpreparedStatement(statement, 5, usuario.getSituacao(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 6, usuario.getIdGrupoUsuario(), java.sql.Types.INTEGER );
+			SQLUtil.setValorPpreparedStatement(statement, 7, usuario.getCpf(), java.sql.Types.BIGINT);
 			statement.executeUpdate();
 			ResultSet rs = statement.getGeneratedKeys();
 			rs.next();
@@ -192,6 +198,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 				usuario.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
 				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
 				usuario.setSenha(String.valueOf(SQLUtil.getValorResultSet(resultSet, SENHA, java.sql.Types.VARCHAR)));	
+				usuario.setCpf((Long) SQLUtil.getValorResultSet(resultSet, CPF, java.sql.Types.BIGINT));
 				usuario.setEmail(this.emailUsuarioDAO.get().buscarEmailPrincipalPorUsuario(usuario,con));
 				listaUsuarioCondominio = this.usuarioCondominioDAO.get().buscarListaPorIdUsuario(usuario.getId(),con);
 				for (UsuarioCondominio usuarioCondominio : listaUsuarioCondominio) {
@@ -237,7 +244,8 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 				usuario.setDataNascimento((Date) SQLUtil.getValorResultSet(resultSet, DATA_NASCIMENTO, java.sql.Types.DATE));
 				usuario.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
 				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
-				usuario.setSenha(String.valueOf(SQLUtil.getValorResultSet(resultSet, SENHA, java.sql.Types.VARCHAR)));	
+				usuario.setSenha(String.valueOf(SQLUtil.getValorResultSet(resultSet, SENHA, java.sql.Types.VARCHAR)));
+				usuario.setCpf((Long) SQLUtil.getValorResultSet(resultSet, CPF, java.sql.Types.BIGINT));
 				usuario.setEmail(this.emailUsuarioDAO.get().buscarEmailPrincipalPorUsuario(usuario,con));
 				listaUsuarioCondominio = this.usuarioCondominioDAO.get().buscarListaPorIdUsuario(usuario.getId(),con);
 				for (UsuarioCondominio usuarioCondominio : listaUsuarioCondominio) {
@@ -297,6 +305,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 				usuario.setDataNascimento((Date) SQLUtil.getValorResultSet(resultSet, DATA_NASCIMENTO, java.sql.Types.DATE));
 				usuario.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
 				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
+				usuario.setCpf((Long) SQLUtil.getValorResultSet(resultSet, CPF, java.sql.Types.BIGINT));
 				usuario.setEmail(this.emailUsuarioDAO.get().buscarEmailPrincipalPorUsuario(usuario));
 				listaUsuarioCondominio = this.usuarioCondominioDAO.get().buscarListaPorUsuario(usuario);
 				for (UsuarioCondominio usuarioCondominio : listaUsuarioCondominio) {
@@ -337,9 +346,11 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 		query.append(DATA_NASCIMENTO); 
 		query.append(" = ?, ");
 		query.append(SITUACAO); 
-		query.append(" = ?, ");
+		query.append(" = ?, ");		
 		query.append(ID_GRUPO_USUARIO); 
-		query.append(" = ? ");		
+		query.append(" = ?, ");	
+		query.append(CPF); 
+		query.append(" = ? ");
 		query.append("WHERE ");
 		query.append(ID);
 		query.append(" = ? ");		
@@ -351,7 +362,8 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 			SQLUtil.setValorPpreparedStatement(statement, 3, usuario.getDataNascimento(), java.sql.Types.DATE);
 			SQLUtil.setValorPpreparedStatement(statement, 4, usuario.getSituacao(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 5, usuario.getIdGrupoUsuario(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement, 6, usuario.getId(), java.sql.Types.INTEGER);		
+			SQLUtil.setValorPpreparedStatement(statement, 6, usuario.getCpf(), java.sql.Types.BIGINT);			
+			SQLUtil.setValorPpreparedStatement(statement, 7, usuario.getId(), java.sql.Types.INTEGER);
 			statement.executeUpdate();					
 		} catch (SQLException e) {
 			con.rollback();
@@ -383,7 +395,9 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 		query.append(DATA_NASCIMENTO); 
 		query.append(" = ?, ");		
 		query.append(SITUACAO); 
-		query.append(" = ? ");		
+		query.append(" = ?, ");	
+		query.append(CPF); 
+		query.append(" = ? ");
 		query.append("WHERE ");
 		query.append(ID);
 		query.append(" = ? ");		
@@ -395,7 +409,8 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 			SQLUtil.setValorPpreparedStatement(statement, 3, usuario.getImagem(), java.sql.Types.BINARY);
 			SQLUtil.setValorPpreparedStatement(statement, 4, usuario.getDataNascimento(), java.sql.Types.DATE);
 			SQLUtil.setValorPpreparedStatement(statement, 5, usuario.getSituacao(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement, 6, usuario.getId(), java.sql.Types.INTEGER);						
+			SQLUtil.setValorPpreparedStatement(statement, 6, usuario.getSituacao(), java.sql.Types.BIGINT);
+			SQLUtil.setValorPpreparedStatement(statement, 7, usuario.getId(), java.sql.Types.INTEGER);						
 			statement.executeUpdate();	
 			con.commit();
 		} catch (SQLException e) {
@@ -468,6 +483,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 				usuario.setSenha(String.valueOf(SQLUtil.getValorResultSet(resultSet, SENHA, java.sql.Types.VARCHAR)));			
 				usuario.setDataNascimento((Date) SQLUtil.getValorResultSet(resultSet, DATA_NASCIMENTO, java.sql.Types.DATE));
 				usuario.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
+				usuario.setCpf((Long) SQLUtil.getValorResultSet(resultSet, CPF, java.sql.Types.BIGINT));
 				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));					
 				usuario.setEmail(this.emailUsuarioDAO.get().buscarEmailPrincipalPorUsuario(usuario));
 				listaUsuarioCondominio = this.usuarioCondominioDAO.get().buscarListaPorUsuario(usuario);	
@@ -518,7 +534,8 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 				usuario.setSenha(String.valueOf(SQLUtil.getValorResultSet(resultSet, SENHA, java.sql.Types.VARCHAR)));			
 				usuario.setDataNascimento((Date) SQLUtil.getValorResultSet(resultSet, DATA_NASCIMENTO, java.sql.Types.DATE));
 				usuario.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
-				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));					
+				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
+				usuario.setCpf((Long) SQLUtil.getValorResultSet(resultSet, CPF, java.sql.Types.BIGINT));
 				usuario.setEmail(this.emailUsuarioDAO.get().buscarEmailPrincipalPorUsuario(usuario));
 				listaUsuarioCondominio = this.usuarioCondominioDAO.get().buscarListaPorUsuario(usuario);	
 				for (UsuarioCondominio usuarioCondominio : listaUsuarioCondominio) {
@@ -670,19 +687,6 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 			}			
 		}		
 		return usuario;
-	}
-	
-	
-
-
-	public Instance<EmailUsuarioDAOImpl> getEmailUsuarioDAO() {
-		return emailUsuarioDAO;
-	}
-
-	public void setEmailUsuarioDAO(Instance<EmailUsuarioDAOImpl> emailUsuarioDAO) {
-		this.emailUsuarioDAO = emailUsuarioDAO;
-	}
-
-	
+	}	
 	
 }

@@ -74,7 +74,7 @@ public class ContaBancariaMB implements Serializable {
 	public String salvar(){
 		try {
 			this.contaBancariaService.salvar(this.contaBancaria);
-			this.pesquisar();
+			this.pesquisar();			
 			ManagedBeanUtil.setMensagemInfo("msg.contaBancaria.salvaSucesso");
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
@@ -145,7 +145,7 @@ public class ContaBancariaMB implements Serializable {
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
 		}
 		
-		return "salvar";
+		return "excluir";
 	}
 	
 	public String editaContaBancaria(){
@@ -153,7 +153,7 @@ public class ContaBancariaMB implements Serializable {
 		return "editar";
 	}
 	
-	public String voltarVisualizarContaBancaria(){
+	public String voltarContaBancaria(){
 		return "voltar";
 	}
 	

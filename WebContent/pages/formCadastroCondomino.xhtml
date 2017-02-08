@@ -105,25 +105,22 @@
 						<h:outputLabel value="#{msg['condomino.email']}:" for="idEmail" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
+					<h:outputLabel value="#{msg['condomino.cpf']}:" for="idCpf" />
 					<h:panelGroup>
-						<h:outputLabel value="#{msg['condomino.proprietario']}:"
-							for="idProprietario" />
+						<h:outputLabel value="#{msg['condomino.proprietario']}:" for="idProprietario" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
-					<div></div>
-					<h:inputText id="idEmail"
-						value="#{condominoMB.condomino.email.email}" required="true"
-						size="40" label="#{msg['condomino.email.label']}">
-					</h:inputText>
-					<h:selectOneRadio id="idProprietario"
-						value="#{condominoMB.condomino.proprietario}"
-						defaultLabel="#{msg['condomino.proprietario.DefaultLabel']}"
+					
+					<h:inputText id="idEmail" value="#{condominoMB.condomino.email.email}" required="true" size="40" label="#{msg['condomino.email.label']}"/>
+					
+					<h:inputText id="idCpf" value="#{condominoMB.condomino.cpf}" label="#{msg['condomino.cpf.label']}"/>
+					
+					<h:selectOneRadio id="idProprietario" value="#{condominoMB.condomino.proprietario}" defaultLabel="#{msg['condomino.proprietario.DefaultLabel']}"
 						required="true" label="#{msg['condomino.proprietario.label']}">
 						<f:selectItem itemLabel="#{msg.sim}" itemValue="#{true}" />
 						<f:selectItem itemLabel="#{msg.nao}" itemValue="#{false}" />
 					</h:selectOneRadio>
-
-					<div></div>
+										
 					<h:outputLabel value="#{msg['condomino.telefoneResidencial']}:"
 						for="idTelefoneResidencial" />
 					<h:outputLabel for="idTelefoneCelular"

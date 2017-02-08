@@ -52,6 +52,8 @@ public class CondominoVO {
 	
 	private Arquivo arquivo;
 	
+	private Long cpfCondomino;
+	
 		
 	public Integer getId() {
 		return id;
@@ -251,6 +253,14 @@ public class CondominoVO {
 
 	public void setArquivo(Arquivo arquivo) {
 		this.arquivo = arquivo;
+	}	
+
+	public Long getCpfCondomino() {
+		return cpfCondomino;
+	}
+
+	public void setCpfCondomino(Long cpfCondomino) {
+		this.cpfCondomino = cpfCondomino;
 	}
 
 	@Override
@@ -318,6 +328,11 @@ public class CondominoVO {
 				* result
 				+ ((telefoneResidencialCondomino == null) ? 0
 						: telefoneResidencialCondomino.hashCode());
+		
+		result = prime
+				* result
+				+ ((cpfCondomino == null) ? 0
+						: cpfCondomino.hashCode());
 		return result;
 	}
 
@@ -446,6 +461,12 @@ public class CondominoVO {
 				return false;
 		} else if (!telefoneResidencialCondomino
 				.equals(other.telefoneResidencialCondomino))
+			return false;
+		if (cpfCondomino == null) {
+			if (other.cpfCondomino != null)
+				return false;
+		} else if (!cpfCondomino
+				.equals(other.cpfCondomino))
 			return false;
 		return true;
 	}	

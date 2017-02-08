@@ -145,13 +145,13 @@ public class ContaBancariaDAOImpl implements ContaBancariaDAO, Serializable {
 
 	@Override
 	public void atualizar(ContaBancaria contaBancaria) throws SQLException, Exception {
-		StringBuffer query = new StringBuffer();
 		Connection con = Conexao.getConexao();		
 		con.setAutoCommit(Boolean.FALSE);
 		ContaBancariaCondominio contaBancariaCondominio = new ContaBancariaCondominio();
 		contaBancariaCondominio.setIdCondominio(contaBancaria.getIdCondominio());
-		contaBancariaCondominio.setIdContaBancaria(contaBancaria.getBanco().getId());
+		contaBancariaCondominio.setIdContaBancaria(contaBancaria.getId());
 		this.contaBancariaCondominioDAO.atualizarPorIdContaBancaria(contaBancariaCondominio, con);
+		StringBuffer query = new StringBuffer();
 		query.append("UPDATE ");
 		query.append(CONTA_BANCARIA);
 		query.append(" SET ");
@@ -177,8 +177,10 @@ public class ContaBancariaDAOImpl implements ContaBancariaDAO, Serializable {
 			statement.executeUpdate();
 			con.commit();
 		} catch (SQLException e) {							
+			con.rollback();
 			throw e;
-		}catch (Exception e) {					
+		}catch (Exception e) {
+			con.rollback();
 			throw e;	
 		}finally {
 			try {
@@ -193,8 +195,35 @@ public class ContaBancariaDAOImpl implements ContaBancariaDAO, Serializable {
 
 	@Override
 	public void excluir(ContaBancaria contaBancaria) throws SQLException, Exception {
-		// TODO Auto-generated method stub
-		
+		Connection con = Conexao.getConexao();		
+		PreparedStatement statement = null;		
+		try {
+			con.setAutoCommit(Boolean.FALSE);
+			this.contaBancariaCondominioDAO.excluirPorIdContaBancaria(contaBancaria.getId(), con);
+			StringBuffer query = new StringBuffer();
+			query.append("DELETE FROM ");
+			query.append(CONTA_BANCARIA);
+			query.append(" WHERE ");
+			query.append(ID);
+			query.append("= ?");
+			statement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(statement, 1, contaBancaria.getId(), java.sql.Types.INTEGER);
+			statement.executeUpdate();
+			con.commit();
+		} catch (SQLException e) {
+			con.rollback();
+			throw e;
+		} catch (Exception e) {
+			con.rollback();
+			throw e;
+		}finally {
+			try {
+				statement.close();
+				con.close();				
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);			
+			}
+		}	
 	}
 
 

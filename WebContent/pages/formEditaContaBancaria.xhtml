@@ -60,11 +60,23 @@
 				</h:panelGrid>		
 			</rich:panel>
 			
+			<rich:popupPanel id="confirmaExcluirContaBancaria" autosized="true">
+	         		 #{msg['msg.contaBancaria.confirmacaoExcluir']}
+	         		 <h:panelGrid columns="2">
+	           	 		<h:commandButton value="#{msg.botaoExcluir}" action="#{contaBancariaMB.excluir}"
+							onclick=" #{rich:component('confirmaExcluirContaBancaria')}.hide();  return true;" />
+						 <h:commandButton value="#{msg.botaoCancelar}"
+							onclick="#{rich:component('confirmaExcluirContaBancaria')}.hide(); return false;" />						
+					</h:panelGrid>
+				</rich:popupPanel>
 			
-			<h:panelGrid columns="2">
+			<h:panelGrid columns="3">
 				<h:commandButton value="#{msg.botaoAtualizar}" action="#{contaBancariaMB.atualizar}" />
-				<h:commandButton value="#{msg.botaoExcluir}" action="#{contaBancariaMB.excluir}" />				
-				<h:commandButton value="#{msg.botaoCancelar}" action="#{contaBancariaMB.cancelarSalvarContaBancaria}" immediate="true" />
+				<h:commandButton value="#{msg.botaoExcluir}" action="#{contaBancariaMB.excluir}" >
+					<rich:componentControl target="confirmaExcluirContaBancaria"
+						operation="show"/>			
+				</h:commandButton>	
+				<h:commandButton value="#{msg.botaoVoltar}" action="#{contaBancariaMB.voltarContaBancaria}" immediate="true" />
 			</h:panelGrid>
 			
 			

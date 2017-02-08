@@ -272,6 +272,7 @@ public class CondominoMB implements  Serializable{
 			this.condomino.setTelefoneResidencial(this.condominoVO.getTelefoneResidencialCondomino());
 			this.condomino.setSituacao(this.condominoVO.getSituacaoCondomino());
 			this.condomino.setIdUnidade(this.condominoVO.getIdUnidade());
+			this.condomino.setCpf(this.condominoVO.getCpfCondomino());
 			EmailUsuario emailUsuario = new EmailUsuario();
 			emailUsuario.setId(this.condominoVO.getIdEmailCondomino());
 			emailUsuario.setEmail(this.condominoVO.getEmailCondomino());		

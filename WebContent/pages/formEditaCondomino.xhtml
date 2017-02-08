@@ -27,135 +27,109 @@
 						<h:outputLabel value="#{msg.unidades}:" for="idListaSIUnidades" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>					
-					<h:selectOneMenu id="idSICondominio"
-						value="#{condominoMB.condominoVO.idCondominio}"
+					<h:selectOneMenu id="idSICondominio" value="#{condominoMB.condominoVO.idCondominio}"
 						defaultLabel="#{msgs['condominio.DefaultLabel']}" required="true">
 						<f:selectItems value="#{condominoMB.listaSICondominios}" />
-						<f:ajax listener="#{condominoMB.popularListaBlocos}"
-							render="idListaSIBlocos idListaSIUnidades" />
+						<f:ajax listener="#{condominoMB.popularListaBlocos}" render="idListaSIBlocos idListaSIUnidades" />
 					</h:selectOneMenu>
 					<h:selectOneMenu value="#{condominoMB.condominoVO.idBloco}"
-						defaultLabel="#{msgs['bloco.DefaultLabel']}" id="idListaSIBlocos"
-						required="true">
+						defaultLabel="#{msgs['bloco.DefaultLabel']}" id="idListaSIBlocos" required="true">
 						<f:selectItems value="#{condominoMB.listaSIBlocos}" />
-						<f:ajax listener="#{condominoMB.popularListaUnidades}"
-							render="idListaSIUnidades"></f:ajax>
+						<f:ajax listener="#{condominoMB.popularListaUnidades}" render="idListaSIUnidades"/>
 					</h:selectOneMenu>
-					<h:selectOneMenu id="idListaSIUnidades"
-						value="#{condominoMB.condominoVO.idUnidade}"
-						defaultLabel="#{msgs['unidade.tipo.label.DefaultLabel']}"
-						required="true">
+					<h:selectOneMenu id="idListaSIUnidades" value="#{condominoMB.condominoVO.idUnidade}"
+						defaultLabel="#{msgs['unidade.tipo.label.DefaultLabel']}" required="true">
 						<f:selectItems value="#{condominoMB.listaSIUnidades}" />
 					</h:selectOneMenu>
 					
 					<h:panelGroup>
-						<h:outputLabel value="#{msg['condomino.nome']}:"
-							for="idNomeCondomino" />
+						<h:outputLabel value="#{msg['condomino.nome']}:" for="idNomeCondomino" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 					<h:panelGroup>
-						<h:outputLabel value="#{msg['condomino.sexo']}:"
-							for="idSexoCondomino" />
+						<h:outputLabel value="#{msg['condomino.sexo']}:" for="idSexoCondomino" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
-					<h:outputLabel value="#{msg['condomino.dataNascimento']}:"
-						for="idDataNascimento" />
-					<h:inputText id="idNomeCondomino"
-						value="#{condominoMB.condominoVO.nomeCondomino}" required="true"
-						size="40" validatorMessage="#{msg['msg.condomino.nome']}"
-						label="#{msg['condomino.nome.label']}">
+					<h:outputLabel value="#{msg['condomino.dataNascimento']}:" for="idDataNascimento" />
+					
+					<h:inputText id="idNomeCondomino" value="#{condominoMB.condominoVO.nomeCondomino}" required="true"
+						size="40" validatorMessage="#{msg['msg.condomino.nome']}" label="#{msg['condomino.nome.label']}">
 						<f:validateLength minimum="1" maximum="150" />
 					</h:inputText>
-					<h:selectOneRadio id="idSexoCondomino"
-						value="#{condominoMB.condominoVO.sexoCondomino}" required="true">
+					
+					<h:selectOneRadio id="idSexoCondomino" value="#{condominoMB.condominoVO.sexoCondomino}" required="true">
 						<f:selectItem itemLabel="#{msg['condomino.sexo.0']}" itemValue="0" />
 						<f:selectItem itemLabel="#{msg['condomino.sexo.1']}" itemValue="1" />
 					</h:selectOneRadio>
 					<h:panelGroup id="idDataNascimento">
-						<h:selectOneMenu
-							value="#{condominoMB.condominoVO.dataNascimentoDiaCondomino}"
-							defaultLabel="#{msg['condomino.dataNascimento.dia']}">
-							<f:selectItem itemLabel="#{msg['condomino.dataNascimento.dia']}"
-								noSelectionOption="false" />
+						<h:selectOneMenu value="#{condominoMB.condominoVO.dataNascimentoDiaCondomino}" defaultLabel="#{msg['condomino.dataNascimento.dia']}">
+							<f:selectItem itemLabel="#{msg['condomino.dataNascimento.dia']}" noSelectionOption="false" />
 							<f:selectItems value="#{condominoMB.listaSIDias}" />
 						</h:selectOneMenu>
-						<h:selectOneMenu
-							value="#{condominoMB.condominoVO.dataNascimentoMesCondomino}"
-							defaultLabel="#{msg['condomino.dataNascimento.mes']}">
-							<f:selectItem itemLabel="#{msg['condomino.dataNascimento.mes']}"
-								noSelectionOption="false" />
+						<h:selectOneMenu value="#{condominoMB.condominoVO.dataNascimentoMesCondomino}" defaultLabel="#{msg['condomino.dataNascimento.mes']}">
+							<f:selectItem itemLabel="#{msg['condomino.dataNascimento.mes']}" noSelectionOption="false" />
 							<f:selectItems value="#{condominoMB.listaSIMeses}" />
 						</h:selectOneMenu>
-						<h:selectOneMenu
-							value="#{condominoMB.condominoVO.dataNascimentoAnoCondomino}"
-							defaultLabel="#{msg['condomino.dataNascimento.ano']}">
-							<f:selectItem itemLabel="#{msg['condomino.dataNascimento.ano']}"
-								noSelectionOption="false" />
+						<h:selectOneMenu value="#{condominoMB.condominoVO.dataNascimentoAnoCondomino}" defaultLabel="#{msg['condomino.dataNascimento.ano']}">
+							<f:selectItem itemLabel="#{msg['condomino.dataNascimento.ano']}" noSelectionOption="false" />
 							<f:selectItems value="#{condominoMB.listaSIAnos}" />
 						</h:selectOneMenu>
 					</h:panelGroup>
+					
 					<h:panelGroup>
-						<h:outputLabel value="#{msg['condomino.email']}:"
-							for="idEmailCondomino" />
+						<h:outputLabel value="#{msg['condomino.email']}:" for="idEmailCondomino" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>					
+					<h:outputLabel value="#{msg['condomino.cpf']}:" for="idCpfCondomino" />	
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condomino.situacao']}:" for="idSituacao" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
-					<h:panelGroup>
-						<h:outputLabel value="#{msg['condomino.proprietario']}:"
-							for="idProprietarioCondomino" />
-						<span class="asterisco">*</span>
-					</h:panelGroup>
-					<h:panelGroup>
-						<h:outputLabel value="#{msg['condomino.situacao']}:"
-							for="idSituacao" />
-						<span class="asterisco">*</span>
-					</h:panelGroup>
-					<h:inputText id="idEmailCondomino"
-						value="#{condominoMB.condominoVO.emailCondomino}" required="true"
-						size="40" label="#{msg['condomino.email.label']}"
-						validatorMessage="#{msg['msg.condomino.email']}">
+					
+					<h:inputText id="idEmailCondomino" value="#{condominoMB.condominoVO.emailCondomino}" required="true"
+						size="40" label="#{msg['condomino.email.label']}" validatorMessage="#{msg['msg.condomino.email']}">
 						<f:validateLength minimum="1" maximum="150" />
 					</h:inputText>
-					<h:selectOneRadio id="idProprietarioCondomino"
-						value="#{condominoMB.condominoVO.proprietarioCondomino}"
-						defaultLabel="#{msg['condomino.proprietario.DefaultLabel']}">
-						<f:selectItem itemLabel="#{msg.sim}" itemValue="#{true}" />
-						<f:selectItem itemLabel="#{msg.nao}" itemValue="#{false}" />
-					</h:selectOneRadio>
-					<h:selectOneRadio id="idSituacao"
-						value="#{condominoMB.condominoVO.situacaoCondomino}"
-						defaultLabel="#{msg['condomino.situacao.DefaultLabel']}"
+											
+					<h:inputText id="idCpfCondomino" value="#{condominoMB.condominoVO.cpfCondomino}" size="15" maxlength="15" label="#{msg['condomino.cpfCodomino.label']}" />
+					
+					<h:selectOneRadio id="idSituacao" value="#{condominoMB.condominoVO.situacaoCondomino}" defaultLabel="#{msg['condomino.situacao.DefaultLabel']}"
 						label="#{msg['condomino.situacao.label']}" required="true">
 						<f:selectItems value="#{condominoMB.listaSituacoes}" />
 					</h:selectOneRadio>
-					<h:outputLabel value="#{msg['condomino.telefoneResidencial']}:"
-						for="idTelefoneResidencial" />
-					<h:outputLabel value="#{msg['condomino.telefoneCelular']}:"
-						for="idTelefoneCelular" />
-					<h:outputLabel value="#{msg['condomino.telefoneComercial']}:"
-						for="idTelefoneComercial" />
+															
 					<h:panelGroup>
-						<h:inputText id="idTelefoneResidencial"
-							value="#{condominoMB.condominoVO.telefoneResidencialCondomino}"
-							size="15" maxlength="15"
-							label="#{msg['condomino.telefoneResidencial.label']}" />
-						<h:outputLabel value="#{msg['somenteNumeros']}"
-							styleClass="confFontRotuloAjuda" />
+						<h:outputLabel value="#{msg['condomino.proprietario']}:" for="idProprietarioCondomino" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>					
+					<h:outputLabel value="#{msg['condomino.telefoneResidencial']}:" for="idTelefoneResidencial" />					
+					<h:outputLabel value="#{msg['condomino.telefoneCelular']}:" for="idTelefoneCelular" />
+					
+					
+					<h:selectOneRadio id="idProprietarioCondomino" value="#{condominoMB.condominoVO.proprietarioCondomino}" defaultLabel="#{msg['condomino.proprietario.DefaultLabel']}">
+						<f:selectItem itemLabel="#{msg.sim}" itemValue="#{true}" />
+						<f:selectItem itemLabel="#{msg.nao}" itemValue="#{false}" />
+					</h:selectOneRadio>
+					
+					<h:panelGroup>
+						<h:inputText id="idTelefoneResidencial" value="#{condominoMB.condominoVO.telefoneResidencialCondomino}"
+							size="15" maxlength="15" label="#{msg['condomino.telefoneResidencial.label']}" />
+						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
 					</h:panelGroup>
+					
 					<h:panelGroup>
-						<h:inputText id="idTelefoneCelular"
-							value="#{condominoMB.condominoVO.telefoneCelularCondomino}"
-							size="15" maxlength="15"
-							label="#{msg['condomino.telefoneCelular.label']}" />
-						<h:outputLabel value="#{msg['somenteNumeros']}"
-							styleClass="confFontRotuloAjuda" />
+						<h:inputText id="idTelefoneCelular" value="#{condominoMB.condominoVO.telefoneCelularCondomino}"
+							size="15" maxlength="15" label="#{msg['condomino.telefoneCelular.label']}" />
+						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
 					</h:panelGroup>
+					
+					
+					<h:outputLabel value="#{msg['condomino.telefoneComercial']}:" for="idTelefoneComercial" />
+					<h:outputLabel value=""/>
+					<h:outputLabel value=""/>
 					<h:panelGroup>
-						<h:inputText id="idTelefoneComercial"
-							value="#{condominoMB.condominoVO.telefoneComercialCondomino}"
-							size="15" maxlength="15"
-							label="#{msg['condomino.telefoneComercial.label']}" />
-						<h:outputLabel value="#{msg['somenteNumeros']}"
-							styleClass="confFontRotuloAjuda" />
+						<h:inputText id="idTelefoneComercial" value="#{condominoMB.condominoVO.telefoneComercialCondomino}" size="15" maxlength="15" label="#{msg['condomino.telefoneComercial.label']}" />
+						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
 					</h:panelGroup>
 				</h:panelGrid>
 				<h:panelGrid columns="2" styleClass="msgAsterisco">

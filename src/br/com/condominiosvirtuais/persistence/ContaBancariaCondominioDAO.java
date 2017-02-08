@@ -10,6 +10,8 @@ public interface ContaBancariaCondominioDAO {
 	
 	public abstract void salvar(ContaBancariaCondominio contaBancariaCondominio, Connection con) throws SQLException, Exception;
 	
+	public abstract void excluirPorIdContaBancaria(Integer idContaBancaria, Connection con) throws SQLException, Exception;
+	
 	public abstract List<ContaBancariaCondominio> buscarPorIdCondominio(Integer idCondominio, Connection con) throws SQLException, Exception;
 	
 	public abstract void atualizarPorIdContaBancaria(ContaBancariaCondominio contaBancariaCondominio , Connection con) throws SQLException, Exception;

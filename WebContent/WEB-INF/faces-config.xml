@@ -1827,6 +1827,14 @@
   </navigation-case>  
  </navigation-rule> 
  <navigation-rule>                       
+  <from-view-id>/pages/formCadastroContaBancaria.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{contaBancariaMB.salvar}</from-action>
+   <from-outcome>salvar</from-outcome>
+   <to-view-id>/pages/formListaContaBancaria.xhtml</to-view-id>
+  </navigation-case>   
+ </navigation-rule>
+ <navigation-rule>                       
   <from-view-id>/pages/formListaContaBancaria.xhtml</from-view-id>  
   <navigation-case>                  
    <from-action>#{contaBancariaMB.cadastroContaBancaria}</from-action>
@@ -1849,10 +1857,24 @@
  <navigation-rule>                       
   <from-view-id>/pages/formVisualizaContaBancaria.xhtml</from-view-id>  
   <navigation-case>                  
-   <from-action>#{contaBancariaMB.voltarVisualizarContaBancaria}</from-action>
+   <from-action>#{contaBancariaMB.voltarContaBancaria}</from-action>
    <from-outcome>voltar</from-outcome>
    <to-view-id>/pages/formListaContaBancaria.xhtm</to-view-id>
   </navigation-case>
+ </navigation-rule> 
+ <navigation-rule>                       
+  <from-view-id>/pages/formEditaContaBancaria.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{contaBancariaMB.excluir}</from-action>
+   <from-outcome>excluir</from-outcome>
+   <to-view-id>/pages/formListaContaBancaria.xhtm</to-view-id>
+  </navigation-case>
+  <navigation-case>                  
+   <from-action>#{contaBancariaMB.voltarContaBancaria}</from-action>
+   <from-outcome>voltar</from-outcome>
+   <to-view-id>/pages/formListaContaBancaria.xhtm</to-view-id>
+  </navigation-case>
+  
  </navigation-rule> 
  
  

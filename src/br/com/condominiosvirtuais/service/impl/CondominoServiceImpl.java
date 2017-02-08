@@ -223,6 +223,7 @@ public class CondominoServiceImpl implements CondominoService, Serializable{
 		condominoVO.setEmailCondomino(condomino.getEmail().getEmail());
 		condominoVO.setIdEmailCondomino(condomino.getEmail().getId());
 		condominoVO.setProprietarioCondomino(condomino.getProprietario());
+		condominoVO.setCpfCondomino(condomino.getCpf());
 		condominoVO.setTelefoneCelularCondomino(condomino.getTelefoneCelular());
 		condominoVO.setTelefoneComercialCondomino(condomino.getTelefoneComercial());
 		condominoVO.setTelefoneResidencialCondomino(condomino.getTelefoneResidencial());
