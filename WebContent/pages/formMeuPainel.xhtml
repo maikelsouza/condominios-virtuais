@@ -25,75 +25,53 @@
 				<h:form id="idFormDadosPessoais">
 					<h:panelGrid columns="3">
 						<h:panelGroup>
-							<h:outputLabel value="#{msg['meuPainel.condomino.nome']}:"
-								for="idNomeCondomino" />
+							<h:outputLabel value="#{msg['meuPainel.condomino.nome']}:" for="idNomeCondomino" />
 							<span class="asterisco">*</span>
 						</h:panelGroup>
 						<h:panelGroup>
-							<h:outputLabel value="#{msg['meuPainel.condomino.sexo']}:"
-								for="idSexoCondomino" />
+							<h:outputLabel value="#{msg['meuPainel.condomino.sexo']}:" for="idSexoCondomino" />
 							<span class="asterisco">*</span>
 						</h:panelGroup>
-						<h:outputLabel
-							value="#{msg['meuPainel.condomino.dataNascimento']}:"
-							for="idDataNascimentoCondomino" />
-						<h:inputText id="idNomeCondomino"
-							value="#{meuPainelMB.condomino.nome}" size="40" />
-						<h:selectOneRadio id="idSexoCondomino"
-							value="#{meuPainelMB.condomino.sexo}"
-							defaultLabel="#{msg['meuPainel.condomino.sexo.DefaultLabel']}">
+						<h:outputLabel value="#{msg['meuPainel.condomino.dataNascimento']}:" for="idDataNascimentoCondomino" />
+						<h:inputText id="idNomeCondomino" value="#{meuPainelMB.condomino.nome}" size="40" />
+						<h:selectOneRadio id="idSexoCondomino" value="#{meuPainelMB.condomino.sexo}" defaultLabel="#{msg['meuPainel.condomino.sexo.DefaultLabel']}">
 							<f:selectItems value="#{meuPainelMB.listaSexo}" />
 						</h:selectOneRadio>
 						<h:panelGroup id="idDataNascimentoCondomino">
-							<h:selectOneMenu
-								value="#{meuPainelMB.condomino.dataNascimentoDia}"
-								defaultLabel="#{msg['meuPainel.condomino.dataNascimento.dia']}">
-								<f:selectItem
-									itemLabel="#{msg['meuPainel.condomino.dataNascimento.dia']}"
-									noSelectionOption="false" />
+							<h:selectOneMenu value="#{meuPainelMB.condomino.dataNascimentoDia}" defaultLabel="#{msg['meuPainel.condomino.dataNascimento.dia']}">
+								<f:selectItem itemLabel="#{msg['meuPainel.condomino.dataNascimento.dia']}" noSelectionOption="false" />
 								<f:selectItems value="#{condominoMB.listaSIDias}" />
 							</h:selectOneMenu>
-							<h:selectOneMenu
-								value="#{meuPainelMB.condomino.dataNascimentoMes}"
-								defaultLabel="#{msg['meuPainel.condomino.dataNascimento.mes']}">
-								<f:selectItem
-									itemLabel="#{msg['meuPainel.condomino.dataNascimento.mes']}"
-									noSelectionOption="false" />
+							<h:selectOneMenu value="#{meuPainelMB.condomino.dataNascimentoMes}" defaultLabel="#{msg['meuPainel.condomino.dataNascimento.mes']}">
+								<f:selectItem itemLabel="#{msg['meuPainel.condomino.dataNascimento.mes']}" noSelectionOption="false" />
 								<f:selectItems value="#{condominoMB.listaSIMeses}" />
 							</h:selectOneMenu>
-							<h:selectOneMenu
-								value="#{meuPainelMB.condomino.dataNascimentoAno}"
-								defaultLabel="#{msg['meuPainel.condomino.dataNascimento.ano']}">
-								<f:selectItem
-									itemLabel="#{msg['meuPainel.condomino.dataNascimento.ano']}"
-									noSelectionOption="false" />
+							<h:selectOneMenu value="#{meuPainelMB.condomino.dataNascimentoAno}" defaultLabel="#{msg['meuPainel.condomino.dataNascimento.ano']}">
+								<f:selectItem itemLabel="#{msg['meuPainel.condomino.dataNascimento.ano']}" noSelectionOption="false" />
 								<f:selectItems value="#{condominoMB.listaSIAnos}" />
 							</h:selectOneMenu>
 						</h:panelGroup>
 						<h:panelGroup>
-							<h:outputLabel value="#{msg['meuPainel.condomino.email']}:"
-								for="idEmailCondomino" />
+							<h:outputLabel value="#{msg['meuPainel.condomino.email']}:" for="idEmailCondomino" />
 							<span class="asterisco">*</span>
 						</h:panelGroup>
 						<h:panelGroup>
-							<h:outputLabel
-								value="#{msg['meuPainel.condomino.proprietario']}:"
-								for="idProprietarioCondomino" />
+							<h:outputLabel value="#{msg['meuPainel.condomino.proprietario']}:" for="idProprietarioCondomino" />
 							<span class="asterisco">*</span>
 						</h:panelGroup>
-						<div></div>
-						<h:inputText id="idEmailCondomino"
-							value="#{meuPainelMB.condomino.email.email}" size="40" />
-						<h:selectOneRadio id="idProprietarioCondomino"
-							value="#{meuPainelMB.condomino.proprietario}"
-							defaultLabel="#{msg['meuPainel.condomino.proprietario.DefaultLabel']}">
+						<h:outputLabel value="#{msg['meuPainel.condomino.cpf']}:" for="idCpf" />
+												
+						<h:inputText id="idEmailCondomino" value="#{meuPainelMB.condomino.email.email}" size="40" />
+						<h:selectOneRadio id="idProprietarioCondomino" value="#{meuPainelMB.condomino.proprietario}" defaultLabel="#{msg['meuPainel.condomino.proprietario.DefaultLabel']}">
 							<f:selectItem itemLabel="#{msg.sim}" itemValue="#{true}" />
 							<f:selectItem itemLabel="#{msg.nao}" itemValue="#{false}" />
 						</h:selectOneRadio>
-						<div></div>
-						<h:outputLabel
-							value="#{msg['meuPainel.condomino.telefoneResidencial']}:"
-							for="idTelefoneResidencial" />
+												
+						<h:inputText id="idCpf" value="#{meuPainelMB.condomino.cpf}" label="#{msg['meuPainel.condomino.cpf.label']}" size="30" validatorMessage="#{msg['msg.meuPainel.condomino.cpf']}">
+							<f:validateLength minimum="1" maximum="20" />
+						</h:inputText>				
+						
+						<h:outputLabel value="#{msg['meuPainel.condomino.telefoneResidencial']}:" for="idTelefoneResidencial" />
 						<h:outputLabel
 							value="#{msg['meuPainel.condomino.telefoneCelular']}:"
 							for="idTelefoneCelular" />
@@ -238,77 +216,50 @@
 			    	</rich:panel>
 					<h:panelGrid columns="3">
 						<h:panelGroup>
-							<h:outputLabel value="#{msg['meuPainel.novoCondomino.nome']}:"
-								for="idNomeNovoCondomino" />
+							<h:outputLabel value="#{msg['meuPainel.novoCondomino.nome']}:" for="idNomeNovoCondomino" />
 							<span class="asterisco">*</span>
 						</h:panelGroup>
 						<h:panelGroup>
-							<h:outputLabel value="#{msg['meuPainel.novoCondomino.sexo']}:"
-								for="idSexoNovoCondomino" />
+							<h:outputLabel value="#{msg['meuPainel.novoCondomino.sexo']}:" for="idSexoNovoCondomino" />
 							<span class="asterisco">*</span>
 						</h:panelGroup>
-						<h:outputLabel
-							value="#{msg['meuPainel.novoCondomino.dataNascimento']}:"
-							for="idDataNascimentoNovoCondomino" />
-						<h:inputText id="idNomeNovoCondomino"
-							value="#{meuPainelMB.novoCondomino.nome}" size="40" />
-						<h:selectOneRadio id="idSexoNovoCondomino"
-							value="#{meuPainelMB.novoCondomino.sexo}"
-							defaultLabel="#{msg['meuPainel.novoCondomino.sexo.DefaultLabel']}">
+						<h:outputLabel value="#{msg['meuPainel.novoCondomino.dataNascimento']}:" for="idDataNascimentoNovoCondomino" />
+						<h:inputText id="idNomeNovoCondomino" value="#{meuPainelMB.novoCondomino.nome}" size="40" />
+						<h:selectOneRadio id="idSexoNovoCondomino" value="#{meuPainelMB.novoCondomino.sexo}" defaultLabel="#{msg['meuPainel.novoCondomino.sexo.DefaultLabel']}">
 							<f:selectItems value="#{meuPainelMB.listaSexo}" />
 						</h:selectOneRadio>
 						<h:panelGroup id="idDataNascimentoNovoCondomino">
-							<h:selectOneMenu
-								value="#{meuPainelMB.novoCondomino.dataNascimentoDia}"
-								defaultLabel="#{msg['meuPainel.novoCondomino.dataNascimento.dia']}">
-								<f:selectItem
-									itemLabel="#{msg['meuPainel.novoCondomino.dataNascimento.dia']}"
-									noSelectionOption="false" />
+							<h:selectOneMenu value="#{meuPainelMB.novoCondomino.dataNascimentoDia}" defaultLabel="#{msg['meuPainel.novoCondomino.dataNascimento.dia']}">
+								<f:selectItem itemLabel="#{msg['meuPainel.novoCondomino.dataNascimento.dia']}" noSelectionOption="false" />
 								<f:selectItems value="#{meuPainelMB.listaSIDias}" />
 							</h:selectOneMenu>
-							<h:selectOneMenu
-								value="#{meuPainelMB.novoCondomino.dataNascimentoMes}"
-								defaultLabel="#{msg['meuPainel.novoCondomino.dataNascimento.mes']}">
-								<f:selectItem
-									itemLabel="#{msg['meuPainel.novoCondomino.dataNascimento.mes']}"
-									noSelectionOption="false" />
+							<h:selectOneMenu value="#{meuPainelMB.novoCondomino.dataNascimentoMes}" defaultLabel="#{msg['meuPainel.novoCondomino.dataNascimento.mes']}">
+								<f:selectItem itemLabel="#{msg['meuPainel.novoCondomino.dataNascimento.mes']}" noSelectionOption="false" />
 								<f:selectItems value="#{meuPainelMB.listaSIMeses}" />
 							</h:selectOneMenu>
-							<h:selectOneMenu
-								value="#{meuPainelMB.novoCondomino.dataNascimentoAno}"
-								defaultLabel="#{msg['meuPainel.novoCondomino.dataNascimento.ano']}">
-								<f:selectItem
-									itemLabel="#{msg['meuPainel.novoCondomino.dataNascimento.ano']}"
-									noSelectionOption="false" />
+							<h:selectOneMenu value="#{meuPainelMB.novoCondomino.dataNascimentoAno}" defaultLabel="#{msg['meuPainel.novoCondomino.dataNascimento.ano']}">
+								<f:selectItem itemLabel="#{msg['meuPainel.novoCondomino.dataNascimento.ano']}" noSelectionOption="false" />
 								<f:selectItems value="#{meuPainelMB.listaSIAnos}" />
 							</h:selectOneMenu>
 						</h:panelGroup>
 
 						<h:panelGroup>
-							<h:outputLabel value="#{msg['meuPainel.novoCondomino.email']}:"
-								for="idEmailNovoCondomino" />
+							<h:outputLabel value="#{msg['meuPainel.novoCondomino.email']}:" for="idEmailNovoCondomino" />
 							<span class="asterisco">*</span>
 						</h:panelGroup>
 						<h:panelGroup>
-							<h:outputLabel
-								value="#{msg['meuPainel.novoCondomino.proprietario']}:"
-								for="idProprietarioNovoCondomino" />
+							<h:outputLabel value="#{msg['meuPainel.novoCondomino.proprietario']}:" for="idProprietarioNovoCondomino" />
 							<span class="asterisco">*</span>
 						</h:panelGroup>
 						<div></div>
-						<h:inputText id="idEmailNovoCondomino"
-							value="#{meuPainelMB.novoCondomino.email.email}" size="40" />
-						<h:selectOneRadio id="idProprietarioNovoCondomino"
-							value="#{meuPainelMB.novoCondomino.proprietario}"
-							defaultLabel="#{msg['meuPainel.novoCondomino.proprietario.DefaultLabel']}">
+						<h:inputText id="idEmailNovoCondomino" value="#{meuPainelMB.novoCondomino.email.email}" size="40" />
+						<h:selectOneRadio id="idProprietarioNovoCondomino" value="#{meuPainelMB.novoCondomino.proprietario}" defaultLabel="#{msg['meuPainel.novoCondomino.proprietario.DefaultLabel']}">
 							<f:selectItem itemLabel="#{msg.sim}" itemValue="#{true}" />
 							<f:selectItem itemLabel="#{msg.nao}" itemValue="#{false}" />
 						</h:selectOneRadio>
 
 						<div></div>
-						<h:outputLabel
-							value="#{msg['meuPainel.novoCondomino.telefoneResidencial']}:"
-							for="idTelefoneResidencialNovoCondomino" />
+						<h:outputLabel value="#{msg['meuPainel.novoCondomino.telefoneResidencial']}:" for="idTelefoneResidencialNovoCondomino" />
 						<h:outputLabel for="idTelefoneCelularNovoCondomino"
 							value="#{msg['meuPainel.novoCondomino.telefoneCelular']}:" />
 						<h:outputLabel

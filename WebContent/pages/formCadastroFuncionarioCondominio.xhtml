@@ -15,182 +15,134 @@
 				<f:facet name="header">
 					<h:outputText value="#{msg.cadastroFuncionario}" />
 				</f:facet>
-				<h:panelGrid id="idPanelGridSelectCadastroFuncionario" columns="2">
+				<h:panelGrid id="idPanelGridSelectCadastroFuncionario" columns="3">
 					<h:panelGroup>
-						<h:outputLabel value="#{msg.condominio}:"
-							for="idListaSICondominio" />
+						<h:outputLabel value="#{msg.condominio}:" for="idListaSICondominio" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
-					<div></div>
-					<h:selectOneMenu id="idListaSICondominio"
-						value="#{funcionarioMB.condominio.id}"
-						defaultLabel="#{msg['condominio.DefaultLabel']}" required="true"
-						label="#{msg['condominio.label']}">
-						<f:selectItems value="#{funcionarioMB.listaSICondominios}" />
-					</h:selectOneMenu>
-					<div></div>
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['funcionario.nome']}:" for="idNome" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 					<h:panelGroup>
-						<h:outputLabel value="#{msg['condominio.situacao']}:"
-							for="idSituacao" />
+						<h:outputLabel value="#{msg['condominio.situacao']}:" for="idSituacao" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
-					<h:inputText id="idNome" value="#{funcionarioMB.funcionario.nome}"
-						label="#{msg['funcionario.nome.label']}" required="true" size="40"
-						validatorMessage="#{msg['msg.funcionario.nome']}"
-						binding="#{funcionarioMB.componenteNomeFuncionario}">
+					<h:selectOneMenu id="idListaSICondominio" value="#{funcionarioMB.condominio.id}"
+						defaultLabel="#{msg['condominio.DefaultLabel']}" required="true" label="#{msg['condominio.label']}">
+						<f:selectItems value="#{funcionarioMB.listaSICondominios}" />
+					</h:selectOneMenu>
+					<h:inputText id="idNome" value="#{funcionarioMB.funcionario.nome}" label="#{msg['funcionario.nome.label']}" required="true" size="40"
+						validatorMessage="#{msg['msg.funcionario.nome']}" binding="#{funcionarioMB.componenteNomeFuncionario}">
 						<f:validateLength minimum="1" maximum="150" />
 					</h:inputText>
-					<h:selectOneRadio id="idSituacao"
-						value="#{funcionarioMB.funcionario.situacao}"
-						defaultLabel="#{msg['funcionario.situacao.DefaultLabel']}"
+					<h:selectOneRadio id="idSituacao" value="#{funcionarioMB.funcionario.situacao}" defaultLabel="#{msg['funcionario.situacao.DefaultLabel']}"
 						label="#{msg['funcionario.situacao.label']}" required="true">
-						<f:selectItem itemValue="1"
-							itemLabel="#{msg['funcionario.situacao.itemLabel.1']}" />
-						<f:selectItem itemValue="0"
-							itemLabel="#{msg['funcionario.situacao.itemLabel.0']}" />
+						<f:selectItem itemValue="1" itemLabel="#{msg['funcionario.situacao.itemLabel.1']}" />
+						<f:selectItem itemValue="0" itemLabel="#{msg['funcionario.situacao.itemLabel.0']}" />
 					</h:selectOneRadio>
 
 					<h:panelGroup>
-						<h:outputLabel value="#{msg['funcionario.funcao']}:"
-							for="idFuncao" />
+						<h:outputLabel value="#{msg['funcionario.funcao']}:" for="idFuncao" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['funcionario.sexo']}:" for="idSexo" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
-					<h:inputText id="idFuncao"
-						value="#{funcionarioMB.funcionario.funcao}"
-						label="#{msg['funcionario.funcao.label']}" required="true"
-						size="30" validatorMessage="#{msg['msg.funcionario.funcao']}"
-						binding="#{funcionarioMB.componenteFuncaoFuncionario}">
-						<f:validateLength minimum="1" maximum="50" />
-					</h:inputText>
-					<h:selectOneRadio id="idSexo"
-						value="#{funcionarioMB.funcionario.sexo}" required="true"
-						label="#{msg['funcionario.sexo.label']}">
-						<f:selectItem itemLabel="#{msg['funcionario.sexo.0']}"
-							itemValue="0" />
-						<f:selectItem itemLabel="#{msg['funcionario.sexo.1']}"
-							itemValue="1" />
-					</h:selectOneRadio>
-
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['funcionario.email']}:" for="idEmail" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
-					<h:outputLabel value="#{msg['funcionario.dataNascimento']}:"
-						for="idDataNascimento" />
-					<h:inputText id="idEmail"
-						value="#{funcionarioMB.funcionario.email.email}" size="40"
-						label="#{msg['funcionario.email.label']}" required="true"
-						binding="#{funcionarioMB.componenteEmailFuncionario}"
-						validatorMessage="#{msg['msg.funcionario.email']}">
+					
+					<h:inputText id="idFuncao" value="#{funcionarioMB.funcionario.funcao}" label="#{msg['funcionario.funcao.label']}" required="true"
+						size="30" validatorMessage="#{msg['msg.funcionario.funcao']}" binding="#{funcionarioMB.componenteFuncaoFuncionario}">
+						<f:validateLength minimum="1" maximum="50" />
+					</h:inputText>
+					<h:selectOneRadio id="idSexo" value="#{funcionarioMB.funcionario.sexo}" required="true" label="#{msg['funcionario.sexo.label']}">
+						<f:selectItem itemLabel="#{msg['funcionario.sexo.0']}" itemValue="0" />
+						<f:selectItem itemLabel="#{msg['funcionario.sexo.1']}" itemValue="1" />
+					</h:selectOneRadio>
+					<h:inputText id="idEmail" value="#{funcionarioMB.funcionario.email.email}" size="40" label="#{msg['funcionario.email.label']}" required="true"
+						binding="#{funcionarioMB.componenteEmailFuncionario}" validatorMessage="#{msg['msg.funcionario.email']}">
 						<f:validateLength minimum="1" maximum="150" />
 					</h:inputText>
+					
+					<h:outputLabel value="#{msg['funcionario.cpf']}:" for="idCpf" />
+					<h:outputLabel value="#{msg['funcionario.dataNascimento']}:" for="idDataNascimento" />
+					<h:outputLabel value="#{msg['funcionario.telefoneResidencial']}:" for="idTelefoneResidencial" />
+					
+					<h:inputText id="idCpf" value="#{funcionarioMB.funcionario.cpf}" label="#{msg['funcionario.cpf.label']}"
+						size="30" validatorMessage="#{msg['msg.funcionario.cpf']}">
+						<f:validateLength minimum="1" maximum="20" />
+					</h:inputText>
+					
 					<h:panelGroup id="idDataNascimento">
-						<h:selectOneMenu
-							value="#{funcionarioMB.funcionario.dataNascimentoDia}"
-							defaultLabel="#{msg['funcionario.dataNascimento.dia']}">
-							<f:selectItem
-								itemLabel="#{msg['funcionario.dataNascimento.dia']}"
-								noSelectionOption="false" />
+						<h:selectOneMenu value="#{funcionarioMB.funcionario.dataNascimentoDia}" defaultLabel="#{msg['funcionario.dataNascimento.dia']}">
+							<f:selectItem itemLabel="#{msg['funcionario.dataNascimento.dia']}" noSelectionOption="false" />
 							<f:selectItems value="#{funcionarioMB.listaSIDias}" />
 						</h:selectOneMenu>
-						<h:selectOneMenu
-							value="#{funcionarioMB.funcionario.dataNascimentoMes}"
-							defaultLabel="#{msg['funcionario.dataNascimento.mes']}">
-							<f:selectItem
-								itemLabel="#{msg['funcionario.dataNascimento.mes']}"
-								noSelectionOption="false" />
+						<h:selectOneMenu value="#{funcionarioMB.funcionario.dataNascimentoMes}" defaultLabel="#{msg['funcionario.dataNascimento.mes']}">
+							<f:selectItem itemLabel="#{msg['funcionario.dataNascimento.mes']}" noSelectionOption="false" />
 							<f:selectItems value="#{funcionarioMB.listaSIMeses}" />
 						</h:selectOneMenu>
-						<h:selectOneMenu
-							value="#{funcionarioMB.funcionario.dataNascimentoAno}"
-							defaultLabel="#{msg['funcionario.dataNascimento.ano']}">
-							<f:selectItem
-								itemLabel="#{msg['funcionario.dataNascimento.ano']}"
-								noSelectionOption="false" />
+						<h:selectOneMenu value="#{funcionarioMB.funcionario.dataNascimentoAno}" defaultLabel="#{msg['funcionario.dataNascimento.ano']}">
+							<f:selectItem itemLabel="#{msg['funcionario.dataNascimento.ano']}" noSelectionOption="false" />
 							<f:selectItems value="#{funcionarioMB.listaSIAnos}" />
 						</h:selectOneMenu>
 					</h:panelGroup>
-
-					<h:outputLabel value="#{msg['funcionario.telefoneResidencial']}:"
-						for="idTelefoneResidencial" />
-					<h:outputLabel value="#{msg['funcionario.telefoneCelular']}:"
-						for="idTelefoneCelular" />
+					
 					<h:panelGroup>
-						<h:inputText id="idTelefoneResidencial"
-							value="#{funcionarioMB.funcionario.telefoneResidencial}"
-							binding="#{funcionarioMB.componenteTelefoneResidencialFuncionario}"
-							label="#{msg['funcionario.telefoneResidencial.label']}" size="15" />
-						<h:outputLabel value="#{msg['somenteNumeros']}"
-							styleClass="confFontRotuloAjuda" />
-					</h:panelGroup>
-					<h:panelGroup>
-						<h:inputText id="idTelefoneCelular"
-							value="#{funcionarioMB.funcionario.telefoneCelular}"
-							binding="#{funcionarioMB.componenteTelefoneCelularFuncionario}"
-							label="#{msg['funcionario.telefoneCelular.label']}" size="15" />
-						<h:outputLabel value="#{msg['somenteNumeros']}"
-							styleClass="confFontRotuloAjuda" />
+						<h:inputText id="idTelefoneResidencial" value="#{funcionarioMB.funcionario.telefoneResidencial}"
+							binding="#{funcionarioMB.componenteTelefoneResidencialFuncionario}" label="#{msg['funcionario.telefoneResidencial.label']}" size="15" />
+						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
 					</h:panelGroup>
 
+					
+					<h:outputLabel value="#{msg['funcionario.telefoneCelular']}:" for="idTelefoneCelular" />
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['funcionario.senha']}:" for="idSenha" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 					<h:panelGroup>
-						<h:outputLabel value="#{msg['funcionario.confirmarSenha']}:"
-							for="idConfirmarSenha" />
-						<span class="asterisco">*</span>
+							<h:outputLabel value="#{msg['funcionario.confirmarSenha']}:"	for="idConfirmarSenha" />
+							<span class="asterisco">*</span>
 					</h:panelGroup>
-					<h:inputSecret id="idSenha"
-						value="#{funcionarioMB.funcionario.senha}" required="true"
-						label="#{msg['funcionario.senha.label']}"
-						binding="#{funcionarioMB.componenteSenhaFuncionario}"
-						validatorMessage="#{msg['msg.funcionario.senha']}">
+					
+					<h:panelGroup>
+						<h:inputText id="idTelefoneCelular" value="#{funcionarioMB.funcionario.telefoneCelular}" binding="#{funcionarioMB.componenteTelefoneCelularFuncionario}"
+							label="#{msg['funcionario.telefoneCelular.label']}" size="15" />
+						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
+					</h:panelGroup>				
+				
+					<h:inputSecret id="idSenha" value="#{funcionarioMB.funcionario.senha}" required="true" label="#{msg['funcionario.senha.label']}"
+						binding="#{funcionarioMB.componenteSenhaFuncionario}" validatorMessage="#{msg['msg.funcionario.senha']}">
 						<f:validateLength minimum="6" maximum="15" />
 					</h:inputSecret>
-					<h:inputSecret id="idConfirmarSenha"
-						value="#{funcionarioMB.funcionario.confirmarSenha}"
-						required="true"
-						binding="#{funcionarioMB.componenteConfirmarSenhaFuncionario}"
-						label="#{msg['funcionario.confirmarSenha.label']}"
+					<h:inputSecret id="idConfirmarSenha" value="#{funcionarioMB.funcionario.confirmarSenha}"
+						required="true" binding="#{funcionarioMB.componenteConfirmarSenhaFuncionario}" label="#{msg['funcionario.confirmarSenha.label']}"
 						validatorMessage="#{msg['msg.funcionario.ConfirmarSenha']}">
 						<f:validateLength minimum="6" maximum="15" />
 					</h:inputSecret>
 				</h:panelGrid>
+				
 				<h:panelGrid columns="1" styleClass="msgAsterisco">
 					<h:panelGroup>
-						<h:outputLabel value="#{msg['regraSenha']}"
-							for="idRegraSenhaFuncionarioCondominio" styleClass="camposObrigatorios" />
-						<h:outputLabel value="*" id="idRegraSenhaFuncionarioCondominio"
-							styleClass="asterisco" />
+						<h:outputLabel value="#{msg['regraSenha']}" for="idRegraSenhaFuncionarioCondominio" styleClass="camposObrigatorios" />
+						<h:outputLabel value="*" id="idRegraSenhaFuncionarioCondominio" styleClass="asterisco" />
 					</h:panelGroup>
 
 					<h:panelGroup>
-						<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
-							for="idCampoObrigatorio" styleClass="camposObrigatorios" />
-						<h:outputLabel value="*" id="idCampoObrigatorio"
-							styleClass="asterisco" />
+						<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+						<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
 					</h:panelGroup>
 				</h:panelGrid>
 			</rich:panel>
 
 			<h:panelGrid columns="3">
-				<h:commandButton value="#{msg.botaoSalvar}"
-					action="#{funcionarioMB.salvarFuncionarioCondominio}" />
-				<h:commandButton value="#{msg.botaoLimpar}"
-					actionListener="#{funcionarioMB.limparFiltroFuncionarioCondominio}"
-					immediate="true" />
-				<h:commandButton value="#{msg.botaoCancelar}"
-					action="#{funcionarioMB.cancelarCadastroFuncionarioCondominio}"
-					immediate="true" />
+				<h:commandButton value="#{msg.botaoSalvar}" action="#{funcionarioMB.salvarFuncionarioCondominio}" />
+				<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{funcionarioMB.limparFiltroFuncionarioCondominio}" immediate="true" />
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{funcionarioMB.cancelarCadastroFuncionarioCondominio}" immediate="true" />
 			</h:panelGrid>
 		</h:form>
 	</ui:define>

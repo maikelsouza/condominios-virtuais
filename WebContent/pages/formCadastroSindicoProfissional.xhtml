@@ -54,16 +54,25 @@
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 					<h:outputLabel value="#{msg['sindicoProfissional.site']}:" for="idSite" />
-					<h:outputLabel value="#{msg['sindicoProfissional.telefoneComercial']}:" for="idTelefoneComercial" />					
+					<h:outputLabel value="#{msg['sindicoProfissional.cpf']}:" for="idCpf" />
+					
+										
 					<h:inputText id="idEmail" value="#{sindicoProfissionalMB.sindicoProfissional.email.email}" required="true" size="40" label="#{msg['sindicoProfissional.email.label']}"/>
 					<h:inputText id="idSite" value="#{sindicoProfissionalMB.sindicoProfissional.site}" size="40" label="#{msg['sindicoProfissional.site.label']}"/>
+					
+					<h:inputText id="idCpf" value="#{sindicoProfissionalMB.sindicoProfissional.cpf}" label="#{msg['sindicoProfissional.cpf.label']}"
+						size="30" validatorMessage="#{msg['msg.sindicoProfissional.cpf']}">
+						<f:validateLength minimum="1" maximum="20" />
+					</h:inputText>	
+						
+					<h:outputLabel value="#{msg['sindicoProfissional.telefoneComercial']}:" for="idTelefoneComercial" />
+					<h:outputLabel for="idTelefoneCelular1" value="#{msg['sindicoProfissional.telefoneCelular1']}:" />
+					<h:outputLabel for="idTelefoneCelular2" value="#{msg['sindicoProfissional.telefoneCelular2']}:" />
+					
 					<h:panelGroup>
 						<h:inputText id="idTelefoneComercial" value="#{sindicoProfissionalMB.sindicoProfissional.telefoneComercial}" size="15" maxlength="15" label="#{msg['sindicoProfissional.telefoneComercial.label']}" />
 						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
-					</h:panelGroup>
-					<h:outputLabel for="idTelefoneCelular1" value="#{msg['sindicoProfissional.telefoneCelular1']}:" />
-					<h:outputLabel for="idTelefoneCelular2" value="#{msg['sindicoProfissional.telefoneCelular2']}:" />
-					<h:outputLabel for="idTelefoneCelular3" value="#{msg['sindicoProfissional.telefoneCelular3']}:" />			
+					</h:panelGroup>			
 					<h:panelGroup>
 						<h:inputText id="idTelefoneCelular1" value="#{sindicoProfissionalMB.sindicoProfissional.telefoneCelular1}" size="15" maxlength="15" label="#{msg['sindicoProfissional.telefoneCelular1.label']}" />
 						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
@@ -71,11 +80,8 @@
 					<h:panelGroup>
 						<h:inputText id="idTelefoneCelular2" value="#{sindicoProfissionalMB.sindicoProfissional.telefoneCelular2}" size="15" maxlength="15" label="#{msg['sindicoProfissional.telefoneComercial2.label']}" />
 						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
-					</h:panelGroup>
-					<h:panelGroup>
-						<h:inputText id="idTelefoneCelular3" value="#{sindicoProfissionalMB.sindicoProfissional.telefoneCelular3}" size="15" maxlength="15" label="#{msg['sindicoProfissional.telefoneComercial3.label']}" />
-						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
-					</h:panelGroup>
+					</h:panelGroup>					
+					<h:outputLabel for="idTelefoneCelular3" value="#{msg['sindicoProfissional.telefoneCelular3']}:" />
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['condomino.senha']}:" for="idSenha" />
 						<span class="asterisco">*</span>
@@ -84,7 +90,10 @@
 						<h:outputLabel value="#{msg['condomino.confirmarSenha']}:" for="idConfirmarSenha" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
-					<div></div>
+					<h:panelGroup>
+						<h:inputText id="idTelefoneCelular3" value="#{sindicoProfissionalMB.sindicoProfissional.telefoneCelular3}" size="15" maxlength="15" label="#{msg['sindicoProfissional.telefoneComercial3.label']}" />
+						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
+					</h:panelGroup>
 					<h:panelGroup>
 						<h:inputSecret id="idSenha" value="#{sindicoProfissionalMB.sindicoProfissional.senha}" required="true" label="#{msg['sindicoProfissional.senha.label']}"
 							validatorMessage="#{msg['msg.sindicoProfissional.senha']}">

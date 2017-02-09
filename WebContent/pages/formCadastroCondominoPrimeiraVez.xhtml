@@ -26,7 +26,7 @@
 					<h:panelGroup>
 						<h:outputLabel value="#{msg.unidades}:" for="idListaSIUnidades" />
 						<span class="asterisco">*</span>
-					</h:panelGroup>
+					</h:panelGroup>					
 					<h:outputLabel value="#{condominoMB.condominio.nome}" id="idCondominio" />				
 					<h:selectOneMenu value="#{condominoMB.bloco.id}" defaultLabel="#{msg['bloco.DefaultLabel']}" id="idListaSIBlocos"
 						label="#{msg['bloco.label']}" required="true">
@@ -92,15 +92,20 @@
 						<h:outputLabel value="#{msg['condomino.email']}:" for="idEmail" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
+					<h:outputLabel value="#{msg['condomino.cpf']}:" for="idCpf" />
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['condomino.proprietario']}:"
 							for="idProprietario" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
-					<div></div>
+					
 					<h:inputText id="idEmail"
 						value="#{condominoMB.condomino.email.email}" required="true"
 						size="40" label="#{msg['condomino.email.label']}">
+					</h:inputText>
+					<h:inputText id="idCpf" value="#{condominoMB.condomino.cpf}" label="#{msg['condomino.cpf.label']}"
+						size="30" validatorMessage="#{msg['msg.condomino.cpf']}">
+						<f:validateLength minimum="1" maximum="20" />
 					</h:inputText>
 					<h:selectOneRadio id="idProprietario"
 						value="#{condominoMB.condomino.proprietario}"
@@ -110,7 +115,7 @@
 						<f:selectItem itemLabel="#{msg.nao}" itemValue="#{false}" />
 					</h:selectOneRadio>
 
-					<div></div>
+					
 					<h:outputLabel value="#{msg['condomino.telefoneResidencial']}:"
 						for="idTelefoneResidencial" />
 					<h:outputLabel for="idTelefoneCelular"

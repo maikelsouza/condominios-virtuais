@@ -61,9 +61,15 @@
 						required="true" label="#{msg['sindicoProfissional.situacao.label']}">	
 						<f:selectItems value="#{sindicoProfissionalMB.listaSISituacao}" />					
 					</h:selectOneRadio>
+					<h:outputLabel for="idCpf" value="#{msg['sindicoProfissional.cpf']}:" />
 					<h:outputLabel for="idTelefoneCelular1" value="#{msg['sindicoProfissional.telefoneCelular1']}:" />
 					<h:outputLabel for="idTelefoneCelular2" value="#{msg['sindicoProfissional.telefoneCelular2']}:" />
-					<h:outputLabel for="idTelefoneCelular3" value="#{msg['sindicoProfissional.telefoneCelular3']}:" />			
+					
+								
+					<h:inputText id="idCpf" value="#{sindicoProfissionalMB.sindicoProfissional.cpf}" label="#{msg['sindicoProfissional.cpf.label']}"
+						size="30" validatorMessage="#{msg['msg.sindicoProfissional.cpf']}">
+						<f:validateLength minimum="1" maximum="20" />
+					</h:inputText>	
 					<h:panelGroup>
 						<h:inputText id="idTelefoneCelular1" value="#{sindicoProfissionalMB.sindicoProfissional.telefoneCelular1}" size="15" maxlength="15" label="#{msg['sindicoProfissional.telefoneCelular1.label']}" />
 						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
@@ -72,18 +78,20 @@
 						<h:inputText id="idTelefoneCelular2" value="#{sindicoProfissionalMB.sindicoProfissional.telefoneCelular2}" size="15" maxlength="15" label="#{msg['sindicoProfissional.telefoneComercial2.label']}" />
 						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
 					</h:panelGroup>
+					
+					<h:outputLabel for="idTelefoneCelular3" value="#{msg['sindicoProfissional.telefoneCelular3']}:" />
+					<h:outputLabel value="#{msg['sindicoProfissional.telefoneComercial']}:" for="idTelefoneComercial" />
+					<h:outputLabel value=""/>	
 					<h:panelGroup>
 						<h:inputText id="idTelefoneCelular3" value="#{sindicoProfissionalMB.sindicoProfissional.telefoneCelular3}" size="15" maxlength="15" label="#{msg['sindicoProfissional.telefoneComercial3.label']}" />
 						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
 					</h:panelGroup>
-				</h:panelGrid>
-				<h:panelGrid>
-					<h:outputLabel value="#{msg['sindicoProfissional.telefoneComercial']}:" for="idTelefoneComercial" />	
 					<h:panelGroup>
 						<h:inputText id="idTelefoneComercial" value="#{sindicoProfissionalMB.sindicoProfissional.telefoneComercial}" size="15" maxlength="15" label="#{msg['sindicoProfissional.telefoneComercial.label']}" />
 						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
-					</h:panelGroup>					
-				</h:panelGrid>
+					</h:panelGroup>
+				</h:panelGrid>						
+
 			</rich:panel>
 			<rich:panel header="#{msg['sindicoProfissional.associarCondominios']}">
 				<rich:pickList addAllText="#{msg.adicionarTodos}" listWidth="350px" targetCaption="#{msg['sindicoProfissional.condominiosAssociados']}" sourceCaption="#{msg['sindicoProfissional.condominiosAtivos']}"
