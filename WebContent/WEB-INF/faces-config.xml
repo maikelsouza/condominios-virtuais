@@ -468,6 +468,12 @@
    <to-view-id>/pages/formListaContaBancaria.xhtml</to-view-id>
     <redirect/>
   </navigation-case> 
+  <navigation-case>
+   <from-action>#{principalMB.cadastrarBeneficiario}</from-action>
+   <from-outcome>cadastrarBeneficiario</from-outcome>
+   <to-view-id>/pages/formCadastroBeneficiario.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case> 
  </navigation-rule>
  <navigation-rule>
   <from-view-id>/pages/*</from-view-id>

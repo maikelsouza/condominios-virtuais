@@ -274,10 +274,14 @@ public class PrincipalMB  implements Serializable{
 	
 	public String cadastrarContaBancaria(){
 		return "cadastrarContaBancaria";
-	}
+	}	
 	
 	public String listarContaBancaria(){
 		return "listarContaBancaria";
+	}
+	
+	public String cadastrarBeneficiario(){
+		return "cadastrarBeneficiario";
 	}
 	
 	

@@ -27,6 +27,8 @@ public class Endereco {
 	
 	private Integer idCondominio;
 	
+	private Integer idBeneficiario;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -105,6 +107,16 @@ public class Endereco {
 
 	public void setIdCondominio(Integer idCondominio) {
 		this.idCondominio = idCondominio;
+	}
+
+	public Integer getIdBeneficiario() {
+		return idBeneficiario;
+	}
+
+	public void setIdBeneficiario(Integer idBeneficiario) {
+		this.idBeneficiario = idBeneficiario;
 	}	
+	
+	
 	
 }

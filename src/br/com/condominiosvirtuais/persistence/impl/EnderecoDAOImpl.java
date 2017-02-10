@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Endereco;
 import br.com.condominiosvirtuais.persistence.EnderecoDAO;
+import br.com.condominiosvirtuais.util.SQLUtil;
 
 public class EnderecoDAOImpl implements EnderecoDAO, Serializable {
 	
@@ -36,6 +37,8 @@ public class EnderecoDAOImpl implements EnderecoDAO, Serializable {
 	private static final String PAIS = "PAIS";
 	
 	private static final String ID_CONDOMINIO = "ID_CONDOMINIO";
+	
+	private static final String ID_BENEFICIARIO = "ID_BENEFICIARIO";
 
 	
 	public void salvarEndereco(Endereco endereco, Connection con) throws SQLException, Exception{
@@ -43,29 +46,40 @@ public class EnderecoDAOImpl implements EnderecoDAO, Serializable {
 		query.append("INSERT INTO "); 
 		query.append(ENDERECO); 
 		query.append("("); 
-		query.append(ENDERECO); query.append(",");
-		query.append(NUMERO); query.append(",");
-		query.append(COMPLEMENTO); query.append(",");
-		query.append(CEP); query.append(",");
-		query.append(BAIRRO); query.append(",");
-		query.append(CIDADE); query.append(",");
-		query.append(UF); query.append(",");
-		query.append(PAIS); query.append(",");
-		query.append(ID_CONDOMINIO); 
+		query.append(ENDERECO); 
+		query.append(",");
+		query.append(NUMERO); 
+		query.append(",");
+		query.append(COMPLEMENTO); 
+		query.append(",");
+		query.append(CEP); 
+		query.append(",");
+		query.append(BAIRRO); 
+		query.append(",");
+		query.append(CIDADE); 
+		query.append(",");
+		query.append(UF); 
+		query.append(",");
+		query.append(PAIS); 
+		query.append(",");
+		query.append(ID_CONDOMINIO);
+		query.append(",");
+		query.append(ID_BENEFICIARIO);
 		query.append(") ");
-		query.append("VALUES(?,?,?,?,?,?,?,?,?)");		
+		query.append("VALUES(?,?,?,?,?,?,?,?,?,?)");		
 		PreparedStatement statement = null;
 		try {
-			statement = con.prepareStatement(query.toString());			
-			statement.setString(1, endereco.getEndereco());
-			statement.setInt(2,endereco.getNumero());
-			statement.setString(3,endereco.getComplemento());
-			statement.setInt(4,endereco.getCep());
-			statement.setString(5,endereco.getBairro());
-			statement.setString(6,endereco.getCidade());
-			statement.setString(7,endereco.getUf());
-			statement.setString(8,endereco.getPais());
-			statement.setInt(9,endereco.getIdCondominio());			
+			statement = con.prepareStatement(query.toString());		
+			SQLUtil.setValorPpreparedStatement(statement, 1, endereco.getEndereco(),java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 2, endereco.getNumero(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 3, endereco.getComplemento(),java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 4, endereco.getCep(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 5, endereco.getBairro(),java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 6, endereco.getCidade(),java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 7, endereco.getUf(),java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 8, endereco.getPais(),java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 9, endereco.getIdCondominio(),java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 10, endereco.getIdBeneficiario(),java.sql.Types.INTEGER);			
 			statement.execute();
 		} catch (SQLException e) {					
 			con.rollback();
@@ -115,6 +129,44 @@ public class EnderecoDAOImpl implements EnderecoDAO, Serializable {
 			} catch (SQLException e) {
 				logger.error("erro sqlstate "+e.getSQLState(), e);
 			}
+		}	
+		return endereco;
+	}
+	
+	public Endereco buscarEnderecoPorIdBeneficiario(Integer idBeneficiario, Connection con) throws SQLException, Exception{
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(ENDERECO);
+		query.append(" WHERE ");
+		query.append(ID_BENEFICIARIO);
+		query.append(" = ?");
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		Endereco endereco = null;
+		try {
+			statement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(statement, 1, idBeneficiario, java.sql.Types.INTEGER);
+			resultSet = statement.executeQuery();
+			while(resultSet.next()){
+				endereco = new Endereco();
+				endereco.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));							
+				endereco.setEndereco(String.valueOf(SQLUtil.getValorResultSet(resultSet, ENDERECO, java.sql.Types.VARCHAR)));
+				endereco.setNumero((Integer) SQLUtil.getValorResultSet(resultSet, NUMERO, java.sql.Types.INTEGER));
+				endereco.setComplemento(String.valueOf(SQLUtil.getValorResultSet(resultSet, COMPLEMENTO, java.sql.Types.VARCHAR)));
+				endereco.setCep((Integer) SQLUtil.getValorResultSet(resultSet, CEP, java.sql.Types.INTEGER));
+				endereco.setBairro(String.valueOf(SQLUtil.getValorResultSet(resultSet, BAIRRO, java.sql.Types.VARCHAR)));
+				endereco.setCidade(String.valueOf(SQLUtil.getValorResultSet(resultSet, CIDADE, java.sql.Types.VARCHAR)));
+				endereco.setUf(String.valueOf(SQLUtil.getValorResultSet(resultSet, UF, java.sql.Types.VARCHAR)));
+				endereco.setPais(String.valueOf(SQLUtil.getValorResultSet(resultSet, PAIS, java.sql.Types.VARCHAR)));
+				endereco.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
+				endereco.setIdBeneficiario((Integer) SQLUtil.getValorResultSet(resultSet, ID_BENEFICIARIO, java.sql.Types.INTEGER));
+			}
+		} catch (SQLException e) {
+			con.rollback();
+			throw e;
+		} catch (Exception e) {
+			con.rollback();
+			throw e;		
 		}	
 		return endereco;
 	}
