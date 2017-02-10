@@ -348,8 +348,12 @@ public class MeuPainelMB implements  Serializable{
 		this.setTabSelecionada(ID_TAB_DADOS_PESSOAIS_FUNCIONARIO);		
 		try {
 			if(this.validaDadosPessoaisFuncionario()){
-				this.funcionario.setTelefoneCelular(Long.valueOf(this.telefoneCelularFuncionario));				
-				this.funcionario.setTelefoneResidencial(Long.valueOf(this.telefoneResidencialFuncionario));
+				if (!this.telefoneCelularFuncionario.trim().equals("")){
+					this.funcionario.setTelefoneCelular(Long.valueOf(this.telefoneCelularFuncionario));
+				}
+				if (!this.telefoneResidencialFuncionario.trim().equals("")){
+					this.funcionario.setTelefoneResidencial(Long.valueOf(this.telefoneResidencialFuncionario));
+				}				
 				this.funcionarioService.atualizar(this.funcionario);
 				ManagedBeanUtil.setMensagemInfo("msg.meuPainel.funcionario.atualizadoSucesso");				
 			}

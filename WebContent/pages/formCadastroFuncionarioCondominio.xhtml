@@ -74,7 +74,7 @@
 					
 					<h:inputText id="idCpf" value="#{funcionarioMB.funcionario.cpf}" label="#{msg['funcionario.cpf.label']}"
 						size="30" validatorMessage="#{msg['msg.funcionario.cpf']}">
-						<f:validateLength minimum="1" maximum="20" />
+						<f:validateLength minimum="1" maximum="20" for="idCpf"/>
 					</h:inputText>
 					
 					<h:panelGroup id="idDataNascimento">
