@@ -153,6 +153,11 @@
   <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaContaBancariaMB</managed-bean-class>
   <managed-bean-scope>view</managed-bean-scope>
  </managed-bean>
+ <managed-bean>
+  <managed-bean-name>ordenaBeneficiarioMB</managed-bean-name>
+  <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaBeneficiarioMB</managed-bean-class>
+  <managed-bean-scope>view</managed-bean-scope>
+ </managed-bean>
  
  
  <navigation-rule>
@@ -462,7 +467,7 @@
    <to-view-id>/pages/formCadastroContaBancaria.xhtml</to-view-id>
     <redirect/>
   </navigation-case> 
-  <navigation-case>
+  <navigation-case> 
    <from-action>#{principalMB.listarContaBancaria}</from-action>
    <from-outcome>listarContaBancaria</from-outcome>
    <to-view-id>/pages/formListaContaBancaria.xhtml</to-view-id>
@@ -472,6 +477,12 @@
    <from-action>#{principalMB.cadastrarBeneficiario}</from-action>
    <from-outcome>cadastrarBeneficiario</from-outcome>
    <to-view-id>/pages/formCadastroBeneficiario.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case> 
+  <navigation-case>
+   <from-action>#{principalMB.listarBeneficiario}</from-action>
+   <from-outcome>listarBeneficiario</from-outcome>
+   <to-view-id>/pages/formListaBeneficiario.xhtml</to-view-id>
     <redirect/>
   </navigation-case> 
  </navigation-rule>
@@ -1879,9 +1890,56 @@
    <from-action>#{contaBancariaMB.voltarContaBancaria}</from-action>
    <from-outcome>voltar</from-outcome>
    <to-view-id>/pages/formListaContaBancaria.xhtm</to-view-id>
-  </navigation-case>
-  
+  </navigation-case>  
  </navigation-rule> 
+ <navigation-rule>                       
+  <from-view-id>/pages/formListaBeneficiario.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{beneficiarioMB.cadastroBeneficiario}</from-action>
+   <from-outcome>cadastrar</from-outcome>
+   <to-view-id>/pages/formCadastroBeneficiario.xhtm</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>                  
+   <from-action>#{beneficiarioMB.editaBeneficiario}</from-action>
+   <from-outcome>editar</from-outcome>
+   <to-view-id>/pages/formEditaBeneficiario.xhtm</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>                  
+   <from-action>#{beneficiarioMB.visualizaBeneficiario}</from-action>
+   <from-outcome>visualizar</from-outcome>
+   <to-view-id>/pages/formVisualizaBeneficiario.xhtm</to-view-id>
+   <redirect/>
+  </navigation-case> 
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formCadastroBeneficiario.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{beneficiarioMB.salvarBeneficiario}</from-action>
+   <from-outcome>salvar</from-outcome>
+   <to-view-id>/pages/formListaBeneficiario.xhtm</to-view-id>
+  </navigation-case> 
+ </navigation-rule> 
+ <navigation-rule>                       
+  <from-view-id>/pages/formVisualizaBeneficiario.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{beneficiarioMB.voltaListaBeneficiario}</from-action>
+   <from-outcome>voltar</from-outcome>
+   <to-view-id>/pages/formListaBeneficiario.xhtm</to-view-id>
+   <redirect/>
+  </navigation-case> 
+ </navigation-rule> 
+ <navigation-rule>                       
+  <from-view-id>/pages/formEditaBeneficiario.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{beneficiarioMB.atualizarBeneficiario}</from-action>
+   <from-outcome>atualizar</from-outcome>
+   <to-view-id>/pages/formListaBeneficiario.xhtm</to-view-id>
+   <redirect/>
+  </navigation-case> 
+ </navigation-rule> 
+  
  
  
  <application>

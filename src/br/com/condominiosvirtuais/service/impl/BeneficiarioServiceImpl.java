@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import br.com.condominiosvirtuais.entity.Beneficiario;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.persistence.BeneficiarioDAO;
@@ -13,6 +15,7 @@ public class BeneficiarioServiceImpl implements BeneficiarioService, Serializabl
 
 	private static final long serialVersionUID = 1L;
 	
+	@Inject
 	private BeneficiarioDAO beneficiarioDAO;
 
 	@Override
@@ -23,6 +26,11 @@ public class BeneficiarioServiceImpl implements BeneficiarioService, Serializabl
 	@Override
 	public List<Beneficiario> buscarPorIdCondominio(Integer idCondominio) throws SQLException, BusinessException, Exception {
 		return this.beneficiarioDAO.buscarPorIdCondominio(idCondominio);
+	}
+
+	@Override
+	public void atualizar(Beneficiario beneficiario) throws SQLException, BusinessException, Exception {
+		this.beneficiarioDAO.atualizar(beneficiario);		
 	}
 	
 	

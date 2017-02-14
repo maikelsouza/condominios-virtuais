@@ -9,10 +9,10 @@
 	template="/templates/templatePrincipal.xhtml">
 
 	<ui:define name="conteudo">		
-		<h:form id="idFormCadastroBeneficiario" styleClass="content">
+		<h:form id="idFormEditaBeneficiario" styleClass="content">
 			<rich:panel>
 				<f:facet name="header">
-					<h:outputText value="#{msg.cadastroBeneficiario}" />
+					<h:outputText value="#{msg.editaBeneficiario}" />
 				</f:facet>
 				<h:panelGrid columns="3" >
 					<h:panelGroup>
@@ -84,13 +84,11 @@
 						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
 					</h:panelGroup>					
 					
-					<h:inputText id="idBairro" value="#{beneficiarioMB.beneficiario.endereco.bairro}"
-						label="#{msg['beneficiario.endereco.bairro.label']}" required="true" size="12"
+					<h:inputText id="idBairro" value="#{beneficiarioMB.beneficiario.endereco.bairro}" label="#{msg['beneficiario.endereco.bairro.label']}" required="true" size="12"
 						validatorMessage="#{msg['msg.beneficiario.endereco.bairro']}">
 						<f:validateLength minimum="1" maximum="100" />
 					</h:inputText>
-					<h:inputText id="idCidade" value="#{beneficiarioMB.beneficiario.endereco.cidade}"
-						label="#{msg['beneficiario.endereco.cidade.label']}" required="true"
+					<h:inputText id="idCidade" value="#{beneficiarioMB.beneficiario.endereco.cidade}" label="#{msg['beneficiario.endereco.cidade.label']}" required="true"
 						validatorMessage="#{msg['msg.beneficiario.endereco.cidade']}">
 						<f:validateLength minimum="1" maximum="100" />
 					</h:inputText>
@@ -126,8 +124,8 @@
 			
 			
 			<h:panelGrid columns="3">                                 
-				<h:commandButton value="#{msg.botaoSalvar}" action="#{beneficiarioMB.salvarBeneficiario}" />
-				<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{beneficiarioMB.limparSalvarContaBancaria}" />
+				<h:commandButton value="#{msg.botaoAtualizar}" action="#{beneficiarioMB.atualizarBeneficiario}" />
+				<h:commandButton value="#{msg.botaoExcluir}" actionListener="#{beneficiarioMB.limparSalvarContaBancaria}" />
 				<h:commandButton value="#{msg.botaoCancelar}" action="#{contaBancariaMB.cancelarSalvarContaBancaria}" immediate="true" />
 			</h:panelGrid>	
 			

@@ -107,7 +107,16 @@ public enum PathTelasAplicacaoEnum {
 	FORM_VISUALIZAR_CONTA_BANCARIA(PREFIXO.getPathTelas()+"formVisualizaContaBancaria.xhtml"),
 	FORM_LISTA_CONTA_BANCARIA(PREFIXO.getPathTelas()+"formListaContaBancaria.xhtml"),
 	FORM_EDITA_CONTA_BANCARIA(PREFIXO.getPathTelas()+"formEditaContaBancaria.xhtml"),
-	FORM_CADASTRO_BENEFICIARIO(PREFIXO.getPathTelas()+"formCadastroBeneficiario.xhtml");
+	FORM_CADASTRO_BENEFICIARIO(PREFIXO.getPathTelas()+"formCadastroBeneficiario.xhtml"),
+	FORM_LISTA_BENEFICIARIO(PREFIXO.getPathTelas()+"formListaBeneficiario.xhtml"),
+	FORM_VISUALIZAR_BENEFICIARIO(PREFIXO.getPathTelas()+"formVisualizaBeneficiario.xhtml"),
+	FORM_EDITA_BENEFICIARIO(PREFIXO.getPathTelas()+"formEditaBeneficiario.xhtml");
+	
+	
+	
+	
+	                                                
+	
 	
 	
 	

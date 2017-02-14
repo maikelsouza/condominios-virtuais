@@ -284,6 +284,10 @@ public class PrincipalMB  implements Serializable{
 		return "cadastrarBeneficiario";
 	}
 	
+	public String listarBeneficiario(){
+		return "listarBeneficiario";		        
+	}
+	
 	
 
 	private void iniciaThreads(){				

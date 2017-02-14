@@ -120,6 +120,50 @@ public class BeneficiarioDAOImpl implements Serializable, BeneficiarioDAO {
 				}
 			}				
 		return listaBeneficiario;
+	}
+
+	@Override
+	public void atualizar(Beneficiario beneficiario) throws SQLException, BusinessException, Exception {
+		Connection con = Conexao.getConexao();	
+		con.setAutoCommit(Boolean.FALSE);
+		this.enderecoDAO.atualizarEnderecoPorId(beneficiario.getEndereco(), con);
+		StringBuffer query = new StringBuffer();
+		query.append("UPDATE ");
+		query.append(BENEFICIARIO);
+		query.append(" SET ");
+		query.append(NOME);
+		query.append(" = ?, ");
+		query.append(CPRF);
+		query.append(" = ?, ");
+		query.append(ID_CONDOMINIO);
+		query.append(" = ? ");		
+		query.append("WHERE ");
+		query.append(ID);
+		query.append("= ?");
+		PreparedStatement statement = null;
+		try {			
+			statement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(statement, 1, beneficiario.getNome(), java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 2, beneficiario.getCprf(), java.sql.Types.BIGINT);
+			SQLUtil.setValorPpreparedStatement(statement, 3, beneficiario.getIdCondominio(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 4, beneficiario.getId(), java.sql.Types.INTEGER);			
+			statement.executeUpdate();
+			con.commit();
+		} catch (SQLException e) {							
+			con.rollback();
+			throw e;
+		}catch (Exception e) {
+			con.rollback();
+			throw e;	
+		}finally {
+			try {
+				statement.close();
+				con.close();				
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);			
+			}
+		}
+		
 	}  
     
     

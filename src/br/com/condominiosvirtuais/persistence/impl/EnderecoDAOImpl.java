@@ -192,22 +192,25 @@ public class EnderecoDAOImpl implements EnderecoDAO, Serializable {
 		query.append(UF);
 		query.append("= ?, "); 
 		query.append(PAIS);
+		query.append("= ?, "); 
+		query.append(ID_BENEFICIARIO);
 		query.append("= ? "); 
 		query.append("WHERE ");
 		query.append(ID_CONDOMINIO);
 		query.append("= ?");
 		PreparedStatement statement = null;
 		try {
-			statement = con.prepareStatement(query.toString());			
-			statement.setString(1, endereco.getEndereco());
-			statement.setInt(2,endereco.getNumero());
-			statement.setString(3,endereco.getComplemento());
-			statement.setInt(4,endereco.getCep());
-			statement.setString(5,endereco.getBairro());
-			statement.setString(6,endereco.getCidade());
-			statement.setString(7,endereco.getUf());
-			statement.setString(8,endereco.getPais());
-			statement.setInt(9,endereco.getIdCondominio());			
+			statement = con.prepareStatement(query.toString());	
+			SQLUtil.setValorPpreparedStatement(statement, 1, endereco.getEndereco(),java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 2, endereco.getNumero(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 3, endereco.getComplemento(),java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 4, endereco.getCep(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 5, endereco.getBairro(),java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 6, endereco.getCidade(),java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 7, endereco.getUf(),java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 8, endereco.getPais(),java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 9, endereco.getIdBeneficiario(),java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 10, endereco.getIdCondominio(),java.sql.Types.INTEGER);			
 			statement.executeUpdate();
 		} catch (SQLException e) {					
 			con.rollback();
@@ -237,6 +240,60 @@ public class EnderecoDAOImpl implements EnderecoDAO, Serializable {
 			con.rollback();
 			throw e;
 		}		
+		
+	}
+
+	@Override
+	public void atualizarEnderecoPorId(Endereco endereco, Connection con) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("UPDATE ");
+		query.append(ENDERECO);
+		query.append(" SET ");
+		query.append(ENDERECO);
+		query.append("= ?, ");
+		query.append(NUMERO);
+		query.append("= ?, ");
+		query.append(COMPLEMENTO);
+		query.append("= ?, "); 
+		query.append(CEP);
+		query.append("= ?, "); 
+		query.append(BAIRRO);
+		query.append("= ?, "); 
+		query.append(CIDADE);
+		query.append("= ?, "); 
+		query.append(UF);
+		query.append("= ?, "); 
+		query.append(PAIS);
+		query.append("= ?, "); 
+		query.append(ID_BENEFICIARIO);
+		query.append("= ?, "); 
+		query.append(ID_CONDOMINIO);
+		query.append("= ?");
+		query.append(" WHERE ");
+		query.append(ID);
+		query.append("= ?");
+		PreparedStatement statement = null;
+		try {
+			statement = con.prepareStatement(query.toString());	
+			SQLUtil.setValorPpreparedStatement(statement, 1, endereco.getEndereco(),java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 2, endereco.getNumero(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 3, endereco.getComplemento(),java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 4, endereco.getCep(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 5, endereco.getBairro(),java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 6, endereco.getCidade(),java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 7, endereco.getUf(),java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 8, endereco.getPais(),java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 9, endereco.getIdBeneficiario(),java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 10, endereco.getIdCondominio(),java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 11, endereco.getId(),java.sql.Types.INTEGER);
+			statement.executeUpdate();
+		} catch (SQLException e) {					
+			con.rollback();
+			throw e;
+		} catch (Exception e) {					
+			con.rollback();
+			throw e;
+		}	
 		
 	}
 }

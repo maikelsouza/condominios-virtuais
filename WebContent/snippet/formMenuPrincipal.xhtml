@@ -181,6 +181,7 @@
 			<rich:menuItem label="#{msg['contaBancaria.cadastrarContaBancaria']}" action="#{principalMB.cadastrarContaBancaria}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,7') and loginMB.exibeMenuFinanceiro()}"/>
 			<rich:menuItem label="#{msg['contaBancaria.listarContaBancaria']}" action="#{principalMB.listarContaBancaria}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,7') and loginMB.exibeMenuFinanceiro()}"/>
 			<rich:menuItem label="#{msg['beneficiario.cadastrarBeneficiario']}" action="#{principalMB.cadastrarBeneficiario}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,7') and loginMB.exibeMenuFinanceiro()}"/>
+			<rich:menuItem label="#{msg['beneficiario.listarBeneficiario']}" action="#{principalMB.listarBeneficiario}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,7') and loginMB.exibeMenuFinanceiro()}"/>
 			
 								
 		</rich:dropDownMenu>

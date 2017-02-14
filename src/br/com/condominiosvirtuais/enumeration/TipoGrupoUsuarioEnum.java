@@ -121,6 +121,9 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_CONTA_BANCARIA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_CONTA_BANCARIA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_BENEFICIARIO.getPathTelas());
 			
 			
 			
@@ -206,6 +209,9 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_CONTA_BANCARIA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_CONTA_BANCARIA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_BENEFICIARIO.getPathTelas());
 			
 		}else if(this.getGrupoUsuario() == 3){ // Síndico Profissional
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_PRINCIPAL.getPathTelas());
@@ -295,6 +301,9 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_CONTA_BANCARIA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_CONTA_BANCARIA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_BENEFICIARIO.getPathTelas());
 			
 		}else if(this.getGrupoUsuario() == 4){ // Síndico
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_PRINCIPAL.getPathTelas());
@@ -386,6 +395,9 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_CONTA_BANCARIA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_CONTA_BANCARIA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_BENEFICIARIO.getPathTelas());
 			
 		}else if (this.getGrupoUsuario() == 5){ // Condômino
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_PRINCIPAL.getPathTelas());			
@@ -466,6 +478,7 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_VISITA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_PRESTADOR_SERVICO.getPathTelas());	
 			
+			
 		} else if (this.getGrupoUsuario() == 7){ // Escritório Contabilidade
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_PRINCIPAL.getPathTelas());			
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_CONDOMINIO.getPathTelas());
@@ -510,6 +523,9 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_CONTA_BANCARIA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_CONTA_BANCARIA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_BENEFICIARIO.getPathTelas());
 			
 	}
 		this.grupoUsuariosTelasAcesso.put(this.getGrupoUsuario(), this.telaAcesso);		

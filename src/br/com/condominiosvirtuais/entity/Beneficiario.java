@@ -11,6 +11,10 @@ public class Beneficiario {
 	private Integer idCondominio;
 	
 	private Endereco endereco;
+	
+	public Beneficiario(){
+		this.endereco = new Endereco();
+	}
 
 	public Integer getId() {
 		return id;

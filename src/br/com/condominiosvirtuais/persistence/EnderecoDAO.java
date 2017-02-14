@@ -10,5 +10,9 @@ public interface EnderecoDAO {
 	public abstract void salvarEndereco(Endereco endereco, Connection con) throws SQLException, Exception;
 	
 	public abstract Endereco buscarEnderecoPorIdBeneficiario(Integer idBeneficiario, Connection con) throws SQLException, Exception;
+	
+	public abstract void atualizarEndereco(Endereco endereco,  Connection con) throws SQLException, Exception;
+	
+	public abstract void atualizarEnderecoPorId(Endereco endereco,  Connection con) throws SQLException, Exception;
 
 }

@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">		
+		<h:form id="idFormVisualizaBeneficiario" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.visualizaBeneficiario}" />
+				</f:facet>
+				<h:panelGrid columns="2" >					
+						<h:outputLabel value="#{msg.condominio}:" for="idCondominio" />
+						<h:outputText value="#{beneficiarioMB.nomeCondominio}"  id="idCondominio"/>
+						<h:outputLabel value="#{msg['beneficiario.nome']}:" for="idNome" />						
+						<h:outputText value="#{beneficiarioMB.beneficiario.nome}"  id="idNome"/>
+						<h:outputLabel value="#{msg['beneficiario.cprf']}:" for="idCprf" />						
+						<h:outputText value="#{beneficiarioMB.beneficiario.cprf}"  id="idCprf"/>
+						<h:outputLabel value="#{msg['beneficiario.endereco.endereco']}:" for="idEndereco" />
+						<h:outputText value="#{beneficiarioMB.beneficiario.endereco.endereco}"  id="idEndereco"/>
+						<h:outputLabel value="#{msg['beneficiaro.endereco.numero']}:" for="idNumero" />
+						<h:outputText value="#{beneficiarioMB.beneficiario.endereco.numero}"  id="idNumero" />
+						<h:outputLabel value="#{msg['beneficiario.endereco.complemento']}:" for="idComplemento"  rendered="#{beneficiarioMB.beneficiario.endereco.complemento != '' and beneficiarioMB.beneficiario.endereco.complemento != null}" />
+						<h:outputText value="#{beneficiarioMB.beneficiario.endereco.complemento}"  id="idComplemento" rendered="#{beneficiarioMB.beneficiario.endereco.complemento != '' and beneficiarioMB.beneficiario.endereco.complemento != null}"/>
+						<h:outputLabel value="#{msg['beneficiario.endereco.cep']}:" for="idCep" />
+						<h:outputText value="#{beneficiarioMB.beneficiario.endereco.cep}"  id="idCep"/>
+						<h:outputLabel value="#{msg['beneficiario.endereco.bairro']}:" for="idBairro" />
+						<h:outputText value="#{beneficiarioMB.beneficiario.endereco.bairro}"  id="idBairro"/>
+						<h:outputLabel value="#{msg['beneficiario.endereco.cidade']}:" for="idCidade" />
+						<h:outputText value="#{beneficiarioMB.beneficiario.endereco.cidade}"  id="idCidade"/>
+						<h:outputLabel value="#{msg['beneficiario.endereco.uf']}" for="idUf" />
+						<h:outputText value="#{beneficiarioMB.beneficiario.endereco.uf}"  id="idUf"/>
+						<h:outputLabel value="#{msg['beneficiario.endereco.pais']}:" for="idPais" />
+						<h:outputText value="#{beneficiarioMB.beneficiario.endereco.pais}"  id="idPais"/>
+				 </h:panelGrid> 
+			</rich:panel>
+			
+			<h:panelGrid columns="1">                                 
+				<h:commandButton value="#{msg.botaoVoltar}" action="#{beneficiarioMB.voltaListaBeneficiario}" />
+			</h:panelGrid>
+		</h:form>		
+	</ui:define>
+
+</ui:composition>
