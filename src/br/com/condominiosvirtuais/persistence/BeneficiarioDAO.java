@@ -10,6 +10,8 @@ public interface BeneficiarioDAO {
 	
 	public abstract void salvar(Beneficiario beneficiario) throws SQLException, BusinessException, Exception;
 	
+	public abstract void excluir(Beneficiario beneficiario) throws SQLException, BusinessException, Exception;
+	
 	public abstract void atualizar(Beneficiario beneficiario) throws SQLException, BusinessException, Exception;
 	
 	public abstract List<Beneficiario> buscarPorIdCondominio(Integer idCondominio) throws SQLException, BusinessException, Exception;

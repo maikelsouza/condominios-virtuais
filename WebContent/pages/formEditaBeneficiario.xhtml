@@ -121,12 +121,23 @@
 				</h:panelGrid>		
 			</rich:panel>
 			
+			<rich:popupPanel id="confirmaExcluirBeneficiario" autosized="true">
+	         		 #{msg['msg.beneficiario.confirmacaoExcluir']}
+         		 <h:panelGrid columns="2">
+           	 		<h:commandButton value="#{msg.botaoExcluir}" action="#{beneficiarioMB.excluirBeneficiario}"
+						onclick=" #{rich:component('confirmaExcluirBeneficiario')}.hide();  return true;" />
+					 <h:commandButton value="#{msg.botaoCancelar}"
+						onclick="#{rich:component('confirmaExcluirBeneficiario')}.hide(); return false;" />						
+				</h:panelGrid>
+			</rich:popupPanel>
 			
 			
 			<h:panelGrid columns="3">                                 
 				<h:commandButton value="#{msg.botaoAtualizar}" action="#{beneficiarioMB.atualizarBeneficiario}" />
-				<h:commandButton value="#{msg.botaoExcluir}" actionListener="#{beneficiarioMB.limparSalvarContaBancaria}" />
-				<h:commandButton value="#{msg.botaoCancelar}" action="#{contaBancariaMB.cancelarSalvarContaBancaria}" immediate="true" />
+				<h:commandButton value="#{msg.botaoExcluir}">
+					<rich:componentControl target="confirmaExcluirBeneficiario" operation="show"/>
+				</h:commandButton>		
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{beneficiarioMB.cancelar}" immediate="true" />
 			</h:panelGrid>	
 			
 			

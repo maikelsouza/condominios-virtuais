@@ -32,6 +32,12 @@ public class BeneficiarioServiceImpl implements BeneficiarioService, Serializabl
 	public void atualizar(Beneficiario beneficiario) throws SQLException, BusinessException, Exception {
 		this.beneficiarioDAO.atualizar(beneficiario);		
 	}
+
+	@Override
+	public void excluir(Beneficiario beneficiario) throws SQLException, BusinessException, Exception {
+		this.beneficiarioDAO.excluir(beneficiario);
+		
+	}
 	
 	
 

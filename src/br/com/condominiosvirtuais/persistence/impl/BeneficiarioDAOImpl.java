@@ -164,6 +164,38 @@ public class BeneficiarioDAOImpl implements Serializable, BeneficiarioDAO {
 			}
 		}
 		
+	}
+
+	@Override
+	public void excluir(Beneficiario beneficiario) throws SQLException, BusinessException, Exception {
+		StringBuffer query = new StringBuffer();
+		Connection con = Conexao.getConexao();
+		con.setAutoCommit(Boolean.FALSE);
+		PreparedStatement statement = null;
+		try {
+			this.enderecoDAO.excluirEndereco(beneficiario.getEndereco(), con);
+			query.append("DELETE FROM ");
+			query.append(BENEFICIARIO);
+			query.append(" WHERE ");		
+			query.append(ID);
+			query.append(" = ?");
+			statement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(statement, 1, beneficiario.getId(), java.sql.Types.INTEGER);
+			statement.executeUpdate();	
+			con.commit();
+		} catch (SQLException e) {
+			throw e;
+		}catch (Exception e) {
+			throw e;
+		}finally{
+			try {
+				statement.close();
+				con.close();				
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);
+			}
+		}	
+		
 	}  
     
     

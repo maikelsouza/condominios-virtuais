@@ -1920,6 +1920,12 @@
    <from-outcome>salvar</from-outcome>
    <to-view-id>/pages/formListaBeneficiario.xhtm</to-view-id>
   </navigation-case> 
+  <navigation-case>                  
+   <from-action>#{beneficiarioMB.cancelar}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtm</to-view-id>
+   <redirect/>
+  </navigation-case>
  </navigation-rule> 
  <navigation-rule>                       
   <from-view-id>/pages/formVisualizaBeneficiario.xhtml</from-view-id>  
@@ -1936,6 +1942,17 @@
    <from-action>#{beneficiarioMB.atualizarBeneficiario}</from-action>
    <from-outcome>atualizar</from-outcome>
    <to-view-id>/pages/formListaBeneficiario.xhtm</to-view-id>
+   <redirect/>
+  </navigation-case> 
+  <navigation-case>                  
+   <from-action>#{beneficiarioMB.excluirBeneficiario}</from-action>
+   <from-outcome>excluir</from-outcome>
+   <to-view-id>/pages/formListaBeneficiario.xhtm</to-view-id>
+  </navigation-case>
+  <navigation-case>                  
+   <from-action>#{beneficiarioMB.cancelar}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtm</to-view-id>
    <redirect/>
   </navigation-case> 
  </navigation-rule> 

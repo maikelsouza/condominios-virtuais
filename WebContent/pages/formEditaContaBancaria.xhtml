@@ -68,11 +68,11 @@
 						 <h:commandButton value="#{msg.botaoCancelar}"
 							onclick="#{rich:component('confirmaExcluirContaBancaria')}.hide(); return false;" />						
 					</h:panelGrid>
-				</rich:popupPanel>
+			</rich:popupPanel>
 			
 			<h:panelGrid columns="3">
 				<h:commandButton value="#{msg.botaoAtualizar}" action="#{contaBancariaMB.atualizar}" />
-				<h:commandButton value="#{msg.botaoExcluir}" action="#{contaBancariaMB.excluir}" >
+				<h:commandButton value="#{msg.botaoExcluir}" >
 					<rich:componentControl target="confirmaExcluirContaBancaria"
 						operation="show"/>			
 				</h:commandButton>	

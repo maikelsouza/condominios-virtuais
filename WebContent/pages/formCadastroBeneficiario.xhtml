@@ -30,10 +30,11 @@
 									
 					<h:selectOneMenu id="idCondominio" value="#{beneficiarioMB.beneficiario.idCondominio}"
 						defaultLabel="#{msg['condominio.DefaultLabel']}" required="true" label="#{msg['condominio.label']}">
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="true" />
 						<f:selectItems value="#{beneficiarioMB.listaSICondominios}" />
 					</h:selectOneMenu>					
-					<h:inputText id="idNome" value="#{beneficiarioMB.beneficiario.nome}" required="true" label="#{msg['condominio.nome.label']}"/>
-					<h:inputText id="idCprf" value="#{beneficiarioMB.beneficiario.cprf}" required="true" label="#{msg['condominio.cprf.label']}"/>
+					<h:inputText id="idNome" value="#{beneficiarioMB.beneficiario.nome}" required="true" label="#{msg['beneficiario.nome.label']}"/>
+					<h:inputText id="idCprf" value="#{beneficiarioMB.beneficiario.cprf}" required="true" label="#{msg['beneficiario.cprf.label']}"/>
 				 </h:panelGrid>	
 				
 				 
@@ -46,7 +47,7 @@
 						<span class="asterisco">*</span>
 					</h:panelGroup>					
 					<h:panelGroup>
-						<h:outputLabel value="#{msg['beneficiaro.endereco.numero']}:" for="idNumero" />
+						<h:outputLabel value="#{msg['beneficiario.endereco.numero']}:" for="idNumero" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 					<h:outputLabel value="#{msg['beneficiario.endereco.complemento']}:" for="idComplemento" />
@@ -54,7 +55,7 @@
 					<h:inputText id="idEndereco" value="#{beneficiarioMB.beneficiario.endereco.endereco}" label="#{msg['beneficiario.endereco.endereco.label']}"
 						required="true" validatorMessage="#{msg['msg.beneficiario.endereco.endereco']}" size="40">
 						<f:validateLength minimum="1" maximum="100" />
-					</h:inputText>
+					</h:inputText>                                                                                  
 					<h:inputText id="idNumero" value="#{beneficiarioMB.beneficiario.endereco.numero}" label="#{msg['beneficiario.endereco.numero.label']}" required="true"
 						validatorMessage="#{msg['msg.beneficiario.endereco.numero']}" size="12">
 						<f:validateLength minimum="1" maximum="12" />
@@ -106,7 +107,7 @@
 					</h:panelGroup>
 					<h:outputLabel value=""/>
 					
-					<h:inputText id="idUf" value="#{beneficiarioMB.beneficiario.endereco.uf}" label="#{msg['beneficiario.endereco.UF.label']}" required="true"
+					<h:inputText id="idUf" value="#{beneficiarioMB.beneficiario.endereco.uf}" label="#{msg['beneficiario.endereco.uf.label']}" required="true"
 						size="2" validatorMessage="#{msg['msg.beneficiario.endereco.uf']}">
 						<f:validateRegex pattern="[a-zA-Z]{1,2}" for="idUf" />
 					</h:inputText>
@@ -127,8 +128,8 @@
 			
 			<h:panelGrid columns="3">                                 
 				<h:commandButton value="#{msg.botaoSalvar}" action="#{beneficiarioMB.salvarBeneficiario}" />
-				<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{beneficiarioMB.limparSalvarContaBancaria}" />
-				<h:commandButton value="#{msg.botaoCancelar}" action="#{contaBancariaMB.cancelarSalvarContaBancaria}" immediate="true" />
+				<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{beneficiarioMB.limparBeneficiario}" />
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{beneficiarioMB.cancelar}" immediate="true" />
 			</h:panelGrid>	
 			
 			

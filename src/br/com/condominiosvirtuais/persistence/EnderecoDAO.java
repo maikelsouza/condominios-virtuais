@@ -14,5 +14,7 @@ public interface EnderecoDAO {
 	public abstract void atualizarEndereco(Endereco endereco,  Connection con) throws SQLException, Exception;
 	
 	public abstract void atualizarEnderecoPorId(Endereco endereco,  Connection con) throws SQLException, Exception;
+	
+	public abstract void excluirEndereco(Endereco endereco,  Connection con) throws SQLException, Exception;
 
 }

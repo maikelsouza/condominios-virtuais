@@ -102,6 +102,21 @@ public class BeneficiarioMB implements Serializable {
 		}
 	}
 	
+	public String excluirBeneficiario(){
+		try {
+			this.beneficiarioService.excluir(this.beneficiario);
+			this.pesquisar();
+			ManagedBeanUtil.setMensagemInfo("msg.beneficiario.excluirSucesso");
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (Exception e) {
+			logger.error("", e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}
+		return "excluir";
+	}
+	
 	public String voltaListaBeneficiario(){
 		return "voltar";
 	}
@@ -129,6 +144,13 @@ public class BeneficiarioMB implements Serializable {
 		return "editar";
 	}
 	
+	public String cancelar(){
+		return "cancelar";
+	}	
+	
+	public void limparBeneficiario(){
+		this.beneficiario = new Beneficiario();
+	}
 
 	public ListDataModel<Beneficiario> getListaBeneficiarios() {
 		return listaBeneficiarios;
