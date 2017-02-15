@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">		
+		<h:form id="idFormGerarBoleto" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.gerarBoleto}" />
+				</f:facet>
+				<h:panelGrid columns="3" >
+					<h:panelGroup>
+						<h:outputLabel value="#{msg.condominio}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['boleto.contaBancaria']}:" for="idContaBancaria" />						
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['boleto.beneficiario']}:" for="idBeneficiario" />						
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+									
+					<h:selectOneMenu id="idCondominio" value="#{boletoMB.boleto.idCondominio}"
+						defaultLabel="#{msg['condominio.DefaultLabel']}" required="true" label="#{msg['condominio.label']}">
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="true" />
+						<f:selectItems value="#{boletoMB.listaSICondominios}" />
+					</h:selectOneMenu>
+										
+					<h:selectOneMenu id="idContaBancaria" value="#{boletoMB.boleto.contaBancaria.id}"
+						defaultLabel="#{msg['boleto.contaBancaria.DefaultLabel']}" required="true" label="#{msg['boleto.contaBancaria.label']}">
+						<f:selectItem itemLabel="#{msg['contaBancaria.DefaultLabel']}" noSelectionOption="true" />
+						<f:selectItems value="#{boletoMB.listaSIContaBancaria}" />
+					</h:selectOneMenu>
+										
+					<h:selectOneMenu id="idBeneficiario" value="#{boletoMB.boleto.beneficiario.id}"
+						defaultLabel="#{msg['boleto.beneficiario.DefaultLabel']}" required="true" label="#{msg['boleto.beneficiario.label']}">
+						<f:selectItem itemLabel="#{msg['beneficiario.DefaultLabel']}" noSelectionOption="true" />
+						<f:selectItems value="#{boletoMB.listaSIBeneficiario}" />
+					</h:selectOneMenu>	
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['boleto.emissao']}:" for="idEmissao" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['boleto.vencimento']}:" for="idVencimento" />						
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['boleto.documento']}:" for="idDocumento" />						
+						<span class="asterisco">*</span>
+					</h:panelGroup>		
+					
+					<rich:calendar value="#{boletoMB.boleto.emissao}" id="idEmissao" locale="#{msg.locale}" popup="true" mode="ajax"
+						label="#{msg['boleto.emissao.label']}" datePattern="#{msg['formatoData']}" cellWidth="24px" cellHeight="22px"
+						style="width:200px" required="true" boundaryDatesMode="scroll" showFooter="false">
+					</rich:calendar>
+						
+					<rich:calendar value="#{boletoMB.boleto.vencimento}" id="idVencimento" locale="#{msg.locale}" popup="true" mode="ajax"
+						label="#{msg['boleto.vencimento.label']}" datePattern="#{msg['formatoData']}" cellWidth="24px" cellHeight="22px"
+						style="width:200px" required="true"  boundaryDatesMode="scroll" showFooter="false">
+					</rich:calendar>				
+						
+					<h:inputText id="idDocumento" value="#{boletoMB.boleto.documento}" label="#{msg['boleto.documento.label']}"
+						required="true" validatorMessage="#{msg['msg.boleto.documento.label']}" size="40"/>
+						
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['boleto.numero']}:" for="idNumero" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['boleto.titulo']}:" for="idTitulo" />						
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['boleto.valor']}:" for="idValor" />						
+						<span class="asterisco">*</span>
+					</h:panelGroup>	
+					
+					<h:inputText id="idNumero" value="#{boletoMB.boleto.numero}" label="#{msg['boleto.numero.label']}"
+						required="true"  size="40"/>
+						
+					<h:selectOneMenu id="idTitulo" value="#{boletoMB.boleto.titulo}"
+						defaultLabel="#{msg['boleto.DefaultLabel']}" required="true" label="#{msg['boleto.titulo.label']}">
+						<f:selectItem itemLabel="#{msg['titulo.DefaultLabel']}" noSelectionOption="true" />
+						<f:selectItems value="#{boletoMB.listaSITitulo}" />
+					</h:selectOneMenu>
+						
+					<h:inputText id="idValor" value="#{boletoMB.boleto.valor}" label="#{msg['boleto.valor.label']}" required="true"  size="40"/>	
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['boleto.pagador']}:" for="idPagador" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					
+					<h:selectOneMenu id="idTitulo" value="#{boletoMB.boleto.pagador.id}"
+						defaultLabel="#{msg['boleto.DefaultLabel']}" required="true" label="#{msg['boleto.titulo.label']}">
+						<f:selectItem itemLabel="#{msg['titulo.DefaultLabel']}" noSelectionOption="true" />
+						<f:selectItems value="#{boletoMB.listaSITitulo}" />
+					</h:selectOneMenu>
+					
+					
+				 </h:panelGrid>	
+			</rich:panel>
+			
+				 	
+				
+				 
+				 <h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
+				</h:panelGrid>		
+			</rich:panel>
+			
+			
+			
+			<h:panelGrid columns="3">                                 
+				<h:commandButton value="#{msg.botaoSalvar}" action="#{beneficiarioMB.salvarBeneficiario}" />
+				<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{beneficiarioMB.limparBeneficiario}" />
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{beneficiarioMB.cancelar}" immediate="true" />
+			</h:panelGrid>	
+			
+			
+		</h:form>		
+		
+	</ui:define>
+
+</ui:composition>

@@ -110,7 +110,10 @@ public enum PathTelasAplicacaoEnum {
 	FORM_CADASTRO_BENEFICIARIO(PREFIXO.getPathTelas()+"formCadastroBeneficiario.xhtml"),
 	FORM_LISTA_BENEFICIARIO(PREFIXO.getPathTelas()+"formListaBeneficiario.xhtml"),
 	FORM_VISUALIZAR_BENEFICIARIO(PREFIXO.getPathTelas()+"formVisualizaBeneficiario.xhtml"),
-	FORM_EDITA_BENEFICIARIO(PREFIXO.getPathTelas()+"formEditaBeneficiario.xhtml");
+	FORM_EDITA_BENEFICIARIO(PREFIXO.getPathTelas()+"formEditaBeneficiario.xhtml"),
+	FORM_GERAR_BOLETO(PREFIXO.getPathTelas()+"formGerarBoleto.xhtml");
+	
+	
 	
 	
 	
