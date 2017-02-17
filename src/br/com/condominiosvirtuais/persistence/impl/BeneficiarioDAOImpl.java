@@ -121,6 +121,38 @@ public class BeneficiarioDAOImpl implements Serializable, BeneficiarioDAO {
 			}				
 		return listaBeneficiario;
 	}
+	
+	@Override
+	public Beneficiario buscarPorId(Integer idBeneficiario, Connection con) throws SQLException, BusinessException, Exception {
+		Beneficiario beneficiario = null;
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(BENEFICIARIO);
+		query.append(" WHERE ");
+		query.append(ID);		
+		query.append(" = ? ");
+		query.append(";");		
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		try {
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, idBeneficiario, java.sql.Types.INTEGER);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){		
+				beneficiario = new Beneficiario();
+				beneficiario.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				beneficiario.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+				beneficiario.setCprf((Long) (SQLUtil.getValorResultSet(resultSet, CPRF, java.sql.Types.BIGINT)));
+				beneficiario.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
+				beneficiario.setEndereco(this.enderecoDAO.buscarEnderecoPorIdBeneficiario(beneficiario.getId(), con));	
+			}
+		} catch (SQLException e) {			
+			throw e;
+		} catch (Exception e) {
+			throw e;
+		}				
+		return beneficiario;
+	}
 
 	@Override
 	public void atualizar(Beneficiario beneficiario) throws SQLException, BusinessException, Exception {

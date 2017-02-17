@@ -43,6 +43,8 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 	
 	private static final String TELEFONE_COMERCIAL = "TELEFONE_COMERCIAL";
 	
+	private static final String PAGADOR = "PAGADOR";
+	
 	private static final String ID_UNIDADE = "ID_UNIDADE";
 	
 	@Inject
@@ -134,6 +136,7 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 				condomino.setTelefoneComercial((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_COMERCIAL, java.sql.Types.BIGINT));
 				condomino.setTelefoneResidencial((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_RESIDENCIAL, java.sql.Types.BIGINT));
 				condomino.setIdUnidade((Integer) SQLUtil.getValorResultSet(resultSet, ID_UNIDADE, java.sql.Types.INTEGER));
+				condomino.setPagador((Integer) SQLUtil.getValorResultSet(resultSet, PAGADOR, java.sql.Types.INTEGER));
 				this.usuarioDAO.buscarEPopularUsuarioPeloId(condomino, con);
 				arquivo = this.arquivoDAO.get().buscarPorCondomino(condomino, con);
 				condomino.setImagem(arquivo);
@@ -212,8 +215,10 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 		query.append(TELEFONE_COMERCIAL);
 		query.append(",");
 		query.append(ID_UNIDADE);
+		query.append(",");
+		query.append(PAGADOR);
 		query.append(") ");
-		query.append("VALUES(?,?,?,?,?,?)");
+		query.append("VALUES(?,?,?,?,?,?,?)");
 		try {
 			statement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(statement,1, condomino.getId(), java.sql.Types.INTEGER);
@@ -222,6 +227,7 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 			SQLUtil.setValorPpreparedStatement(statement,4, condomino.getTelefoneResidencial(), java.sql.Types.BIGINT);
 			SQLUtil.setValorPpreparedStatement(statement,5, condomino.getTelefoneComercial(), java.sql.Types.BIGINT);
 			SQLUtil.setValorPpreparedStatement(statement,6, condomino.getIdUnidade(), java.sql.Types.INTEGER);			
+			SQLUtil.setValorPpreparedStatement(statement,7, condomino.getPagador(), java.sql.Types.INTEGER);			
 			statement.execute();			
 			con.commit();
 		} catch (SQLException e) {
@@ -647,6 +653,56 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 		return condomino;
 	}
 	
+	@Override
+	public List<Condomino>buscarPorIdUnidadeEPagadorSemImagem(Integer idUnidade, Integer pagador) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(CONDOMINO);
+		query.append(" WHERE ");
+		query.append(ID_UNIDADE);		
+		query.append(" = ? ");
+		query.append(" AND ");		
+		query.append(PAGADOR);
+		query.append(" = ? ");
+		query.append(";");
+		PreparedStatement preparedStatement = null;
+		List<Condomino> listaCondominos = new ArrayList<Condomino>();
+		ResultSet resultSet = null;		
+		Condomino condomino = null;
+		Connection con = Conexao.getConexao();
+		try {
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1,idUnidade, java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 2,pagador, java.sql.Types.INTEGER);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				condomino = new Condomino();				
+				condomino.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				condomino.setProprietario((Boolean) SQLUtil.getValorResultSet(resultSet, PROPRIETARIO, java.sql.Types.BOOLEAN));
+				condomino.setTelefoneCelular((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_CELULAR, java.sql.Types.BIGINT));
+				condomino.setTelefoneComercial((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_COMERCIAL, java.sql.Types.BIGINT));
+				condomino.setTelefoneResidencial((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_RESIDENCIAL, java.sql.Types.BIGINT));
+				condomino.setIdUnidade((Integer) SQLUtil.getValorResultSet(resultSet, ID_UNIDADE, java.sql.Types.INTEGER));
+				condomino.setPagador((Integer) SQLUtil.getValorResultSet(resultSet, PAGADOR, java.sql.Types.INTEGER));
+				this.usuarioDAO.buscarEPopularUsuarioPeloId(condomino, con);	
+				listaCondominos.add(condomino);
+			}
+		}catch (SQLException e) {			
+			throw e;
+		}catch (Exception e) {		
+			throw e;			
+		}finally{
+			try {
+				preparedStatement.close();
+				con.close();
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);	
+			}
+		}								
+		return listaCondominos;		
+		
+	}
+	
 	public UsuarioDAOImpl getUsuarioDAO() {
 		return usuarioDAO;
 	}
@@ -662,5 +718,7 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 	public void setGestorCondominioDAO(GestorCondominioDAOImpl gestorCondominioDAO) {
 		this.gestorCondominioDAO = gestorCondominioDAO;
 	}
+
+	
 
 }

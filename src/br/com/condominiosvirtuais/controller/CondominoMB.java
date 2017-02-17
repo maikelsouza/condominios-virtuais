@@ -195,7 +195,7 @@ public class CondominoMB implements  Serializable{
 			this.condomino.setIdUnidade(this.unidade.getId());			
 			this.condomino.setIdGrupoUsuario(TipoGrupoUsuarioEnum.CONDOMINO.getGrupoUsuario());
 			this.condomino.getEmail().setPrincipal(Boolean.TRUE);
-			this.condomino.setSituacao(UsuarioEnum.ATIVO.getSituacao());
+			this.condomino.setSituacao(UsuarioEnum.ATIVO.getSituacao());			
 			this.condominoService.salvar(this.condomino);
 			this.pesquisar(null);
 			ManagedBeanUtil.setMensagemInfo("msg.condomino.salvaSucesso");

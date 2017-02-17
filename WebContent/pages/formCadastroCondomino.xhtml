@@ -27,8 +27,7 @@
 						<h:outputLabel value="#{msg.unidades}:" for="idListaSIUnidades" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
-					<h:selectOneMenu id="idSICondominio"
-						value="#{condominoMB.condominio.id}"
+					<h:selectOneMenu id="idSICondominio" value="#{condominoMB.condominio.id}"
 						defaultLabel="#{msg['condominio.DefaultLabel']}"
 						label="#{msg['condominio.label']}" required="true">
 						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}"
@@ -37,6 +36,7 @@
 						<f:ajax listener="#{condominoMB.popularListaBlocos}"
 							render="idListaSIBlocos idListaSIUnidades"></f:ajax>
 					</h:selectOneMenu>
+					
 					<h:selectOneMenu value="#{condominoMB.bloco.id}"
 						defaultLabel="#{msg['bloco.DefaultLabel']}" id="idListaSIBlocos"
 						label="#{msg['bloco.label']}" required="true">

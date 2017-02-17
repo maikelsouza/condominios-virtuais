@@ -1,5 +1,6 @@
 package br.com.condominiosvirtuais.persistence;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -15,5 +16,7 @@ public interface BeneficiarioDAO {
 	public abstract void atualizar(Beneficiario beneficiario) throws SQLException, BusinessException, Exception;
 	
 	public abstract List<Beneficiario> buscarPorIdCondominio(Integer idCondominio) throws SQLException, BusinessException, Exception;
+	
+	public abstract Beneficiario buscarPorId(Integer idBeneficiario, Connection con) throws SQLException, BusinessException, Exception;
 
 }

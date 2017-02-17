@@ -28,6 +28,8 @@ public class CondominoVO {
 	
 	private Integer IdEmailCondomino;
 	
+	private Integer pagadorCondomino;
+	
 	private Integer sexoCondomino;
 	
 	private Integer dataNascimentoDiaCondomino;
@@ -245,7 +247,15 @@ public class CondominoVO {
 
 	public void setIdEmailCondomino(Integer idEmailCondomino) {
 		IdEmailCondomino = idEmailCondomino;
-	}	
+	}		
+
+	public Integer getPagadorCondomino() {
+		return pagadorCondomino;
+	}
+
+	public void setPagadorCondomino(Integer pagadorCondomino) {
+		this.pagadorCondomino = pagadorCondomino;
+	}
 
 	public Arquivo getArquivo() {
 		return arquivo;
@@ -333,6 +343,10 @@ public class CondominoVO {
 				* result
 				+ ((cpfCondomino == null) ? 0
 						: cpfCondomino.hashCode());
+		result = prime
+				* result
+				+ ((pagadorCondomino == null) ? 0
+						: pagadorCondomino.hashCode());
 		return result;
 	}
 
@@ -461,6 +475,12 @@ public class CondominoVO {
 				return false;
 		} else if (!telefoneResidencialCondomino
 				.equals(other.telefoneResidencialCondomino))
+			return false;
+		if (pagadorCondomino == null) {
+			if (other.pagadorCondomino != null)
+				return false;
+		} else if (!pagadorCondomino
+				.equals(other.pagadorCondomino))
 			return false;
 		if (cpfCondomino == null) {
 			if (other.cpfCondomino != null)

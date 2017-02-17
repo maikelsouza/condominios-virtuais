@@ -288,6 +288,16 @@ public class PrincipalMB  implements Serializable{
 		return "listarBeneficiario";		        
 	}
 	
+	public String gerarBoleto(){
+		return "gerarBoleto";		        
+	}
+	
+	public String listarBoleto(){
+		return "listarBoleto";		        
+	}
+	
+	
+	
 	
 
 	private void iniciaThreads(){				

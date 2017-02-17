@@ -142,6 +142,38 @@ public class ContaBancariaDAOImpl implements ContaBancariaDAO, Serializable {
 		}
 		return listaContaBancaria;
 	}
+	
+	@Override
+	public ContaBancaria buscarPorId(Integer idContaBancaria, Connection con) throws SQLException, Exception {		
+		ContaBancaria contaBancaria = null;
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(CONTA_BANCARIA);
+		query.append(" WHERE ");
+		query.append(ID);		
+		query.append(" = ? ");
+		query.append(";");		
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		try {
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, idContaBancaria, java.sql.Types.INTEGER);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				contaBancaria = new ContaBancaria();
+				contaBancaria.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				contaBancaria.setAgencia(String.valueOf(SQLUtil.getValorResultSet(resultSet, AGENCIA, java.sql.Types.VARCHAR)));
+				contaBancaria.setNumero(String.valueOf(SQLUtil.getValorResultSet(resultSet,NUMERO, java.sql.Types.VARCHAR)));
+				contaBancaria.setCarteira(String.valueOf(SQLUtil.getValorResultSet(resultSet,CARTEIRA, java.sql.Types.VARCHAR)));
+				contaBancaria.setBanco(this.bancoDAO.buscarPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_BANCO, java.sql.Types.INTEGER),con));
+			}
+		} catch (SQLException e) {
+			throw e;
+		} catch (Exception e) {
+			throw e;	
+		}
+		return contaBancaria;
+	}
 
 	@Override
 	public void atualizar(ContaBancaria contaBancaria) throws SQLException, Exception {

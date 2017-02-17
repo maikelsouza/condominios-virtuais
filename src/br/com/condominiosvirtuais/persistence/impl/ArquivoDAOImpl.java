@@ -50,9 +50,6 @@ public class ArquivoDAOImpl implements ArquivoDAO, Serializable {
 	
 	private static final String ID_CONDOMINIO = "ID_CONDOMINIO";
 
-// TODO: Código comentado em 01/10/2014. Apagar em 180 dias	
-	//private static final String ID_AMBIENTE = "ID_AMBIENTE";
-	
 	private static final String ID_CLASSIFICADOS = "ID_CLASSIFICADOS";
 	
 	private static final String NOME = "NOME";
@@ -73,15 +70,10 @@ public class ArquivoDAOImpl implements ArquivoDAO, Serializable {
 	private UnidadeDAOImpl unidadeDAO;
 	
 	@Inject
-	private CondominoDAOImpl condominoDAO;
-	
+	private CondominoDAOImpl condominoDAO;	
 
 	@Inject @QualifierFuncionarioDAO
 	private FuncionarioDAO funcionarioDAO;
-
-// TODO: Código comentado em 18/09/2014. Apagar em 180 dias	
-//	@Inject @QualifierAmbienteDAO
-//	private AmbienteDAO ambienteDAO;
 	
 	@Inject
 	private ConfiguracaoAplicacaoDAO configuracaoAplicacaoDAO;
@@ -124,9 +116,6 @@ public class ArquivoDAOImpl implements ArquivoDAO, Serializable {
 			query.append(ID_USUARIO); 
 			query.append(",");
 			query.append(ID_CONDOMINIO);
-// TODO: Código comentado em 01/10/2014. Apagar em 180 dias			
-//			query.append(",");
-//			query.append(ID_AMBIENTE); 
 			query.append(",");			
 			query.append(ID_CLASSIFICADOS); 
 			query.append(",");			
@@ -138,26 +127,13 @@ public class ArquivoDAOImpl implements ArquivoDAO, Serializable {
 			statement = con.prepareStatement(query.toString(),PreparedStatement.RETURN_GENERATED_KEYS);
 			SQLUtil.setValorPpreparedStatement(statement, 1, arquivo.getIdUsuario(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 2, arquivo.getIdCondominio(), java.sql.Types.INTEGER);
-// TODO: Código comentado em 01/10/2014. Apagar em 180 dias			
-//			SQLUtil.setValorPpreparedStatement(statement, 3, arquivo.getIdAmbiente(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 3, arquivo.getIdClassificados(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 4, arquivo.getNome(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement, 5, arquivo.getMimeType(), java.sql.Types.VARCHAR);			
 			statement.executeUpdate();
 			ResultSet rs = statement.getGeneratedKeys();
 			arquivo.setId(rs.getInt(1));
-			this.fileDAO.criarFile(arquivo, arquivo.getIdCondominio());	
-
-// TODO: Código comentado em 18/09/2014. Apagar em 180 dias			
-//			String endereco = this.enderecoArquivos+File.separator+arquivo.getIdCondominio()+File.separator+arquivo.getId();			
-//			File diretorio = new File(endereco);	
-//			// Cria o diretório com o nome igual ao id do registro no Banco de dados (TABELA ARQUIVO)
-//			diretorio.mkdir();	
-//			endereco += File.separator+arquivo.getNome();
-//			FileOutputStream outPut = new FileOutputStream(endereco);
-//			outPut.write(arquivo.getDadosArquivo());
-//			outPut.flush();
-//			outPut.close();				  
+			this.fileDAO.criarFile(arquivo, arquivo.getIdCondominio());			  
 		} catch (FileNotFoundException e) {		
 			con.rollback();
 			throw e;
@@ -185,10 +161,7 @@ public class ArquivoDAOImpl implements ArquivoDAO, Serializable {
 			query.append("(");
 			query.append(ID_USUARIO); 
 			query.append(",");
-			query.append(ID_CONDOMINIO);
-// TODO: Código comentado em 01/10/2014. Apagar em 180 dias			
-//			query.append(",");
-//			query.append(ID_AMBIENTE); 
+			query.append(ID_CONDOMINIO); 
 			query.append(",");
 			query.append(ID_CLASSIFICADOS); 
 			query.append(",");
@@ -200,8 +173,6 @@ public class ArquivoDAOImpl implements ArquivoDAO, Serializable {
 			statement = con.prepareStatement(query.toString(),PreparedStatement.RETURN_GENERATED_KEYS);
 			SQLUtil.setValorPpreparedStatement(statement, 1, arquivo.getIdUsuario(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 2, arquivo.getIdCondominio(), java.sql.Types.INTEGER);
-// TODO: Código comentado em 01/10/2014. Apagar em 180 dias			
-//			SQLUtil.setValorPpreparedStatement(statement, 3, arquivo.getIdAmbiente(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 3, arquivo.getIdClassificados(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 4, arquivo.getNome(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement, 5, arquivo.getMimeType(), java.sql.Types.VARCHAR);			
@@ -209,18 +180,7 @@ public class ArquivoDAOImpl implements ArquivoDAO, Serializable {
 			ResultSet rs = statement.getGeneratedKeys(); 
 			rs.next();
 			arquivo.setId(rs.getInt(1));
-			this.fileDAO.criarFile(arquivo, condominio.getId());
-
-// TODO: Código comentado em 18/09/2014. Apagar em 180 dias				
-//			String endereco = this.enderecoArquivos+File.separator+condominio.getId()+File.separator+arquivo.getId();
-//			File diretorio = new File(endereco);	
-//			// Cria o diretório com o nome igual ao id do registro no Banco de dados (TABELA ARQUIVO)
-//			diretorio.mkdir();	
-//			endereco += File.separator+arquivo.getNome();
-//			FileOutputStream outPut = new FileOutputStream(endereco);
-//			outPut.write(arquivo.getDadosArquivo());
-//			outPut.flush();
-//			outPut.close();				  
+			this.fileDAO.criarFile(arquivo, condominio.getId());				  
 		} catch (FileNotFoundException e) {
 			con.rollback();
 			throw e;
@@ -247,10 +207,7 @@ public class ArquivoDAOImpl implements ArquivoDAO, Serializable {
 			query.append("(");
 			query.append(ID_USUARIO); 
 			query.append(",");
-			query.append(ID_CONDOMINIO);
-// TODO: Código comentado em 01/10/2014. Apagar em 180 dias			
-//			query.append(",");
-//			query.append(ID_AMBIENTE); 
+			query.append(ID_CONDOMINIO); 
 			query.append(",");			
 			query.append(ID_CLASSIFICADOS); 
 			query.append(",");			
@@ -262,8 +219,6 @@ public class ArquivoDAOImpl implements ArquivoDAO, Serializable {
 			statement = con.prepareStatement(query.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
 			SQLUtil.setValorPpreparedStatement(statement, 1, arquivo.getIdUsuario(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 2, arquivo.getIdCondominio(), java.sql.Types.INTEGER);
-// TODO: Código comentado em 01/10/2014. Apagar em 180 dias			
-//			SQLUtil.setValorPpreparedStatement(statement, 3, arquivo.getIdAmbiente(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 3, arquivo.getIdClassificados(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 4, arquivo.getNome(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement, 5, arquivo.getMimeType(), java.sql.Types.VARCHAR);			
@@ -272,58 +227,7 @@ public class ArquivoDAOImpl implements ArquivoDAO, Serializable {
 			rs.next();
 			arquivo.setId(rs.getInt(1));
 			Condominio condominio = this.recuperaCondominio(arquivo, con);			
-			this.fileDAO.criarFile(arquivo, condominio.getId());
-			
-// TODO: Código comentado em 18/09/2014. Apagar em 180 dias			
-//	AWSCredentials credentials = new BasicAWSCredentials("AKIAIOU42DA2ZRERDIMQ", "jQTeFOmgWD837DMCswKNSabEDwnS21nf78ZC9Ba2");
-//AWSCredentials awsCredentials = new AWSCredentials("maikel.souza@gmail.com", "mkl862");
-//	AmazonS3 conn = new AmazonS3Client(credentials);
-//	ByteArrayInputStream input = new ByteArrayInputStream("Hello World!".getBytes());
-//	conn.putObject("condominiosvirtuais", "hello.txt", input, new ObjectMetadata());
-/*			ByteArrayInputStream input = new ByteArrayInputStream(arquivo.getDadosArquivo());
-			//conn.putObject("condominiosvirtuais",arquivo.getNome(), input, new ObjectMetadata());
-			Bucket bucket = null;
-			 // Create metadata for your folder & set content-length to 0
-			        ObjectMetadata metadata = new ObjectMetadata();
-			        metadata.setContentLength(0);
-			        // Create empty content
-			        InputStream emptyContent = new ByteArrayInputStream(new byte[0]);
-			        // Create a PutObjectRequest passing the foldername suffixed by /
-			        PutObjectRequest putObjectRequest =
-			                new PutObjectRequest("condominiosvirtuais", "0"+"/",
-			                        emptyContent, metadata);
-			        // Send request to S3 to create folder
-			        conn.putObject(putObjectRequest);
-		//	AWSCredentials credentials = new ProfileCredentialsProvider().getCredentials();
-		//	AmazonS3 amazonS3 = new AmazonS3Client(credentials);
-			//DefaultAWSCredentialsProviderChain credentialProviderChain = new DefaultAWSCredentialsProviderChain();
-			//TransferManager tx = new TransferManager(credentials);
-		//	File file = File.createTempFile(arquivo.getNome(), ".jpg");
-		//	file.createNewFile()
-//		    Upload myUpload = tx.upload("condominiosvirtuais", arquivo.getNome(),file);
-//		    if (myUpload.isDone())
-//		    	System.out.println("feito");
-//		    FileOutputStream outPut = new FileOutputStream(file);
-//		    Writer writer = new OutputStreamWriter(new FileOutputStream(file));
-		    //writer.write(arquivo.getDadosArquivo());
-//			outPut.write(arquivo.getDadosArquivo());
-//			outPut.flush();
-//			outPut.close();			
-//			//myUpload.
-		//	myUpload.waitForCompletion();			 
-//			// After the upload is complete, call shutdownNow to release the resources.
-		//	tx.shutdownNow();
-//			String endereco = this.enderecoArquivos+File.separator+condominio.getId()+File.separator+arquivo.getId();
-//			File diretorio = new File(endereco);	
-//			// Cria o diretório com o nome igual ao id do registro no Banco de dados (TABELA ARQUIVO)
-//			diretorio.mkdir();	
-//			endereco += File.separator+arquivo.getNome();
-//			FileOutputStream outPut = new FileOutputStream(endereco);
-//			outPut.write(arquivo.getDadosArquivo());
-//			outPut.flush();
-//			outPut.close();
- * 				  
- */
+			this.fileDAO.criarFile(arquivo, condominio.getId());			
 		} catch (FileNotFoundException e) {
 			throw e;
 		} catch (IOException e) {
@@ -342,158 +246,6 @@ public class ArquivoDAOImpl implements ArquivoDAO, Serializable {
 			}	
 		}	
 	}	
-	
-// TODO: Código comentado em 17/09/2014. Apagar em 180 dias			
-//	@Override
-//	public void salvarArquivoAmbienteCondominio(Arquivo arquivo, Connection con) throws FileNotFoundException, IOException, SQLException, Exception {		
-//		PreparedStatement statement = null;	 		
-//		try {
-//			Ambiente ambiente = this.ambienteDAO.buscarPorId(arquivo.getIdAmbiente(),con);		
-//			Condominio condominio = this.condominioDAO.buscarCondominioPorId(ambiente.getIdCondominio(), con);
-//			StringBuffer query = new StringBuffer();
-//			query.append("INSERT INTO "); 
-//			query.append(ARQUIVO); 
-//			query.append("(");
-//			query.append(ID_USUARIO); 
-//			query.append(",");
-//			query.append(ID_CONDOMINIO); 
-//			query.append(",");
-//			query.append(ID_AMBIENTE); 
-//			query.append(",");			
-//			query.append(ID_CLASSIFICADOS); 
-//			query.append(",");			
-//			query.append(NOME); 
-//			query.append(",");			
-//			query.append(MIME_TYPE);
-//			query.append(") ");
-//			query.append("VALUES(?,?,?,?,?,?)");
-//			statement = con.prepareStatement(query.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
-//			SQLUtil.setValorPpreparedStatement(statement, 1, arquivo.getIdUsuario(), java.sql.Types.INTEGER);
-//			SQLUtil.setValorPpreparedStatement(statement, 2, arquivo.getIdCondominio(), java.sql.Types.INTEGER);
-//			SQLUtil.setValorPpreparedStatement(statement, 3, arquivo.getIdAmbiente(), java.sql.Types.INTEGER);
-//			SQLUtil.setValorPpreparedStatement(statement, 4, arquivo.getIdClassificados(), java.sql.Types.INTEGER);
-//			SQLUtil.setValorPpreparedStatement(statement, 5, arquivo.getNome(), java.sql.Types.VARCHAR);
-//			SQLUtil.setValorPpreparedStatement(statement, 6, arquivo.getMimeType(), java.sql.Types.VARCHAR);			
-//			statement.executeUpdate();
-//			ResultSet rs = statement.getGeneratedKeys();
-//			rs.next();
-//			arquivo.setId(rs.getInt(1));
-//			String endereco = this.enderecoArquivos+File.separator+condominio.getId()+File.separator+arquivo.getId();
-//			File diretorio = new File(endereco);	
-//			// Cria o diretório com o nome igual ao id do registro no Banco de dados (TABELA ARQUIVO)
-//			diretorio.mkdir();	
-//			endereco += File.separator+arquivo.getNome();
-//			FileOutputStream outPut = new FileOutputStream(endereco);
-//			outPut.write(arquivo.getDadosArquivo());
-//			outPut.flush();
-//			outPut.close();				  
-//		} catch (FileNotFoundException e) {			
-//			con.rollback();
-//			throw e;
-//		} catch (IOException e) {
-//			con.rollback();
-//			throw e;
-//		} catch (SQLException e) {
-//			con.rollback();
-//			throw e;
-//		}catch (Exception e) {
-//			con.rollback();
-//			throw e;
-//		}	
-//		
-//	}
-
-// TODO: Código comentado em 17/09/2014. Apagar em 180 dias	
-//	@Override
-//	public void salvarArquivoFuncionarioCondominio(Arquivo arquivo, Connection con) throws FileNotFoundException, IOException, SQLException, Exception {		
-//		Funcionario funcionario = this.funcionarioDAO.buscarPorId(arquivo.getIdUsuario(),con);
-//		Condominio condominio = null;
-//		PreparedStatement statement = null;	 		
-//		try {
-//			condominio = this.condominioDAO.buscarCondominioPorId(funcionario.getIdCondominio(), con);
-//			StringBuffer query = new StringBuffer();
-//			query.append("INSERT INTO "); 
-//			query.append(ARQUIVO); 
-//			query.append("(");
-//			query.append(ID_USUARIO); 
-//			query.append(",");
-//			query.append(ID_CONDOMINIO); 
-//			query.append(",");
-//			query.append(ID_AMBIENTE); 
-//			query.append(",");			
-//			query.append(ID_CLASSIFICADOS); 
-//			query.append(",");			
-//			query.append(NOME); 
-//			query.append(",");			
-//			query.append(MIME_TYPE);
-//			query.append(") ");
-//			query.append("VALUES(?,?,?,?,?,?)");
-//			statement = con.prepareStatement(query.toString());
-//			SQLUtil.setValorPpreparedStatement(statement, 1, arquivo.getIdUsuario(), java.sql.Types.INTEGER);
-//			SQLUtil.setValorPpreparedStatement(statement, 2, arquivo.getIdCondominio(), java.sql.Types.INTEGER);
-//			SQLUtil.setValorPpreparedStatement(statement, 3, arquivo.getIdAmbiente(), java.sql.Types.INTEGER);
-//			SQLUtil.setValorPpreparedStatement(statement, 4, arquivo.getIdClassificados(), java.sql.Types.INTEGER);
-//			SQLUtil.setValorPpreparedStatement(statement, 5, arquivo.getNome(), java.sql.Types.VARCHAR);
-//			SQLUtil.setValorPpreparedStatement(statement, 6, arquivo.getMimeType(), java.sql.Types.VARCHAR);			
-//			statement.executeUpdate();
-//			ResultSet rs = statement.getGeneratedKeys();
-//			rs.next();
-//			arquivo.setId(rs.getInt(1));
-//			String endereco = this.enderecoArquivos+File.separator+condominio.getId()+File.separator+arquivo.getId();
-//			File diretorio = new File(endereco);	
-//			// Cria o diretório com o nome igual ao id do registro no Banco de dados (TABELA ARQUIVO)
-//			diretorio.mkdir();	
-//			endereco += File.separator+arquivo.getNome();
-//			FileOutputStream outPut = new FileOutputStream(endereco);
-//			outPut.write(arquivo.getDadosArquivo());
-//			outPut.flush();
-//			outPut.close();				  
-//		} catch (FileNotFoundException e) {			
-//			con.rollback();
-//			throw e;
-//		} catch (IOException e) {
-//			con.rollback();
-//			throw e;
-//		} catch (SQLException e) {
-//			con.rollback();
-//			throw e;
-//		} catch (Exception e) {
-//			con.rollback();
-//			throw e;
-//		}	
-//		
-//	}
-
-	// TODO: Código comentado em 17/09/2014. Apagar em 180 dias		
-//	@Override
-//	public void excluirArquivoCondominio(Arquivo arquivo, Connection con) throws SQLException, Exception {
-//		PreparedStatement statement = null;	 		
-//		try {
-//			StringBuffer query = new StringBuffer();
-//			query.append("DELETE FROM ");
-//			query.append(ARQUIVO);
-//			query.append(" WHERE ");		
-//			query.append(ID);
-//			query.append(" = ?");
-//			statement = con.prepareStatement(query.toString());
-//			SQLUtil.setValorPpreparedStatement(statement, 1, arquivo.getId(), java.sql.Types.INTEGER);
-//			statement.executeUpdate();
-//			String enderecoArquivo = this.enderecoArquivos+File.separator+arquivo.getIdCondominio()+File.separator+arquivo.getId()+File.separator+arquivo.getNome();
-//			File file = new File(enderecoArquivo);
-//			// Exclui o arquivo
-//			file.delete();
-//			String enderecoDiretorio = this.enderecoArquivos+File.separator+arquivo.getIdCondominio()+File.separator+arquivo.getId();
-//			File diretorio = new File(enderecoDiretorio);	
-//			// Exclui o diretório
-//			diretorio.delete();	
-//		} catch (SQLException e) {
-//			con.rollback();		
-//			throw e;
-//		} catch (Exception e) {
-//			con.rollback();
-//			throw e;
-//		}			
-//	}
 
 	@Override
 	public void excluirArquivoCondomino(Arquivo arquivo, Connection con) throws SQLException, Exception {
@@ -548,23 +300,6 @@ public class ArquivoDAOImpl implements ArquivoDAO, Serializable {
 				// Exclui o arquivo
 				this.fileDAO.excluirFile(arquivo);			
 			}
-// TODO: Código comentado em 17/09/2014. Apagar em 180 dias				
-//			String enderecoArquivo = this.enderecoArquivos+File.separator+condominio.getId()+File.separator+arquivo.getId()+File.separator+arquivo.getNome();
-//			File file = new File(enderecoArquivo);
-//			if(this.commit == Boolean.FALSE){
-//				this.listaFile.add(file);
-//			}else{
-//				// Exclui o arquivo
-//				file.delete();				
-//			}			
-//			String enderecoDiretorio = this.enderecoArquivos+File.separator+condominio.getId()+File.separator+arquivo.getId();
-//			File diretorio = new File(enderecoDiretorio);	
-//			if(this.commit == Boolean.FALSE){
-//				this.listaFile.add(diretorio);
-//			}else{
-//				// Exclui o diretório
-//				diretorio.delete();				
-//			}	
 		} catch (SQLException e) {
 			con.rollback();
 			throw e;
@@ -574,64 +309,6 @@ public class ArquivoDAOImpl implements ArquivoDAO, Serializable {
 		}			
 	}
 
-// TODO: Código comentado em 17/09/2014. Apagar em 180 dias	
-//	@Override
-//	public void excluirArquivoAmbienteCondominio(Arquivo arquivo, Connection con) throws SQLException, Exception {
-//		Ambiente ambiente = null;		
-//		Condominio condominio = null;
-//		PreparedStatement statement = null;	 		
-//		try {
-//			ambiente = this.ambienteDAO.buscarPorId(arquivo.getIdAmbiente(), con);
-//			condominio = this.condominioDAO.buscarCondominioPorId(ambiente.getIdCondominio(), con);
-//			StringBuffer query = new StringBuffer();
-//			query.append("DELETE FROM ");
-//			query.append(ARQUIVO);
-//			query.append(" WHERE ");		
-//			query.append(ID);
-//			query.append(" = ?");
-//			statement = con.prepareStatement(query.toString());
-//			SQLUtil.setValorPpreparedStatement(statement, 1, arquivo.getId(), java.sql.Types.INTEGER);
-//			statement.executeUpdate();
-//			String enderecoArquivo = this.enderecoArquivos+File.separator+condominio.getId()+File.separator+arquivo.getId()+File.separator+arquivo.getNome();
-//			File file = new File(enderecoArquivo);
-//			if(this.commit == Boolean.FALSE){
-//				this.listaFile.add(file);
-//			}else{
-//				// Exclui o arquivo
-//				file.delete();				
-//			}			
-//			String enderecoDiretorio = this.enderecoArquivos+File.separator+condominio.getId()+File.separator+arquivo.getId();
-//			File diretorio = new File(enderecoDiretorio);	
-//			if(this.commit == Boolean.FALSE){
-//				this.listaFile.add(diretorio);
-//			}else{
-//				// Exclui o diretório
-//				diretorio.delete();				
-//			}	
-//		} catch (SQLException e) {
-//			con.rollback();
-//			throw e;
-//		}catch (Exception e) {
-//			con.rollback();
-//			throw e;
-//		}	
-//	}
-
-// TODO: Código comentado em 17/09/2014. Apagar em 180 dias		
-//	@Override
-//	public void criarDiretorioCondominio(Condominio condominio) {		
-//		String endereco = this.enderecoArquivos+File.separator+condominio.getId();
-//		File diretorio = new File(endereco);
-//		diretorio.mkdir();		
-//	}
-//
-//	@Override
-//	public void excluirDiretorioCondominio(Condominio condominio) {		
-//		String endereco = this.enderecoArquivos+File.separator+condominio.getId();
-//		File diretorio = new File(endereco);
-//		diretorio.delete();		
-//	}
-//	
 	public Arquivo buscarPorCondomino(Condomino condomino, Connection con) throws FileNotFoundException, IOException, SQLException, Exception{			
 		StringBuffer query = new StringBuffer();
 		query.append("SELECT * FROM ");
@@ -673,8 +350,7 @@ public class ArquivoDAOImpl implements ArquivoDAO, Serializable {
 			throw e;
 		}	
 		return arquivo;			
-	}
-	
+	}	
 	
 	@Override
 	public void executeListaFile(Integer tipo) throws Exception {
@@ -715,9 +391,6 @@ public class ArquivoDAOImpl implements ArquivoDAO, Serializable {
 		query.append("= ?, "); 
 		query.append(ID_CONDOMINIO);
 		query.append("= ?, ");
-// TODO: Código comentado em 01/10/2014. Apagar em 180 dias		
-//		query.append(ID_AMBIENTE);		
-//		query.append("= ?, ");
 		query.append(ID_CLASSIFICADOS);		
 		query.append("= ?, ");
 		query.append(MIME_TYPE);
@@ -732,27 +405,13 @@ public class ArquivoDAOImpl implements ArquivoDAO, Serializable {
 			SQLUtil.setValorPpreparedStatement(statement, 1, arquivo.getNome(), java.sql.Types.VARCHAR);			
 			SQLUtil.setValorPpreparedStatement(statement, 2, arquivo.getIdUsuario(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 3, arquivo.getIdCondominio(), java.sql.Types.INTEGER);
-// TODO: Código comentado em 01/10/2014. Apagar em 180 dias			
-//			SQLUtil.setValorPpreparedStatement(statement, 4, arquivo.getIdAmbiente(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 4, arquivo.getIdClassificados(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 5, arquivo.getMimeType(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement, 6, arquivo.getId(), java.sql.Types.INTEGER);
 			Condominio condominio = this.recuperaCondominio(arquivo, con);	
 			statement.executeUpdate();
 			arquivo.setIdCondominio(condominio.getId());
-			this.fileDAO.atualizarFile(arquivo);
-			
-// TODO: Código comentado em 17/09/2014. Apagar em 180 dias				
-//			String enderecoDiretorio = this.enderecoArquivos+File.separator+condominio.getId()+File.separator+arquivo.getId();
-//			File fileDiretorio = new File(enderecoDiretorio);
-//			File[] listaArquivos = fileDiretorio.listFiles();
-//			listaArquivos[0].delete();			
-//			String enderecoArquivo = this.enderecoArquivos+File.separator+condominio.getId()+File.separator+arquivo.getId()+File.separator+arquivo.getNome();
-//			File file = new File(enderecoArquivo);			
-//			FileOutputStream outPut = new FileOutputStream(file);
-//			outPut.write(arquivo.getDadosArquivo());
-//			outPut.flush();
-//			outPut.close();		
+			this.fileDAO.atualizarFile(arquivo);		
 		} catch (FileNotFoundException e) {
 			throw e;
 		} catch (IOException e) {

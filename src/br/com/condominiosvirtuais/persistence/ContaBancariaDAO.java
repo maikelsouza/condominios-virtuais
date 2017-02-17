@@ -1,5 +1,6 @@
 package br.com.condominiosvirtuais.persistence;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -14,5 +15,7 @@ public interface ContaBancariaDAO {
 	public abstract void atualizar(ContaBancaria contaBancaria) throws SQLException, Exception;
 	
 	public abstract void excluir(ContaBancaria contaBancaria) throws SQLException, Exception;
+	
+	public abstract ContaBancaria buscarPorId(Integer idContaBancaria, Connection con) throws SQLException, Exception;
 
 }

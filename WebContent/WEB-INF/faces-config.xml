@@ -485,6 +485,18 @@
    <to-view-id>/pages/formListaBeneficiario.xhtml</to-view-id>
     <redirect/>
   </navigation-case> 
+  <navigation-case>
+   <from-action>#{principalMB.gerarBoleto}</from-action>
+   <from-outcome>gerarBoleto</from-outcome>
+   <to-view-id>/pages/formGerarBoleto.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case> 
+  <navigation-case>
+   <from-action>#{principalMB.listarBoleto}</from-action>
+   <from-outcome>listarBoleto</from-outcome>
+   <to-view-id>/pages/formListaBoleto.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case> 
  </navigation-rule>
  <navigation-rule>
   <from-view-id>/pages/*</from-view-id>

@@ -16,6 +16,8 @@ public class Condomino extends Usuario {
 	
 	private Long telefoneComercial = null;
 	
+	private Integer pagador;
+	
 	private Integer idUnidade;
 
 		
@@ -49,6 +51,14 @@ public class Condomino extends Usuario {
 
 	public void setTelefoneComercial(Long telefoneComercial) {
 		this.telefoneComercial = telefoneComercial;
+	}	
+
+	public Integer getPagador() {
+		return pagador;
+	}
+
+	public void setPagador(Integer pagador) {
+		this.pagador = pagador;
 	}
 
 	public Integer getIdUnidade() {
