@@ -17,24 +17,45 @@ public class BoletoServiceImpl implements BoletoService, Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Inject
-	private BoletoDAO BoletoDAO; 
+	private BoletoDAO boletoDAO; 
 
 	@Override
 	public void salvar(Boleto boleto) throws SQLException, Exception {
-		this.BoletoDAO.salvar(boleto);		
+		this.boletoDAO.salvar(boleto);		
 	}
 
 	@Override
 	public void excluirPorId(Integer idBoleto) throws SQLException, Exception {
-		this.BoletoDAO.excluirPorId(idBoleto);		
+		this.boletoDAO.excluirPorId(idBoleto);		
 	}
 
 	
 	@Override
 	public List<Boleto> buscarPorIdCondominioEDataVencimento(Integer idCondominio, Date dataVencimentoDe,
 			Date dataVencimentoAte) throws SQLException, Exception {
-		return this.BoletoDAO.buscarPorIdCondominioEDataVencimento(idCondominio, dataVencimentoDe, dataVencimentoAte);
+		return this.boletoDAO.buscarPorIdCondominioEDataVencimento(idCondominio, dataVencimentoDe, dataVencimentoAte);
 		
+	}
+
+	@Override
+	public void atualizarStatusPagamento(Boleto boleto) throws SQLException, Exception {
+		this.boletoDAO.atualizarStatusPagamento(boleto);		
+	}
+
+	@Override
+	public List<Boleto> buscarPorIdCondominioEPagoEDataVencimento(Integer idCondominio, Boolean pago,
+			Date dataVencimentoDe, Date dataVencimentoAte) throws SQLException, Exception {	
+		return this.boletoDAO.buscarPorIdCondominioEPagoEDataVencimento(idCondominio, pago, dataVencimentoDe, dataVencimentoAte);
+	}
+
+	@Override
+	public List<Boleto> buscarPorIdPagador(Integer idPagador) throws SQLException, Exception {		
+		return this.boletoDAO.buscarPorIdPagador(idPagador);
+	}
+
+	@Override
+	public List<Boleto> buscarPorIdPagadorEPago(Integer idPagador, Boolean pago) throws SQLException, Exception {
+		return this.boletoDAO.buscarPorIdPagadorEPago(idPagador, pago);
 	}
 
 }

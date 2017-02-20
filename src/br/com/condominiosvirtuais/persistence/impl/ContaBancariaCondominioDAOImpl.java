@@ -1,5 +1,6 @@
 package br.com.condominiosvirtuais.persistence.impl;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,7 +14,9 @@ import br.com.condominiosvirtuais.entity.ContaBancariaCondominio;
 import br.com.condominiosvirtuais.persistence.ContaBancariaCondominioDAO;
 import br.com.condominiosvirtuais.util.SQLUtil;
 
-public class ContaBancariaCondominioDAOImpl implements ContaBancariaCondominioDAO {	
+public class ContaBancariaCondominioDAOImpl implements ContaBancariaCondominioDAO, Serializable {	
+
+	private static final long serialVersionUID = 1L;
 
 	private static Logger logger = Logger.getLogger(ContaBancariaCondominioDAOImpl.class); 
 	

@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormMeusBoletos" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.filtroBoleto}" />
+				</f:facet>
+				<h:panelGrid columns="3">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio']}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['boleto.pago']}:" for="idPago" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+							
+					<h:outputLabel value=""/>
+												
+					<h:selectOneMenu id="idCondominio" value="#{boletoMB.boleto.idCondominio}" label="#{msg['condominio.label']}" required="true">
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="true" />
+						<f:selectItems value="#{contaBancariaMB.listaSICondominios}" />
+					</h:selectOneMenu>					
+									
+					<h:selectOneMenu id="idPago" value="#{boletoMB.tipoPagoBoleto}" label="#{msg['condominio.label']}" required="true">
+						<f:selectItem itemValue="-1" itemLabel="#{msg['todos']}" />						
+						<f:selectItems value="#{boletoMB.listaSIPago}" />
+					</h:selectOneMenu>					
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
+				</h:panelGrid>
+
+			</rich:panel>
+			<div>
+				<h:panelGrid columns="2">
+					<h:commandButton value="#{msg.botaoPesquisar}" actionListener="#{boletoMB.pesquisarMeusBoletos}" />
+					<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{boletoMB.limparFiltroMeusBoletos}" />
+				</h:panelGrid>
+			</div>
+			<rich:panel header="#{msg.listaMeusBoletos}">				
+				<div>
+					<rich:dataTable value="#{boletoMB.listaMeusBoletos}" var="boleto" rowClasses="odd-row, even-row" styleClass="stable"
+						id="tableBoleto" style="width:100%;" rows="10" rendered="#{boletoMB.listaMeusBoletos.rowCount > 0}">
+						<rich:column sortBy="#{boleto.condominoVO.nomeCondomino}" sortOrder="#{ordenaBoletoMB.nomePagadorBoleto}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['boleto.pagador.nome']}" render="tableBoleto" action="#{ordenaBoletoMB.ordenarPorNomePagador}" />
+							</f:facet>
+							<h:outputText value="#{boleto.condominoVO.nomeCondomino}" />
+						</rich:column>						
+						<rich:column sortBy="#{boleto.emissao}" sortOrder="#{ordenaBoletoMB.emissaoBoleto}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['boleto.emissao']}" render="tableBoleto" action="#{ordenaBoletoMB.ordenarPorEmissao}" />
+							</f:facet>
+							<h:outputText value="#{boleto.emissao}" >
+								<f:convertDateTime pattern="#{msg.formatoData}" />
+							</h:outputText>
+						</rich:column>
+						<rich:column sortBy="#{boleto.vencimento}" sortOrder="#{ordenaBoletoMB.vencimentoBoleto}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['boleto.vencimento']}" render="tableBoleto" action="#{ordenaBoletoMB.ordenarPorVencimento}" />
+							</f:facet>
+							<h:outputText value="#{boleto.vencimento}" >
+								<f:convertDateTime pattern="#{msg.formatoData}" />
+							</h:outputText>
+						</rich:column>
+						<rich:column sortBy="#{boleto.pago}" sortOrder="#{ordenaBoletoMB.pagoBoleto}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['boleto.pago']}" render="tableBoleto" action="#{ordenaBoletoMB.ordenarPorPago}" />
+							</f:facet>
+							<h:outputText value="#{boleto.pago == true ? msg['sim'] : msg['nao']}" />
+						</rich:column>
+						<rich:column sortBy="#{boleto.valor}" sortOrder="#{ordenaBoletoMB.valorBoleto}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['boleto.valor']}" render="tableBoleto" action="#{ordenaBoletoMB.ordenarPorValor}" />
+							</f:facet>
+							<h:outputText value="#{boleto.valor}" >
+								<f:convertNumber currencySymbol="#{msg.moeda}" type="currency" />
+							</h:outputText>
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="#{msg.rotuloAcao}" />
+							</f:facet>														                                                             
+ 							<a4j:commandLink value="#{msg.linkDownload}" render="tableBoleto" action="#{boletoMB.baixarMeusBoletos}" immediate="true" 
+ 								rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4,5')}" />
+						</rich:column>
+					</rich:dataTable>	
+				</div>
+			</rich:panel>
+		</h:form>
+
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseover" query="jQuery(this).addClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseout" query="jQuery(this).removeClass('active-row')" />
+	</ui:define>
+
+</ui:composition>

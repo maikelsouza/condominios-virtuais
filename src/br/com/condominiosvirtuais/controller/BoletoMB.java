@@ -3,7 +3,9 @@ package br.com.condominiosvirtuais.controller;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -24,6 +26,7 @@ import br.com.condominiosvirtuais.service.BeneficiarioService;
 import br.com.condominiosvirtuais.service.BoletoService;
 import br.com.condominiosvirtuais.service.CondominoService;
 import br.com.condominiosvirtuais.service.ContaBancariaService;
+import br.com.condominiosvirtuais.util.AplicacaoUtil;
 import br.com.condominiosvirtuais.util.ManagedBeanUtil;
 import br.com.condominiosvirtuais.vo.CondominoVO;
 
@@ -59,13 +62,19 @@ public class BoletoMB  implements Serializable{
 	
 	private List<SelectItem> listaSITitulos;
 	
+	private List<SelectItem> listaSIPago;
+	
 	private ListDataModel<Boleto> listaBoletos;
+	
+	private ListDataModel<Boleto> listaMeusBoletos;
 	
 	private Boleto boleto;	
 	
 	private Date dataVencimentoDe;
 	
 	private Date dataVencimentoAte;
+	
+	private Integer tipoPagoBoleto;
 	
 	
 	
@@ -78,15 +87,23 @@ public class BoletoMB  implements Serializable{
 	public void iniciarBoletoMB(){
 		this.listaSICondominios = this.condominioMB.get().buscarListaCondominiosAtivos();
 		this.popularTitulos();
+		this.popularPago();
 	}
 	
-	public String salvar(){
+	public String gerarBoleto(){
 		try {
 			if(this.boleto.getVencimento().before(this.boleto.getEmissao())){
 				ManagedBeanUtil.setMensagemErro("msg.boleto.vencimentoMenorEmissao");
+				return null;
+			}else{
+				this.boleto.setPago(Boolean.FALSE);
+				this.boletoService.salvar(this.boleto);
+				if(this.dataVencimentoDe == null || this.dataVencimentoAte == null){
+					this.popularPesquisaDataVencimento();
+				}				 
+				this.pesquisar();				
+				ManagedBeanUtil.setMensagemInfo("msg.boleto.geradoSucesso");				
 			}
-			this.boletoService.salvar(this.boleto);
-			ManagedBeanUtil.setMensagemInfo("msg.boleto.salvoSucesso");
 		}catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
@@ -97,15 +114,59 @@ public class BoletoMB  implements Serializable{
 			logger.error("", e);
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
 		}		
-		return "salvar";
+		return "gerar";
+	}
+	
+	public void pagarBoleto(){		
+		this.boleto = this.listaBoletos.getRowData();
+		this.boleto.setPago(Boolean.TRUE);
+		try {
+			this.boletoService.atualizarStatusPagamento(this.boleto);
+			this.pesquisar();
+			ManagedBeanUtil.setMensagemInfo("msg.boleto.boletoPago");
+		}catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (BusinessException e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}		
+	}
+	
+	public void deixarEmAberto(){
+		this.boleto = this.listaBoletos.getRowData();
+		this.boleto.setPago(Boolean.FALSE);
+		try {
+			this.boletoService.atualizarStatusPagamento(this.boleto);
+			this.pesquisar();
+			ManagedBeanUtil.setMensagemInfo("msg.boleto.boletoEmAberto");
+		}catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (BusinessException e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}		
 	}
 	
 	public void pesquisar(){
 		try {
-			 this.listaBoletos = new ListDataModel<Boleto>(this.boletoService.buscarPorIdCondominioEDataVencimento(this.boleto.getIdCondominio(), this.dataVencimentoDe, this.dataVencimentoAte));
-			 if (this.listaBoletos.getRowCount() == 0){
+			if(this.tipoPagoBoleto == -1){
+				this.listaBoletos = new ListDataModel<Boleto>(this.boletoService.buscarPorIdCondominioEDataVencimento(this.boleto.getIdCondominio(), this.dataVencimentoDe, this.dataVencimentoAte));				
+			}else if (this.tipoPagoBoleto == 1) {
+				this.listaBoletos = new ListDataModel<Boleto>(this.boletoService.buscarPorIdCondominioEPagoEDataVencimento(this.boleto.getIdCondominio(), Boolean.TRUE,this.dataVencimentoDe, this.dataVencimentoAte));
+			}else{
+				this.listaBoletos = new ListDataModel<Boleto>(this.boletoService.buscarPorIdCondominioEPagoEDataVencimento(this.boleto.getIdCondominio(), Boolean.FALSE,this.dataVencimentoDe, this.dataVencimentoAte));
+			}
+			if (this.listaBoletos.getRowCount() == 0){
 				 ManagedBeanUtil.setMensagemInfo("msg.boleto.semBoletos");
-			 }
+			}
 		}catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
@@ -117,6 +178,76 @@ public class BoletoMB  implements Serializable{
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
 		}	
 		
+	}
+	
+	public void pesquisarMeusBoletos(){
+		try {
+			Integer idUsuarioAutenticado = AplicacaoUtil.getUsuarioAutenticado().getId();
+			if(this.tipoPagoBoleto == -1){				
+				this.listaMeusBoletos = new ListDataModel<Boleto>(this.boletoService.buscarPorIdPagador(idUsuarioAutenticado));				
+			}else if (this.tipoPagoBoleto == 1) {
+				this.listaMeusBoletos= new ListDataModel<Boleto>(this.boletoService.buscarPorIdPagadorEPago(idUsuarioAutenticado, Boolean.TRUE));
+			}else{
+				this.listaMeusBoletos= new ListDataModel<Boleto>(this.boletoService.buscarPorIdPagadorEPago(idUsuarioAutenticado, Boolean.FALSE));
+			}
+			if (this.listaMeusBoletos.getRowCount() == 0){
+				 ManagedBeanUtil.setMensagemInfo("msg.boleto.semBoletos");
+			}
+		}catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (BusinessException e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}	
+		
+	}
+	
+	public void excluir(){
+		this.boleto = this.listaBoletos.getRowData();
+		try {
+			this.boletoService.excluirPorId(this.boleto.getId());
+			this.pesquisar();
+			 ManagedBeanUtil.setMensagemInfo("msg.boleto.excluidoSucesso");
+		}catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (BusinessException e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}	
+	}
+	
+	public void limparGerarBoleto(){
+		this.boleto = new Boleto();		
+	}
+	
+	public void limparFiltroBoleto(){
+		this.boleto = new Boleto();	
+		this.dataVencimentoDe = null;
+		this.dataVencimentoAte = null;
+		this.tipoPagoBoleto = -1;
+		this.listaBoletos = new ListDataModel<Boleto>();
+	}
+	
+	public void limparFiltroMeusBoletos(){
+		this.boleto = new Boleto();
+		this.listaMeusBoletos = new ListDataModel<Boleto>();
+		this.tipoPagoBoleto = -1;
+	}
+	
+	public String geraBoleto(){
+		return "gera";
+	}	
+	
+	public String cancelarGerarBoleto(){
+		return "cancelar";
 	}
 	
 	
@@ -148,7 +279,7 @@ public class BoletoMB  implements Serializable{
 		
 	}
 	
-	public void popularContasBancarias() throws SQLException, Exception{
+	private void popularContasBancarias() throws SQLException, Exception{
 		List<ContaBancaria> listaContaBancaria = this.contaBancariaService.buscarPorIdCondominio(this.boleto.getIdCondominio());
 		this.listaSIContasBancarias = new ArrayList<SelectItem>();
 		for (ContaBancaria contaBancaria : listaContaBancaria) {
@@ -173,7 +304,28 @@ public class BoletoMB  implements Serializable{
 		}
 	}
 	
+	private void popularPago(){		
+		this.listaSIPago = new ArrayList<SelectItem>();
+		this.listaSIPago.add(new SelectItem(1, AplicacaoUtil.i18n("boleto.pago.1")));			
+		this.listaSIPago.add(new SelectItem(0, AplicacaoUtil.i18n("boleto.pago.0")));			
+		
+	}
 	
+	
+	private void popularPesquisaDataVencimento(){
+		Calendar vencimentoDataDe = GregorianCalendar.getInstance();
+		Calendar vencimentoDataAte = GregorianCalendar.getInstance();
+		Calendar dataVencimetoBoleto = new GregorianCalendar();
+		dataVencimetoBoleto.setTime(this.boleto.getVencimento());
+		vencimentoDataDe.set(Calendar.DAY_OF_MONTH,1);
+		vencimentoDataDe.set(Calendar.MONTH,dataVencimetoBoleto.get(Calendar.MONTH));
+		vencimentoDataDe.set(Calendar.YEAR,dataVencimetoBoleto.get(Calendar.YEAR));
+		vencimentoDataAte.set(Calendar.DAY_OF_MONTH,dataVencimetoBoleto.getActualMaximum(Calendar.DAY_OF_MONTH));
+		vencimentoDataAte.set(Calendar.MONTH,dataVencimetoBoleto.get(Calendar.MONTH));
+		vencimentoDataAte.set(Calendar.YEAR,dataVencimetoBoleto.get(Calendar.YEAR));
+		this.dataVencimentoDe = vencimentoDataDe.getTime();
+		this.dataVencimentoAte = vencimentoDataAte.getTime();		
+	}
 	
 	public List<SelectItem> getListaSICondominios() {
 		return listaSICondominios;
@@ -246,6 +398,30 @@ public class BoletoMB  implements Serializable{
 	public void setListaBoletos(ListDataModel<Boleto> listaBoletos) {
 		this.listaBoletos = listaBoletos;
 	}
+
+	public List<SelectItem> getListaSIPago() {
+		return listaSIPago;
+	}
+
+	public void setListaSIPago(List<SelectItem> listaSIPago) {
+		this.listaSIPago = listaSIPago;
+	}
+
+	public Integer getTipoPagoBoleto() {
+		return tipoPagoBoleto;
+	}
+
+	public void setTipoPagoBoleto(Integer tipoPagoBoleto) {
+		this.tipoPagoBoleto = tipoPagoBoleto;
+	}
+
+	public ListDataModel<Boleto> getListaMeusBoletos() {
+		return listaMeusBoletos;
+	}
+
+	public void setListaMeusBoletos(ListDataModel<Boleto> listaMeusBoletos) {
+		this.listaMeusBoletos = listaMeusBoletos;
+	}	
 	
 
 }

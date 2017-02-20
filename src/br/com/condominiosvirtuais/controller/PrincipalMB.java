@@ -296,6 +296,12 @@ public class PrincipalMB  implements Serializable{
 		return "listarBoleto";		        
 	}
 	
+	public String meusBoletos(){
+		return "meusBoletos";		        
+	}
+	
+	
+	
 	
 	
 	

@@ -61,8 +61,8 @@
 					</h:panelGroup>
 						
 					
-					<h:selectOneMenu id="idPagador" value="#{boletoMB.boleto.pagador.id}"
-						defaultLabel="#{msg['boleto.pagador.DefaultLabel']}" required="false" label="#{msg['boleto.pagador.label']}">
+					<h:selectOneMenu id="idPagador" value="#{boletoMB.boleto.condominoVO.id}"
+						defaultLabel="#{msg['boleto.pagador.DefaultLabel']}" required="true" label="#{msg['boleto.pagador.label']}">
 						<f:selectItem itemLabel="#{msg['boleto.pagador.DefaultLabel']}" noSelectionOption="true" />
 						<f:selectItems value="#{boletoMB.listaSIPagadores}" />
 					</h:selectOneMenu>
@@ -108,21 +108,10 @@
 						<span class="asterisco">*</span>
 					</h:panelGroup>	
 					
-					<h:outputLabel value="#{msg['boleto.instrucao1']}:" for="idInstrucao1" />
-					
-					<h:outputLabel value="#{msg['boleto.instrucao2']}:" for="idInstrucao2" />
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />				
 					
 					<h:inputText id="idValor" value="#{boletoMB.boleto.valor}" label="#{msg['boleto.valor.label']}" required="true" />
-					
-					<h:inputText id="idInstrucao1" value="#{boletoMB.boleto.instrucao1}" label="#{msg['boleto.instrucao1.label']}" size="35"/>
-					
-					<h:inputText id="idInstrucao2" value="#{boletoMB.boleto.instrucao2}" label="#{msg['boleto.instrucao2.label']}" size="35"/>
-					
-					<h:outputLabel value="#{msg['boleto.instrucao3']}:" for="idInstrucao3" />
-					<h:outputLabel value="" />
-					<h:outputLabel value="" />	
-					
-					<h:inputText id="idInstrucao3" value="#{boletoMB.boleto.instrucao3}" label="#{msg['boleto.instrucao3.label']}" size="35"/>
 					
 				 </h:panelGrid>	
 			</rich:panel>	 	
@@ -131,14 +120,13 @@
 					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
 					<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
 				</h:panelGrid>		
-			</rich:panel>
-			
+			</rich:panel>	
 			
 			
 			<h:panelGrid columns="3">                                 
-				<h:commandButton value="#{msg.botaoSalvar}" action="#{boletoMB.salvar}" />
-				<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{beneficiarioMB.limparBeneficiario}" />
-				<h:commandButton value="#{msg.botaoCancelar}" action="#{beneficiarioMB.cancelar}" immediate="true" />
+				<h:commandButton value="#{msg.botaoGerarBoleto}" action="#{boletoMB.gerarBoleto}" />
+				<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{boletoMB.limparGerarBoleto}" />
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{boletoMB.cancelarGerarBoleto}" immediate="true" />
 			</h:panelGrid>	
 			
 			

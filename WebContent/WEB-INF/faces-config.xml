@@ -158,6 +158,11 @@
   <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaBeneficiarioMB</managed-bean-class>
   <managed-bean-scope>view</managed-bean-scope>
  </managed-bean>
+ <managed-bean>
+  <managed-bean-name>ordenaBoletoMB</managed-bean-name>
+  <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaBoletoMB</managed-bean-class>
+  <managed-bean-scope>view</managed-bean-scope>
+ </managed-bean>
  
  
  <navigation-rule>
@@ -495,6 +500,12 @@
    <from-action>#{principalMB.listarBoleto}</from-action>
    <from-outcome>listarBoleto</from-outcome>
    <to-view-id>/pages/formListaBoleto.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case> 
+  <navigation-case>
+   <from-action>#{principalMB.meusBoletos}</from-action>
+   <from-outcome>meusBoletos</from-outcome>
+   <to-view-id>/pages/formMeusBoletos.xhtml</to-view-id>
     <redirect/>
   </navigation-case> 
  </navigation-rule>
@@ -1968,6 +1979,30 @@
    <redirect/>
   </navigation-case> 
  </navigation-rule> 
+ <navigation-rule>                       
+  <from-view-id>/pages/formGerarBoleto.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{boletoMB.gerarBoleto}</from-action>
+   <from-outcome>gerar</from-outcome>
+   <to-view-id>/pages/formListaBoleto.xhtm</to-view-id>
+  </navigation-case>
+  <navigation-case>                  
+   <from-action>#{boletoMB.cancelarGerarBoleto}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtm</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule> 
+ <navigation-rule>                       
+  <from-view-id>/pages/formListaBoleto.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{boletoMB.geraBoleto}</from-action>
+   <from-outcome>gera</from-outcome>
+   <to-view-id>/pages/formGerarBoleto.xhtm</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ 
   
  
  

@@ -21,12 +21,12 @@
 					</h:panelGroup>
 							
 					<h:panelGroup>
-						<h:outputLabel value="#{msg['boleto.dataVencimentoDe']}:" for="idDataDe"/>
+						<h:outputLabel value="#{msg['boleto.dataVencimentoDe']}:" for="idDataVencimentoDe"/>
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 					
 					<h:panelGroup>
-						<h:outputLabel value="#{msg['boleto.dataVencimentoAte']}:" for="idDataAte"/>
+						<h:outputLabel value="#{msg['boleto.dataVencimentoAte']}:" for="idDataVencimentoAte"/>
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 								
@@ -35,17 +35,29 @@
 						<f:selectItems value="#{contaBancariaMB.listaSICondominios}" />
 					</h:selectOneMenu>
 					
-					<rich:calendar value="#{boletoMB.dataVencimentoDe}" id="idDataVencimentoDe" locale="#{msg.locale}" popup="true" label="#{msg['boleto.dataDe.label']}" 
+					<rich:calendar value="#{boletoMB.dataVencimentoDe}" id="idDataVencimentoDe" locale="#{msg.locale}" popup="true" label="#{msg['boleto.dataVencimentoDe.label']}" 
 							boundaryDatesMode="scroll" showFooter="false" required="true"
 							datePattern="#{msg['formatoData']}" cellWidth="24px"
 							cellHeight="22px" style="width:200px" mode="ajax">
 					</rich:calendar>
 					
-					<rich:calendar value="#{boletoMB.dataVencimentoAte}" id="idDataVencimentoAte" locale="#{msg.locale}" popup="true" label="#{msg['boleto.dataAte.label']}" 
+					<rich:calendar value="#{boletoMB.dataVencimentoAte}" id="idDataVencimentoAte" locale="#{msg.locale}" popup="true" label="#{msg['boleto.dataVencimentoAte.label']}" 
 							boundaryDatesMode="scroll" showFooter="false" required="true"
 							datePattern="#{msg['formatoData']}" cellWidth="24px"
 							cellHeight="22px" style="width:200px" mode="ajax">
 					</rich:calendar>
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['boleto.pago']}:" for="idPago" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:outputLabel value=""/>
+					<h:outputLabel value="" />
+					
+					<h:selectOneMenu id="idPago" value="#{boletoMB.tipoPagoBoleto}" label="#{msg['condominio.label']}" required="true">
+						<f:selectItem itemValue="-1" itemLabel="#{msg['todos']}" />						
+						<f:selectItems value="#{boletoMB.listaSIPago}" />
+					</h:selectOneMenu>
 					
 				</h:panelGrid>
 
@@ -65,62 +77,78 @@
 				<div>
 					<rich:dataTable value="#{boletoMB.listaBoletos}" var="boleto" rowClasses="odd-row, even-row" styleClass="stable"
 						id="tableBoleto" style="width:100%;" rows="10" rendered="#{boletoMB.listaBoletos.rowCount > 0}">
-						<rich:column sortBy="#{boleto.pagador.bloco}" sortOrder="#{ordenaContaBancariaMB.numeroContaBancaria}">
+						<rich:column sortBy="#{boleto.condominoVO.nomeBloco}" sortOrder="#{ordenaBoletoMB.blocoPagadorBoleto}">
 							<f:facet name="header">
-								<a4j:commandLink value="#{msg['contaBancaria.numero']}" render="tableBoleto"
-									action="#{ordenaContaBancariaMB.ordenarPorNumero}" />									          
+								<a4j:commandLink value="#{msg['boleto.pagador.bloco']}" render="tableBoleto" action="#{ordenaBoletoMB.ordenarPorBlocoPagador}" />									          
 							</f:facet>
-							<h:outputText value="#{boleto.pagador.bloco}" />
+							<h:outputText value="#{boleto.condominoVO.nomeBloco}" />
 						</rich:column>
-						<rich:column sortBy="#{boleto.pagador.unidade}" sortOrder="#{ordenaContaBancariaMB.agenciaContaBancaria}">
+						<rich:column sortBy="#{boleto.condominoVO.numeroUnidade}" sortOrder="#{ordenaBoletoMB.unidadePagadorBoleto}">
 							<f:facet name="header">
-								<a4j:commandLink value="#{msg['contaBancaria.agencia']}" render="tableBoleto" action="#{ordenaContaBancariaMB.ordenarPorAgencia}" />
+								<a4j:commandLink value="#{msg['boleto.pagador.unidade']}" render="tableBoleto" action="#{ordenaBoletoMB.ordenarPorUnidadePagador}" />
 							</f:facet>
-							<h:outputText value="#{boleto.pagador.unidade}" />
+							<h:outputText value="#{boleto.condominoVO.numeroUnidade}" />
 						</rich:column>
-						<rich:column sortBy="#{boleto.pagador.unidade}" sortOrder="#{ordenaContaBancariaMB.carteiraContaBancaria}">
+						<rich:column sortBy="#{boleto.condominoVO.nomeCondomino}" sortOrder="#{ordenaBoletoMB.nomePagadorBoleto}">
 							<f:facet name="header">
-								<a4j:commandLink value="#{msg['contaBancaria.carteira']}" render="tableBoleto" action="#{ordenaContaBancariaMB.ordenarPorCarteira}" />
+								<a4j:commandLink value="#{msg['boleto.pagador.nome']}" render="tableBoleto" action="#{ordenaBoletoMB.ordenarPorNomePagador}" />
 							</f:facet>
-							<h:outputText value="#{boleto.pagador.unidade}" />
-						</rich:column>
-						<rich:column sortBy="#{boleto.pagador.nome}" sortOrder="#{ordenaContaBancariaMB.bancoContaBancaria}">
+							<h:outputText value="#{boleto.condominoVO.nomeCondomino}" />
+						</rich:column>						
+						<rich:column sortBy="#{boleto.vencimento}" sortOrder="#{ordenaBoletoMB.vencimentoBoleto}">
 							<f:facet name="header">
-								<a4j:commandLink value="#{msg['contaBancaria.banco']}" render="tableBoleto"
-									action="#{ordenaContaBancariaMB.ordenarPorBanco}" />
+								<a4j:commandLink value="#{msg['boleto.vencimento']}" render="tableBoleto" action="#{ordenaBoletoMB.ordenarPorVencimento}" />
 							</f:facet>
-							<h:outputText value="#{boleto.pagador.nome}" />
+							<h:outputText value="#{boleto.vencimento}" >
+								<f:convertDateTime pattern="#{msg.formatoData}" />
+							</h:outputText>
 						</rich:column>
-						<rich:column sortBy="#{boleto.pagador.vencimento}" sortOrder="#{ordenaContaBancariaMB.bancoContaBancaria}">
+						<rich:column sortBy="#{boleto.pago}" sortOrder="#{ordenaBoletoMB.pagoBoleto}">
 							<f:facet name="header">
-								<a4j:commandLink value="#{msg['contaBancaria.banco']}" render="tableBoleto"
-									action="#{ordenaContaBancariaMB.ordenarPorBanco}" />
+								<a4j:commandLink value="#{msg['boleto.pago']}" render="tableBoleto" action="#{ordenaBoletoMB.ordenarPorPago}" />
 							</f:facet>
-							<h:outputText value="#{boleto.vencimento}" />
+							<h:outputText value="#{boleto.pago == true ? msg['sim'] : msg['nao']}" />
 						</rich:column>
-						<rich:column sortBy="#{boleto.valor}" sortOrder="#{ordenaContaBancariaMB.bancoContaBancaria}">
+						<rich:column sortBy="#{boleto.valor}" sortOrder="#{ordenaBoletoMB.valorBoleto}">
 							<f:facet name="header">
-								<a4j:commandLink value="#{msg['contaBancaria.banco']}" render="tableBoleto"
-									action="#{ordenaContaBancariaMB.ordenarPorBanco}" />
+								<a4j:commandLink value="#{msg['boleto.valor']}" render="tableBoleto" action="#{ordenaBoletoMB.ordenarPorValor}" />
 							</f:facet>
-							<h:outputText value="#{boleto.valor}" />
+							<h:outputText value="#{boleto.valor}" >
+								<f:convertNumber currencySymbol="#{msg.moeda}" type="currency" />
+							</h:outputText>
 						</rich:column>
-						<rich:column style="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1') == false ? 'width:5%;' : 'width:10%;'}">
+						<rich:column style="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1') == false ? 'width:5%;' : 'width:15%;'}">
 							<f:facet name="header">
 								<h:outputText value="#{msg.rotuloAcao}" />
 							</f:facet>
-							<a4j:commandLink value="#{msg.linkVisualizar}" render="tableBoleto" action="#{contaBancariaMB.visualizarContaBancaria}" immediate="true" />					
+							<h:commandLink value="#{msg.linkPagar}" render="tableBoleto" action="#{boletoMB.pagarBoleto}" immediate="true" title="#{msg['titl.boleto.linkPagar']}" rendered="#{boleto.pago == false}"/>					
 				 			#{' '}                                                                           
- 							<a4j:commandLink value="#{msg.linkExluir}" render="tableBoleto" action="#{contaBancariaMB.editaContaBancaria}" immediate="true" 
- 							rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1')}" />
+							<h:commandLink value="#{msg.linkEmAberto}" render="tableBoleto" action="#{boletoMB.deixarEmAberto}" immediate="false" title="#{msg['titl.boleto.linkEmAberto']}" rendered="#{boleto.pago == true}" />					
 				 			#{' '}                                                                           
- 							<a4j:commandLink value="#{msg.linkBaixar}" render="tableBoleto" action="#{contaBancariaMB.editaContaBancaria}" immediate="true" 
+ 							<h:commandLink value="#{msg.linkExcluir}" render="tableBoleto"  rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1')}" >
+ 								<rich:componentControl target="confirmaExcluirBoleto"
+									operation="show" />
+							</h:commandLink>
+				 			#{' '}                                                                           
+ 							<a4j:commandLink value="#{msg.linkDownload}" render="tableBoleto" action="#{contaBancariaMB.editaContaBancaria}" immediate="true" 
  							rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1')}" />
+ 							
+ 							<rich:popupPanel id="confirmaExcluirBoleto" autosized="true">
+	    						#{msg['msg.boleto.confirmacaoExcluir']}
+						<h:panelGrid columns="2">   					         
+							<h:commandButton value="#{msg.botaoExcluir}" onclick="#{rich:component('confirmaExcluirBoleto')}.hide(); return true;"
+								actionListener="#{boletoMB.excluir}" />
+							<h:commandButton value="#{msg.botaoCancelar}" onclick="#{rich:component('confirmaExcluirBoleto')}.hide(); return false;" />
+						</h:panelGrid>	
+					</rich:popupPanel>	
+ 							
 						</rich:column>
-					</rich:dataTable>					
+					</rich:dataTable>	
+						
+							
 				</div>
 			</rich:panel>
-			<h:commandButton value="#{msg.botaoCriarNovo}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4')}" action="#{contaBancariaMB.cadastroContaBancaria}" 
+			<h:commandButton value="#{msg.botaoGerarBoleto}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,7')}" action="#{boletoMB.geraBoleto}" 
 				immediate="true" />
 		</h:form>
 
