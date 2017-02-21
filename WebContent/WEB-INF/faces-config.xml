@@ -508,6 +508,12 @@
    <to-view-id>/pages/formMeusBoletos.xhtml</to-view-id>
     <redirect/>
   </navigation-case> 
+  <navigation-case>
+   <from-action>#{principalMB.preCadastroBoleto}</from-action>
+   <from-outcome>preCadastroBoleto</from-outcome>
+   <to-view-id>/pages/formPreCadastroBoleto.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case> 
  </navigation-rule>
  <navigation-rule>
   <from-view-id>/pages/*</from-view-id>

@@ -127,7 +127,7 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_GERAR_BOLETO.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_BOLETO.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_MEUS_BOLETOS.getPathTelas());
-			
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_PRE_CADASTRO_BOLETO.getPathTelas());			
 			
 			
 // TODO: Retirar permissão após testes.			
@@ -309,6 +309,7 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_BENEFICIARIO.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_GERAR_BOLETO.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_BOLETO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_PRE_CADASTRO_BOLETO.getPathTelas());
 			
 		}else if(this.getGrupoUsuario() == 4){ // Síndico
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_PRINCIPAL.getPathTelas());
@@ -406,6 +407,7 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_GERAR_BOLETO.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_BOLETO.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_MEUS_BOLETOS.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_PRE_CADASTRO_BOLETO.getPathTelas());
 			
 		}else if (this.getGrupoUsuario() == 5){ // Condômino
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_PRINCIPAL.getPathTelas());			
@@ -537,6 +539,7 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_BENEFICIARIO.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_GERAR_BOLETO.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_BOLETO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_PRE_CADASTRO_BOLETO.getPathTelas());
 			
 	}
 		this.grupoUsuariosTelasAcesso.put(this.getGrupoUsuario(), this.telaAcesso);		

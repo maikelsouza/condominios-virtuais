@@ -49,67 +49,47 @@
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['boleto.pagador']}:" for="idPagador" />
 						<span class="asterisco">*</span>
-					</h:panelGroup>
+					</h:panelGroup>					
 					
-					<h:panelGroup>
-						<h:outputLabel value="#{msg['boleto.emissao']}:" for="idEmissao" />
-						<span class="asterisco">*</span>
-					</h:panelGroup>
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['boleto.vencimento']}:" for="idVencimento" />						
 						<span class="asterisco">*</span>
 					</h:panelGroup>
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['boleto.documento']}:" for="idDocumento" />						
+						<span class="asterisco">*</span>
+					</h:panelGroup>	
 						
 					
 					<h:selectOneMenu id="idPagador" value="#{boletoMB.boleto.condominoVO.id}"
 						defaultLabel="#{msg['boleto.pagador.DefaultLabel']}" required="true" label="#{msg['boleto.pagador.label']}">
 						<f:selectItem itemLabel="#{msg['boleto.pagador.DefaultLabel']}" noSelectionOption="true" />
 						<f:selectItems value="#{boletoMB.listaSIPagadores}" />
-					</h:selectOneMenu>
-					
-					<rich:calendar value="#{boletoMB.boleto.emissao}" id="idEmissao" locale="#{msg.locale}" popup="true" mode="ajax"
-						label="#{msg['boleto.emissao.label']}" datePattern="#{msg['formatoData']}" cellWidth="24px" cellHeight="22px"
-						style="width:200px" required="true" boundaryDatesMode="scroll" showFooter="false">
-					</rich:calendar>
+					</h:selectOneMenu>				
 						
 					<rich:calendar value="#{boletoMB.boleto.vencimento}" id="idVencimento" locale="#{msg.locale}" popup="true" mode="ajax"
 						label="#{msg['boleto.vencimento.label']}" datePattern="#{msg['formatoData']}" cellWidth="24px" cellHeight="22px"
 						style="width:200px" required="true"  boundaryDatesMode="scroll" showFooter="false">
-					</rich:calendar>		
-						
-					<h:panelGroup>
-						<h:outputLabel value="#{msg['boleto.documento']}:" for="idDocumento" />						
-						<span class="asterisco">*</span>
-					</h:panelGroup>	
-						
-					<h:panelGroup>
-						<h:outputLabel value="#{msg['boleto.numero']}:" for="idNumero" />
-						<span class="asterisco">*</span>
-					</h:panelGroup>
-					<h:panelGroup>
-						<h:outputLabel value="#{msg['boleto.titulo']}:" for="idTitulo" />						
-						<span class="asterisco">*</span>
-					</h:panelGroup>
+					</rich:calendar>
 					
 					<h:inputText id="idDocumento" value="#{boletoMB.boleto.documento}" label="#{msg['boleto.documento.label']}"
-						required="true" validatorMessage="#{msg['msg.boleto.documento.label']}"/>					
+						required="true" validatorMessage="#{msg['msg.boleto.documento.label']}"/>
+									
+					<h:outputLabel value="#{msg['boleto.instrucao1']}:" for="idInstrucao1" />
+					<h:outputLabel value="#{msg['boleto.instrucao2']}:" for="idInstrucao2" />		
+					<h:outputLabel value="#{msg['boleto.instrucao3']}:" for="idInstrucao3" />
 					
-					<h:inputText id="idNumero" value="#{boletoMB.boleto.numero}" label="#{msg['boleto.numero.label']}"
-						required="true" />
-						
-					<h:selectOneMenu id="idTitulo" value="#{boletoMB.boleto.titulo}"
-						defaultLabel="#{msg['boleto.DefaultLabel']}" required="true" label="#{msg['boleto.titulo.label']}">
-						<f:selectItem itemLabel="#{msg['boleto.titulo.DefaultLabel']}" noSelectionOption="true" />
-						<f:selectItems value="#{boletoMB.listaSITitulos}" />
-					</h:selectOneMenu>
-						
+					<h:inputText id="idInstrucao1" value="#{boletoMB.boleto.instrucao1}" label="#{msg['boleto.idInstrucao1.label']}" size="30"/>
+					<h:inputText id="idInstrucao2" value="#{boletoMB.boleto.instrucao2}" label="#{msg['boleto.idInstrucao2.label']}" size="30" />
+					<h:inputText id="idInstrucao3" value="#{boletoMB.boleto.instrucao3}" label="#{msg['boleto.idInstrucao3.label']}" size="30"/>					
+					
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['boleto.valor']}:" for="idValor" />						
 						<span class="asterisco">*</span>
-					</h:panelGroup>	
-					
+					</h:panelGroup>						
 					<h:outputLabel value="" />
-					<h:outputLabel value="" />				
+					<h:outputLabel value="" />
 					
 					<h:inputText id="idValor" value="#{boletoMB.boleto.valor}" label="#{msg['boleto.valor.label']}" required="true" />
 					

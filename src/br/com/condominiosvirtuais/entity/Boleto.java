@@ -20,7 +20,13 @@ public class Boleto {
 	
 	private Long valor;
 	
-	private Boolean pago;	
+	private Boolean pago;
+	
+	private String instrucao1;
+	
+	private String instrucao2;
+	
+	private String instrucao3;
 	
 	private Integer idCondominio;
 	
@@ -131,7 +137,30 @@ public class Boleto {
 	public void setPago(Boolean pago) {
 		this.pago = pago;
 	}
-	
+
+	public String getInstrucao1() {
+		return instrucao1;
+	}
+
+	public void setInstrucao1(String instrucao1) {
+		this.instrucao1 = instrucao1;
+	}
+
+	public String getInstrucao2() {
+		return instrucao2;
+	}
+
+	public void setInstrucao2(String instrucao2) {
+		this.instrucao2 = instrucao2;
+	}
+
+	public String getInstrucao3() {
+		return instrucao3;
+	}
+
+	public void setInstrucao3(String instrucao3) {
+		this.instrucao3 = instrucao3;
+	}
 	
 
 }

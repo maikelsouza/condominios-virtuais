@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">		
+		<h:form id="idFormPreCadastroBoleto" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.PreCadastroBoleto}" />
+				</f:facet>
+				<h:panelGrid columns="3" >
+					<h:panelGroup>
+						<h:outputLabel value="#{msg.condominio}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['preCadastroBoleto.contaBancaria']}:" for="idContaBancaria" />						
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['preCadastroBoleto.beneficiario']}:" for="idBeneficiario" />						
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+                    									        
+					<h:selectOneMenu id="idCondominio" value="#{preCadastroBoletoMB.preCadastroBoleto.idCondominio}" defaultLabel="#{msg['condominio.DefaultLabel']}" required="true" label="#{msg['condominio.label']}">
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="true" />
+						<f:selectItems value="#{preCadastroBoletoMB.listaSICondominios}" />						                                          
+						<f:ajax listener="#{preCadastroBoletoMB.popularBeneficariosEContasBancarias}" render="idContaBancaria idBeneficiario"/>
+					</h:selectOneMenu>
+										
+					<h:selectOneMenu id="idContaBancaria" value="#{preCadastroBoletoMB.preCadastroBoleto.idContaBancaria}"
+						defaultLabel="#{msg['preCadastroBoleto.contaBancaria.DefaultLabel']}" required="true" label="#{msg['preCadastroBoleto.contaBancaria.label']}">
+						<f:selectItem itemLabel="#{msg['preCadastroBoleto.contaBancaria.DefaultLabel']}" noSelectionOption="true" />
+						<f:selectItems value="#{preCadastroBoletoMB.listaSIContasBancarias}" />
+					</h:selectOneMenu>
+										
+					<h:selectOneMenu id="idBeneficiario" value="#{preCadastroBoletoMB.preCadastroBoleto.idBeneficiario}"
+						defaultLabel="#{msg['preCadastroBoleto.beneficiario.DefaultLabel']}" required="true" label="#{msg['preCadastroBoleto.beneficiario.label']}">						                     
+						<f:selectItem itemLabel="#{msg['preCadastroBoleto.beneficiario.DefaultLabel']}" noSelectionOption="true" />
+						<f:selectItems value="#{preCadastroBoletoMB.listaSIBeneficiarios}" />
+					</h:selectOneMenu>
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['preCadastroBoleto.diaMesVencimento']}:" for="idDiaMesVencimento" />						
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['preCadastroBoleto.titulo']}:" for="idTitulo" />						
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+								
+					<h:outputLabel value="#{msg['preCadastroBoleto.instrucao1']}:" for="idInstrucao1" />
+						
+					<h:selectOneMenu id="idDiaMesVencimento" value="#{preCadastroBoletoMB.preCadastroBoleto.diaMesVencimento}"
+						defaultLabel="#{msg['preCadastroBoleto.diaMesVencimento.DefaultLabel']}" required="true" label="#{msg['preCadastroBoleto.diaMesVencimento.label']}">						                     
+						<f:selectItem itemLabel="#{msg['preCadastroBoleto.diaMesVencimento.DefaultLabel']}" noSelectionOption="true" />
+						<f:selectItems value="#{preCadastroBoletoMB.listaSIDiaMesVencimento}" />
+					</h:selectOneMenu>
+					
+					<h:selectOneMenu id="idTitulo" value="#{preCadastroBoletoMB.preCadastroBoleto.titulo}"
+						defaultLabel="#{msg['preCadastroBoleto.titulo.DefaultLabel']}" required="true" label="#{msg['preCadastroBoleto.titulo.label']}">						                     
+						<f:selectItem itemLabel="#{msg['preCadastroBoleto.titulo.DefaultLabel']}" noSelectionOption="true" />
+						<f:selectItems value="#{preCadastroBoletoMB.listaSITitulos}" />
+					</h:selectOneMenu>
+						
+						<h:inputText id="idInstrucao1" value="#{preCadastroBoletoMB.preCadastroBoleto.instrucao1}" label="#{msg['preCadastroBoleto.idInstrucao1.label']}" size="30"/>
+									
+					
+					<h:outputLabel value="#{msg['preCadastroBoleto.instrucao2']}:" for="idInstrucao2" />		
+					<h:outputLabel value="#{msg['preCadastroBoleto.instrucao3']}:" for="idInstrucao3" />
+					<h:outputLabel value="" />
+					
+					
+					<h:inputText id="idInstrucao2" value="#{preCadastroBoletoMB.preCadastroBoleto.instrucao2}" label="#{msg['preCadastroBoleto.idInstrucao2.label']}" size="30" />
+					<h:inputText id="idInstrucao3" value="#{preCadastroBoletoMB.preCadastroBoleto.instrucao3}" label="#{msg['preCadastroBoleto.idInstrucao3.label']}" size="30"/>
+					
+				 </h:panelGrid>	
+			</rich:panel>	 	
+			<rich:panel>				 
+				 <h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
+				</h:panelGrid>		
+			</rich:panel>	
+			
+			
+			<h:panelGrid columns="3">                                 
+				<h:commandButton value="#{msg.botaoSalvar}" action="#{preCadastroBoletoMB.salvar}" />
+				<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{boletoMB.limparGerarBoleto}" />
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{boletoMB.cancelarGerarBoleto}" immediate="true" />
+			</h:panelGrid>	
+			
+			
+		</h:form>		
+		
+	</ui:define>
+
+</ui:composition>
