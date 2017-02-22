@@ -14,13 +14,18 @@ public class PreCadastroBoleto {
 	
 	private String instrucao3;
 	
-	private Integer idCondominio;
+	private Integer idCondominio;	
 	
-	private Integer idBeneficiario;
+	private ContaBancaria contaBancaria;
 	
-	private Integer idContaBancaria;
+	private Beneficiario beneficiario;
 	
 	private Boolean principal;
+	
+	public PreCadastroBoleto(){
+		this.contaBancaria = new ContaBancaria();
+		this.beneficiario = new Beneficiario();
+	}
 
 	public Integer getId() {
 		return id;
@@ -77,23 +82,7 @@ public class PreCadastroBoleto {
 	public void setIdCondominio(Integer idCondominio) {
 		this.idCondominio = idCondominio;
 	}
-
-	public Integer getIdBeneficiario() {
-		return idBeneficiario;
-	}
-
-	public void setIdBeneficiario(Integer idBeneficiario) {
-		this.idBeneficiario = idBeneficiario;
-	}
-
-	public Integer getIdContaBancaria() {
-		return idContaBancaria;
-	}
-
-	public void setIdContaBancaria(Integer idContaBancaria) {
-		this.idContaBancaria = idContaBancaria;
-	}
-
+	
 	public Boolean getPrincipal() {
 		return principal;
 	}
@@ -101,5 +90,21 @@ public class PreCadastroBoleto {
 	public void setPrincipal(Boolean principal) {
 		this.principal = principal;
 	}
+
+	public ContaBancaria getContaBancaria() {
+		return contaBancaria;
+	}
+
+	public void setContaBancaria(ContaBancaria contaBancaria) {
+		this.contaBancaria = contaBancaria;
+	}
+
+	public Beneficiario getBeneficiario() {
+		return beneficiario;
+	}
+
+	public void setBeneficiario(Beneficiario beneficiario) {
+		this.beneficiario = beneficiario;
+	}	
 
 }

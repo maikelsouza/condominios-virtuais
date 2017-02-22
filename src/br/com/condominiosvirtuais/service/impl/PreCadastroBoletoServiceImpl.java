@@ -1,5 +1,6 @@
 package br.com.condominiosvirtuais.service.impl;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -9,13 +10,21 @@ import br.com.condominiosvirtuais.entity.PreCadastroBoleto;
 import br.com.condominiosvirtuais.persistence.PreCadastroBoletoDAO;
 import br.com.condominiosvirtuais.service.PreCadastroBoletoService;
 
-public class PreCadastroBoletoServiceImpl implements PreCadastroBoletoService {
+public class PreCadastroBoletoServiceImpl implements PreCadastroBoletoService, Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Inject
 	private PreCadastroBoletoDAO preCadastroBoletoDAO; 
 
 	@Override
 	public void salvar(PreCadastroBoleto preCadastroBoleto) throws SQLException, Exception {
+		Boolean principal = Boolean.FALSE;
+		List<PreCadastroBoleto> listaPreCadastroBoleto = this.buscarPorIdCondominio(preCadastroBoleto.getIdCondominio());
+		if(listaPreCadastroBoleto.isEmpty()){
+			principal = Boolean.TRUE;
+		}
+		preCadastroBoleto.setPrincipal(principal);
 		this.preCadastroBoletoDAO.salvar(preCadastroBoleto);		
 	}
 

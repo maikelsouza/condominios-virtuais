@@ -307,8 +307,7 @@ public class BoletoMB  implements Serializable{
 	private void popularPago(){		
 		this.listaSIPago = new ArrayList<SelectItem>();
 		this.listaSIPago.add(new SelectItem(1, AplicacaoUtil.i18n("boleto.pago.1")));			
-		this.listaSIPago.add(new SelectItem(0, AplicacaoUtil.i18n("boleto.pago.0")));			
-		
+		this.listaSIPago.add(new SelectItem(0, AplicacaoUtil.i18n("boleto.pago.0")));
 	}
 	
 	

@@ -8,9 +8,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.enterprise.inject.Instance;
+import javax.inject.Inject;
+
 import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.PreCadastroBoleto;
+import br.com.condominiosvirtuais.persistence.BeneficiarioDAO;
+import br.com.condominiosvirtuais.persistence.ContaBancariaDAO;
 import br.com.condominiosvirtuais.persistence.PreCadastroBoletoDAO;
 import br.com.condominiosvirtuais.util.SQLUtil;
 
@@ -34,11 +39,19 @@ public class PreCadastroBoletoDAOImpl implements PreCadastroBoletoDAO, Serializa
 	
 	private static final String INSTRUCAO3 = "INSTRUCAO3";
 	
+	private static final String PRINCIPAL = "PRINCIPAL";
+	
 	private static final String ID_CONDOMINIO = "ID_CONDOMINIO";
 	
 	private static final String ID_BENEFICIARIO = "ID_BENEFICIARIO";
 	
 	private static final String ID_CONTA_BANCARIA = "ID_CONTA_BANCARIA";
+	
+	@Inject
+	private Instance<BeneficiarioDAO> beneficiarioDAO = null;
+	
+	@Inject
+	private Instance<ContaBancariaDAO> contaBancariaDAO = null;
 	
 	
 	
@@ -63,13 +76,15 @@ public class PreCadastroBoletoDAOImpl implements PreCadastroBoletoDAO, Serializa
 		query.append(",");
 		query.append(INSTRUCAO3);		
 		query.append(",");
+		query.append(PRINCIPAL);		
+		query.append(",");
 		query.append(ID_CONDOMINIO);
 		query.append(",");		
 		query.append(ID_BENEFICIARIO);
 		query.append(",");
 		query.append(ID_CONTA_BANCARIA);
 		query.append(") ");
-		query.append("VALUES(?,?,?,?,?,?,?,?,?)");
+		query.append("VALUES(?,?,?,?,?,?,?,?,?,?)");
 		try {
 			statement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(statement,1, preCadastroBoleto.getId(), java.sql.Types.INTEGER);
@@ -78,9 +93,10 @@ public class PreCadastroBoletoDAOImpl implements PreCadastroBoletoDAO, Serializa
 			SQLUtil.setValorPpreparedStatement(statement,4, preCadastroBoleto.getInstrucao1(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement,5, preCadastroBoleto.getInstrucao2(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement,6, preCadastroBoleto.getInstrucao3(), java.sql.Types.VARCHAR);
-			SQLUtil.setValorPpreparedStatement(statement,7, preCadastroBoleto.getIdCondominio(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement,9, preCadastroBoleto.getIdBeneficiario(), java.sql.Types.INTEGER);			
-			SQLUtil.setValorPpreparedStatement(statement,10, preCadastroBoleto.getIdContaBancaria(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement,7, preCadastroBoleto.getPrincipal(), java.sql.Types.BOOLEAN);
+			SQLUtil.setValorPpreparedStatement(statement,8, preCadastroBoleto.getIdCondominio(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement,9, preCadastroBoleto.getBeneficiario().getId(), java.sql.Types.INTEGER);			
+			SQLUtil.setValorPpreparedStatement(statement,10, preCadastroBoleto.getContaBancaria().getId(), java.sql.Types.INTEGER);
 			statement.execute();				
 		} catch (SQLException e) {
 			throw e;
@@ -140,6 +156,8 @@ public class PreCadastroBoletoDAOImpl implements PreCadastroBoletoDAO, Serializa
 		query.append("= ?, ");
 		query.append(INSTRUCAO3);
 		query.append("= ?, ");
+		query.append(PRINCIPAL);
+		query.append("= ?, ");
 		query.append(ID_CONDOMINIO);
 		query.append("= ?, ");
 		query.append(ID_BENEFICIARIO);
@@ -158,10 +176,11 @@ public class PreCadastroBoletoDAOImpl implements PreCadastroBoletoDAO, Serializa
 			SQLUtil.setValorPpreparedStatement(statement, 3, preCadastroBoleto.getInstrucao1(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement, 4, preCadastroBoleto.getInstrucao2(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement, 5, preCadastroBoleto.getInstrucao3(), java.sql.Types.VARCHAR);
-			SQLUtil.setValorPpreparedStatement(statement, 6, preCadastroBoleto.getIdCondominio(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement, 7, preCadastroBoleto.getIdBeneficiario(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement, 8, preCadastroBoleto.getIdContaBancaria(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement, 9, preCadastroBoleto.getId(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 6, preCadastroBoleto.getPrincipal(), java.sql.Types.BOOLEAN);
+			SQLUtil.setValorPpreparedStatement(statement, 7, preCadastroBoleto.getIdCondominio(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 8, preCadastroBoleto.getBeneficiario().getId(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 9, preCadastroBoleto.getContaBancaria().getId(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 10, preCadastroBoleto.getId(), java.sql.Types.INTEGER);
 			statement.executeUpdate();			
 		}catch (SQLException e) {					
 			throw e;		
@@ -202,8 +221,12 @@ public class PreCadastroBoletoDAOImpl implements PreCadastroBoletoDAO, Serializa
 				preCadastroBoleto.setDiaMesVencimento((Integer) SQLUtil.getValorResultSet(resultSet, DIA_MES_VENCIMENTO, java.sql.Types.INTEGER));
 				preCadastroBoleto.setTitulo(String.valueOf(SQLUtil.getValorResultSet(resultSet, TITULO, java.sql.Types.VARCHAR)));				
 				preCadastroBoleto.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
-				preCadastroBoleto.setIdBeneficiario((Integer) SQLUtil.getValorResultSet(resultSet, ID_BENEFICIARIO, java.sql.Types.INTEGER));
-				preCadastroBoleto.setIdContaBancaria((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONTA_BANCARIA, java.sql.Types.INTEGER));
+				preCadastroBoleto.setInstrucao1(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO1, java.sql.Types.VARCHAR)));
+				preCadastroBoleto.setInstrucao2(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO2, java.sql.Types.VARCHAR)));
+				preCadastroBoleto.setInstrucao3(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO3, java.sql.Types.VARCHAR)));
+				preCadastroBoleto.setPrincipal((Boolean) SQLUtil.getValorResultSet(resultSet, PRINCIPAL, java.sql.Types.BOOLEAN));
+				preCadastroBoleto.setBeneficiario(this.beneficiarioDAO.get().buscarPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_BENEFICIARIO, java.sql.Types.INTEGER), con));				
+				preCadastroBoleto.setContaBancaria(this.contaBancariaDAO.get().buscarPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONTA_BANCARIA, java.sql.Types.INTEGER), con));
 				listaPreCadastroBoleto.add(preCadastroBoleto);				
 			}
 		} catch (SQLException e) {					

@@ -9,10 +9,10 @@
 	template="/templates/templatePrincipal.xhtml">
 
 	<ui:define name="conteudo">		
-		<h:form id="idFormPreCadastroBoleto" styleClass="content">
+		<h:form id="idFormEditaPreCadastroBoleto" styleClass="content">
 			<rich:panel>
 				<f:facet name="header">
-					<h:outputText value="#{msg.PreCadastroBoleto}" />
+					<h:outputText value="#{msg.editaPreCadastroBoleto}" />
 				</f:facet>
 				<h:panelGrid columns="3" >
 					<h:panelGroup>
@@ -34,13 +34,13 @@
 						<f:ajax listener="#{preCadastroBoletoMB.popularBeneficariosEContasBancarias}" render="idContaBancaria idBeneficiario"/>
 					</h:selectOneMenu>
 										
-					<h:selectOneMenu id="idContaBancaria" value="#{preCadastroBoletoMB.preCadastroBoleto.idContaBancaria}"
+					<h:selectOneMenu id="idContaBancaria" value="#{preCadastroBoletoMB.preCadastroBoleto.contaBancaria.id}"
 						defaultLabel="#{msg['preCadastroBoleto.contaBancaria.DefaultLabel']}" required="true" label="#{msg['preCadastroBoleto.contaBancaria.label']}">
 						<f:selectItem itemLabel="#{msg['preCadastroBoleto.contaBancaria.DefaultLabel']}" noSelectionOption="true" />
 						<f:selectItems value="#{preCadastroBoletoMB.listaSIContasBancarias}" />
 					</h:selectOneMenu>
 										
-					<h:selectOneMenu id="idBeneficiario" value="#{preCadastroBoletoMB.preCadastroBoleto.idBeneficiario}"
+					<h:selectOneMenu id="idBeneficiario" value="#{preCadastroBoletoMB.preCadastroBoleto.beneficiario.id}"
 						defaultLabel="#{msg['preCadastroBoleto.beneficiario.DefaultLabel']}" required="true" label="#{msg['preCadastroBoleto.beneficiario.label']}">						                     
 						<f:selectItem itemLabel="#{msg['preCadastroBoleto.beneficiario.DefaultLabel']}" noSelectionOption="true" />
 						<f:selectItems value="#{preCadastroBoletoMB.listaSIBeneficiarios}" />
@@ -54,10 +54,10 @@
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['preCadastroBoleto.titulo']}:" for="idTitulo" />						
 						<span class="asterisco">*</span>
-					</h:panelGroup>
-								
+					</h:panelGroup>	
+					
 					<h:outputLabel value="#{msg['preCadastroBoleto.instrucao1']}:" for="idInstrucao1" />
-						
+					
 					<h:selectOneMenu id="idDiaMesVencimento" value="#{preCadastroBoletoMB.preCadastroBoleto.diaMesVencimento}"
 						defaultLabel="#{msg['preCadastroBoleto.diaMesVencimento.DefaultLabel']}" required="true" label="#{msg['preCadastroBoleto.diaMesVencimento.label']}">						                     
 						<f:selectItem itemLabel="#{msg['preCadastroBoleto.diaMesVencimento.DefaultLabel']}" noSelectionOption="true" />
@@ -69,13 +69,13 @@
 						<f:selectItem itemLabel="#{msg['preCadastroBoleto.titulo.DefaultLabel']}" noSelectionOption="true" />
 						<f:selectItems value="#{preCadastroBoletoMB.listaSITitulos}" />
 					</h:selectOneMenu>
-						
-						<h:inputText id="idInstrucao1" value="#{preCadastroBoletoMB.preCadastroBoleto.instrucao1}" label="#{msg['preCadastroBoleto.idInstrucao1.label']}" size="30"/>
+					
+					<h:inputText id="idInstrucao1" value="#{preCadastroBoletoMB.preCadastroBoleto.instrucao1}" label="#{msg['preCadastroBoleto.idInstrucao1.label']}" size="30"/>	
 									
 					
 					<h:outputLabel value="#{msg['preCadastroBoleto.instrucao2']}:" for="idInstrucao2" />		
 					<h:outputLabel value="#{msg['preCadastroBoleto.instrucao3']}:" for="idInstrucao3" />
-					<h:outputLabel value="" />
+					<h:outputLabel value=""/>
 					
 					
 					<h:inputText id="idInstrucao2" value="#{preCadastroBoletoMB.preCadastroBoleto.instrucao2}" label="#{msg['preCadastroBoleto.idInstrucao2.label']}" size="30" />
@@ -90,11 +90,21 @@
 				</h:panelGrid>		
 			</rich:panel>	
 			
+			<rich:popupPanel id="confirmaExcluirPreCadastroBoleto" autosized="true">
+	         		 #{msg['msg.preCadastroBoleto.confirmacaoExcluir']}
+         		 <h:panelGrid columns="2">
+           	 		<h:commandButton value="#{msg.botaoExcluir}" action="#{preCadastroBoletoMB.excluir}" onclick=" #{rich:component('confirmaExcluirPreCadastroBoleto')}.hide();  return true;" />
+					<h:commandButton value="#{msg.botaoCancelar}" onclick="#{rich:component('confirmaExcluirPreCadastroBoleto')}.hide(); return false;" />						
+				</h:panelGrid>
+			</rich:popupPanel>
+			
 			
 			<h:panelGrid columns="3">                                 
-				<h:commandButton value="#{msg.botaoSalvar}" action="#{preCadastroBoletoMB.salvar}" />
-				<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{boletoMB.limparGerarBoleto}" />
-				<h:commandButton value="#{msg.botaoCancelar}" action="#{boletoMB.cancelarGerarBoleto}" immediate="true" />
+				<h:commandButton value="#{msg.botaoAtualizar}" action="#{preCadastroBoletoMB.atualizar}" />
+				<h:commandButton value="#{msg.botaoExcluir}" >
+					<rich:componentControl target="confirmaExcluirPreCadastroBoleto" operation="show"/>
+				</h:commandButton>
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{preCadastroBoletoMB.cancelarEditaPreCadastroBoleto}" immediate="true" />
 			</h:panelGrid>	
 			
 			

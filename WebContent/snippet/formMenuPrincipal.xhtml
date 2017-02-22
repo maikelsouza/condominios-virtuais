@@ -191,8 +191,11 @@
 			<rich:menuGroup label="#{msg.boleto}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,5,7') and loginMB.sindicoGeralAssociado()}">
 				<rich:menuItem label="#{msg['boleto.gerarBoleto']}" action="#{principalMB.gerarBoleto}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,7') and loginMB.exibeMenuFinanceiro()}"/>
 				<rich:menuItem label="#{msg['boleto.listarBoleto']}" action="#{principalMB.listarBoleto}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,7') and loginMB.exibeMenuFinanceiro()}"/>
-				<rich:menuItem label="#{msg['boleto.meusBoletos']}" action="#{principalMB.meusBoletos}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4,5') and loginMB.exibeMenuFinanceiro()}"/>
-				<rich:menuItem label="#{msg['boleto.preCadastroBoleto']}" action="#{principalMB.preCadastroBoleto}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4,5') and loginMB.exibeMenuFinanceiro()}"/>
+				<rich:menuItem label="#{msg['boleto.meusBoletos']}" action="#{principalMB.meusBoletos}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4,5') and loginMB.exibeMenuFinanceiro()}"/>				
+			</rich:menuGroup>           
+			<rich:menuGroup label="#{msg.preCadastroBoleto}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,5,7') and loginMB.sindicoGeralAssociado()}">
+				<rich:menuItem label="#{msg['preCadastroBoleto.cadastarPreCadastroBoleto']}" action="#{principalMB.cadastroPreCadastroBoleto}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4,5') and loginMB.exibeMenuFinanceiro()}"/>
+				<rich:menuItem label="#{msg['preCadastroBoleto.listaPreCadastroBoleto']}" action="#{principalMB.listaPreCadastroBoleto}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4,5') and loginMB.exibeMenuFinanceiro()}"/>
 			</rich:menuGroup>
 			
 								

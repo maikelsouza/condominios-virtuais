@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormListaPreCadastroBoleto" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.filtroPreCadastroBoleto}" />
+				</f:facet>
+				<h:panelGrid columns="1">
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['condominio']}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+								
+					<h:selectOneMenu id="idCondominio" value="#{preCadastroBoletoMB.preCadastroBoleto.idCondominio}" label="#{msg['condominio.label']}" required="true">
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="true" />
+						<f:selectItems value="#{preCadastroBoletoMB.listaSICondominios}" />
+					</h:selectOneMenu>					
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
+				</h:panelGrid>
+
+			</rich:panel>
+			<div>
+				<h:panelGrid columns="2">
+					<h:commandButton value="#{msg.botaoPesquisar}" actionListener="#{preCadastroBoletoMB.pesquisar}" />
+					<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{preCadastroBoletoMB.limparFiltroPreCadastroBoleto}" />
+				</h:panelGrid>
+			</div>
+			<rich:panel header="#{msg.listaPreCadastroBoleto}">				
+				<div>
+					<rich:dataTable value="#{preCadastroBoletoMB.listaPreCadastroBoletos}" var="preCadastroBoleto" rowClasses="odd-row, even-row" styleClass="stable"
+						id="tablePreCadastroBoleto" style="width:100%;" rows="10" rendered="#{preCadastroBoletoMB.listaPreCadastroBoletos.rowCount > 0}">
+						<rich:column sortBy="#{preCadastroBoleto.contaBancaria.banco.nome}" sortOrder="#{ordenaPreCadastroBoletoMB.nomeBanco}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['preCadastroBoleto.contaBancaria.banco.nome']}" render="tablePreCadastroBoleto" action="#{ordenaPreCadastroBoletoMB.ordenarPorNomeBanco}" />									          
+							</f:facet>							
+							<h:outputText value="#{preCadastroBoleto.contaBancaria.banco.nome}" />
+						</rich:column>
+						<rich:column sortBy="#{preCadastroBoleto.beneficiario.nome}" sortOrder="#{ordenaPreCadastroBoletoMB.nomeBeneficiario}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['preCadastroBoleto.beneficiario.nome']}" render="tablePreCadastroBoleto" action="#{ordenaPreCadastroBoletoMB.ordenarPorNomeBeneficiario}" />
+							</f:facet>
+							<h:outputText value="#{preCadastroBoleto.beneficiario.nome}" />
+						</rich:column>
+						<rich:column sortBy="#{preCadastroBoleto.diaMesVencimento}" sortOrder="#{ordenaPreCadastroBoletoMB.diaMesVencimento}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['preCadastroBoleto.diaMesVencimento']}" render="tablePreCadastroBoleto" action="#{ordenaPreCadastroBoletoMB.ordenarPorDiaMesVencimento}" />
+							</f:facet>
+							<h:outputText value="#{preCadastroBoleto.diaMesVencimento}" />
+						</rich:column>
+						<rich:column sortBy="#{preCadastroBoleto.principal}" sortOrder="#{ordenaPreCadastroBoletoMB.principal}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['preCadastroBoleto.principal']}" render="tablePreCadastroBoleto" action="#{ordenaPreCadastroBoletoMB.ordenarPorPrincipal}" />
+							</f:facet>
+							<h:outputText value="#{preCadastroBoleto.principal == true ? msg['sim'] : msg['nao']}" />
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="#{msg.rotuloAcao}" />
+							</f:facet>							
+							<h:commandLink value="#{msg.linkEditar}" render="tablePreCadastroBoleto" action="#{preCadastroBoletoMB.editarPreCadastroBoleto}" immediate="false"  />					
+				 			#{' '}                                                                           
+ 							<h:commandLink value="#{msg.linkVisualizar}" render="tablePreCadastroBoleto" action="#{preCadastroBoletoMB.visualizarPreCadastroBoleto}" immediate="false"  />
+						</rich:column>
+					</rich:dataTable>	
+						
+							
+				</div>
+			</rich:panel>
+			<h:commandButton value="#{msg.botaoCriarNovo}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,7')}" action="#{preCadastroBoletoMB.cadastroPreCadastroBoleto}" 
+				immediate="true" />
+		</h:form>
+
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseover" query="jQuery(this).addClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseout" query="jQuery(this).removeClass('active-row')" />
+	</ui:define>
+
+</ui:composition>

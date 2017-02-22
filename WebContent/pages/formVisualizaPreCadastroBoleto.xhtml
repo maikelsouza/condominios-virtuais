@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">		
+		<h:form id="idFormVisualizaPreCadastroBoleto" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.visualizaPreCadastroBoleto}" />
+				</f:facet>
+				<h:panelGrid columns="2">
+					<h:outputLabel value="#{msg['preCadastroBoleto.contaBancaria']}:" for="idContaBancaria" />	
+					<h:outputText id="idContaBancaria" value="#{preCadastroBoletoMB.preCadastroBoleto.contaBancaria.banco.nome}" />					
+					<h:outputLabel value="#{msg['preCadastroBoleto.beneficiario']}:" for="idBeneficiario" />						
+					<h:outputText id="idBeneficiario" value="#{preCadastroBoletoMB.preCadastroBoleto.beneficiario.nome}" />
+                    <h:outputLabel value="#{msg['preCadastroBoleto.diaMesVencimento']}:" for="idDiaMesVencimento" />						
+					<h:outputText id="idDiaMesVencimento" value="#{preCadastroBoletoMB.preCadastroBoleto.diaMesVencimento}" />
+					<h:outputLabel value="#{msg['preCadastroBoleto.titulo']}:" for="idTitulo" />						
+					<h:outputText id="idTitulo" value="#{preCadastroBoletoMB.preCadastroBoleto.titulo}" />			
+					<h:outputLabel value="#{msg['preCadastroBoleto.principal']}:" for="idPrincipal" />						
+					<h:outputText id="idPrincipal" value="#{preCadastroBoletoMB.preCadastroBoleto.principal  == true ? msg['sim'] : msg['nao']}" />			
+					<h:outputLabel value="#{msg['preCadastroBoleto.instrucao1']}:" for="idInstrucao1" rendered="#{preCadastroBoletoMB.preCadastroBoleto.instrucao1 != '' and preCadastroBoletoMB.preCadastroBoleto.instrucao1 != null}"/>
+					<h:outputText id="idInstrucao1" value="#{preCadastroBoletoMB.preCadastroBoleto.instrucao1}" rendered="#{preCadastroBoletoMB.preCadastroBoleto.instrucao1 != '' and preCadastroBoletoMB.preCadastroBoleto.instrucao1 != null}" />
+					<h:outputLabel value="#{msg['preCadastroBoleto.instrucao2']}:" for="idInstrucao2" rendered="#{preCadastroBoletoMB.preCadastroBoleto.instrucao2 != '' and preCadastroBoletoMB.preCadastroBoleto.instrucao2 != null}" />
+					<h:outputText id="idInstrucao2" value="#{preCadastroBoletoMB.preCadastroBoleto.instrucao2}" rendered="#{preCadastroBoletoMB.preCadastroBoleto.instrucao2 != '' and preCadastroBoletoMB.preCadastroBoleto.instrucao2 != null}" />							
+					<h:outputLabel value="#{msg['preCadastroBoleto.instrucao3']}:" for="idInstrucao3" rendered="#{preCadastroBoletoMB.preCadastroBoleto.instrucao3 != '' and preCadastroBoletoMB.preCadastroBoleto.instrucao3 != null}"/>
+					<h:outputText id="idInstrucao3" value="#{preCadastroBoletoMB.preCadastroBoleto.instrucao3}" rendered="#{preCadastroBoletoMB.preCadastroBoleto.instrucao3 != '' and preCadastroBoletoMB.preCadastroBoleto.instrucao3 != null}"/>				
+				 </h:panelGrid>	
+			</rich:panel>
+			<h:panelGrid columns="1">                                 
+				<h:commandButton value="#{msg.botaoVoltar}" action="#{preCadastroBoletoMB.voltarListaPreCadastroBoleto}" />				
+			</h:panelGrid>	
+		</h:form>		
+	</ui:define>
+
+</ui:composition>

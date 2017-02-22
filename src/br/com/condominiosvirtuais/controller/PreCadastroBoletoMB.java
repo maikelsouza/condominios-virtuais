@@ -8,6 +8,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Instance;
+import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -20,6 +21,7 @@ import br.com.condominiosvirtuais.entity.PreCadastroBoleto;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.service.BeneficiarioService;
 import br.com.condominiosvirtuais.service.ContaBancariaService;
+import br.com.condominiosvirtuais.service.PreCadastroBoletoService;
 import br.com.condominiosvirtuais.util.ManagedBeanUtil;
 
 @Named @SessionScoped
@@ -39,7 +41,9 @@ public class PreCadastroBoletoMB implements Serializable {
 	
 	private List<SelectItem> listaSIDiaMesVencimento;
 	
-	private List<SelectItem> listaSITitulos;
+	private List<SelectItem> listaSITitulos;	
+	
+	private ListDataModel<PreCadastroBoleto> listaPreCadastroBoletos;
 	
 	@Inject
 	private Instance<CondominioMB> condominioMB; 	
@@ -49,9 +53,9 @@ public class PreCadastroBoletoMB implements Serializable {
 	
 	@Inject
 	private BeneficiarioService beneficiarioService;
-	
-	
-	                         
+
+	@Inject
+	private PreCadastroBoletoService preCadastroBoletoService;                         
 	
 	
 	public PreCadastroBoletoMB(){
@@ -62,7 +66,79 @@ public class PreCadastroBoletoMB implements Serializable {
 	public void iniciarPreCadastroBoletoMB(){
 		this.listaSICondominios = this.condominioMB.get().buscarListaCondominiosAtivos();
 		this.popularDiaMesVencimento();
-		this.popularTitulos();
+		this.popularTitulos();		
+	}
+	
+	public String salvar(){
+		try{			
+			this.preCadastroBoletoService.salvar(this.preCadastroBoleto);
+			this.pesquisar();
+			ManagedBeanUtil.setMensagemInfo("msg.preCadastroBoleto.salvoSucesso");
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (BusinessException e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}
+		return "salvar";
+	}
+	
+	public String atualizar(){
+		try{
+			this.preCadastroBoletoService.atualizar(this.preCadastroBoleto);
+			this.pesquisar();
+			ManagedBeanUtil.setMensagemInfo("msg.preCadastroBoleto.atualizadoSucesso");
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (BusinessException e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}
+		return "atualizar";
+	}
+	
+	public String excluir(){
+		try{
+			this.preCadastroBoletoService.excluirPorId(this.preCadastroBoleto.getId());
+			this.pesquisar();
+			ManagedBeanUtil.setMensagemInfo("msg.preCadastroBoleto.excluidoSucesso");
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (BusinessException e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}
+		return "excluir";
+	}
+	
+	public void pesquisar(){
+		try{
+			this.listaPreCadastroBoletos = new ListDataModel<PreCadastroBoleto>(this.preCadastroBoletoService.buscarPorIdCondominio(this.preCadastroBoleto.getIdCondominio()));
+			if (this.listaPreCadastroBoletos.getRowCount() == 0){
+				 ManagedBeanUtil.setMensagemInfo("msg.preCadastroBoleto.semPreCadastroBoletos");
+			}
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (BusinessException e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}
 	}
 	
 	public void popularBeneficariosEContasBancarias(){
@@ -81,6 +157,41 @@ public class PreCadastroBoletoMB implements Serializable {
 		}
 	}
 	
+	public String cadastroPreCadastroBoleto(){
+		return "cadastrar";
+	}
+	
+	public String cancelarCadastroPreCadastroBoleto(){
+		return "cancelar";
+	}
+	
+	public String cancelarEditaPreCadastroBoleto(){
+		return "cancelar";
+	}
+	
+	public void limparFiltroPreCadastroBoleto(){
+		this.preCadastroBoleto = new PreCadastroBoleto();
+		this.listaPreCadastroBoletos = new ListDataModel<PreCadastroBoleto>();		
+	}
+	
+	public void limparCadastroPreCadastroBoleto(){
+		this.preCadastroBoleto = new PreCadastroBoleto();
+	}
+	
+	public String editarPreCadastroBoleto(){
+		this.preCadastroBoleto = this.listaPreCadastroBoletos.getRowData();
+		this.popularBeneficariosEContasBancarias();
+		return "editar";
+	}
+	
+	public String voltarListaPreCadastroBoleto(){
+		return "voltar";
+	}
+	
+	public String visualizarPreCadastroBoleto(){
+		this.preCadastroBoleto = this.listaPreCadastroBoletos.getRowData();
+		return "visualizar";
+	}
 	private void popularDiaMesVencimento(){
 		this.listaSIDiaMesVencimento = new ArrayList<SelectItem>();
 		for (int i = 1; i < 32; i++) {
@@ -113,7 +224,7 @@ public class PreCadastroBoletoMB implements Serializable {
 			this.listaSITitulos.add(new SelectItem(string, string));			
 		}
 	}
-
+	
 	public PreCadastroBoleto getPreCadastroBoleto() {
 		return preCadastroBoleto;
 	}
@@ -153,15 +264,7 @@ public class PreCadastroBoletoMB implements Serializable {
 	public void setListaSIDiaMesVencimento(List<SelectItem> listaSIDiaMesVencimento) {
 		this.listaSIDiaMesVencimento = listaSIDiaMesVencimento;
 	}
-
-	public static Logger getLogger() {
-		return logger;
-	}
-
-	public static void setLogger(Logger logger) {
-		PreCadastroBoletoMB.logger = logger;
-	}
-
+	
 	public List<SelectItem> getListaSITitulos() {
 		return listaSITitulos;
 	}
@@ -170,12 +273,13 @@ public class PreCadastroBoletoMB implements Serializable {
 		this.listaSITitulos = listaSITitulos;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public ListDataModel<PreCadastroBoleto> getListaPreCadastroBoletos() {
+		return listaPreCadastroBoletos;
 	}
-	
-	
-	
+
+	public void setListaPreCadastroBoletos(ListDataModel<PreCadastroBoleto> listaPreCadastroBoletos) {
+		this.listaPreCadastroBoletos = listaPreCadastroBoletos;
+	}
 	
 	
 

@@ -35,7 +35,7 @@ public class AutorizacaoListener implements PhaseListener {
 		}else{
 			Usuario usuario = (Usuario) session.getAttribute("autenticado");
 			// Situação onde o usuário não está autenticado.		
-			if(usuario == null){
+			if(usuario == null){			
 				nh.handleNavigation(facesContext, null, loginPage);			
 			// Situação onde o usuário não tem acesso a página que selecionada	
 			}else if(!usuario.getGrupoUsuario().temAcesso(paginaCorrente)){ 

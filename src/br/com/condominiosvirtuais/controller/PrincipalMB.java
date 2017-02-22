@@ -300,8 +300,12 @@ public class PrincipalMB  implements Serializable{
 		return "meusBoletos";		        
 	}
 	
-	public String preCadastroBoleto(){
-		return "preCadastroBoleto";		        
+	public String cadastroPreCadastroBoleto(){
+		return "cadastroPreCadastroBoleto";		        
+	}
+	
+	public String listaPreCadastroBoleto(){
+		return "listaPreCadastroBoleto";		        
 	}
 	
 	
