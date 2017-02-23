@@ -44,4 +44,10 @@ public class PreCadastroBoletoServiceImpl implements PreCadastroBoletoService, S
 		return this.preCadastroBoletoDAO.buscarPorIdCondominio(idCondominio);
 	}
 
+	@Override
+	public PreCadastroBoleto buscarPorIdCondominioEPrincipal(Integer idCondominio, Boolean principal)
+			throws SQLException, Exception {		
+		return this.preCadastroBoletoDAO.buscarPorIdCondominioEPrincipal(idCondominio, principal);
+	}
+
 }

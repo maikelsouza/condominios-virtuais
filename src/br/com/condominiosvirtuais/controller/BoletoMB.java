@@ -21,11 +21,13 @@ import org.apache.log4j.Logger;
 import br.com.condominiosvirtuais.entity.Beneficiario;
 import br.com.condominiosvirtuais.entity.Boleto;
 import br.com.condominiosvirtuais.entity.ContaBancaria;
+import br.com.condominiosvirtuais.entity.PreCadastroBoleto;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.service.BeneficiarioService;
 import br.com.condominiosvirtuais.service.BoletoService;
 import br.com.condominiosvirtuais.service.CondominoService;
 import br.com.condominiosvirtuais.service.ContaBancariaService;
+import br.com.condominiosvirtuais.service.PreCadastroBoletoService;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
 import br.com.condominiosvirtuais.util.ManagedBeanUtil;
 import br.com.condominiosvirtuais.vo.CondominoVO;
@@ -50,7 +52,10 @@ public class BoletoMB  implements Serializable{
 	private BoletoService boletoService;
 	
 	@Inject
-	private Instance<CondominioMB> condominioMB; 	
+	private Instance<CondominioMB> condominioMB;
+	
+	@Inject
+	private PreCadastroBoletoService preCadastroBoletoService;
 	
 	private List<SelectItem> listaSICondominios;
 	
@@ -66,7 +71,7 @@ public class BoletoMB  implements Serializable{
 	
 	private ListDataModel<Boleto> listaBoletos;
 	
-	private ListDataModel<Boleto> listaMeusBoletos;
+	private ListDataModel<Boleto> listaMeusBoletos;	
 	
 	private Boleto boleto;	
 	
@@ -74,7 +79,7 @@ public class BoletoMB  implements Serializable{
 	
 	private Date dataVencimentoAte;
 	
-	private Integer tipoPagoBoleto;
+	private Integer tipoPagoBoleto = -1;
 	
 	
 	
@@ -96,8 +101,17 @@ public class BoletoMB  implements Serializable{
 				ManagedBeanUtil.setMensagemErro("msg.boleto.vencimentoMenorEmissao");
 				return null;
 			}else{
+				// FIXME Rever que número é esse
+				this.boleto.setNumero("45");
 				this.boleto.setPago(Boolean.FALSE);
-				this.boletoService.salvar(this.boleto);
+				if(this.boleto.getCondominoVO().getId() == -1){
+					for (SelectItem pagador : this.listaSIPagadores) {
+						this.boleto.getCondominoVO().setId((Integer) pagador.getValue());
+						this.boletoService.salvar(this.boleto);
+					}					
+				}else{
+					this.boletoService.salvar(this.boleto);					
+				}
 				if(this.dataVencimentoDe == null || this.dataVencimentoAte == null){
 					this.popularPesquisaDataVencimento();
 				}				 
@@ -248,15 +262,14 @@ public class BoletoMB  implements Serializable{
 	
 	public String cancelarGerarBoleto(){
 		return "cancelar";
-	}
-	
-	
+	}	
 	
 	public void popularBeneficariosEContasBancarias(){
 		try{
 			this.popularBeneficiarios();
 			this.popularContasBancarias();			
 			this.buscarPagador();
+			this.popularBoleto();
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
@@ -267,8 +280,37 @@ public class BoletoMB  implements Serializable{
 			logger.error("", e);
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
 		}
-	}
+	}	
 	
+	private void popularBoleto() throws SQLException, Exception{
+		PreCadastroBoleto preCadastroBoleto = this.preCadastroBoletoService.buscarPorIdCondominioEPrincipal(this.boleto.getIdCondominio(), Boolean.TRUE);
+		if(preCadastroBoleto != null){
+			this.boleto.setBeneficiario(preCadastroBoleto.getBeneficiario());
+			this.boleto.setContaBancaria(preCadastroBoleto.getContaBancaria());
+			this.boleto.setTitulo(preCadastroBoleto.getTitulo());
+			this.boleto.setInstrucao1(preCadastroBoleto.getInstrucao1());
+			this.boleto.setInstrucao2(preCadastroBoleto.getInstrucao2());
+			this.boleto.setInstrucao3(preCadastroBoleto.getInstrucao3());
+			
+			Date dataVencimento = new Date();
+			Calendar vencimentoCalendar = GregorianCalendar.getInstance();
+			vencimentoCalendar.setTime(dataVencimento);
+			
+			Integer ultimoDiaMesAtual = vencimentoCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+			if(preCadastroBoleto.getDiaMesVencimento() > ultimoDiaMesAtual){
+				vencimentoCalendar.set(Calendar.DAY_OF_MONTH,ultimoDiaMesAtual);			
+			}else{
+				vencimentoCalendar.set(Calendar.DAY_OF_MONTH,preCadastroBoleto.getDiaMesVencimento());
+			}
+			this.boleto.setVencimento(vencimentoCalendar.getTime());			
+		}else{
+			this.boleto.setTitulo(null);
+			this.boleto.setInstrucao1(null);
+			this.boleto.setInstrucao2(null);
+			this.boleto.setInstrucao3(null);
+			this.boleto.setVencimento(null);
+		}
+	}
 	
 	private void popularBeneficiarios() throws SQLException, BusinessException, Exception{		
 		List<Beneficiario> listaBeneficiarios = this.beneficiarioService.buscarPorIdCondominio(this.boleto.getIdCondominio());

@@ -1,6 +1,9 @@
 package br.com.condominiosvirtuais.teste;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import jxl.write.WriteException;
 
@@ -75,6 +78,26 @@ public class Classe2ParaTeste {
 //			System.err.println("Erro retornado em json: "+response.readEntity(String.class));
 //		}
 //		//Para saber mais sobre tratamento de erros veja a seção Status & Erros
+		
+Calendar vencimentoCalendar = GregorianCalendar.getInstance();
+//vencimento.setD
+		
+		Date dataVencimento = new Date();
+		vencimentoCalendar.setTime(dataVencimento);
+		Integer ultimoDiaMesAtual = vencimentoCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+		System.out.println(ultimoDiaMesAtual);
+		
+//		Calendar vencimentoDataAte = GregorianCalendar.getInstance();
+//		
+//		
+//		Calendar dataVencimetoBoleto = new GregorianCalendar();
+//		dataVencimetoBoleto.setTime(this.boleto.getVencimento());
+//		vencimentoDataDe.set(Calendar.DAY_OF_MONTH,1);
+//		vencimentoDataDe.set(Calendar.MONTH,dataVencimetoBoleto.get(Calendar.MONTH));
+//		vencimentoDataDe.set(Calendar.YEAR,dataVencimetoBoleto.get(Calendar.YEAR));
+//		vencimentoDataAte.set(Calendar.DAY_OF_MONTH,dataVencimetoBoleto.getActualMaximum(Calendar.DAY_OF_MONTH));
+//		vencimentoDataAte.set(Calendar.MONTH,dataVencimetoBoleto.get(Calendar.MONTH));
+//		vencimentoDataAte.set(Calendar.YEAR,dataVencimetoBoleto.get(Calendar.YEAR));
 	}
 			
 		

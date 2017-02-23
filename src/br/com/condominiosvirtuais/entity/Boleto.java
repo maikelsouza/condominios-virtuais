@@ -18,7 +18,7 @@ public class Boleto {
 	
 	private String titulo;
 	
-	private Long valor;
+	private Double valor;
 	
 	private Boolean pago;
 	
@@ -82,11 +82,11 @@ public class Boleto {
 		this.titulo = titulo;
 	}
 
-	public Long getValor() {
+	public Double getValor() {
 		return valor;
 	}
 
-	public void setValor(Long valor) {
+	public void setValor(Double valor) {
 		this.valor = valor;
 	}	
 

@@ -31,12 +31,12 @@
 					<h:selectOneMenu id="idCondominio" value="#{boletoMB.boleto.idCondominio}" defaultLabel="#{msg['condominio.DefaultLabel']}" required="true" label="#{msg['condominio.label']}">
 						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="true" />
 						<f:selectItems value="#{boletoMB.listaSICondominios}" />
-						<f:ajax listener="#{boletoMB.popularBeneficariosEContasBancarias}" render="idContaBancaria idBeneficiario idPagador"/>
+						<f:ajax listener="#{boletoMB.popularBeneficariosEContasBancarias}" render="idContaBancaria idBeneficiario idVencimento idPagador idInstrucao1 idInstrucao2 idInstrucao3"/>
 					</h:selectOneMenu>
 										
 					<h:selectOneMenu id="idContaBancaria" value="#{boletoMB.boleto.contaBancaria.id}"
 						defaultLabel="#{msg['boleto.contaBancaria.DefaultLabel']}" required="true" label="#{msg['boleto.contaBancaria.label']}">
-						<f:selectItem itemLabel="#{msg['boleto.contaBancaria.DefaultLabel']}" noSelectionOption="true" />
+						<f:selectItem itemLabel="#{msg['boleto.contaBancaria.DefaultLabel']}" noSelectionOption="true" />						
 						<f:selectItems value="#{boletoMB.listaSIContasBancarias}" />
 					</h:selectOneMenu>
 										
@@ -65,6 +65,7 @@
 					<h:selectOneMenu id="idPagador" value="#{boletoMB.boleto.condominoVO.id}"
 						defaultLabel="#{msg['boleto.pagador.DefaultLabel']}" required="true" label="#{msg['boleto.pagador.label']}">
 						<f:selectItem itemLabel="#{msg['boleto.pagador.DefaultLabel']}" noSelectionOption="true" />
+						<f:selectItem itemLabel="#{msg['todos']}" itemValue="-1"/>
 						<f:selectItems value="#{boletoMB.listaSIPagadores}" />
 					</h:selectOneMenu>				
 						
@@ -91,7 +92,10 @@
 					<h:outputLabel value="" />
 					<h:outputLabel value="" />
 					
-					<h:inputText id="idValor" value="#{boletoMB.boleto.valor}" label="#{msg['boleto.valor.label']}" required="true" />
+					<h:inputText id="idValor" value="#{boletoMB.boleto.valor}" label="#{msg['boleto.valor.label']}" required="true" >
+						<f:validateDoubleRange minimum="0" for="idValor" />
+						<f:convertNumber pattern="#{msg.formatoMoeda}" />
+					</h:inputText>
 					
 				 </h:panelGrid>	
 			</rich:panel>	 	

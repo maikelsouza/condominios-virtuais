@@ -15,17 +15,13 @@
 			<h:panelGrid columns="2">
 				<h:outputLabel value="#{msg['usuario.email']}:" for="idEmail" />
 				<h:outputLabel value="#{msg['usuario.senha']}:" for="idSenha" />
-				<h:inputText id="idEmail" value="#{loginMB.email}" required="true"
-					label="#{msg['usuario.email.label']}" />
-				<h:inputSecret id="idSenha" value="#{loginMB.senha}" required="true"
-					label="#{msg['usuario.senha.label']}" />
+				<h:inputText id="idEmail" value="#{loginMB.email}" required="true" label="#{msg['usuario.email.label']}" />
+				<h:inputSecret id="idSenha" value="#{loginMB.senha}" required="true" label="#{msg['usuario.senha.label']}" />
 			</h:panelGrid>
 			<h:commandButton value="Login" action="#{loginMB.login}" />
 			<h:panelGrid>
-				<a4j:commandLink value="#{msg['linkEsqueciMinhaSenha']}"
-					action="#{loginMB.esqueciMinhaSenha}" immediate="true" />			
-				<a4j:commandLink value="#{msg['linkNaoTenhoCadastro']}"
-					action="#{loginMB.pesquisaCondominio}" immediate="true" />
+				<a4j:commandLink value="#{msg['linkEsqueciMinhaSenha']}" action="#{loginMB.esqueciMinhaSenha}" immediate="true" />			
+				<a4j:commandLink value="#{msg['linkNaoTenhoCadastro']}" action="#{loginMB.pesquisaCondominio}" immediate="true" />
  			</h:panelGrid>
  		</h:form>
 	</ui:define>

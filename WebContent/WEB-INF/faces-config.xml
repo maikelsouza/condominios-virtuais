@@ -18,6 +18,10 @@
   <converter-id>blocoConversor</converter-id>
   <converter-class>br.com.condominiosvirtuais.converter.BlocoConversor</converter-class>
  </converter>
+ <converter>
+  <converter-id>meioPagamentoConversor</converter-id>
+  <converter-class>br.com.condominiosvirtuais.converter.MeioPagamentoConversor</converter-class>
+ </converter>
  <managed-bean>
   <managed-bean-name>ordenaCondominioMB</managed-bean-name>
   <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaCondominioMB</managed-bean-class>

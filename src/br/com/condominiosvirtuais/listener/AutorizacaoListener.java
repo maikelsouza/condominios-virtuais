@@ -1,5 +1,5 @@
 package br.com.condominiosvirtuais.listener;
-
+        
 import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import br.com.condominiosvirtuais.entity.Usuario;
 import br.com.condominiosvirtuais.enumeration.PathTelasAplicacaoEnum;
 
+             
 public class AutorizacaoListener implements PhaseListener {
 
 	

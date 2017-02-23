@@ -25,6 +25,8 @@ public class Despesa {
 	
 	private MeioPagamento meioPagamento;
 	
+	private Banco banco;
+	
 
 	public Integer getId() {
 		return id;
@@ -89,6 +91,13 @@ public class Despesa {
 	public void setMeioPagamento(MeioPagamento meioPagamento) {
 		this.meioPagamento = meioPagamento;
 	}
-	
+
+	public Banco getBanco() {
+		return banco;
+	}
+
+	public void setBanco(Banco banco) {
+		this.banco = banco;
+	}	
 
 }

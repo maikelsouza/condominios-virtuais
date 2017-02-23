@@ -41,6 +41,8 @@ private static final long serialVersionUID = 1L;
 	
 	private static final String ID_CONDOMINIO = "ID_CONDOMINIO";
 	
+	private static final String ID_BANCO = "ID_BANCO";
+	
 	private static final String ID_MEIO_PAGAMENTO = "ID_MEIO_PAGAMENTO";
 	
 	@Inject

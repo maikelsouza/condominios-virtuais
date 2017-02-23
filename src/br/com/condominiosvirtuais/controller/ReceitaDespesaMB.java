@@ -25,10 +25,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import br.com.condominiosvirtuais.entity.Banco;
 import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.Despesa;
 import br.com.condominiosvirtuais.entity.MeioPagamento;
 import br.com.condominiosvirtuais.entity.Receita;
+import br.com.condominiosvirtuais.enumeration.ReceitaDespesaMeioPagamentoEnum;
+import br.com.condominiosvirtuais.service.BancoService;
 import br.com.condominiosvirtuais.service.CondominioService;
 import br.com.condominiosvirtuais.service.DespesaService;
 import br.com.condominiosvirtuais.service.MeioPagamentoService;
@@ -70,6 +73,9 @@ public class ReceitaDespesaMB implements Serializable {
 	@Inject
 	private CondominioService condominioService;
 	
+	@Inject
+	private BancoService bancoService;
+	
 	private static final Integer ANO_INICIAL = 2015;
 	
 	private List<SelectItem> listaSIMesReferencia = new ArrayList<SelectItem>();
@@ -79,6 +85,10 @@ public class ReceitaDespesaMB implements Serializable {
 	private List<SelectItem> listaSICondominios = new ArrayList<SelectItem>();
 	
 	private List<SelectItem> listaSIMeioPagamento = new ArrayList<SelectItem>();
+	
+	private List<SelectItem> listaSIBanco = new ArrayList<SelectItem>();
+	
+	private List<MeioPagamento> listaMeioPagamento = null;
 	
 	private Receita receita;
 	
@@ -112,6 +122,8 @@ public class ReceitaDespesaMB implements Serializable {
 	
 	private MeioPagamento meioPagamento;
 	
+	private Banco banco;
+	
 	private String numeroDocumento;
 	
 	private Integer idDespesa;
@@ -119,6 +131,8 @@ public class ReceitaDespesaMB implements Serializable {
 	private Integer idReceita;
 	
 	private Boolean exibeBotaoExcel = null;
+	
+	private Boolean bancoRequerido = null;
 			
 	
 	@PostConstruct
@@ -127,7 +141,9 @@ public class ReceitaDespesaMB implements Serializable {
 		ManagedBeanUtil.popularSIAnos(listaSIAnoReferencia,ANO_INICIAL,Boolean.FALSE);			
 		this.popularMeioPagamento();
 		this.meioPagamento = new MeioPagamento();
+		this.banco = new Banco();
 		this.exibeBotaoExcel = Boolean.FALSE;
+		this.bancoRequerido = Boolean.FALSE;
 	}
 	
 	public String salvarReceitaDespesa(){		
@@ -201,7 +217,7 @@ public class ReceitaDespesaMB implements Serializable {
 			this.receita.setData(this.data);
 			this.receita.setObservacao(this.observacao);
 			this.receita.setIdCondominio(this.idCondominio);
-			this.receita.setMeioPagamento(this.meioPagamento);
+			this.receita.setMeioPagamento(this.meioPagamento);			
 			this.receita.setNumeroDocumento(this.numeroDocumento);
 			this.receitaService.atualizar(this.receita);
 			this.receita = new Receita();
@@ -245,70 +261,8 @@ public class ReceitaDespesaMB implements Serializable {
 			logger.error("", e);
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
 		}		
-	}	
-	
-//	private void calcularTotal2(List<Receita> listaReceita, List<Despesa> listaDespesa){
-//		List<ReceitaDespesaVO> listaTotaisReceitasDespesasLocal = new ArrayList<ReceitaDespesaVO>();
-//		Double totalSicoob = 0.0;
-//		Double totalDinheiro = 0.0;
-//		Double totalReceitaSicoobDinheiro = 0.0;
-//		ReceitaDespesaVO receitaDespesaVO = null;
-//		
-//		if(!listaReceita.isEmpty() || !listaDespesa.isEmpty()){
-//			
-//			for (Receita receitaLocal : listaReceita) {
-//				if(receitaLocal.getMeioPagamento().getNome().equals(MeioPagamentoNomeEnum.DINHEIRO.getNome())){
-//					totalDinheiro+= receitaLocal.getValor();
-//				}else{
-//					totalSicoob+= receitaLocal.getValor();
-//				}
-//			}				
-//			
-//			receitaDespesaVO = new ReceitaDespesaVO();
-//			receitaDespesaVO.setDescricao(AplicacaoUtil.i18n("msg.receitaDespesa.receitaTotalSicoob"));
-//			receitaDespesaVO.setValor(totalSicoob);
-//			listaTotaisReceitasDespesasLocal.add(receitaDespesaVO);
-//			receitaDespesaVO = new ReceitaDespesaVO();
-//			receitaDespesaVO.setDescricao(AplicacaoUtil.i18n("msg.receitaDespesa.receitaTotalDinheiro"));
-//			receitaDespesaVO.setValor(totalDinheiro);
-//			listaTotaisReceitasDespesasLocal.add(receitaDespesaVO);
-//			receitaDespesaVO = new ReceitaDespesaVO();
-//			receitaDespesaVO.setDescricao(AplicacaoUtil.i18n("msg.receitaDespesa.receitaTotalSicobobDinheiro"));
-//			totalReceitaSicoobDinheiro = totalSicoob+totalDinheiro;
-//			receitaDespesaVO.setValor(totalReceitaSicoobDinheiro);
-//			listaTotaisReceitasDespesasLocal.add(receitaDespesaVO);
-//				
-//			totalSicoob = 0.0;
-//			totalDinheiro = 0.0;
-//			for (Despesa despesaLocal : listaDespesa) {
-//				if(despesaLocal.getMeioPagamento().getNome().equals(MeioPagamentoNomeEnum.DINHEIRO.getNome())){
-//					totalDinheiro+= despesaLocal.getValor();
-//				}else{
-//					totalSicoob+= despesaLocal.getValor();
-//				}
-//			}
-//			receitaDespesaVO = new ReceitaDespesaVO();
-//			receitaDespesaVO.setDescricao(AplicacaoUtil.i18n("msg.receitaDespesa.despesaTotalSicoob"));
-//			receitaDespesaVO.setValor(totalSicoob);		
-//			listaTotaisReceitasDespesasLocal.add(receitaDespesaVO);
-//			
-//			receitaDespesaVO = new ReceitaDespesaVO();
-//			receitaDespesaVO.setDescricao(AplicacaoUtil.i18n("msg.receitaDespesa.despesaTotalDinheiro"));
-//			receitaDespesaVO.setValor(totalDinheiro);
-//			listaTotaisReceitasDespesasLocal.add(receitaDespesaVO);
-//			
-//			receitaDespesaVO = new ReceitaDespesaVO();
-//			receitaDespesaVO.setDescricao(AplicacaoUtil.i18n("msg.receitaDespesa.despesaTotalSicobobDinheiro"));
-//			receitaDespesaVO.setValor(totalSicoob+totalDinheiro);
-//			listaTotaisReceitasDespesasLocal.add(receitaDespesaVO);
-//			
-//			receitaDespesaVO = new ReceitaDespesaVO();
-//			receitaDespesaVO.setDescricao(AplicacaoUtil.i18n("msg.receitaDespesa.receitaMenosDespesa"));
-//			receitaDespesaVO.setValor(totalReceitaSicoobDinheiro - (totalSicoob+totalDinheiro));
-//			listaTotaisReceitasDespesasLocal.add(receitaDespesaVO);
-//		}
-//		this.listaTotaisReceitasDespesas = new ListDataModel<ReceitaDespesaVO>(listaTotaisReceitasDespesasLocal);
-//	}
+	}		
+
 	
 	@SuppressWarnings("rawtypes")
 	private void calcularTotal(List<Receita> listaReceita, List<Despesa> listaDespesa) throws SQLException, Exception{
@@ -690,6 +644,27 @@ public class ReceitaDespesaMB implements Serializable {
 		this.idCondominio = null;
 	}
 	
+	public void popularBanco(){
+		try {
+			this.bancoRequerido = Boolean.FALSE;			
+			this.listaSIBanco = new ArrayList<SelectItem>();
+			if(this.meioPagamento.getNome().equals(ReceitaDespesaMeioPagamentoEnum.BANCO.getMeioPagamento())){
+				this.bancoRequerido = Boolean.TRUE;
+				List<Banco> listaBanco = null;
+				listaBanco = this.bancoService.buscarTodos();			
+				for (Banco banco : listaBanco) {
+					this.listaSIBanco.add(new SelectItem(banco.getId(),banco.getNome()));	
+				}
+			}
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");	
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}		
+	}
+	
 	private void limparTelaCadastroReceitaDespesa(){
 		this.despesa = new Despesa();
 		this.receita = new Receita();
@@ -705,11 +680,10 @@ public class ReceitaDespesaMB implements Serializable {
 	
 	private void popularMeioPagamento(){
 		try {
-			List<MeioPagamento> listaMeioPagamento = null;
-			listaMeioPagamento = this.meioPagamentoService.buscarTodos();
+			this.listaMeioPagamento = this.meioPagamentoService.buscarTodos();
 			this.listaSIMeioPagamento = new ArrayList<SelectItem>();
 			for (MeioPagamento meioPagamento : listaMeioPagamento) {
-				this.listaSIMeioPagamento.add(new SelectItem(meioPagamento.getId(),meioPagamento.getNome()));	
+				this.listaSIMeioPagamento.add(new SelectItem((MeioPagamento)meioPagamento,meioPagamento.getNome()));	
 			}			
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
@@ -902,6 +876,30 @@ public class ReceitaDespesaMB implements Serializable {
 
 	public void setExibeBotaoExcel(Boolean exibeBotaoExcel) {
 		this.exibeBotaoExcel = exibeBotaoExcel;
+	}
+
+	public List<SelectItem> getListaSIBanco() {
+		return listaSIBanco;
+	}
+
+	public void setListaSIBanco(List<SelectItem> listaSIBanco) {
+		this.listaSIBanco = listaSIBanco;
+	}
+
+	public Boolean getBancoRequerido() {
+		return bancoRequerido;
+	}
+
+	public void setBancoRequerido(Boolean bancoRequerido) {
+		this.bancoRequerido = bancoRequerido;
+	}
+
+	public Banco getBanco() {
+		return banco;
+	}
+
+	public void setBanco(Banco banco) {
+		this.banco = banco;
 	}	
 	
 

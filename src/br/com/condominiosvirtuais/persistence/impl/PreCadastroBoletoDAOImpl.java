@@ -243,5 +243,54 @@ public class PreCadastroBoletoDAOImpl implements PreCadastroBoletoDAO, Serializa
 		}
 		return listaPreCadastroBoleto;
 	}
+	
+	@Override
+	public PreCadastroBoleto buscarPorIdCondominioEPrincipal(Integer idCondominio, Boolean principal) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(PRE_CADASTRO_BOLETO);
+		query.append(" WHERE ");
+		query.append(ID_CONDOMINIO);
+		query.append(" = ?");
+		query.append(" AND ");
+		query.append(PRINCIPAL);
+		query.append(" = ?");
+		query.append(";");		
+		Connection con = Conexao.getConexao();
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;		
+		PreCadastroBoleto preCadastroBoleto = null;
+		try {
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, idCondominio, java.sql.Types.INTEGER);			
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 2, principal, java.sql.Types.BOOLEAN);			
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				preCadastroBoleto = new PreCadastroBoleto();				
+				preCadastroBoleto.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				preCadastroBoleto.setDiaMesVencimento((Integer) SQLUtil.getValorResultSet(resultSet, DIA_MES_VENCIMENTO, java.sql.Types.INTEGER));
+				preCadastroBoleto.setTitulo(String.valueOf(SQLUtil.getValorResultSet(resultSet, TITULO, java.sql.Types.VARCHAR)));				
+				preCadastroBoleto.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
+				preCadastroBoleto.setInstrucao1(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO1, java.sql.Types.VARCHAR)));
+				preCadastroBoleto.setInstrucao2(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO2, java.sql.Types.VARCHAR)));
+				preCadastroBoleto.setInstrucao3(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO3, java.sql.Types.VARCHAR)));
+				preCadastroBoleto.setPrincipal((Boolean) SQLUtil.getValorResultSet(resultSet, PRINCIPAL, java.sql.Types.BOOLEAN));
+				preCadastroBoleto.setBeneficiario(this.beneficiarioDAO.get().buscarPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_BENEFICIARIO, java.sql.Types.INTEGER), con));				
+				preCadastroBoleto.setContaBancaria(this.contaBancariaDAO.get().buscarPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONTA_BANCARIA, java.sql.Types.INTEGER), con));								
+			}
+		} catch (SQLException e) {					
+			throw e;
+		} catch (Exception e) {					
+			throw e;	
+		}finally{
+			try {
+				preparedStatement.close();
+				con.close();				
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);
+			}
+		}
+		return preCadastroBoleto;
+	}
 
 }

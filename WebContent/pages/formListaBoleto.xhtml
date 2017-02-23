@@ -107,7 +107,7 @@
 							<f:facet name="header">
 								<a4j:commandLink value="#{msg['boleto.pago']}" render="tableBoleto" action="#{ordenaBoletoMB.ordenarPorPago}" />
 							</f:facet>
-							<h:outputText value="#{boleto.pago == true ? msg['sim'] : msg['nao']}" />
+							<h:outputText value="#{boleto.pago == true ? msg['boleto.pago.0'] : msg['boleto.pago.1']}" />
 						</rich:column>
 						<rich:column sortBy="#{boleto.valor}" sortOrder="#{ordenaBoletoMB.valorBoleto}">
 							<f:facet name="header">
@@ -121,7 +121,7 @@
 							<f:facet name="header">
 								<h:outputText value="#{msg.rotuloAcao}" />
 							</f:facet>
-							<h:commandLink value="#{msg.linkPagar}" render="tableBoleto" action="#{boletoMB.pagarBoleto}" immediate="true" title="#{msg['titl.boleto.linkPagar']}" rendered="#{boleto.pago == false}"/>					
+							<h:commandLink value="#{msg.linkQuitar}" render="tableBoleto" action="#{boletoMB.pagarBoleto}" immediate="true" title="#{msg['titl.boleto.linkPagar']}" rendered="#{boleto.pago == false}"/>					
 				 			#{' '}                                                                           
 							<h:commandLink value="#{msg.linkEmAberto}" render="tableBoleto" action="#{boletoMB.deixarEmAberto}" immediate="false" title="#{msg['titl.boleto.linkEmAberto']}" rendered="#{boleto.pago == true}" />					
 				 			#{' '}                                                                           

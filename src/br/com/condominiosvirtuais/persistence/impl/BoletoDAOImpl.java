@@ -118,7 +118,7 @@ public class BoletoDAOImpl implements BoletoDAO, Serializable {
 		query.append(",");
 		query.append(ID_CONTA_BANCARIA);
 		query.append(") ");
-		query.append("VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
+		query.append("VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 		try {
 			statement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(statement,1, boleto.getId(), java.sql.Types.INTEGER);
@@ -127,7 +127,7 @@ public class BoletoDAOImpl implements BoletoDAO, Serializable {
 			SQLUtil.setValorPpreparedStatement(statement,4, boleto.getDocumento(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement,5, boleto.getNumero(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement,6, boleto.getTitulo(), java.sql.Types.VARCHAR);			
-			SQLUtil.setValorPpreparedStatement(statement,7, boleto.getValor(), java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement,7, boleto.getValor(), java.sql.Types.DOUBLE);
 			SQLUtil.setValorPpreparedStatement(statement,8, boleto.getPago(), java.sql.Types.BOOLEAN);
 			SQLUtil.setValorPpreparedStatement(statement,9, boleto.getInstrucao1(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement,10, boleto.getInstrucao2(), java.sql.Types.VARCHAR);
@@ -219,7 +219,7 @@ public class BoletoDAOImpl implements BoletoDAO, Serializable {
 				boleto.setDocumento(String.valueOf(SQLUtil.getValorResultSet(resultSet, DOCUMENTO, java.sql.Types.VARCHAR)));
 				boleto.setNumero(String.valueOf(SQLUtil.getValorResultSet(resultSet, NUMERO, java.sql.Types.VARCHAR)));
 				boleto.setTitulo(String.valueOf(SQLUtil.getValorResultSet(resultSet, TITULO, java.sql.Types.VARCHAR)));
-				boleto.setValor((Long) SQLUtil.getValorResultSet(resultSet, VALOR, java.sql.Types.BIGINT));
+				boleto.setValor((Double) SQLUtil.getValorResultSet(resultSet, VALOR, java.sql.Types.DOUBLE));
 				boleto.setPago((Boolean) SQLUtil.getValorResultSet(resultSet, PAGO, java.sql.Types.BOOLEAN));
 				boleto.setInstrucao1(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO1, java.sql.Types.VARCHAR)));
 				boleto.setInstrucao2(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO2, java.sql.Types.VARCHAR)));
@@ -287,7 +287,7 @@ public class BoletoDAOImpl implements BoletoDAO, Serializable {
 				boleto.setDocumento(String.valueOf(SQLUtil.getValorResultSet(resultSet, DOCUMENTO, java.sql.Types.VARCHAR)));
 				boleto.setNumero(String.valueOf(SQLUtil.getValorResultSet(resultSet, NUMERO, java.sql.Types.VARCHAR)));
 				boleto.setTitulo(String.valueOf(SQLUtil.getValorResultSet(resultSet, TITULO, java.sql.Types.VARCHAR)));
-				boleto.setValor((Long) SQLUtil.getValorResultSet(resultSet, VALOR, java.sql.Types.BIGINT));
+				boleto.setValor((Double) SQLUtil.getValorResultSet(resultSet, VALOR, java.sql.Types.DOUBLE));
 				boleto.setInstrucao1(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO1, java.sql.Types.VARCHAR)));
 				boleto.setInstrucao2(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO2, java.sql.Types.VARCHAR)));
 				boleto.setInstrucao3(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO3, java.sql.Types.VARCHAR)));
@@ -397,7 +397,7 @@ public class BoletoDAOImpl implements BoletoDAO, Serializable {
 				boleto.setDocumento(String.valueOf(SQLUtil.getValorResultSet(resultSet, DOCUMENTO, java.sql.Types.VARCHAR)));
 				boleto.setNumero(String.valueOf(SQLUtil.getValorResultSet(resultSet, NUMERO, java.sql.Types.VARCHAR)));
 				boleto.setTitulo(String.valueOf(SQLUtil.getValorResultSet(resultSet, TITULO, java.sql.Types.VARCHAR)));
-				boleto.setValor((Long) SQLUtil.getValorResultSet(resultSet, VALOR, java.sql.Types.BIGINT));
+				boleto.setValor((Double) SQLUtil.getValorResultSet(resultSet, VALOR, java.sql.Types.DOUBLE));
 				boleto.setInstrucao1(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO1, java.sql.Types.VARCHAR)));
 				boleto.setInstrucao2(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO2, java.sql.Types.VARCHAR)));
 				boleto.setInstrucao3(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO3, java.sql.Types.VARCHAR)));
@@ -469,7 +469,7 @@ public class BoletoDAOImpl implements BoletoDAO, Serializable {
 				boleto.setDocumento(String.valueOf(SQLUtil.getValorResultSet(resultSet, DOCUMENTO, java.sql.Types.VARCHAR)));
 				boleto.setNumero(String.valueOf(SQLUtil.getValorResultSet(resultSet, NUMERO, java.sql.Types.VARCHAR)));
 				boleto.setTitulo(String.valueOf(SQLUtil.getValorResultSet(resultSet, TITULO, java.sql.Types.VARCHAR)));
-				boleto.setValor((Long) SQLUtil.getValorResultSet(resultSet, VALOR, java.sql.Types.BIGINT));
+				boleto.setValor((Double) SQLUtil.getValorResultSet(resultSet, VALOR, java.sql.Types.DOUBLE));
 				boleto.setInstrucao1(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO1, java.sql.Types.VARCHAR)));
 				boleto.setInstrucao2(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO2, java.sql.Types.VARCHAR)));
 				boleto.setInstrucao3(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO3, java.sql.Types.VARCHAR)));
