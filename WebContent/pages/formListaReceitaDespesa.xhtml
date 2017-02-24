@@ -100,11 +100,17 @@
 						</f:facet>
 						<h:outputText value="#{receita.numeroDocumento}" />
 					</rich:column>
-					<rich:column sortBy="#{receita.meioPagamento.nome}" sortOrder="#{ordenaReceitaMB.meioPagamentoReceita}">
+					<rich:column sortBy="#{receita.meioPagamento.nomeI18n}" sortOrder="#{ordenaReceitaMB.meioPagamentoReceita}">
 						<f:facet name="header">
 							<a4j:commandLink value="#{msg['receitaDespesa.meioPagamento']}" render="tableReceita" action="#{ordenaReceitaMB.ordenarPorMeioPagamentoReceita}" />
 						</f:facet>
-						<h:outputText value="#{receita.meioPagamento.nome}" />
+						<h:outputText value="#{receita.meioPagamento.nomeI18n}" />
+					</rich:column>
+					<rich:column sortBy="#{receita.banco.nome}" sortOrder="#{ordenaDespesaMB.meioPagamentoDespesa}">
+						<f:facet name="header">
+							<a4j:commandLink value="#{msg['receitaDespesa.banco']}" render="tableDespesa" action="#{ordenaDespesaMB.ordenarPorMeioPagamentoDespesa}" />
+						</f:facet>
+						<h:outputText value="#{receita.banco.nome}" />
 					</rich:column>
 					<rich:column sortBy="#{receita.observacao}" sortOrder="#{ordenaReceitaMB.observacaoReceita}">
 						<f:facet name="header">
@@ -157,11 +163,17 @@
 						</f:facet>
 						<h:outputText value="#{despesa.numeroDocumento}" />
 					</rich:column>
-					<rich:column sortBy="#{despesa.meioPagamento.nome}" sortOrder="#{ordenaDespesaMB.meioPagamentoDespesa}">
+					<rich:column sortBy="#{despesa.meioPagamento.nomeI18n}" sortOrder="#{ordenaDespesaMB.meioPagamentoDespesa}">
 						<f:facet name="header">
 							<a4j:commandLink value="#{msg['receitaDespesa.meioPagamento']}" render="tableDespesa" action="#{ordenaDespesaMB.ordenarPorMeioPagamentoDespesa}" />
 						</f:facet>
-						<h:outputText value="#{despesa.meioPagamento.nome}" />
+						<h:outputText value="#{despesa.meioPagamento.nomeI18n}" />
+					</rich:column>
+					<rich:column sortBy="#{despesa.banco.nome}" sortOrder="#{ordenaDespesaMB.meioPagamentoDespesa}">
+						<f:facet name="header">
+							<a4j:commandLink value="#{msg['receitaDespesa.banco']}" render="tableDespesa" action="#{ordenaDespesaMB.ordenarPorMeioPagamentoDespesa}" />
+						</f:facet>
+						<h:outputText value="#{despesa.banco.nome}" />
 					</rich:column>
 					<rich:column sortBy="#{despesa.observacao}" sortOrder="#{ordenaDespesaMB.observacaoDespesa}">
 						<f:facet name="header">

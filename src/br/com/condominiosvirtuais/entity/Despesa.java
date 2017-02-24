@@ -27,6 +27,11 @@ public class Despesa {
 	
 	private Banco banco;
 	
+	
+	public Despesa(){
+		this.banco = new Banco();
+		this.meioPagamento = new MeioPagamento();
+	}
 
 	public Integer getId() {
 		return id;

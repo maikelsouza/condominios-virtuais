@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Despesa;
+import br.com.condominiosvirtuais.persistence.BancoDAO;
 import br.com.condominiosvirtuais.persistence.DespesaDAO;
 import br.com.condominiosvirtuais.persistence.MeioPagamentoDAO;
 import br.com.condominiosvirtuais.util.SQLUtil;
@@ -48,6 +49,9 @@ private static final long serialVersionUID = 1L;
 	@Inject
 	private Instance<MeioPagamentoDAO> meioPagamentoDAO;
 	
+	@Inject
+	private Instance<BancoDAO> bancoDAO;
+	
 	@Override
 	public void salvar(Despesa despesa) throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
@@ -66,9 +70,11 @@ private static final long serialVersionUID = 1L;
 		query.append(",");	
 		query.append(ID_CONDOMINIO);
 		query.append(",");
+		query.append(ID_BANCO);
+		query.append(",");
 		query.append(ID_MEIO_PAGAMENTO);
 		query.append(") ");
-		query.append("VALUES(?,?,?,?,?,?,?)");
+		query.append("VALUES(?,?,?,?,?,?,?,?)");
 		PreparedStatement statement = null;		
 		Connection con = Conexao.getConexao();
 		try {
@@ -79,7 +85,8 @@ private static final long serialVersionUID = 1L;
 			SQLUtil.setValorPpreparedStatement(statement, 4, despesa.getObservacao(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement, 5, despesa.getNumeroDocumento(), java.sql.Types.VARCHAR);			
 			SQLUtil.setValorPpreparedStatement(statement, 6, despesa.getIdCondominio(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement, 7, despesa.getMeioPagamento().getId(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 7, despesa.getBanco().getId(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 8, despesa.getMeioPagamento().getId(), java.sql.Types.INTEGER);
 			statement.executeUpdate();
 		} catch (SQLException e) {			
 			throw e;
@@ -129,6 +136,7 @@ private static final long serialVersionUID = 1L;
 				despesa.setNumeroDocumento(String.valueOf(SQLUtil.getValorResultSet(resultSet, NUMERO_DOCUMENTO, java.sql.Types.VARCHAR)));				
 				despesa.setData((Date) SQLUtil.getValorResultSet(resultSet, DATA, java.sql.Types.DATE));
 				despesa.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
+				despesa.setBanco(this.bancoDAO.get().buscarPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_BANCO, java.sql.Types.INTEGER), con));
 				despesa.setMeioPagamento(this.meioPagamentoDAO.get().buscaPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_MEIO_PAGAMENTO, java.sql.Types.INTEGER), con));
 				listaDespesa.add(despesa);
 			}
@@ -168,6 +176,8 @@ private static final long serialVersionUID = 1L;
 		query.append(ID_CONDOMINIO);
 		query.append("= ?, ");
 		query.append(ID_MEIO_PAGAMENTO);
+		query.append("= ?, ");		
+		query.append(ID_BANCO);
 		query.append("= ? ");		
 		query.append("WHERE ");
 		query.append(ID);
@@ -183,7 +193,8 @@ private static final long serialVersionUID = 1L;
 			SQLUtil.setValorPpreparedStatement(statement,5, despesa.getNumeroDocumento(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement,6, despesa.getIdCondominio(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement,7, despesa.getMeioPagamento().getId(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement,8, despesa.getId(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement,8, despesa.getBanco().getId(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement,9, despesa.getId(), java.sql.Types.INTEGER);
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			throw e;

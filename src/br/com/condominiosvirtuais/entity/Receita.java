@@ -27,6 +27,12 @@ private Integer id;
 	
 	private Banco banco;
 
+	
+	public Receita(){
+		this.banco = new Banco();
+		this.meioPagamento = new MeioPagamento();
+	}
+	
 	public Integer getId() {
 		return id;
 	}
