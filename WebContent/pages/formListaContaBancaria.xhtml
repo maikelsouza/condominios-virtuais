@@ -14,14 +14,22 @@
 				<f:facet name="header">
 					<h:outputText value="#{msg.filtroContaBancaria}" />
 				</f:facet>
-				<h:panelGrid columns="1">
+				<h:panelGrid columns="2">
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['condominio']}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['contaBancaria.situacao']}:" for="idSituacao" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>					
 					<h:selectOneMenu id="idCondominio" value="#{contaBancariaMB.contaBancaria.idCondominio}" label="#{msg['condominio.label']}" required="true">
 						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="true" />
 						<f:selectItems value="#{contaBancariaMB.listaSICondominios}" />
+					</h:selectOneMenu>                                        
+					<h:selectOneMenu id="idSituacao" value="#{contaBancariaMB.situacaoContaBancaria}" label="#{msg['contabancaria.situacao.label']}" required="true">
+						<f:selectItem itemValue="-1" itemLabel="#{msg['todas']}" />
+						<f:selectItems value="#{contaBancariaMB.listaSISituacao}" />
 					</h:selectOneMenu>
 				</h:panelGrid>
 
@@ -70,6 +78,12 @@
 									action="#{ordenaContaBancariaMB.ordenarPorBanco}" />
 							</f:facet>
 							<h:outputText value="#{contaBancaria.banco.nome}" />
+						</rich:column>
+						<rich:column sortBy="#{contaBancaria.banco.situacao}" sortOrder="#{ordenaContaBancariaMB.carteiraContaBancaria}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['contaBancaria.situacao']}" render="tableContaBancaria" action="#{ordenaContaBancariaMB.ordenarPorSituacao}" />
+							</f:facet>
+							<h:outputText value="#{contaBancaria.situacao == true ? msg['contaBancaria.situacao.1'] : msg['contaBancaria.situacao.0']}" />
 						</rich:column>
 						<rich:column style="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1') == false ? 'width:5%;' : 'width:10%;'}">
 							<f:facet name="header">

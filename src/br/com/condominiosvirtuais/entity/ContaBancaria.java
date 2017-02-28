@@ -14,6 +14,8 @@ public class ContaBancaria {
 	
 	private Integer idCondominio;
 	
+	private Boolean situacao;
+	
 	public ContaBancaria(){
 		this.banco = new Banco();
 	}
@@ -65,6 +67,17 @@ public class ContaBancaria {
 
 	public void setIdCondominio(Integer idCondominio) {
 		this.idCondominio = idCondominio;
-	}		
+	}
+
+	public Boolean getSituacao() {
+		return situacao;
+	}
+
+	public void setSituacao(Boolean situacao) {
+		this.situacao = situacao;
+	}	
+	
+	
+	
 
 }

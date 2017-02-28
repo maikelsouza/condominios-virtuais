@@ -1931,8 +1931,14 @@
    <to-view-id>/pages/formListaContaBancaria.xhtml</to-view-id>
   </navigation-case>
   <navigation-case>                  
-   <from-action>#{contaBancariaMB.voltarContaBancaria}</from-action>
-   <from-outcome>voltar</from-outcome>
+   <from-action>#{contaBancariaMB.cancelarContaBancaria}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formListaContaBancaria.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>  
+  <navigation-case>                  
+   <from-action>#{contaBancariaMB.atualizar}</from-action>
+   <from-outcome>atualizar</from-outcome>
    <to-view-id>/pages/formListaContaBancaria.xhtml</to-view-id>
   </navigation-case>  
  </navigation-rule> 
@@ -1965,7 +1971,7 @@
    <to-view-id>/pages/formListaBeneficiario.xhtml</to-view-id>
   </navigation-case> 
   <navigation-case>                  
-   <from-action>#{beneficiarioMB.cancelar}</from-action>
+   <from-action>#{beneficiarioMB.cancelarBeneficiario}</from-action>
    <from-outcome>cancelar</from-outcome>
    <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
    <redirect/>
@@ -1993,9 +1999,9 @@
    <to-view-id>/pages/formListaBeneficiario.xhtml</to-view-id>
   </navigation-case>
   <navigation-case>                  
-   <from-action>#{beneficiarioMB.cancelar}</from-action>
+   <from-action>#{beneficiarioMB.cancelarBeneficiario}</from-action>
    <from-outcome>cancelar</from-outcome>
-   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
+   <to-view-id>/pages/formListaBeneficiario.xhtml</to-view-id>
    <redirect/>
   </navigation-case> 
  </navigation-rule> 

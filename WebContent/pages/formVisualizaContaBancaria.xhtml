@@ -25,6 +25,8 @@
 				    <h:outputText id="idNumero" value="#{contaBancariaMB.contaBancaria.numero}"  />
 					<h:outputLabel value="#{msg['contaBancaria.carteira']}:" for="idCarteira" />
 					<h:outputText id="idCarteira" value="#{contaBancariaMB.contaBancaria.carteira}"  />
+					<h:outputLabel value="#{msg['contaBancaria.situacao']}:" for="idSituacao" />
+					<h:outputText id="idSituacao" value="#{contaBancariaMB.contaBancaria.situacao == true ? msg['contaBancaria.situacao.1'] : msg['contaBancaria.situacao.0']}"  />
 				 </h:panelGrid> 
 			</rich:panel>			
 			

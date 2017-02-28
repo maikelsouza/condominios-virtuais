@@ -17,6 +17,8 @@ public interface BeneficiarioDAO {
 	
 	public abstract List<Beneficiario> buscarPorIdCondominio(Integer idCondominio) throws SQLException, BusinessException, Exception;
 	
+	public abstract List<Beneficiario> buscarPorIdCondominioESituacao(Integer idCondominio, Boolean situacao) throws SQLException, BusinessException, Exception;
+	
 	public abstract Beneficiario buscarPorId(Integer idBeneficiario, Connection con) throws SQLException, BusinessException, Exception;
 
 }

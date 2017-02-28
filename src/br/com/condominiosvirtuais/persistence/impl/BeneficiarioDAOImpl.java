@@ -30,9 +30,17 @@ public class BeneficiarioDAOImpl implements Serializable, BeneficiarioDAO {
     
     private static final String NOME = "NOME";
     
-    private static final String CPRF = "CPRF";    
+    private static final String CPRF = "CPRF";
     
-    private static final String ID_CONDOMINIO = "ID_CONDOMINIO";
+    private static final String SITUACAO = "SITUACAO";
+    
+    private static final String ID_CONDOMINIO = "ID_CONDOMINIO";    
+    
+    private static final String FK_PRE_CADASTRO_BOLETO_ID_BENEFICIARIO_BENEFICIARIO_ID = "FK_PRE_CADASTRO_BOLETO_ID_BENEFICIARIO_BENEFICIARIO_ID";
+    
+    private static final String FK_BOLETO_ID_BENEFICIARIO_BENEFICIARIO_ID = "FK_BOLETO_ID_BENEFICIARIO_BENEFICIARIO_ID";
+    
+    
     
     @Inject
     private EnderecoDAO enderecoDAO;
@@ -52,13 +60,16 @@ public class BeneficiarioDAOImpl implements Serializable, BeneficiarioDAO {
 			query.append(",");
 			query.append(CPRF); 
 			query.append(",");
+			query.append(SITUACAO); 
+			query.append(",");
 			query.append(ID_CONDOMINIO); 
 			query.append(") ");
-			query.append("VALUES(?,?,?)");
+			query.append("VALUES(?,?,?,?)");
 			statement = con.prepareStatement(query.toString(),PreparedStatement.RETURN_GENERATED_KEYS);			
 			SQLUtil.setValorPpreparedStatement(statement, 1, beneficiario.getNome(),java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement, 2, beneficiario.getCprf(), java.sql.Types.BIGINT);
-			SQLUtil.setValorPpreparedStatement(statement, 3, beneficiario.getIdCondominio(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 3, beneficiario.getSituacao(), java.sql.Types.BOOLEAN);
+			SQLUtil.setValorPpreparedStatement(statement, 4, beneficiario.getIdCondominio(), java.sql.Types.INTEGER);
 			statement.execute();
 			ResultSet rs = statement.getGeneratedKeys(); 
 			rs.next();
@@ -103,6 +114,7 @@ public class BeneficiarioDAOImpl implements Serializable, BeneficiarioDAO {
 				beneficiario.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
 				beneficiario.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
 				beneficiario.setCprf((Long) (SQLUtil.getValorResultSet(resultSet, CPRF, java.sql.Types.BIGINT)));
+				beneficiario.setSituacao((Boolean) (SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.BOOLEAN)));
 				beneficiario.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
 				beneficiario.setEndereco(this.enderecoDAO.buscarEnderecoPorIdBeneficiario(beneficiario.getId(), con));								
 				listaBeneficiario.add(beneficiario);
@@ -143,6 +155,7 @@ public class BeneficiarioDAOImpl implements Serializable, BeneficiarioDAO {
 				beneficiario.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
 				beneficiario.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
 				beneficiario.setCprf((Long) (SQLUtil.getValorResultSet(resultSet, CPRF, java.sql.Types.BIGINT)));
+				beneficiario.setSituacao((Boolean) (SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.BOOLEAN)));
 				beneficiario.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
 				beneficiario.setEndereco(this.enderecoDAO.buscarEnderecoPorIdBeneficiario(beneficiario.getId(), con));	
 			}
@@ -167,6 +180,8 @@ public class BeneficiarioDAOImpl implements Serializable, BeneficiarioDAO {
 		query.append(" = ?, ");
 		query.append(CPRF);
 		query.append(" = ?, ");
+		query.append(SITUACAO);
+		query.append(" = ?, ");
 		query.append(ID_CONDOMINIO);
 		query.append(" = ? ");		
 		query.append("WHERE ");
@@ -177,8 +192,9 @@ public class BeneficiarioDAOImpl implements Serializable, BeneficiarioDAO {
 			statement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(statement, 1, beneficiario.getNome(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement, 2, beneficiario.getCprf(), java.sql.Types.BIGINT);
-			SQLUtil.setValorPpreparedStatement(statement, 3, beneficiario.getIdCondominio(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement, 4, beneficiario.getId(), java.sql.Types.INTEGER);			
+			SQLUtil.setValorPpreparedStatement(statement, 3, beneficiario.getSituacao(), java.sql.Types.BOOLEAN);
+			SQLUtil.setValorPpreparedStatement(statement, 4, beneficiario.getIdCondominio(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 5, beneficiario.getId(), java.sql.Types.INTEGER);			
 			statement.executeUpdate();
 			con.commit();
 		} catch (SQLException e) {							
@@ -216,7 +232,13 @@ public class BeneficiarioDAOImpl implements Serializable, BeneficiarioDAO {
 			statement.executeUpdate();	
 			con.commit();
 		} catch (SQLException e) {
-			throw e;
+			if (e.getMessage().contains(FK_PRE_CADASTRO_BOLETO_ID_BENEFICIARIO_BENEFICIARIO_ID)){
+				throw new BusinessException("msg.beneficiario.excluirPreCadastroBoletoAssociado");				
+			}else if (e.getMessage().contains(FK_BOLETO_ID_BENEFICIARIO_BENEFICIARIO_ID)){
+				throw new BusinessException("msg.beneficiario.excluirBoletoAssociado");		
+			}else{		
+				throw e;		
+			}
 		}catch (Exception e) {
 			throw e;
 		}finally{
@@ -228,6 +250,53 @@ public class BeneficiarioDAOImpl implements Serializable, BeneficiarioDAO {
 			}
 		}	
 		
+	}
+
+	@Override
+	public List<Beneficiario> buscarPorIdCondominioESituacao(Integer idCondominio, Boolean situacao) throws SQLException, BusinessException, Exception {
+		Connection con = Conexao.getConexao();		
+		List<Beneficiario> listaBeneficiario = new ArrayList<Beneficiario>();
+		Beneficiario beneficiario = null;
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(BENEFICIARIO);
+		query.append(" WHERE ");
+		query.append(ID_CONDOMINIO);		
+		query.append(" = ? ");
+		query.append(" AND ");
+		query.append(SITUACAO);
+		query.append(" = ? ");
+		query.append(";");		
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		try {
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, idCondominio, java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 2, situacao, java.sql.Types.BOOLEAN);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				beneficiario = new Beneficiario();
+				beneficiario.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				beneficiario.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+				beneficiario.setCprf((Long) (SQLUtil.getValorResultSet(resultSet, CPRF, java.sql.Types.BIGINT)));
+				beneficiario.setSituacao((Boolean) (SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.BOOLEAN)));
+				beneficiario.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
+				beneficiario.setEndereco(this.enderecoDAO.buscarEnderecoPorIdBeneficiario(beneficiario.getId(), con));								
+				listaBeneficiario.add(beneficiario);
+			}
+			} catch (SQLException e) {
+				throw e;
+			} catch (Exception e) {
+				throw e;		
+			}finally{
+				try {
+					preparedStatement.close();
+					con.close();				
+				} catch (SQLException e) {
+					logger.error("erro sqlstate "+e.getSQLState(), e);
+				}
+			}				
+		return listaBeneficiario;
 	}  
     
     

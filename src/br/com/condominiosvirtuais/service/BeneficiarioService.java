@@ -12,6 +12,8 @@ public interface BeneficiarioService {
 	
 	public abstract List<Beneficiario> buscarPorIdCondominio(Integer idCondominio) throws SQLException, BusinessException, Exception;
 	
+	public abstract List<Beneficiario> buscarPorIdCondominioESituacao(Integer idCondominio, Boolean situacao) throws SQLException, BusinessException, Exception;
+	
 	public abstract void atualizar(Beneficiario beneficiario) throws SQLException, BusinessException, Exception;
 	
 	public abstract void excluir(Beneficiario beneficiario) throws SQLException, BusinessException, Exception;

@@ -14,14 +14,23 @@
 				<f:facet name="header">
 					<h:outputText value="#{msg.filtroBeneficiario}" />
 				</f:facet>
-				<h:panelGrid columns="1">
+				<h:panelGrid columns="2">
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['condominio']}:" for="idCondominio" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['beneficiario.situacao']}:" for="idSituacao" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>					
 					<h:selectOneMenu id="idCondominio" value="#{beneficiarioMB.beneficiario.idCondominio}" label="#{msg['condominio.label']}" required="true">
-						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="true" />
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="true" />						
 						<f:selectItems value="#{beneficiarioMB.listaSICondominios}" />
+					</h:selectOneMenu>
+					
+					<h:selectOneMenu id="idSituacao" value="#{beneficiarioMB.situacaoBeneficiario}" label="#{msg['beneficiario.situacao.label']}" required="true">
+						<f:selectItem itemValue="-1" itemLabel="#{msg['todos']}" />						
+						<f:selectItems value="#{beneficiarioMB.listaSISituacao}" />
 					</h:selectOneMenu>
 				</h:panelGrid>
 
@@ -51,6 +60,12 @@
 							</f:facet>
 							<h:outputText value="#{beneficiario.nome}" />
 						</rich:column>
+						<rich:column sortBy="#{beneficiario.situacao}" sortOrder="#{ordenaBeneficiarioMB.cprfBeneficiario}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['beneficiario.situacao']}" render="tableBeneficiario" action="#{ordenaBeneficiarioMB.ordenarPorCprf}" />
+							</f:facet>
+							<h:outputText value="#{beneficiario.situacao == true ? msg['beneficiario.situacao.1'] : msg['beneficiario.situacao.0']}" />
+						</rich:column>						
 						<rich:column sortBy="#{beneficiario.cprf}" sortOrder="#{ordenaBeneficiarioMB.cprfBeneficiario}">
 							<f:facet name="header">
 								<a4j:commandLink value="#{msg['beneficiario.cprf']}" render="tableBeneficiario" action="#{ordenaBeneficiarioMB.ordenarPorCprf}" />

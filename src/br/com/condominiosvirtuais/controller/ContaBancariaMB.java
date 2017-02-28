@@ -17,9 +17,12 @@ import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Banco;
 import br.com.condominiosvirtuais.entity.ContaBancaria;
+import br.com.condominiosvirtuais.enumeration.ContaBancariaSituacaoEnum;
+import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.service.BancoService;
 import br.com.condominiosvirtuais.service.CondominioService;
 import br.com.condominiosvirtuais.service.ContaBancariaService;
+import br.com.condominiosvirtuais.util.AplicacaoUtil;
 import br.com.condominiosvirtuais.util.ManagedBeanUtil;
 
 @Named @SessionScoped
@@ -43,6 +46,8 @@ public class ContaBancariaMB implements Serializable {
 	
 	private List<SelectItem> listaSIBancos = null;
 	
+	private List<SelectItem> listaSISituacao = null;
+	
 	private List<SelectItem> listaSICondominios = null;	
 	
 	private ContaBancaria contaBancaria = null;
@@ -50,6 +55,8 @@ public class ContaBancariaMB implements Serializable {
 	private ListDataModel<ContaBancaria> listaContasBancarias;
 	
 	private String nomeCondominio;
+	
+	private Integer situacaoContaBancaria;
 	
 	
 	
@@ -62,6 +69,7 @@ public class ContaBancariaMB implements Serializable {
 		try {
 			this.listaSICondominios = this.condominioMB.get().buscarListaCondominiosAtivos();
 			this.popularListaSiBancos();
+			this.popularListaSiSituacao();			
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
@@ -73,6 +81,7 @@ public class ContaBancariaMB implements Serializable {
 	
 	public String salvar(){
 		try {
+			this.contaBancaria.setSituacao(Boolean.TRUE);
 			this.contaBancariaService.salvar(this.contaBancaria);
 			this.pesquisar();			
 			ManagedBeanUtil.setMensagemInfo("msg.contaBancaria.salvaSucesso");
@@ -89,7 +98,13 @@ public class ContaBancariaMB implements Serializable {
 	
 	public void pesquisar(){
 		try {
-			this.listaContasBancarias = new ListDataModel<ContaBancaria>(this.contaBancariaService.buscarPorIdCondominio(this.contaBancaria.getIdCondominio()));
+			if(this.situacaoContaBancaria == -1){
+				this.listaContasBancarias = new ListDataModel<ContaBancaria>(this.contaBancariaService.buscarPorIdCondominio(this.contaBancaria.getIdCondominio()));				
+			}else if (this.situacaoContaBancaria == ContaBancariaSituacaoEnum.ATIVA.getSituacao()) {
+				this.listaContasBancarias = new ListDataModel<ContaBancaria>(this.contaBancariaService.buscarPorIdCondominioESituacao(this.contaBancaria.getIdCondominio(),Boolean.TRUE));
+			}else{
+				this.listaContasBancarias = new ListDataModel<ContaBancaria>(this.contaBancariaService.buscarPorIdCondominioESituacao(this.contaBancaria.getIdCondominio(),Boolean.FALSE));				
+			}
 			if (this.listaContasBancarias.getRowCount() == 0){
 				ManagedBeanUtil.setMensagemInfo("msg.contaBancaria.semContasBancarias");
 			}			
@@ -118,6 +133,7 @@ public class ContaBancariaMB implements Serializable {
 	
 	public String atualizar(){
 		try {
+			this.contaBancaria.setSituacao(this.situacaoContaBancaria == ContaBancariaSituacaoEnum.ATIVA.getSituacao() ? Boolean.TRUE : Boolean.FALSE);		
 			this.contaBancariaService.atualizar(this.contaBancaria);
 			this.pesquisar();
 			ManagedBeanUtil.setMensagemInfo("msg.contaBancaria.atualizarSucesso");
@@ -129,7 +145,7 @@ public class ContaBancariaMB implements Serializable {
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
 		}
 		
-		return "salvar";
+		return "atualizar";
 	}
 	
 	public String excluir(){
@@ -140,6 +156,9 @@ public class ContaBancariaMB implements Serializable {
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (BusinessException e) {				
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage());
+			return null;		
 		} catch (Exception e) {
 			logger.error("", e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
@@ -150,11 +169,12 @@ public class ContaBancariaMB implements Serializable {
 	
 	public String editaContaBancaria(){
 		this.contaBancaria = this.listaContasBancarias.getRowData();
+		this.situacaoContaBancaria = this.contaBancaria.getSituacao() == Boolean.TRUE ? ContaBancariaSituacaoEnum.ATIVA.getSituacao() : ContaBancariaSituacaoEnum.INATIVA.getSituacao(); 
 		return "editar";
 	}
 	
-	public String voltarContaBancaria(){
-		return "voltar";
+	public String cancelarContaBancaria(){
+		return "cancelar";
 	}
 	
 	public String cancelarSalvarContaBancaria(){
@@ -183,6 +203,14 @@ public class ContaBancariaMB implements Serializable {
 			
 		}
 	}
+	
+	private void popularListaSiSituacao() throws SQLException, Exception{
+		this.listaSISituacao = new ArrayList<SelectItem>();
+		this.listaSISituacao.add(new SelectItem(ContaBancariaSituacaoEnum.ATIVA.getSituacao(), AplicacaoUtil.i18n("contaBancaria.situacao.1")));
+		this.listaSISituacao.add(new SelectItem(ContaBancariaSituacaoEnum.INATIVA.getSituacao(), AplicacaoUtil.i18n("contaBancaria.situacao.0")));
+	}
+	
+	
 
 	public List<SelectItem> getListaSIBancos() {
 		return listaSIBancos;
@@ -222,7 +250,22 @@ public class ContaBancariaMB implements Serializable {
 
 	public void setNomeCondominio(String nomeCondominio) {
 		this.nomeCondominio = nomeCondominio;
-	}	
-	
+	}
+
+	public List<SelectItem> getListaSISituacao() {
+		return listaSISituacao;
+	}
+
+	public void setListaSISituacao(List<SelectItem> listaSISituacao) {
+		this.listaSISituacao = listaSISituacao;
+	}
+
+	public Integer getSituacaoContaBancaria() {
+		return situacaoContaBancaria;
+	}
+
+	public void setSituacaoContaBancaria(Integer situacaoContaBancaria) {
+		this.situacaoContaBancaria = situacaoContaBancaria;
+	}		
 
 }

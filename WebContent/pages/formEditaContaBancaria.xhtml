@@ -47,10 +47,17 @@
 						<h:outputLabel value="#{msg['contaBancaria.carteira']}:" for="idCarteira" />						
 						<span class="asterisco">*</span>
 					</h:panelGroup>
-					<h:outputLabel value=""/>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['contaBancaria.situacao']}:" for="idSituacao" />						
+						<span class="asterisco">*</span>
+					</h:panelGroup>
 					
 					<h:inputText id="idNumero" value="#{contaBancariaMB.contaBancaria.numero}" required="true" label="#{msg['contaBancaria.numero.label']}"/>					
 					<h:inputText id="idCarteira" value="#{contaBancariaMB.contaBancaria.carteira}" required="true" label="#{msg['contaBancaria.carteira.label']}"/>
+					
+					<h:selectOneRadio id="idSituacao" value="#{contaBancariaMB.situacaoContaBancaria}" required="true" label="#{msg['contaBancaria.situacao.label']}">
+						<f:selectItems value="#{contaBancariaMB.listaSISituacao}" />
+					</h:selectOneRadio>
 				 </h:panelGrid>	
 				
 				 
@@ -76,7 +83,7 @@
 					<rich:componentControl target="confirmaExcluirContaBancaria"
 						operation="show"/>			
 				</h:commandButton>	
-				<h:commandButton value="#{msg.botaoVoltar}" action="#{contaBancariaMB.voltarContaBancaria}" immediate="true" />
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{contaBancariaMB.cancelarContaBancaria}" immediate="true" />
 			</h:panelGrid>
 			
 			

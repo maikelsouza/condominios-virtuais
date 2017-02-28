@@ -158,7 +158,7 @@ public class ReceitaDespesaMB implements Serializable {
 				this.receita.setIdCondominio(this.idCondominio);
 				this.receita.setMeioPagamento(this.meioPagamento);
 				this.receita.setNumeroDocumento(this.numeroDocumento);
-				this.receita.setBanco(this.banco);
+				this.receita.setBanco(this.meioPagamento.getNome().equals(ReceitaDespesaMeioPagamentoEnum.BANCO.getMeioPagamento()) ? this.banco : new Banco());
 				this.receitaService.salvar(this.receita);
 			}else{
 				this.despesa = new Despesa();
@@ -169,10 +169,10 @@ public class ReceitaDespesaMB implements Serializable {
 				this.despesa.setIdCondominio(this.idCondominio);
 				this.despesa.setMeioPagamento(this.meioPagamento);
 				this.despesa.setNumeroDocumento(this.numeroDocumento);
-				this.despesa.setBanco(this.banco);
+				this.despesa.setBanco(this.meioPagamento.getNome().equals(ReceitaDespesaMeioPagamentoEnum.BANCO.getMeioPagamento()) ? this.banco : new Banco());
 				this.despesaService.salvar(this.despesa);
 				this.despesa = new Despesa();
-			}	
+			}			
 			this.limparTelaCadastroReceitaDespesa();
 			ManagedBeanUtil.setMensagemInfo("msg.receitaDespesa.salvoSucesso");			
 		} catch (SQLException e) {
@@ -456,6 +456,7 @@ public class ReceitaDespesaMB implements Serializable {
 		List<Integer> listaTamanhoLinhasColunaTres = new ArrayList<>();
 		List<Integer> listaTamanhoLinhasColunaQuatro = new ArrayList<>();
 		List<Integer> listaTamanhoLinhasColunaCinco = new ArrayList<>();
+		List<Integer> listaTamanhoLinhasColunaSeis = new ArrayList<>();
 		Integer tamanhoExcedenteBoldArial12 = 3;
 		
 		
@@ -502,7 +503,7 @@ public class ReceitaDespesaMB implements Serializable {
 		sbTitulo.append("  ");
 		sbTitulo.append(AplicacaoUtil.formatarData(AplicacaoUtil.i18n("formatoData"),this.dataAte));
 		Label labelTitulo = new Label(0,0,sbTitulo.toString(),cfTitulo);
-		abaFolha1.mergeCells(0, 0, 5, 0);
+		abaFolha1.mergeCells(0, 0, 6, 0);
 		cfTitulo.setAlignment(Alignment.CENTRE);
 		abaFolha1.addCell(labelTitulo);		 
 		
@@ -531,8 +532,12 @@ public class ReceitaDespesaMB implements Serializable {
 		abaFolha1.addCell(labelMeioPagamento);
 		listaTamanhoLinhasColunaQuatro.add(AplicacaoUtil.i18n("receitaDespesa.meioPagamento").length()+tamanhoExcedenteBoldArial12);
 		
-		Label labelObservacao = new Label(5,3,AplicacaoUtil.i18n("receitaDespesa.observacao"),cfTituloColuna);
-		listaTamanhoLinhasColunaCinco.add(AplicacaoUtil.i18n("receitaDespesa.observacao").length()+tamanhoExcedenteBoldArial12);
+		Label labelBanco = new Label(5,3,AplicacaoUtil.i18n("receitaDespesa.banco"),cfTituloColuna);		 
+		abaFolha1.addCell(labelBanco);
+		listaTamanhoLinhasColunaCinco.add(AplicacaoUtil.i18n("receitaDespesa.banco").length()+tamanhoExcedenteBoldArial12);
+		
+		Label labelObservacao = new Label(6,3,AplicacaoUtil.i18n("receitaDespesa.observacao"),cfTituloColuna);
+		listaTamanhoLinhasColunaSeis.add(AplicacaoUtil.i18n("receitaDespesa.observacao").length()+tamanhoExcedenteBoldArial12);
 		abaFolha1.addCell(labelObservacao);
 		
 		Label label = null;		 
@@ -556,8 +561,11 @@ public class ReceitaDespesaMB implements Serializable {
 			label = new Label(4,linha,String.valueOf(receita.getMeioPagamento().getNomeI18n()),cfLinha);
 			listaTamanhoLinhasColunaQuatro.add(receita.getMeioPagamento().getNomeI18n().length());
 			abaFolha1.addCell(label);
-			label = new Label(5,linha,receita.getObservacao(),cfLinha);		
-			listaTamanhoLinhasColunaCinco.add(receita.getObservacao().length());
+			label = new Label(5,linha,receita.getBanco() != null ? receita.getBanco().getNome() : "",cfLinha);		
+			listaTamanhoLinhasColunaCinco.add(receita.getBanco() != null ? receita.getBanco().getNome().length() : "".length());
+			abaFolha1.addCell(label);
+			label = new Label(6,linha,receita.getObservacao(),cfLinha);		
+			listaTamanhoLinhasColunaSeis.add(receita.getObservacao().length());
 			abaFolha1.addCell(label);
 			ultimaLinhaReceita = linha;
 		 }				 
@@ -588,8 +596,12 @@ public class ReceitaDespesaMB implements Serializable {
 		 listaTamanhoLinhasColunaQuatro.add(AplicacaoUtil.i18n("receitaDespesa.meioPagamento").length()+tamanhoExcedenteBoldArial12);
 		 abaFolha1.addCell(labelMeioPagamento);
 		 
-		 labelObservacao = new Label(5,linhaTituloColuna,AplicacaoUtil.i18n("receitaDespesa.observacao"),cfTituloColuna);	
-		 listaTamanhoLinhasColunaCinco.add(AplicacaoUtil.i18n("receitaDespesa.observacao").length()+tamanhoExcedenteBoldArial12);
+		 labelBanco = new Label(5,linhaTituloColuna,AplicacaoUtil.i18n("receitaDespesa.banco"),cfTituloColuna);	
+		 listaTamanhoLinhasColunaCinco.add(AplicacaoUtil.i18n("receitaDespesa.banco").length()+tamanhoExcedenteBoldArial12);
+		 abaFolha1.addCell(labelBanco);
+		 
+		 labelObservacao = new Label(6,linhaTituloColuna,AplicacaoUtil.i18n("receitaDespesa.observacao"),cfTituloColuna);	
+		 listaTamanhoLinhasColunaSeis.add(AplicacaoUtil.i18n("receitaDespesa.observacao").length()+tamanhoExcedenteBoldArial12);
 		 abaFolha1.addCell(labelObservacao);
 		 
 		 int linhaDespesa = linhaTituloColuna + 1;
@@ -613,8 +625,11 @@ public class ReceitaDespesaMB implements Serializable {
 			 label = new Label(4,linha,String.valueOf(despesa.getMeioPagamento().getNomeI18n()),cfLinha);	
 			 listaTamanhoLinhasColunaQuatro.add(despesa.getMeioPagamento().getNomeI18n().length());
 			 abaFolha1.addCell(label);
-			 label = new Label(5,linha,despesa.getObservacao(),cfLinha);	
-			 listaTamanhoLinhasColunaCinco.add(despesa.getObservacao().length());
+			 label = new Label(5,linha,despesa.getBanco() != null ? despesa.getBanco().getNome() : "",cfLinha);	
+			 listaTamanhoLinhasColunaCinco.add(despesa.getBanco() != null ? despesa.getBanco().getNome().length() : "".length());
+			 abaFolha1.addCell(label);
+			 label = new Label(6,linha,despesa.getObservacao(),cfLinha);	
+			 listaTamanhoLinhasColunaSeis.add(despesa.getObservacao().length());
 			 abaFolha1.addCell(label);
 			 ultimaLinhaDespesa = linha;
 		 }
@@ -649,6 +664,7 @@ public class ReceitaDespesaMB implements Serializable {
 		 abaFolha1.setColumnView(3, Collections.max(listaTamanhoLinhasColunaTres));
 		 abaFolha1.setColumnView(4, Collections.max(listaTamanhoLinhasColunaQuatro));
 		 abaFolha1.setColumnView(5, Collections.max(listaTamanhoLinhasColunaCinco));
+		 abaFolha1.setColumnView(6, Collections.max(listaTamanhoLinhasColunaSeis));
 		 abaFolha1.setRowView(0, 300);
 		 response.flushBuffer();
 		 workbook.write();

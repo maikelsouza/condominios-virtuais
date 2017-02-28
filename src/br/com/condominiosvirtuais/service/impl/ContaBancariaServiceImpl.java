@@ -40,4 +40,10 @@ public class ContaBancariaServiceImpl implements ContaBancariaService, Serializa
 		this.contaBancariaDAO.excluir(contaBancaria);		
 	}
 
+	@Override
+	public List<ContaBancaria> buscarPorIdCondominioESituacao(Integer idCondominio, Boolean situacao)
+			throws SQLException, Exception {		
+		return this.contaBancariaDAO.buscarPorIdCondominioESituacao(idCondominio, situacao);
+	}
+
 }

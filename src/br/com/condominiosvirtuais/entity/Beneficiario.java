@@ -10,6 +10,8 @@ public class Beneficiario {
 	
 	private Integer idCondominio;
 	
+	private Boolean situacao;
+	
 	private Endereco endereco;
 	
 	public Beneficiario(){
@@ -46,6 +48,14 @@ public class Beneficiario {
 
 	public void setCprf(Long cprf) {
 		this.cprf = cprf;
+	}	
+
+	public Boolean getSituacao() {
+		return situacao;
+	}
+
+	public void setSituacao(Boolean situacao) {
+		this.situacao = situacao;
 	}
 
 	public Endereco getEndereco() {

@@ -38,6 +38,11 @@ public class BeneficiarioServiceImpl implements BeneficiarioService, Serializabl
 		this.beneficiarioDAO.excluir(beneficiario);
 		
 	}
+
+	@Override
+	public List<Beneficiario> buscarPorIdCondominioESituacao(Integer idCondominio, Boolean situacao) throws SQLException, BusinessException, Exception {	
+		return this.beneficiarioDAO.buscarPorIdCondominioESituacao(idCondominio, situacao);
+	}
 	
 	
 

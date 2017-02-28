@@ -200,7 +200,7 @@ public class PreCadastroBoletoMB implements Serializable {
 	}
 	
 	private void popularBeneficiarios() throws SQLException, BusinessException, Exception{		
-		List<Beneficiario> listaBeneficiarios = this.beneficiarioService.buscarPorIdCondominio(this.preCadastroBoleto.getIdCondominio());
+		List<Beneficiario> listaBeneficiarios = this.beneficiarioService.buscarPorIdCondominioESituacao(this.preCadastroBoleto.getIdCondominio(),Boolean.TRUE);
 		this.listaSIBeneficiarios = new ArrayList<SelectItem>();
 		for (Beneficiario beneficiario : listaBeneficiarios) {
 			this.listaSIBeneficiarios.add(new SelectItem(beneficiario.getId(), beneficiario.getNome()));
@@ -209,7 +209,7 @@ public class PreCadastroBoletoMB implements Serializable {
 	}
 	
 	private void popularContasBancarias() throws SQLException, Exception{
-		List<ContaBancaria> listaContaBancaria = this.contaBancariaService.buscarPorIdCondominio(this.preCadastroBoleto.getIdCondominio());
+		List<ContaBancaria> listaContaBancaria = this.contaBancariaService.buscarPorIdCondominioESituacao(this.preCadastroBoleto.getIdCondominio(),Boolean.TRUE);
 		this.listaSIContasBancarias = new ArrayList<SelectItem>();
 		for (ContaBancaria contaBancaria : listaContaBancaria) {
 			this.listaSIContasBancarias.add(new SelectItem(contaBancaria.getId(), contaBancaria.getAgencia() + " " + contaBancaria.getNumero()));

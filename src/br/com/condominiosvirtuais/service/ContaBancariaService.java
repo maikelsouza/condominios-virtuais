@@ -14,5 +14,7 @@ public interface ContaBancariaService {
 	public abstract void excluir(ContaBancaria contaBancaria) throws SQLException, Exception;
 	
 	public abstract List<ContaBancaria> buscarPorIdCondominio(Integer idCondominio) throws SQLException, Exception;
+	
+	public abstract List<ContaBancaria> buscarPorIdCondominioESituacao(Integer idCondominio, Boolean situacao) throws SQLException, Exception;
 
 }

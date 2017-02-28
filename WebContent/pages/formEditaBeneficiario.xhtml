@@ -31,9 +31,24 @@
 					<h:selectOneMenu id="idCondominio" value="#{beneficiarioMB.beneficiario.idCondominio}"
 						defaultLabel="#{msg['condominio.DefaultLabel']}" required="true" label="#{msg['condominio.label']}">
 						<f:selectItems value="#{beneficiarioMB.listaSICondominios}" />
-					</h:selectOneMenu>					
+					</h:selectOneMenu>		
+								
 					<h:inputText id="idNome" value="#{beneficiarioMB.beneficiario.nome}" required="true" label="#{msg['condominio.nome.label']}"/>
 					<h:inputText id="idCprf" value="#{beneficiarioMB.beneficiario.cprf}" required="true" label="#{msg['condominio.cprf.label']}"/>
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['beneficiario.situacao']}:" for="idSituacao" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					
+					<h:selectOneRadio id="idSituacao" value="#{beneficiarioMB.situacaoBeneficiario}" required="true" label="#{msg['beneficiario.situacao.label']}">
+						<f:selectItems value="#{beneficiarioMB.listaSISituacao}" />
+					</h:selectOneRadio>					
+				
+					
 				 </h:panelGrid>	
 				
 				 
@@ -137,7 +152,7 @@
 				<h:commandButton value="#{msg.botaoExcluir}">
 					<rich:componentControl target="confirmaExcluirBeneficiario" operation="show"/>
 				</h:commandButton>		
-				<h:commandButton value="#{msg.botaoCancelar}" action="#{beneficiarioMB.cancelar}" immediate="true" />
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{beneficiarioMB.cancelarBeneficiario}" immediate="true" />
 			</h:panelGrid>	
 			
 			
