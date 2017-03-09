@@ -60,9 +60,9 @@
 							</f:facet>
 							<h:outputText value="#{beneficiario.nome}" />
 						</rich:column>
-						<rich:column sortBy="#{beneficiario.situacao}" sortOrder="#{ordenaBeneficiarioMB.cprfBeneficiario}">
+						<rich:column sortBy="#{beneficiario.situacao}" sortOrder="#{ordenaBeneficiarioMB.situacaoBeneficiario}">
 							<f:facet name="header">
-								<a4j:commandLink value="#{msg['beneficiario.situacao']}" render="tableBeneficiario" action="#{ordenaBeneficiarioMB.ordenarPorCprf}" />
+								<a4j:commandLink value="#{msg['beneficiario.situacao']}" render="tableBeneficiario" action="#{ordenaBeneficiarioMB.ordenarPorSituacao}" />
 							</f:facet>
 							<h:outputText value="#{beneficiario.situacao == true ? msg['beneficiario.situacao.1'] : msg['beneficiario.situacao.0']}" />
 						</rich:column>						

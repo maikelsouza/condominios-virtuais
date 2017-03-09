@@ -107,7 +107,7 @@
 							<f:facet name="header">
 								<a4j:commandLink value="#{msg['boleto.pago']}" render="tableBoleto" action="#{ordenaBoletoMB.ordenarPorPago}" />
 							</f:facet>
-							<h:outputText value="#{boleto.pago == true ? msg['boleto.pago.0'] : msg['boleto.pago.1']}" />
+							<h:outputText value="#{boleto.pago == true ? msg['boleto.pago.1'] : msg['boleto.pago.0']}" />
 						</rich:column>
 						<rich:column sortBy="#{boleto.valor}" sortOrder="#{ordenaBoletoMB.valorBoleto}">
 							<f:facet name="header">

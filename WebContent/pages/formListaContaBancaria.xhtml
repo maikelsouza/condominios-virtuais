@@ -79,7 +79,7 @@
 							</f:facet>
 							<h:outputText value="#{contaBancaria.banco.nome}" />
 						</rich:column>
-						<rich:column sortBy="#{contaBancaria.banco.situacao}" sortOrder="#{ordenaContaBancariaMB.carteiraContaBancaria}">
+						<rich:column sortBy="#{contaBancaria.situacao}" sortOrder="#{ordenaContaBancariaMB.situacaoContaBancaria}">
 							<f:facet name="header">
 								<a4j:commandLink value="#{msg['contaBancaria.situacao']}" render="tableContaBancaria" action="#{ordenaContaBancariaMB.ordenarPorSituacao}" />
 							</f:facet>

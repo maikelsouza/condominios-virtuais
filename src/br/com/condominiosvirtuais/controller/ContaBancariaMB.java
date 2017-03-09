@@ -177,6 +177,10 @@ public class ContaBancariaMB implements Serializable {
 		return "cancelar";
 	}
 	
+	public String voltarContaBancaria(){
+		return "voltar";
+	}
+	
 	public String cancelarSalvarContaBancaria(){
 		return "cancelar";
 	}

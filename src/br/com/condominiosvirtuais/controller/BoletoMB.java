@@ -1,11 +1,20 @@
 package br.com.condominiosvirtuais.controller;
 
+import static javax.ws.rs.core.MediaType.WILDCARD;
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.Status.CONFLICT;
+import static javax.ws.rs.core.Response.Status.CREATED;
+import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
+import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
+
+import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -15,17 +24,28 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.Form;
+import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.condominiosvirtuais.entity.Beneficiario;
 import br.com.condominiosvirtuais.entity.Boleto;
 import br.com.condominiosvirtuais.entity.ContaBancaria;
 import br.com.condominiosvirtuais.entity.PreCadastroBoleto;
+import br.com.condominiosvirtuais.enumeration.ConfiguracaoAplicacaoEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.service.BeneficiarioService;
 import br.com.condominiosvirtuais.service.BoletoService;
 import br.com.condominiosvirtuais.service.CondominoService;
+import br.com.condominiosvirtuais.service.ConfiguracaoAplicacaoService;
 import br.com.condominiosvirtuais.service.ContaBancariaService;
 import br.com.condominiosvirtuais.service.PreCadastroBoletoService;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
@@ -56,6 +76,11 @@ public class BoletoMB  implements Serializable{
 	
 	@Inject
 	private PreCadastroBoletoService preCadastroBoletoService;
+	
+	@Inject
+	private ConfiguracaoAplicacaoService configuracaoAplicacaoService;
+	
+	private List<CondominoVO> listaCondominoVO = null; 
 	
 	private List<SelectItem> listaSICondominios;
 	
@@ -95,21 +120,25 @@ public class BoletoMB  implements Serializable{
 		this.popularPago();
 	}
 	
-	public String gerarBoleto(){
+	public String gerarBoleto(){		
 		try {
 			if(this.boleto.getVencimento().before(this.boleto.getEmissao())){
 				ManagedBeanUtil.setMensagemErro("msg.boleto.vencimentoMenorEmissao");
 				return null;
 			}else{
 				// FIXME Rever que número é esse
-				this.boleto.setNumero("45");
+				this.boleto.setNumero("12345678989-0");
 				this.boleto.setPago(Boolean.FALSE);
 				if(this.boleto.getCondominoVO().getId() == -1){
 					for (SelectItem pagador : this.listaSIPagadores) {
 						this.boleto.getCondominoVO().setId((Integer) pagador.getValue());
+						this.popularPagador();
+						this.criarBoleto();						
 						this.boletoService.salvar(this.boleto);
 					}					
 				}else{
+					this.popularPagador();
+					this.criarBoleto();
 					this.boletoService.salvar(this.boleto);					
 				}
 				if(this.dataVencimentoDe == null || this.dataVencimentoAte == null){
@@ -121,12 +150,15 @@ public class BoletoMB  implements Serializable{
 		}catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+			return null;
 		} catch (BusinessException e) {
-			logger.error("", e);
-			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao",e.getVariavelNaoI18n() != null ? e.getVariavelNaoI18n() : "");
+			logger.error("", e);			
+			return null;
 		} catch (Exception e) {
 			logger.error("", e);
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+			return null;
 		}		
 		return "gerar";
 	}
@@ -230,8 +262,7 @@ public class BoletoMB  implements Serializable{
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
 		} catch (BusinessException e) {
-			logger.error("", e);
-			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage());			
 		} catch (Exception e) {
 			logger.error("", e);
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
@@ -274,13 +305,101 @@ public class BoletoMB  implements Serializable{
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
 		} catch (BusinessException e) {
-			logger.error("", e);
-			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage());
 		} catch (Exception e) {
 			logger.error("", e);
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
 		}
 	}	
+	
+	private void criarBoleto() throws JsonProcessingException, IOException, BusinessException, Exception{
+		
+		Form formBoleto = new Form();
+		formBoleto.param("boleto.conta.banco","237");
+		formBoleto.param("boleto.conta.agencia",this.boleto.getContaBancaria().getAgencia());
+		formBoleto.param("boleto.conta.numero",this.boleto.getContaBancaria().getNumero());
+		formBoleto.param("boleto.conta.carteira",this.boleto.getContaBancaria().getCarteira());
+		formBoleto.param("boleto.beneficiario.nome",this.boleto.getBeneficiario().getNome());
+		formBoleto.param("boleto.beneficiario.cprf",AplicacaoUtil.formatarCnpj(this.boleto.getBeneficiario().getCprf()));
+		formBoleto.param("boleto.beneficiario.endereco.cep",AplicacaoUtil.formatarCep(this.boleto.getBeneficiario().getEndereco().getCep()));
+		formBoleto.param("boleto.beneficiario.endereco.uf",this.boleto.getBeneficiario().getEndereco().getUf());
+		formBoleto.param("boleto.beneficiario.endereco.localidade",this.boleto.getBeneficiario().getEndereco().getCidade());
+		formBoleto.param("boleto.beneficiario.endereco.bairro",this.boleto.getBeneficiario().getEndereco().getBairro());
+		formBoleto.param("boleto.beneficiario.endereco.logradouro",this.boleto.getBeneficiario().getEndereco().getEndereco());
+		formBoleto.param("boleto.beneficiario.endereco.numero",String.valueOf(this.boleto.getBeneficiario().getEndereco().getNumero()));
+		formBoleto.param("boleto.beneficiario.endereco.complemento",this.boleto.getBeneficiario().getEndereco().getComplemento());
+		formBoleto.param("boleto.emissao", AplicacaoUtil.formatarData(AplicacaoUtil.i18n("formatoDataBoletoCloud"), this.boleto.getEmissao()));
+		formBoleto.param("boleto.vencimento", AplicacaoUtil.formatarData(AplicacaoUtil.i18n("formatoDataBoletoCloud"), this.boleto.getVencimento()));
+		formBoleto.param("boleto.documento",this.boleto.getDocumento());
+		formBoleto.param("boleto.numero",this.boleto.getNumero());
+		formBoleto.param("boleto.titulo",this.boleto.getTitulo());
+		formBoleto.param("boleto.valor",AplicacaoUtil.formatarMoeda(AplicacaoUtil.i18n("formatoMoedaBoletoCloud"), this.boleto.getValor()).replace(",", "."));
+		formBoleto.param("boleto.pagador.nome",this.boleto.getCondominoVO().getNomeCondomino());
+		formBoleto.param("boleto.pagador.cprf",AplicacaoUtil.formatarCpf(this.boleto.getCondominoVO().getCpfCondomino()));
+		// Endereço do pagador é o mesmo que o do beneficiário. Com excecao do complemento
+		formBoleto.param("boleto.pagador.endereco.cep",AplicacaoUtil.formatarCep(this.boleto.getBeneficiario().getEndereco().getCep()));
+		formBoleto.param("boleto.pagador.endereco.uf",this.boleto.getBeneficiario().getEndereco().getUf());
+		formBoleto.param("boleto.pagador.endereco.localidade",this.boleto.getBeneficiario().getEndereco().getCidade());
+		formBoleto.param("boleto.pagador.endereco.bairro",this.boleto.getBeneficiario().getEndereco().getBairro());
+		formBoleto.param("boleto.pagador.endereco.logradouro",this.boleto.getBeneficiario().getEndereco().getEndereco());
+		formBoleto.param("boleto.pagador.endereco.numero",String.valueOf(this.boleto.getBeneficiario().getEndereco().getNumero()));
+		formBoleto.param("boleto.pagador.endereco.complemento", this.boleto.getCondominoVO().getNomeBloco() + " Unidade " + this.boleto.getCondominoVO().getNumeroUnidade());
+		formBoleto.param("boleto.instrucao",this.boleto.getInstrucao1());
+		formBoleto.param("boleto.instrucao",this.boleto.getInstrucao2());
+		formBoleto.param("boleto.instrucao",this.boleto.getInstrucao3());
+		
+		
+		Response response = ClientBuilder.newClient().target("https://sandbox.boletocloud.com/api/v1").path("/boletos")
+				.register(HttpAuthenticationFeature.basic(configuracaoAplicacaoService.getConfiguracoes().get(ConfiguracaoAplicacaoEnum.TOKEN_BOLETO_CLOUD.getChave()),"token"))
+				.request(WILDCARD).post(Entity.form(formBoleto));
+		
+		
+		if (response.getStatus() != CREATED.getStatusCode()){
+			
+			String entityResponse = response.readEntity(String.class);
+			JsonNode jsonNode = new ObjectMapper().readTree(entityResponse);
+			if (response.getStatus() == BAD_REQUEST.getStatusCode()){
+				Iterator<JsonNode> causas = jsonNode.get("erro").get("causas").elements();
+				String reason = "";		
+				while(causas.hasNext()){
+					JsonNode causa = causas.next();
+					reason+="\nCódigo: "+causa.get("codigo").asText() + "\n" +"Mensagem: "+causa.get("mensagem").asText()+"\n";
+				}
+				throw new BusinessException("msg.erro.executarOperacao", new Exception(reason));
+			}
+			
+			if (response.getStatus() == CONFLICT.getStatusCode()){
+				Iterator<JsonNode> causas = jsonNode.get("erro").get("causas").elements();
+				String reason = "";				
+				while(causas.hasNext()){
+					JsonNode causa = causas.next();
+					reason+="\nCódigo: "+causa.get("codigo").asText() + "\n" +"Mensagem: "+causa.get("mensagem").asText()+"\n";
+				}
+				throw new BusinessException("msg.boleto.boletoNumeroRepetido", new Exception(reason),this.boleto.getNumero());				
+			}
+			
+			if (response.getStatus() == UNAUTHORIZED.getStatusCode()){
+				Iterator<JsonNode> causas = jsonNode.get("erro").get("causas").elements();
+				String reason = "";
+				while(causas.hasNext()){
+					JsonNode causa = causas.next();
+					reason+="\nCódigo: "+causa.get("codigo").asText() + "\n" +"Mensagem: "+causa.get("mensagem").asText()+"\n";
+				}
+				throw new BusinessException("msg.erro.executarOperacao", new Exception(reason));
+			}
+			
+			if(response.getStatus() == INTERNAL_SERVER_ERROR.getStatusCode()){
+				Iterator<JsonNode> causas = jsonNode.get("erro").get("causas").elements();
+				String reason = "";
+				while(causas.hasNext()){
+					JsonNode causa = causas.next();
+					reason+="\nCódigo: "+causa.get("codigo").asText() + "\n" +"Mensagem: "+causa.get("mensagem").asText()+"\n";
+				}
+				throw new BusinessException("msg.erro.executarOperacao", new Exception(reason));
+			}
+		}
+		
+	}
 	
 	private void popularBoleto() throws SQLException, Exception{
 		PreCadastroBoleto preCadastroBoleto = this.preCadastroBoletoService.buscarPorIdCondominioEPrincipal(this.boleto.getIdCondominio(), Boolean.TRUE);
@@ -312,6 +431,21 @@ public class BoletoMB  implements Serializable{
 		}
 	}
 	
+	private void popularPagador() throws SQLException, Exception{
+		Boolean encontrou = Boolean.FALSE;
+		Iterator<CondominoVO> iteratorCondominioVO = this.listaCondominoVO.iterator();
+		while (iteratorCondominioVO.hasNext() || !encontrou) {
+			CondominoVO condominoVO = iteratorCondominioVO.next();
+			if(condominoVO.getId().equals(this.boleto.getCondominoVO().getId())){
+				this.boleto.setCondominoVO(condominoVO);
+				encontrou = Boolean.TRUE;
+			}
+			
+		}
+		
+		
+	}
+	
 	private void popularBeneficiarios() throws SQLException, BusinessException, Exception{		
 		List<Beneficiario> listaBeneficiarios = this.beneficiarioService.buscarPorIdCondominioESituacao(this.boleto.getIdCondominio(),Boolean.TRUE);
 		this.listaSIBeneficiarios = new ArrayList<SelectItem>();
@@ -325,13 +459,13 @@ public class BoletoMB  implements Serializable{
 		List<ContaBancaria> listaContaBancaria = this.contaBancariaService.buscarPorIdCondominioESituacao(this.boleto.getIdCondominio(),Boolean.TRUE);
 		this.listaSIContasBancarias = new ArrayList<SelectItem>();
 		for (ContaBancaria contaBancaria : listaContaBancaria) {
-			this.listaSIContasBancarias.add(new SelectItem(contaBancaria.getId(), contaBancaria.getAgencia() + " " + contaBancaria.getNumero()));
+			this.listaSIContasBancarias.add(new SelectItem(contaBancaria.getId(), contaBancaria.getBanco().getNome()));
 		}			
 		
 	}
 	
 	public void buscarPagador() throws SQLException, Exception{		
-		List<CondominoVO> listaCondominoVO = condominoService.buscarListaCondominosVOPorIdCondominioEPagadorSemImagem(this.boleto.getIdCondominio());
+		this.listaCondominoVO = condominoService.buscarListaCondominosVOPorIdCondominioEPagadorSemImagem(this.boleto.getIdCondominio());
 		this.listaSIPagadores = new ArrayList<SelectItem>();
 		for (CondominoVO condominoVO : listaCondominoVO) {
 			this.listaSIPagadores.add(new SelectItem(condominoVO.getIdCondomino(), condominoVO.getNomeBloco() + " " + condominoVO.getNumeroUnidade() + " " + condominoVO.getNomeCondomino(),"MAIKEL"));

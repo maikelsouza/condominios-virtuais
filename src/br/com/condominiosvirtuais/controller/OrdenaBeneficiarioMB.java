@@ -17,10 +17,13 @@ public class OrdenaBeneficiarioMB implements Serializable {
 	
 	private SortOrder cprfBeneficiario = SortOrder.unsorted;
 	
+	private SortOrder situacaoBeneficiario = SortOrder.unsorted;
+	
 	
 	
 	public void ordenarPorNome(){
-		this.setCprfBeneficiario(SortOrder.unsorted);			
+		this.setCprfBeneficiario(SortOrder.unsorted);
+		this.setSituacaoBeneficiario(SortOrder.unsorted);
 		if (this.nomeBeneficiario.equals(SortOrder.ascending)) {
 			 this.setNomeBeneficiario(SortOrder.descending);
 		} else {
@@ -30,10 +33,21 @@ public class OrdenaBeneficiarioMB implements Serializable {
 	
 	public void ordenarPorCprf(){
 		this.setNomeBeneficiario(SortOrder.unsorted);
+		this.setSituacaoBeneficiario(SortOrder.unsorted);
 		if (this.cprfBeneficiario.equals(SortOrder.ascending)) {
 			 this.setCprfBeneficiario(SortOrder.descending);
 		} else {
 			 this.setCprfBeneficiario(SortOrder.ascending);
+		}
+	}
+	
+	public void ordenarPorSituacao(){
+		this.setNomeBeneficiario(SortOrder.unsorted);
+		this.setCprfBeneficiario(SortOrder.unsorted);
+		if (this.situacaoBeneficiario.equals(SortOrder.ascending)) {
+			this.setSituacaoBeneficiario(SortOrder.descending);
+		} else {
+			this.setSituacaoBeneficiario(SortOrder.ascending);
 		}
 	}	
 
@@ -52,9 +66,14 @@ public class OrdenaBeneficiarioMB implements Serializable {
 	public void setCprfBeneficiario(SortOrder cprfBeneficiario) {
 		this.cprfBeneficiario = cprfBeneficiario;
 	}
-	
-	
-	
+
+	public SortOrder getSituacaoBeneficiario() {
+		return situacaoBeneficiario;
+	}
+
+	public void setSituacaoBeneficiario(SortOrder situacaoBeneficiario) {
+		this.situacaoBeneficiario = situacaoBeneficiario;
+	}
 	
 	
 

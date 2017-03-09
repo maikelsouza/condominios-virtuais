@@ -21,11 +21,14 @@ public class OrdenaContaBancariaMB implements Serializable {
 	
 	private SortOrder bancoContaBancaria = SortOrder.unsorted;
 	
+	private SortOrder situacaoContaBancaria = SortOrder.unsorted;
+	
 	
 	public void ordenarPorNumero(){
 		this.setAgenciaContaBancaria(SortOrder.unsorted);	
 		this.setCarteiraContaBancaria(SortOrder.unsorted);
 		this.setBancoContaBancaria(SortOrder.unsorted);
+		this.setSituacaoContaBancaria(SortOrder.unsorted);
 		if (this.numeroContaBancaria.equals(SortOrder.ascending)) {
 			 this.setNumeroContaBancaria(SortOrder.descending);
 		} else {
@@ -37,6 +40,7 @@ public class OrdenaContaBancariaMB implements Serializable {
 		this.setNumeroContaBancaria(SortOrder.unsorted);	
 		this.setCarteiraContaBancaria(SortOrder.unsorted);
 		this.setBancoContaBancaria(SortOrder.unsorted);
+		this.setSituacaoContaBancaria(SortOrder.unsorted);
 		if (this.agenciaContaBancaria.equals(SortOrder.ascending)) {
 			 this.setAgenciaContaBancaria(SortOrder.descending);
 		} else {
@@ -48,6 +52,7 @@ public class OrdenaContaBancariaMB implements Serializable {
 		this.setNumeroContaBancaria(SortOrder.unsorted);	
 		this.setAgenciaContaBancaria(SortOrder.unsorted);
 		this.setBancoContaBancaria(SortOrder.unsorted);
+		this.setSituacaoContaBancaria(SortOrder.unsorted);
 		if (this.carteiraContaBancaria.equals(SortOrder.ascending)) {
 			 this.setCarteiraContaBancaria(SortOrder.descending);
 		} else {
@@ -58,11 +63,24 @@ public class OrdenaContaBancariaMB implements Serializable {
 	public void ordenarPorBanco(){
 		this.setNumeroContaBancaria(SortOrder.unsorted);	
 		this.setAgenciaContaBancaria(SortOrder.unsorted);
-		this.setAgenciaContaBancaria(SortOrder.unsorted);
+		this.setCarteiraContaBancaria(SortOrder.unsorted);
+		this.setSituacaoContaBancaria(SortOrder.unsorted);
 		if (this.bancoContaBancaria.equals(SortOrder.ascending)) {
 			 this.setBancoContaBancaria(SortOrder.descending);
 		} else {
 			 this.setBancoContaBancaria(SortOrder.ascending);
+		}
+	}
+	
+	public void ordenarPorSituacao(){
+		this.setAgenciaContaBancaria(SortOrder.unsorted);	
+		this.setCarteiraContaBancaria(SortOrder.unsorted);
+		this.setBancoContaBancaria(SortOrder.unsorted);
+		this.setNumeroContaBancaria(SortOrder.unsorted);
+		if (this.situacaoContaBancaria.equals(SortOrder.ascending)) {
+			 this.setSituacaoContaBancaria(SortOrder.descending);
+		} else {
+			 this.setSituacaoContaBancaria(SortOrder.ascending);
 		}
 	}
 
@@ -97,8 +115,14 @@ public class OrdenaContaBancariaMB implements Serializable {
 	public void setBancoContaBancaria(SortOrder bancoContaBancaria) {
 		this.bancoContaBancaria = bancoContaBancaria;
 	}
-	
-	
+
+	public SortOrder getSituacaoContaBancaria() {
+		return situacaoContaBancaria;
+	}
+
+	public void setSituacaoContaBancaria(SortOrder situacaoContaBancaria) {
+		this.situacaoContaBancaria = situacaoContaBancaria;
+	}
 	
 
 }

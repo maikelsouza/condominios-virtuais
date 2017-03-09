@@ -66,6 +66,33 @@ public abstract class ManagedBeanUtil {
 	 * Método que exibe uma mensagem, no formato de erro, na tela. <br> 
 	 * Esse método utiliza i18n
 	 * @param chave - Chave para i18n
+	 * @param msg - mensagen (não i18).
+	 */
+	public static void setMensagemErro(String chave, String msg){
+		FacesContext context  = null;
+		FacesMessage facesMessage = null;
+		ResourceBundle bundle = null;
+		try{
+			context = FacesContext.getCurrentInstance();
+			Locale locale = context.getViewRoot().getLocale();
+			bundle = ResourceBundle.getBundle(FacesContext.getCurrentInstance().getApplication().getMessageBundle(), locale);
+			facesMessage = new FacesMessage(bundle.getString(chave)+msg);
+		} catch (MissingResourceException e) {
+			logger.error("Não foi possível encontrar a chave \"" + e.getKey() + "\"", e);
+			chave = "msg.erro.executarOperacao";
+			facesMessage = new FacesMessage(bundle.getString(chave));			
+		} catch (Exception e) {
+			logger.error("", e);
+		}finally{
+			facesMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
+			context.addMessage(null, facesMessage);
+		}
+	}
+	
+	/**
+	 * Método que exibe uma mensagem, no formato de erro, na tela. <br> 
+	 * Esse método utiliza i18n
+	 * @param chave - Chave para i18n
 	 */
 	public static void setMensagemErro(String chave){
 		FacesContext context  = null;
@@ -201,7 +228,7 @@ public abstract class ManagedBeanUtil {
 	 /**
 	  * Método criado para popular um array de byte, com a imagem - Imagem Não Disponível
 	  * @return Array de byte referente a imagem.
-	 * @throws Exception 
+	  * @throws Exception 
 	  * @throws FileNotFoundException
 	  * @throws IOException
 	  */
