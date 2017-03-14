@@ -161,6 +161,10 @@ public class Boleto {
 	public void setInstrucao3(String instrucao3) {
 		this.instrucao3 = instrucao3;
 	}
+
+	
+	
+	
 	
 
 }

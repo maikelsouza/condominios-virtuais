@@ -96,7 +96,11 @@ public class BoletoMB  implements Serializable{
 	
 	private ListDataModel<Boleto> listaBoletos;
 	
-	private ListDataModel<Boleto> listaMeusBoletos;	
+	private ListDataModel<Boleto> listaMeusBoletos;
+	
+	private List<Beneficiario> listaBeneficiarios;
+	
+	private List<ContaBancaria> listaContaBancaria;
 	
 	private Boleto boleto;	
 	
@@ -127,8 +131,10 @@ public class BoletoMB  implements Serializable{
 				return null;
 			}else{
 				// FIXME Rever que número é esse
-				this.boleto.setNumero("12345678989-0");
+				this.boleto.setNumero("12345678959-0");
 				this.boleto.setPago(Boolean.FALSE);
+				this.popularBeneficiario();
+				this.popularContasBancaria();
 				if(this.boleto.getCondominoVO().getId() == -1){
 					for (SelectItem pagador : this.listaSIPagadores) {
 						this.boleto.getCondominoVO().setId((Integer) pagador.getValue());
@@ -315,7 +321,7 @@ public class BoletoMB  implements Serializable{
 	private void criarBoleto() throws JsonProcessingException, IOException, BusinessException, Exception{
 		
 		Form formBoleto = new Form();
-		formBoleto.param("boleto.conta.banco","237");
+		formBoleto.param("boleto.conta.banco",this.boleto.getContaBancaria().getBanco().getCodigo());
 		formBoleto.param("boleto.conta.agencia",this.boleto.getContaBancaria().getAgencia());
 		formBoleto.param("boleto.conta.numero",this.boleto.getContaBancaria().getNumero());
 		formBoleto.param("boleto.conta.carteira",this.boleto.getContaBancaria().getCarteira());
@@ -397,15 +403,15 @@ public class BoletoMB  implements Serializable{
 				}
 				throw new BusinessException("msg.erro.executarOperacao", new Exception(reason));
 			}
-		}
-		
+		}		
 	}
+	
 	
 	private void popularBoleto() throws SQLException, Exception{
 		PreCadastroBoleto preCadastroBoleto = this.preCadastroBoletoService.buscarPorIdCondominioEPrincipal(this.boleto.getIdCondominio(), Boolean.TRUE);
 		if(preCadastroBoleto != null){
-			this.boleto.setBeneficiario(preCadastroBoleto.getBeneficiario());
-			this.boleto.setContaBancaria(preCadastroBoleto.getContaBancaria());
+			this.boleto.getBeneficiario().setId(preCadastroBoleto.getBeneficiario().getId());
+			this.boleto.getContaBancaria().setId(preCadastroBoleto.getContaBancaria().getId());			
 			this.boleto.setTitulo(preCadastroBoleto.getTitulo());
 			this.boleto.setInstrucao1(preCadastroBoleto.getInstrucao1());
 			this.boleto.setInstrucao2(preCadastroBoleto.getInstrucao2());
@@ -440,25 +446,45 @@ public class BoletoMB  implements Serializable{
 				this.boleto.setCondominoVO(condominoVO);
 				encontrou = Boolean.TRUE;
 			}
-			
 		}
-		
-		
 	}
 	
 	private void popularBeneficiarios() throws SQLException, BusinessException, Exception{		
-		List<Beneficiario> listaBeneficiarios = this.beneficiarioService.buscarPorIdCondominioESituacao(this.boleto.getIdCondominio(),Boolean.TRUE);
+		this.listaBeneficiarios = this.beneficiarioService.buscarPorIdCondominioESituacao(this.boleto.getIdCondominio(),Boolean.TRUE);
 		this.listaSIBeneficiarios = new ArrayList<SelectItem>();
-		for (Beneficiario beneficiario : listaBeneficiarios) {
+		for (Beneficiario beneficiario : this.listaBeneficiarios) {
 			this.listaSIBeneficiarios.add(new SelectItem(beneficiario.getId(), beneficiario.getNome()));
-		}			
-		
+		}
+	}
+	
+	private void popularBeneficiario(){
+		Boolean encontrou = Boolean.FALSE;
+		Iterator<Beneficiario> iteratorBeneficiario = this.listaBeneficiarios.iterator();
+		while (iteratorBeneficiario.hasNext() && encontrou == Boolean.FALSE) {
+			Beneficiario beneficiario = iteratorBeneficiario.next();
+			if(this.getBoleto().getBeneficiario().getId().equals(beneficiario.getId())){
+				this.boleto.setBeneficiario(beneficiario);
+				encontrou = Boolean.TRUE;
+			}
+		}		
+	}
+	
+	private void popularContasBancaria(){
+		Boolean encontrou = Boolean.FALSE;
+		Iterator<ContaBancaria> iteratorContaBancaria = this.listaContaBancaria.iterator();
+		while (iteratorContaBancaria.hasNext() && encontrou == Boolean.FALSE) {
+			ContaBancaria contaBancaria = iteratorContaBancaria.next();
+			if(this.getBoleto().getContaBancaria().getId().equals(contaBancaria.getId())){
+				this.boleto.setContaBancaria(contaBancaria);
+				encontrou = Boolean.TRUE;
+			}
+		}		
 	}
 	
 	private void popularContasBancarias() throws SQLException, Exception{
-		List<ContaBancaria> listaContaBancaria = this.contaBancariaService.buscarPorIdCondominioESituacao(this.boleto.getIdCondominio(),Boolean.TRUE);
+		this.listaContaBancaria = this.contaBancariaService.buscarPorIdCondominioESituacao(this.boleto.getIdCondominio(),Boolean.TRUE);
 		this.listaSIContasBancarias = new ArrayList<SelectItem>();
-		for (ContaBancaria contaBancaria : listaContaBancaria) {
+		for (ContaBancaria contaBancaria : this.listaContaBancaria) {
 			this.listaSIContasBancarias.add(new SelectItem(contaBancaria.getId(), contaBancaria.getBanco().getNome()));
 		}			
 		

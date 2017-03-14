@@ -65,6 +65,8 @@ public class Beneficiario {
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
+
+	
 	
 	
 
