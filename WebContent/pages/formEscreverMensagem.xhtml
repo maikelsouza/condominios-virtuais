@@ -17,7 +17,7 @@
 				<f:facet name="header">
 					<h:outputText value="#{msg.mensagen}" />
 				</f:facet>
-				<h:panelGrid columns="2">
+				<h:panelGrid columns="3">
 					<h:panelGroup>
 						<h:outputLabel value="#{msg.condominio}:" for="idCondominio" />
 						<span class="asterisco">*</span>
@@ -25,6 +25,11 @@
 					
 					<h:panelGroup>
 						<h:outputLabel value="#{msg.bloco}:" for="idBloco" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>					
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg.condomino}:" for="idCondomino" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 					
@@ -37,22 +42,22 @@
 					
 					
 					<h:selectOneMenu value="#{mensagemMB.bloco.id}" id="idBloco" defaultLabel="#{msg['bloco.DefaultLabel']}" label="#{msg['bloco.label']}" required="true">
-						<f:selectItem itemValue="0" itemLabel="#{msg['todos']}" />
+						<f:selectItem itemLabel="#{msg['bloco.DefaultLabel']}"  noSelectionOption="true"/>
 						<f:selectItems value="#{mensagemMB.listaSIBlocos}" />
 						<f:ajax listener="#{mensagemMB.popularListaCondominos}" render="idCondomino" execute="@this" />
-					</h:selectOneMenu>					
-				</h:panelGrid>	
-				<h:panelGrid columns="1">
-					<h:panelGroup>
-						<h:outputLabel value="#{msg.condomino}:" for="idCondomino" />
-						<span class="asterisco">*</span>
-					</h:panelGroup>
-					 
+					</h:selectOneMenu>	
+					
+					
 					<h:selectOneMenu value="#{mensagemMB.condomino.id}" id="idCondomino"
 						defaultLabel="#{msg['condomino.DefaultLabel']}">
-						<f:selectItem itemValue="0" itemLabel="#{msg['todos']}" />
+						<f:selectItem itemLabel="#{msg['condomino.DefaultLabel']}"  noSelectionOption="true"/>
 						<f:selectItems value="#{mensagemMB.listaSICondominos}"/>						
 					</h:selectOneMenu>
+									
+				</h:panelGrid>	
+				<h:panelGrid columns="1">
+					 
+					
 					
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['mensagemRecebida.assunto']}:"

@@ -31,8 +31,6 @@ import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.service.BlocoService;
 import br.com.condominiosvirtuais.service.CondominioService;
 import br.com.condominiosvirtuais.service.CondominoService;
-import br.com.condominiosvirtuais.service.ConfiguracaoAplicacaoService;
-import br.com.condominiosvirtuais.service.EmailService;
 import br.com.condominiosvirtuais.service.FuncionarioService;
 import br.com.condominiosvirtuais.service.MensagemEnviadaService;
 import br.com.condominiosvirtuais.service.MensagemRecebidaService;
@@ -119,13 +117,7 @@ public class MensagemMB implements IConversationScopeMB, Serializable {
 	private UIInput componenteTextoMensagem;
 	
 	private Usuario usuarioAutenticado;
-	
-	@Inject
-	private EmailService emailService;
-
-	@Inject
-	private ConfiguracaoAplicacaoService configuracaoAplicacaoService = null;
-	
+		
 	public MensagemMB(){}
 	
 	
@@ -188,69 +180,6 @@ public class MensagemMB implements IConversationScopeMB, Serializable {
 		return "enviar";
 	}
 
-// Código comentado em 14/07/2015. Apagar em 180 dias.	
-//	public String enviarMensagemBloco(){
-//		try{			
-//			List<Unidade> listaUnidade = null;
-//			String mensagemCondominosNaoCadastrados = "";
-//			List<Condomino> listaCondominos = null;
-//			Bloco bloco = null;
-//			MensagemRecebida mensagem = null;
-//			List<MensagemRecebida> listaMensagemRecebida = new ArrayList<MensagemRecebida>();
-//			for (BlocoVO blocoVO : this.listaBlocoVOSelecionados) {
-//				bloco = new Bloco();
-//				bloco.setId(blocoVO.getIdBloco());
-//				listaUnidade = this.unidadeService.buscarListaUnidadesPorBloco(bloco);
-//				if(listaUnidade.isEmpty()){
-//					mensagemCondominosNaoCadastrados+= blocoVO.getNomeBloco() + ", ";
-//				}
-//				for (Unidade unidade : listaUnidade) {				
-//					listaCondominos = this.condominoService.buscarPorUnidade(unidade);
-//					for (Condomino condomino : listaCondominos) {
-//						mensagem = new MensagemRecebida();
-//						mensagem.setAssunto(this.mensagemRecebida.getAssunto());
-//						mensagem.setTexto(this.mensagemRecebida.getTexto());
-//						mensagem.setData(new Date());
-//						mensagem.setVisualizada(Boolean.FALSE);
-//						mensagem.setUsuarioRemetente(AplicacaoUtil.getUsuarioAutenticado());
-//						mensagem.setUsuarioDestinatario(condomino);
-//						// Condição que contempla o cenário onde o usuário informou se pode ou não enviar a msg para ele também.
-//						if (condomino.getId() != mensagem.getUsuarioRemetente().getId()){
-//							listaMensagemRecebida.add(mensagem);
-//						}
-//					}
-//				}			
-//			}
-//			if(this.enviarParaMimTambem){
-//				MensagemRecebida mensagemParaMim = new MensagemRecebida();
-//				mensagemParaMim.setAssunto(this.mensagemRecebida.getAssunto());
-//				mensagemParaMim.setTexto(this.mensagemRecebida.getTexto());
-//				mensagemParaMim.setData(new Date());
-//				mensagemParaMim.setVisualizada(Boolean.FALSE);
-//				mensagemParaMim.setUsuarioRemetente(AplicacaoUtil.getUsuarioAutenticado());
-//				mensagemParaMim.setUsuarioDestinatario(AplicacaoUtil.getUsuarioAutenticado());
-//				listaMensagemRecebida.add(mensagemParaMim);
-//								
-//			}
-//			if (listaMensagemRecebida.size() > 0){
-//				this.mensagemRecebidaService.enviarListaMensagemRecebida(listaMensagemRecebida);
-//				ManagedBeanUtil.setMensagemInfo("msg.mensagem.enviadaSucesso");				
-//			}
-//			//Exibe msg worn caso não tenha enviado msg para ninguém ou somente para o próprio remetente.
-//			if (listaMensagemRecebida.size() == 0 || listaMensagemRecebida.size() == 1 && this.enviarParaMimTambem){
-//				// Remove a última vírgula e acrescenta o ponto e vírgula
-//				mensagemCondominosNaoCadastrados = mensagemCondominosNaoCadastrados.substring(0,mensagemCondominosNaoCadastrados.length()-2) + ";"; 
-//				ManagedBeanUtil.setMensagemWarn("msg.mensagem.NaoEnviadaCondominos",mensagemCondominosNaoCadastrados);
-//			}
-//		 } catch (SQLException e) {
-//			logger.error("erro sqlstate "+e.getSQLState(), e);	
-//			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");				
-//		} catch (Exception e) {
-//			logger.error("", e);
-//			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
-//		}
-//		return "enviar";
-//	}
 	
 	
 	public String enviarMensagemBloco(){
@@ -548,7 +477,17 @@ public class MensagemMB implements IConversationScopeMB, Serializable {
 	}
 	
 	public void popularListaBlocos(){
-		this.setListaSIBlocos(this.blocoMB.buscarListaBlocosPorCondominio(this.condominio));	
+		List<SelectItem> listaSIBlocos = this.blocoMB.buscarListaBlocosPorCondominio(this.condominio);
+		listaSIBlocos.add(0,new SelectItem(0, AplicacaoUtil.i18n("todos")));
+		Usuario usuarioLogado = AplicacaoUtil.getUsuarioAutenticado();
+		List<Condominio> listaCondominio = usuarioLogado.getListaCondominio();
+		for (Condominio condominio : listaCondominio) {
+			// FIXME - Regra temporária. Se for do condomínio Residencial Quinta do Horto e não for o síndico, então remove a opção TODOS 
+			if(condominio.getId() == 19 && usuarioLogado.getIdGrupoUsuario() != 4 && usuarioLogado.getIdGrupoUsuario() != 1){
+				listaSIBlocos.remove(0);
+			}
+		}
+		this.setListaSIBlocos(listaSIBlocos);	
 	}
 	
 	public void popularListaCondominos(){	
@@ -566,15 +505,23 @@ public class MensagemMB implements IConversationScopeMB, Serializable {
 				listBlocos = new ArrayList<Bloco>();
 				listBlocos.add(this.bloco);
 			}	
+			this.listaSICondominos.add(0,new SelectItem(0, AplicacaoUtil.i18n("todos")));
 			for (Bloco bloco : listBlocos) {
 				for (Unidade unidade : bloco.getListaUnidade()) {
 					for (Condomino condomino : unidade.getListaCondominos()) {
 						// Condição que garante que não vai aparecer o usuário logado na lista dos destinatários.
 						if(AplicacaoUtil.getUsuarioAutenticado().getId() != condomino.getId())
-						this.listaSICondominos.add(new SelectItem(condomino.getId(), bloco.getNome() + 
-								" - " + unidade.getNumero() + " - " + condomino.getNome()));
+						this.listaSICondominos.add(new SelectItem(condomino.getId(), bloco.getNome() + " - " + unidade.getNumero() + " - " + condomino.getNome()));
 					}	
 				 }
+			}
+			Usuario usuarioLogado = AplicacaoUtil.getUsuarioAutenticado();
+			List<Condominio> listaCondominio = usuarioLogado.getListaCondominio();
+			for (Condominio condominio : listaCondominio) {
+				// FIXME - Regra temporária. Se for do condomínio Residencial Quinta do Horto e não for o síndico, então remove a opção TODOS 
+				if(condominio.getId() == 19 && usuarioLogado.getIdGrupoUsuario() != 4 && usuarioLogado.getIdGrupoUsuario() != 1){
+					listaSICondominos.remove(0);
+				}
 			}
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
