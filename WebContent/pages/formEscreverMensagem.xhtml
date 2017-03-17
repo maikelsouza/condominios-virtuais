@@ -36,9 +36,9 @@
 					</h:selectOneMenu>
 					
 					
-					<h:selectOneMenu value="#{mensagemMB.bloco.id}" id="idBloco" defaultLabel="#{msg['bloco.DefaultLabel']}" label="#{msg['bloco.label']}" required="true">
+					<h:selectOneMenu value="#{mensagemMB.bloco.id}" id="idBloco" defaultLabel="#{msg['bloco.DefaultLabel']}" label="#{msg['bloco.label']}" required="true" >
 						<f:selectItem itemValue="0" itemLabel="#{msg['todos']}" />
-						<f:selectItems value="#{mensagemMB.listaSIBlocos}" />
+						<f:selectItems value="#{mensagemMB.listaSIBlocos}"  />
 						<f:ajax listener="#{mensagemMB.popularListaCondominos}" render="idCondomino" execute="@this" />
 					</h:selectOneMenu>					
 				</h:panelGrid>	

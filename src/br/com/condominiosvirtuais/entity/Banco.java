@@ -7,6 +7,8 @@ public class Banco {
 	private String nome;
 	
 	private String codigo;
+	
+	private Boolean situacao;
 
 	public Integer getId() {
 		return id;
@@ -30,6 +32,14 @@ public class Banco {
 
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
-	}	
+	}
+
+	public Boolean getSituacao() {
+		return situacao;
+	}
+
+	public void setSituacao(Boolean situacao) {
+		this.situacao = situacao;
+	}		
 
 }

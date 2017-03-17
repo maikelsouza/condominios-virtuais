@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Banco;
 import br.com.condominiosvirtuais.entity.ContaBancaria;
+import br.com.condominiosvirtuais.enumeration.BancoSituacaoEnum;
 import br.com.condominiosvirtuais.enumeration.ContaBancariaSituacaoEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.service.BancoService;
@@ -201,7 +202,7 @@ public class ContaBancariaMB implements Serializable {
 
 	private void popularListaSiBancos() throws SQLException, Exception{
 		this.listaSIBancos = new ArrayList<SelectItem>();
-		List<Banco> listaBanco = this.bancoService.buscarTodos();		
+		List<Banco> listaBanco = this.bancoService.buscarTodosPorSituacao(BancoSituacaoEnum.ATIVO.getSituacao());		
 		for (Banco banco : listaBanco) {
 			this.listaSIBancos.add(new SelectItem(banco.getId(), banco.getNome()));
 			

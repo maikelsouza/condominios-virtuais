@@ -19,8 +19,13 @@ public class BancoServiceImpl implements BancoService, Serializable  {
 	private BancoDAO bancoDAO;
 
 	@Override
+	public List<Banco> buscarTodosPorSituacao(Boolean situacao) throws SQLException, Exception {
+		return this.bancoDAO.buscarTodosPorSituacao(situacao);
+	}
+
+	@Override
 	public List<Banco> buscarTodos() throws SQLException, Exception {
-		return bancoDAO.buscarTodos();
+		return this.bancoDAO.buscarTodos();
 	}
 
 }

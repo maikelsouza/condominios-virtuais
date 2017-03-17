@@ -131,7 +131,7 @@ public class BoletoMB  implements Serializable{
 				return null;
 			}else{
 				// FIXME Rever que número é esse
-				this.boleto.setNumero("12345678959-0");
+				this.boleto.setNumero("12345678-0");
 				this.boleto.setPago(Boolean.FALSE);
 				this.popularBeneficiario();
 				this.popularContasBancaria();
@@ -364,9 +364,9 @@ public class BoletoMB  implements Serializable{
 			
 			String entityResponse = response.readEntity(String.class);
 			JsonNode jsonNode = new ObjectMapper().readTree(entityResponse);
+			String reason = "\nstatus: " + response.getStatus();		
 			if (response.getStatus() == BAD_REQUEST.getStatusCode()){
 				Iterator<JsonNode> causas = jsonNode.get("erro").get("causas").elements();
-				String reason = "";		
 				while(causas.hasNext()){
 					JsonNode causa = causas.next();
 					reason+="\nCódigo: "+causa.get("codigo").asText() + "\n" +"Mensagem: "+causa.get("mensagem").asText()+"\n";
@@ -376,7 +376,6 @@ public class BoletoMB  implements Serializable{
 			
 			if (response.getStatus() == CONFLICT.getStatusCode()){
 				Iterator<JsonNode> causas = jsonNode.get("erro").get("causas").elements();
-				String reason = "";				
 				while(causas.hasNext()){
 					JsonNode causa = causas.next();
 					reason+="\nCódigo: "+causa.get("codigo").asText() + "\n" +"Mensagem: "+causa.get("mensagem").asText()+"\n";
@@ -386,7 +385,6 @@ public class BoletoMB  implements Serializable{
 			
 			if (response.getStatus() == UNAUTHORIZED.getStatusCode()){
 				Iterator<JsonNode> causas = jsonNode.get("erro").get("causas").elements();
-				String reason = "";
 				while(causas.hasNext()){
 					JsonNode causa = causas.next();
 					reason+="\nCódigo: "+causa.get("codigo").asText() + "\n" +"Mensagem: "+causa.get("mensagem").asText()+"\n";
@@ -396,7 +394,6 @@ public class BoletoMB  implements Serializable{
 			
 			if(response.getStatus() == INTERNAL_SERVER_ERROR.getStatusCode()){
 				Iterator<JsonNode> causas = jsonNode.get("erro").get("causas").elements();
-				String reason = "";
 				while(causas.hasNext()){
 					JsonNode causa = causas.next();
 					reason+="\nCódigo: "+causa.get("codigo").asText() + "\n" +"Mensagem: "+causa.get("mensagem").asText()+"\n";

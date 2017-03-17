@@ -27,7 +27,52 @@ public class BancoDAOImpl implements BancoDAO, Serializable {
     private static final String NOME = "NOME";
     
     private static final String CODIGO = "CODIGO";
+    
+    private static final String SITUACAO = "SITUACAO";
 
+	@Override
+	public List<Banco> buscarTodosPorSituacao(Boolean situacao) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(BANCO);
+		query.append(" WHERE ");
+		query.append(SITUACAO);
+		query.append(" = ?");
+		query.append(" ORDER BY ");
+		query.append(NOME);
+		query.append(";");		
+		Connection con = Conexao.getConexao();
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		List<Banco> listaBanco = new ArrayList<Banco>();
+		Banco banco = null;
+		try {
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, situacao, java.sql.Types.BOOLEAN);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				banco = new Banco();
+				banco.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				banco.setCodigo(String.valueOf(SQLUtil.getValorResultSet(resultSet, CODIGO, java.sql.Types.VARCHAR)));
+				banco.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+				banco.setSituacao((Boolean) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.BOOLEAN));
+				listaBanco.add(banco);
+			}
+		}catch (SQLException e) {
+			throw e;
+		}catch (Exception e) {		
+			throw e;
+		}finally{
+			try {
+				preparedStatement.close();
+				con.close();				
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);
+			}
+		}	
+		return listaBanco;
+	}
+	
 	@Override
 	public List<Banco> buscarTodos() throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
@@ -48,7 +93,8 @@ public class BancoDAOImpl implements BancoDAO, Serializable {
 				banco = new Banco();
 				banco.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
 				banco.setCodigo(String.valueOf(SQLUtil.getValorResultSet(resultSet, CODIGO, java.sql.Types.VARCHAR)));
-				banco.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));				
+				banco.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+				banco.setSituacao((Boolean) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.BOOLEAN));
 				listaBanco.add(banco);
 			}
 		}catch (SQLException e) {

@@ -2,20 +2,21 @@ CREATE TABLE IF NOT EXISTS BANCO(
 	ID integer NOT NULL AUTO_INCREMENT,
 	NOME VARCHAR(50) NOT NULL,
 	CODIGO VARCHAR(10) NOT NULL,
+	SITUACAO BOOLEAN NOT NULL,
 	PRIMARY KEY(ID)
 );	
 
-INSERT INTO BANCO VALUES(DEFAULT,'Banco do Brasil','001'),
-(DEFAULT,'Sicoob','756'),
-(DEFAULT,'Bradesco','237'),
-(DEFAULT,'Caixa','104'),
-(DEFAULT,'Itaú','341'),
-(DEFAULT,'Safra','422'),
-(DEFAULT,'Santander','033'),
-(DEFAULT,'Sicredi','748'),
-(DEFAULT,'Banrisul','041'),
-(DEFAULT,'Unicredi','136'),
-(DEFAULT,'HBSBC','399');
+INSERT INTO BANCO VALUES(DEFAULT,'Banco do Brasil','001',1),
+(DEFAULT,'Sicoob','756',1),
+(DEFAULT,'Bradesco','237',1),
+(DEFAULT,'Caixa','104',1),
+(DEFAULT,'Itaú','341',1),
+(DEFAULT,'Safra','422',1),
+(DEFAULT,'Santander','033',1),
+(DEFAULT,'Sicredi','748',1),
+(DEFAULT,'Banrisul','041',1),
+(DEFAULT,'Unicredi','136',1),
+(DEFAULT,'HBSBC','399',1);
 
 
 DELETE FROM MEIO_PAGAMENTO WHERE ID IN (3,4,5,6,7,8,9,10,11,12);
