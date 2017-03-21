@@ -41,15 +41,15 @@
 				</h:panelGroup>
 			</f:facet>
 		</rich:dropDownMenu>
-		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,7') and loginMB.sindicoGeralAssociado()}">
+		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,7') and loginMB.sindicoGeralAssociado() || loginMB.exibeMenuArquivoContadorQuintaDoHorto() || loginMB.exibeMenuArquivoAdvogadoQuintaDoHorto()}">
 			<f:facet name="label">
 				<h:panelGroup
-					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,7') and loginMB.sindicoGeralAssociado()}">
+					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,7') and loginMB.sindicoGeralAssociado() || loginMB.exibeMenuArquivoContadorQuintaDoHorto() || loginMB.exibeMenuArquivoAdvogadoQuintaDoHorto()}">
 					<h:outputText value="#{msg.arquivo}" />
 				</h:panelGroup>
 			</f:facet>
-			<rich:menuItem label="#{msg['arquivo.documentos']}" action="#{principalMB.listarDocumento}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,7')}" />
-			<rich:menuItem label="#{msg['arquivo.documento.anexar']}" action="#{principalMB.anexarDocumento}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}" />
+			<rich:menuItem label="#{msg['arquivo.documentos']}" action="#{principalMB.listarDocumento}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,7') || loginMB.exibeMenuArquivoContadorQuintaDoHorto() || loginMB.exibeMenuArquivoAdvogadoQuintaDoHorto()}" />
+			<rich:menuItem label="#{msg['arquivo.documento.anexar']}" action="#{principalMB.anexarDocumento}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7') || loginMB.exibeMenuArquivoContadorQuintaDoHorto()}" />
 			<rich:menuItem label="#{msg['arquivo.imagem']}" action="#{principalMB.listarImagem}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,7')}" />
 			<rich:menuItem label="#{msg['arquivo.imagem.anexar']}" action="#{principalMB.anexarImagem}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}" />
 		</rich:dropDownMenu>

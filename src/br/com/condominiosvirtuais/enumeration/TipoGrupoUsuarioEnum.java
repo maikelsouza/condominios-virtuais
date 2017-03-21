@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import br.com.condominiosvirtuais.util.AplicacaoUtil;
+
+
 public enum TipoGrupoUsuarioEnum {
 	
 	ADMINISTRADOR(1),
@@ -44,6 +47,13 @@ public enum TipoGrupoUsuarioEnum {
 	public void setGrupoUsuariosTelasAcesso(
 			Map<Integer, List<String>> grupoUsuariosTelasAcesso) {
 		this.grupoUsuariosTelasAcesso = grupoUsuariosTelasAcesso;
+	}
+	
+	/**
+	 * FIXME: Método temporário. Criado para garantir que os if's no caso do funcionário seja sempre executado
+	 */
+	public void inicializar(){
+		this.popularTelasAcessoUsuarios();
 	}
 
 	private void popularTelasAcessoUsuarios(){
@@ -446,7 +456,16 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_VISITANTE.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_VISITANTE.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_VISITA.getPathTelas());
-			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_PRESTADOR_SERVICO.getPathTelas());	
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_PRESTADOR_SERVICO.getPathTelas());
+			
+			if(AplicacaoUtil.getUsuarioAutenticado().getId() == 367 || AplicacaoUtil.getUsuarioAutenticado().getId() == 365){
+				this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_DOCUMENTO.getPathTelas());				
+			}
+			if(AplicacaoUtil.getUsuarioAutenticado().getId() == 365){
+				this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_ANEXA_DOCUMENTO.getPathTelas());
+			}
+			
+			
 			
 		} else if (this.getGrupoUsuario() == 7){ // Escritório Contabilidade
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_PRINCIPAL.getPathTelas());			

@@ -150,6 +150,32 @@ public class LoginMB implements Serializable{
 	}    
 	
 	
+	/**
+	 * FIXME: Método criado para atender o condomínio Quinta do Horto (id 19)
+	 * Esse deverá ser removido após criar os grupos de usuários e suas autorizações.
+	 * @return True: - Exibe - False: Não exibe 
+	 */
+	public Boolean exibeMenuArquivoAdvogadoQuintaDoHorto(){
+		Boolean exibeMenuArquivo = Boolean.FALSE;
+		if(this.usuario.getId() == 367){
+			exibeMenuArquivo = Boolean.TRUE;
+		}		
+		return exibeMenuArquivo;
+	}
+	
+	/**
+	 * FIXME: Método criado para atender o condomínio Quinta do Horto (id 19)
+	 * Esse deverá ser removido após criar os grupos de usuários e suas autorizações.
+	 * @return True: - Exibe - False: Não exibe 
+	 */
+	public Boolean exibeMenuArquivoContadorQuintaDoHorto(){
+		Boolean exibeMenuArquivo = Boolean.FALSE;
+		if(this.usuario.getId() == 365){
+			exibeMenuArquivo = Boolean.TRUE;
+		}		
+		return exibeMenuArquivo;
+	}
+	
 	public Boolean sindicoGeralAssociado(){
 		Boolean sindicoGeralAssociado = Boolean.TRUE;
 //		// Regra válida somente para usuário não admin
