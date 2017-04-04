@@ -1,6 +1,6 @@
 package br.com.condominiosvirtuais.entity;
 
-public class Beneficiario {
+public class Beneficiario implements Cloneable{
 	
 	private Integer id;
 	
@@ -65,9 +65,10 @@ public class Beneficiario {
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
-
 	
-	
+	public Beneficiario clone() throws CloneNotSupportedException{
+        return (Beneficiario) super.clone();
+	}
 	
 
 }

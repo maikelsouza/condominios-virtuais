@@ -47,17 +47,30 @@
 						<h:outputLabel value="#{msg['contaBancaria.carteira']}:" for="idCarteira" />						
 						<span class="asterisco">*</span>
 					</h:panelGroup>
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['contaBancaria.token']}:" for="idToken" />						
+						<span class="asterisco">*</span>
+					</h:panelGroup>					
+										
+					<h:inputText id="idNumero" value="#{contaBancariaMB.contaBancaria.numero}" required="true" label="#{msg['contaBancaria.numero.label']}"/>
+										
+					<h:inputText id="idCarteira" value="#{contaBancariaMB.contaBancaria.carteira}" required="true" label="#{msg['contaBancaria.carteira.label']}"/>
+					
+					<h:inputText id="idToken" value="#{contaBancariaMB.contaBancaria.token}" required="true" label="#{msg['contaBancaria.token.label']}" size="50"/>
+					
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['contaBancaria.situacao']}:" for="idSituacao" />						
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 					
-					<h:inputText id="idNumero" value="#{contaBancariaMB.contaBancaria.numero}" required="true" label="#{msg['contaBancaria.numero.label']}"/>					
-					<h:inputText id="idCarteira" value="#{contaBancariaMB.contaBancaria.carteira}" required="true" label="#{msg['contaBancaria.carteira.label']}"/>
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
 					
 					<h:selectOneRadio id="idSituacao" value="#{contaBancariaMB.situacaoContaBancaria}" required="true" label="#{msg['contaBancaria.situacao.label']}">
 						<f:selectItems value="#{contaBancariaMB.listaSISituacao}" />
 					</h:selectOneRadio>
+					
 				 </h:panelGrid>	
 				
 				 

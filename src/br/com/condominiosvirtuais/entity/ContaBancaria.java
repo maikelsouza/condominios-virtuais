@@ -1,6 +1,6 @@
 package br.com.condominiosvirtuais.entity;
 
-public class ContaBancaria {
+public class ContaBancaria implements Cloneable {
 	
 	private Integer id;
 	
@@ -15,6 +15,8 @@ public class ContaBancaria {
 	private Integer idCondominio;
 	
 	private Boolean situacao;
+	
+	private String token;
 	
 	public ContaBancaria(){
 		this.banco = new Banco();
@@ -75,9 +77,18 @@ public class ContaBancaria {
 
 	public void setSituacao(Boolean situacao) {
 		this.situacao = situacao;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}	
 	
-	
-	
+	public ContaBancaria clone() throws CloneNotSupportedException{
+        return (ContaBancaria) super.clone();
+	}	
 
 }

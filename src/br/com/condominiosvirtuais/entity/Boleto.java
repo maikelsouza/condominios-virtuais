@@ -4,7 +4,7 @@ import java.util.Date;
 
 import br.com.condominiosvirtuais.vo.CondominoVO;
 
-public class Boleto {	
+public class Boleto implements Cloneable {	
 	
 	private Integer id;	
 	
@@ -29,6 +29,8 @@ public class Boleto {
 	private String instrucao3;
 	
 	private Integer idCondominio;
+	
+	private String token;
 	
 	private ContaBancaria contaBancaria;
 	
@@ -160,11 +162,17 @@ public class Boleto {
 
 	public void setInstrucao3(String instrucao3) {
 		this.instrucao3 = instrucao3;
+	}	
+
+	public String getToken() {
+		return token;
 	}
 
-	
-	
-	
-	
+	public void setToken(String token) {
+		this.token = token;
+	}
 
+	public Boleto clone() throws CloneNotSupportedException{
+        return (Boleto) super.clone();
+	}
 }

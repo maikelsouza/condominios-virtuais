@@ -69,7 +69,9 @@ public class BoletoDAOImpl implements BoletoDAO, Serializable {
 	
 	private static final String INSTRUCAO2 = "INSTRUCAO2";
 	
-	private static final String INSTRUCAO3 = "INSTRUCAO3";	
+	private static final String INSTRUCAO3 = "INSTRUCAO3";
+	
+	private static final String TOKEN = "TOKEN";
 	
 	private static final String ID_CONDOMINIO = "ID_CONDOMINIO";
 	
@@ -108,6 +110,8 @@ public class BoletoDAOImpl implements BoletoDAO, Serializable {
 		query.append(",");
 		query.append(INSTRUCAO3);		
 		query.append(",");
+		query.append(TOKEN);		
+		query.append(",");
 		query.append(ID_CONDOMINIO);
 		query.append(",");
 		query.append(ID_PAGADOR);
@@ -116,7 +120,7 @@ public class BoletoDAOImpl implements BoletoDAO, Serializable {
 		query.append(",");
 		query.append(ID_CONTA_BANCARIA);
 		query.append(") ");
-		query.append("VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+		query.append("VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 		try {
 			statement = con.prepareStatement(query.toString());			
 			SQLUtil.setValorPpreparedStatement(statement,1, boleto.getEmissao(), java.sql.Types.DATE);
@@ -129,10 +133,11 @@ public class BoletoDAOImpl implements BoletoDAO, Serializable {
 			SQLUtil.setValorPpreparedStatement(statement,8, boleto.getInstrucao1(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement,9, boleto.getInstrucao2(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement,10, boleto.getInstrucao3(), java.sql.Types.VARCHAR);
-			SQLUtil.setValorPpreparedStatement(statement,11, boleto.getIdCondominio(), java.sql.Types.INTEGER);			
-			SQLUtil.setValorPpreparedStatement(statement,12, boleto.getCondominoVO().getId(), java.sql.Types.INTEGER);			
-			SQLUtil.setValorPpreparedStatement(statement,13, boleto.getBeneficiario().getId(), java.sql.Types.INTEGER);			
-			SQLUtil.setValorPpreparedStatement(statement,14, boleto.getContaBancaria().getId(), java.sql.Types.INTEGER);			
+			SQLUtil.setValorPpreparedStatement(statement,11, boleto.getToken(), java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement,12, boleto.getIdCondominio(), java.sql.Types.INTEGER);			
+			SQLUtil.setValorPpreparedStatement(statement,13, boleto.getCondominoVO().getId(), java.sql.Types.INTEGER);			
+			SQLUtil.setValorPpreparedStatement(statement,14, boleto.getBeneficiario().getId(), java.sql.Types.INTEGER);			
+			SQLUtil.setValorPpreparedStatement(statement,15, boleto.getContaBancaria().getId(), java.sql.Types.INTEGER);			
 			statement.execute();				
 		} catch (SQLException e) {
 			throw e;
@@ -221,6 +226,7 @@ public class BoletoDAOImpl implements BoletoDAO, Serializable {
 				boleto.setInstrucao1(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO1, java.sql.Types.VARCHAR)));
 				boleto.setInstrucao2(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO2, java.sql.Types.VARCHAR)));
 				boleto.setInstrucao3(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO3, java.sql.Types.VARCHAR)));
+				boleto.setToken(String.valueOf(SQLUtil.getValorResultSet(resultSet, TOKEN, java.sql.Types.VARCHAR)));
 				boleto.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
 				boleto.setBeneficiario(this.beneficiarioDAO.buscarPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_BENEFICIARIO, java.sql.Types.INTEGER), con));
 				boleto.setContaBancaria(this.contaBancariaDAO.buscarPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONTA_BANCARIA, java.sql.Types.INTEGER), con));
@@ -288,6 +294,7 @@ public class BoletoDAOImpl implements BoletoDAO, Serializable {
 				boleto.setInstrucao1(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO1, java.sql.Types.VARCHAR)));
 				boleto.setInstrucao2(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO2, java.sql.Types.VARCHAR)));
 				boleto.setInstrucao3(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO3, java.sql.Types.VARCHAR)));
+				boleto.setToken(String.valueOf(SQLUtil.getValorResultSet(resultSet, TOKEN, java.sql.Types.VARCHAR)));
 				boleto.setPago((Boolean) SQLUtil.getValorResultSet(resultSet, PAGO, java.sql.Types.BOOLEAN));
 				boleto.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
 				boleto.setBeneficiario(this.beneficiarioDAO.buscarPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_BENEFICIARIO, java.sql.Types.INTEGER), con));
@@ -398,6 +405,7 @@ public class BoletoDAOImpl implements BoletoDAO, Serializable {
 				boleto.setInstrucao1(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO1, java.sql.Types.VARCHAR)));
 				boleto.setInstrucao2(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO2, java.sql.Types.VARCHAR)));
 				boleto.setInstrucao3(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO3, java.sql.Types.VARCHAR)));
+				boleto.setToken(String.valueOf(SQLUtil.getValorResultSet(resultSet, TOKEN, java.sql.Types.VARCHAR)));
 				boleto.setPago((Boolean) SQLUtil.getValorResultSet(resultSet, PAGO, java.sql.Types.BOOLEAN));
 				boleto.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
 				boleto.setBeneficiario(this.beneficiarioDAO.buscarPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_BENEFICIARIO, java.sql.Types.INTEGER), con));
@@ -470,6 +478,7 @@ public class BoletoDAOImpl implements BoletoDAO, Serializable {
 				boleto.setInstrucao1(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO1, java.sql.Types.VARCHAR)));
 				boleto.setInstrucao2(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO2, java.sql.Types.VARCHAR)));
 				boleto.setInstrucao3(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO3, java.sql.Types.VARCHAR)));
+				boleto.setToken(String.valueOf(SQLUtil.getValorResultSet(resultSet, TOKEN, java.sql.Types.VARCHAR)));
 				boleto.setPago((Boolean) SQLUtil.getValorResultSet(resultSet, PAGO, java.sql.Types.BOOLEAN));
 				boleto.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
 				boleto.setBeneficiario(this.beneficiarioDAO.buscarPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_BENEFICIARIO, java.sql.Types.INTEGER), con));

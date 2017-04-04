@@ -1,13 +1,9 @@
 package br.com.condominiosvirtuais.controller;
 
-import static javax.ws.rs.core.MediaType.WILDCARD;
-import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
-import static javax.ws.rs.core.Response.Status.CONFLICT;
-import static javax.ws.rs.core.Response.Status.CREATED;
-import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
-import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,14 +16,19 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Instance;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Form;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.log4j.Logger;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
@@ -40,7 +41,9 @@ import br.com.condominiosvirtuais.entity.Beneficiario;
 import br.com.condominiosvirtuais.entity.Boleto;
 import br.com.condominiosvirtuais.entity.ContaBancaria;
 import br.com.condominiosvirtuais.entity.PreCadastroBoleto;
+import br.com.condominiosvirtuais.enumeration.ArquivoExtensaoEnum;
 import br.com.condominiosvirtuais.enumeration.ConfiguracaoAplicacaoEnum;
+import br.com.condominiosvirtuais.enumeration.MimeTypeEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.service.BeneficiarioService;
 import br.com.condominiosvirtuais.service.BoletoService;
@@ -130,8 +133,6 @@ public class BoletoMB  implements Serializable{
 				ManagedBeanUtil.setMensagemErro("msg.boleto.vencimentoMenorEmissao");
 				return null;
 			}else{
-				// FIXME Rever que número é esse
-				this.boleto.setNumero("12345678-0");
 				this.boleto.setPago(Boolean.FALSE);
 				this.popularBeneficiario();
 				this.popularContasBancaria();
@@ -316,28 +317,52 @@ public class BoletoMB  implements Serializable{
 			logger.error("", e);
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
 		}
-	}	
+	}
 	
+	
+	
+	public void baixarBoleto(ActionEvent actionEvent) throws IOException{
+		this.boleto = this.listaBoletos.getRowData();
+		Response response = ClientBuilder
+				.newClient().target("https://sandbox.boletocloud.com/api/v1/boletos").path("/"+this.boleto.getToken())
+				.register(HttpAuthenticationFeature.basic(configuracaoAplicacaoService.getConfiguracoes().get(ConfiguracaoAplicacaoEnum.TOKEN_BOLETO_CLOUD.getChave()),"token"))
+				.request(MediaType.WILDCARD).get();
+		
+		StringBuffer nomeArquivo = new StringBuffer(boleto.getCondominoVO().getNomeCondomino());
+		nomeArquivo.append(".");
+		nomeArquivo.append(ArquivoExtensaoEnum.PDF.getExtensao());
+	
+		InputStream is = response.readEntity(InputStream.class);
+		HttpServletResponse responseServlet = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+		
+		responseServlet.setContentType(MimeTypeEnum.PDF.getMimeType());		
+		responseServlet.setHeader("Content-Disposition", "attachment; filename="+nomeArquivo.toString());
+		PrintWriter printWriter = responseServlet.getWriter();
+		   
+		int bit = 256;
+		while(bit >= 0){
+			 bit = is.read();
+			 printWriter.write(bit);
+		}
+		
+		printWriter.flush();
+		printWriter.close();
+		is.close();
+		responseServlet.flushBuffer();
+		FacesContext.getCurrentInstance().responseComplete();		
+	}
+		
+		
 	private void criarBoleto() throws JsonProcessingException, IOException, BusinessException, Exception{
 		
 		Form formBoleto = new Form();
-		formBoleto.param("boleto.conta.banco",this.boleto.getContaBancaria().getBanco().getCodigo());
-		formBoleto.param("boleto.conta.agencia",this.boleto.getContaBancaria().getAgencia());
-		formBoleto.param("boleto.conta.numero",this.boleto.getContaBancaria().getNumero());
-		formBoleto.param("boleto.conta.carteira",this.boleto.getContaBancaria().getCarteira());
-		formBoleto.param("boleto.beneficiario.nome",this.boleto.getBeneficiario().getNome());
-		formBoleto.param("boleto.beneficiario.cprf",AplicacaoUtil.formatarCnpj(this.boleto.getBeneficiario().getCprf()));
-		formBoleto.param("boleto.beneficiario.endereco.cep",AplicacaoUtil.formatarCep(this.boleto.getBeneficiario().getEndereco().getCep()));
-		formBoleto.param("boleto.beneficiario.endereco.uf",this.boleto.getBeneficiario().getEndereco().getUf());
-		formBoleto.param("boleto.beneficiario.endereco.localidade",this.boleto.getBeneficiario().getEndereco().getCidade());
-		formBoleto.param("boleto.beneficiario.endereco.bairro",this.boleto.getBeneficiario().getEndereco().getBairro());
-		formBoleto.param("boleto.beneficiario.endereco.logradouro",this.boleto.getBeneficiario().getEndereco().getEndereco());
-		formBoleto.param("boleto.beneficiario.endereco.numero",String.valueOf(this.boleto.getBeneficiario().getEndereco().getNumero()));
-		formBoleto.param("boleto.beneficiario.endereco.complemento",this.boleto.getBeneficiario().getEndereco().getComplemento());
+		formBoleto.param("boleto.conta.token",this.boleto.getContaBancaria().getToken());
+		System.out.println("Banco: " + this.boleto.getContaBancaria().getBanco().getNome());
+		System.out.println("Token: " + this.boleto.getContaBancaria().getToken());
+
 		formBoleto.param("boleto.emissao", AplicacaoUtil.formatarData(AplicacaoUtil.i18n("formatoDataBoletoCloud"), this.boleto.getEmissao()));
 		formBoleto.param("boleto.vencimento", AplicacaoUtil.formatarData(AplicacaoUtil.i18n("formatoDataBoletoCloud"), this.boleto.getVencimento()));
 		formBoleto.param("boleto.documento",this.boleto.getDocumento());
-		formBoleto.param("boleto.numero",this.boleto.getNumero());
 		formBoleto.param("boleto.titulo",this.boleto.getTitulo());
 		formBoleto.param("boleto.valor",AplicacaoUtil.formatarMoeda(AplicacaoUtil.i18n("formatoMoedaBoletoCloud"), this.boleto.getValor()).replace(",", "."));
 		formBoleto.param("boleto.pagador.nome",this.boleto.getCondominoVO().getNomeCondomino());
@@ -354,18 +379,37 @@ public class BoletoMB  implements Serializable{
 		formBoleto.param("boleto.instrucao",this.boleto.getInstrucao2());
 		formBoleto.param("boleto.instrucao",this.boleto.getInstrucao3());
 		
+// TODO: Código comentado em 29/03/2017. Apagar em 180 dias		
+//		formBoleto.param("boleto.conta.banco",this.boleto.getContaBancaria().getBanco().getCodigo());
+//		formBoleto.param("boleto.conta.agencia",this.boleto.getContaBancaria().getAgencia());
+//		formBoleto.param("boleto.conta.numero",this.boleto.getContaBancaria().getNumero());
+//		formBoleto.param("boleto.conta.carteira",this.boleto.getContaBancaria().getCarteira());
+//		formBoleto.param("boleto.beneficiario.nome",this.boleto.getBeneficiario().getNome());
+//		formBoleto.param("boleto.beneficiario.cprf",AplicacaoUtil.formatarCnpj(this.boleto.getBeneficiario().getCprf()));
+//		formBoleto.param("boleto.beneficiario.endereco.cep",AplicacaoUtil.formatarCep(this.boleto.getBeneficiario().getEndereco().getCep()));
+//		formBoleto.param("boleto.beneficiario.endereco.uf",this.boleto.getBeneficiario().getEndereco().getUf());
+//		formBoleto.param("boleto.beneficiario.endereco.localidade",this.boleto.getBeneficiario().getEndereco().getCidade());
+//		formBoleto.param("boleto.beneficiario.endereco.bairro",this.boleto.getBeneficiario().getEndereco().getBairro());
+//		formBoleto.param("boleto.beneficiario.endereco.logradouro",this.boleto.getBeneficiario().getEndereco().getEndereco());
+//		formBoleto.param("boleto.beneficiario.endereco.numero",String.valueOf(this.boleto.getBeneficiario().getEndereco().getNumero()));
+//		formBoleto.param("boleto.beneficiario.endereco.complemento",this.boleto.getBeneficiario().getEndereco().getComplemento());
+//		formBoleto.param("boleto.numero",this.boleto.getNumero());
+		
 		
 		Response response = ClientBuilder.newClient().target("https://sandbox.boletocloud.com/api/v1").path("/boletos")
 				.register(HttpAuthenticationFeature.basic(configuracaoAplicacaoService.getConfiguracoes().get(ConfiguracaoAplicacaoEnum.TOKEN_BOLETO_CLOUD.getChave()),"token"))
-				.request(WILDCARD).post(Entity.form(formBoleto));
+				.request(MediaType.WILDCARD).post(Entity.form(formBoleto));
+		
+//		Response response = ClientBuilder.newClient().target("https://sandbox.boletocloud.com/api/v1/boletos").path("DUSCnyu7Wd1MOlaVgGnPpbXbcjs1e6j2PoGXJwrpwck=")
+//				.register(HttpAuthenticationFeature.basic(configuracaoAplicacaoService.getConfiguracoes().get(ConfiguracaoAplicacaoEnum.TOKEN_BOLETO_CLOUD.getChave()),"token"))
+//				.request(MediaType.WILDCARD).get();
 		
 		
-		if (response.getStatus() != CREATED.getStatusCode()){
-			
+		if (response.getStatus() != Status.CREATED.getStatusCode()){			
 			String entityResponse = response.readEntity(String.class);
 			JsonNode jsonNode = new ObjectMapper().readTree(entityResponse);
 			String reason = "\nstatus: " + response.getStatus();		
-			if (response.getStatus() == BAD_REQUEST.getStatusCode()){
+			if (response.getStatus() == Status.BAD_REQUEST.getStatusCode()){
 				Iterator<JsonNode> causas = jsonNode.get("erro").get("causas").elements();
 				while(causas.hasNext()){
 					JsonNode causa = causas.next();
@@ -374,7 +418,7 @@ public class BoletoMB  implements Serializable{
 				throw new BusinessException("msg.erro.executarOperacao", new Exception(reason));
 			}
 			
-			if (response.getStatus() == CONFLICT.getStatusCode()){
+			if (response.getStatus() == Status.CONFLICT.getStatusCode()){
 				Iterator<JsonNode> causas = jsonNode.get("erro").get("causas").elements();
 				while(causas.hasNext()){
 					JsonNode causa = causas.next();
@@ -383,7 +427,7 @@ public class BoletoMB  implements Serializable{
 				throw new BusinessException("msg.boleto.boletoNumeroRepetido", new Exception(reason),this.boleto.getNumero());				
 			}
 			
-			if (response.getStatus() == UNAUTHORIZED.getStatusCode()){
+			if (response.getStatus() == Status.UNAUTHORIZED.getStatusCode()){
 				Iterator<JsonNode> causas = jsonNode.get("erro").get("causas").elements();
 				while(causas.hasNext()){
 					JsonNode causa = causas.next();
@@ -392,7 +436,7 @@ public class BoletoMB  implements Serializable{
 				throw new BusinessException("msg.erro.executarOperacao", new Exception(reason));
 			}
 			
-			if(response.getStatus() == INTERNAL_SERVER_ERROR.getStatusCode()){
+			if(response.getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()){
 				Iterator<JsonNode> causas = jsonNode.get("erro").get("causas").elements();
 				while(causas.hasNext()){
 					JsonNode causa = causas.next();
@@ -400,7 +444,10 @@ public class BoletoMB  implements Serializable{
 				}
 				throw new BusinessException("msg.erro.executarOperacao", new Exception(reason));
 			}
-		}		
+		}else if (response.getStatus() == Status.CREATED.getStatusCode()){
+			this.boleto.setNumero(String.valueOf(response.getHeaders().get("X-BoletoCloud-NIB-Nosso-Numero").get(0)));
+			this.boleto.setToken(String.valueOf(response.getHeaders().get("X-BoletoCloud-Token").get(0)));
+		}
 	}
 	
 	
@@ -454,25 +501,25 @@ public class BoletoMB  implements Serializable{
 		}
 	}
 	
-	private void popularBeneficiario(){
+	private void popularBeneficiario() throws CloneNotSupportedException{
 		Boolean encontrou = Boolean.FALSE;
 		Iterator<Beneficiario> iteratorBeneficiario = this.listaBeneficiarios.iterator();
 		while (iteratorBeneficiario.hasNext() && encontrou == Boolean.FALSE) {
 			Beneficiario beneficiario = iteratorBeneficiario.next();
-			if(this.getBoleto().getBeneficiario().getId().equals(beneficiario.getId())){
-				this.boleto.setBeneficiario(beneficiario);
+			if(this.boleto.getBeneficiario().getId().equals(beneficiario.getId())){
+				this.boleto.setBeneficiario(beneficiario.clone());			
 				encontrou = Boolean.TRUE;
 			}
 		}		
 	}
 	
-	private void popularContasBancaria(){
+	private void popularContasBancaria() throws CloneNotSupportedException{
 		Boolean encontrou = Boolean.FALSE;
 		Iterator<ContaBancaria> iteratorContaBancaria = this.listaContaBancaria.iterator();
 		while (iteratorContaBancaria.hasNext() && encontrou == Boolean.FALSE) {
 			ContaBancaria contaBancaria = iteratorContaBancaria.next();
-			if(this.getBoleto().getContaBancaria().getId().equals(contaBancaria.getId())){
-				this.boleto.setContaBancaria(contaBancaria);
+			if(this.boleto.getContaBancaria().getId().equals(contaBancaria.getId())){
+				this.boleto.setContaBancaria(contaBancaria.clone());
 				encontrou = Boolean.TRUE;
 			}
 		}		

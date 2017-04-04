@@ -130,7 +130,8 @@
 									operation="show" />
 							</h:commandLink>
 				 			#{' '}                                                                           
- 							<a4j:commandLink value="#{msg.linkDownload}" render="tableBoleto" action="#{contaBancariaMB.editaContaBancaria}" immediate="true" 
+ 							<h:commandLink value="#{msg.linkDownload}" render="tableBoleto" actionListener="#{boletoMB.baixarBoleto}" immediate="true" 
+ 							 
  							rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1')}" />
  							
  							<rich:popupPanel id="confirmaExcluirBoleto" autosized="true">
