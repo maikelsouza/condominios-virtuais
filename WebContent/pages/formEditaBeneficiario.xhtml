@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">		
+		<h:form id="idFormEditaBeneficiario" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.editaBeneficiario}" />
+				</f:facet>
+				<h:panelGrid columns="3" >
+					<h:panelGroup>
+						<h:outputLabel value="#{msg.condominio}:" for="idCondominio" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['beneficiario.nome']}:" for="idNome" />						
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['beneficiario.cprf']}:" for="idCprf" />						
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+									
+					<h:selectOneMenu id="idCondominio" value="#{beneficiarioMB.beneficiario.idCondominio}"
+						defaultLabel="#{msg['condominio.DefaultLabel']}" required="true" label="#{msg['condominio.label']}">
+						<f:selectItems value="#{beneficiarioMB.listaSICondominios}" />
+					</h:selectOneMenu>		
+								
+					<h:inputText id="idNome" value="#{beneficiarioMB.beneficiario.nome}" required="true" label="#{msg['condominio.nome.label']}"/>
+					<h:inputText id="idCprf" value="#{beneficiarioMB.beneficiario.cprf}" required="true" label="#{msg['condominio.cprf.label']}"/>
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['beneficiario.situacao']}:" for="idSituacao" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					
+					<h:outputLabel value="" />
+					<h:outputLabel value="" />
+					
+					<h:selectOneRadio id="idSituacao" value="#{beneficiarioMB.situacaoBeneficiario}" required="true" label="#{msg['beneficiario.situacao.label']}">
+						<f:selectItems value="#{beneficiarioMB.listaSISituacao}" />
+					</h:selectOneRadio>					
+				
+					
+				 </h:panelGrid>	
+				
+				 
+				 
+			</rich:panel>
+			<rich:panel header="#{msg['cadastroBeneficiario.endereco']}">				
+				<h:panelGrid columns="3" >
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['beneficiario.endereco.endereco']}:" for="idEndereco" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['beneficiario.endereco.numero']}:" for="idNumero" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:outputLabel value="#{msg['beneficiario.endereco.complemento']}:" for="idComplemento" />
+					
+					<h:inputText id="idEndereco" value="#{beneficiarioMB.beneficiario.endereco.endereco}" label="#{msg['beneficiario.endereco.endereco.label']}"
+						required="true" validatorMessage="#{msg['msg.beneficiario.endereco.endereco']}" size="40">
+						<f:validateLength minimum="1" maximum="100" />
+					</h:inputText>
+					<h:inputText id="idNumero" value="#{beneficiarioMB.beneficiario.endereco.numero}" label="#{msg['beneficiario.endereco.numero.label']}" required="true"
+						validatorMessage="#{msg['msg.beneficiario.endereco.numero']}" size="12">
+						<f:validateLength minimum="1" maximum="12" />
+					</h:inputText>
+					<h:inputText id="idComplemento" value="#{beneficiarioMB.beneficiario.endereco.complemento}" size="30"
+						validatorMessage="#{msg['msg.beneficiario.endereco.complemento']}">
+						<f:validateLength minimum="1" maximum="150" />
+					</h:inputText>
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['beneficiario.endereco.cep']}:" for="idCep" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['beneficiario.endereco.bairro']}:" for="idBairro" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['beneficiario.endereco.cidade']}:" for="idCidade" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+										
+					<h:panelGroup>
+						<h:inputText id="idCep" value="#{beneficiarioMB.beneficiario.endereco.cep}" 
+							label="#{msg['beneficiario.endereco.cep.label']}" required="true" size="10">							
+						</h:inputText>
+						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
+					</h:panelGroup>					
+					
+					<h:inputText id="idBairro" value="#{beneficiarioMB.beneficiario.endereco.bairro}" label="#{msg['beneficiario.endereco.bairro.label']}" required="true" size="12"
+						validatorMessage="#{msg['msg.beneficiario.endereco.bairro']}">
+						<f:validateLength minimum="1" maximum="100" />
+					</h:inputText>
+					<h:inputText id="idCidade" value="#{beneficiarioMB.beneficiario.endereco.cidade}" label="#{msg['beneficiario.endereco.cidade.label']}" required="true"
+						validatorMessage="#{msg['msg.beneficiario.endereco.cidade']}">
+						<f:validateLength minimum="1" maximum="100" />
+					</h:inputText>
+					
+									
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['beneficiario.endereco.uf']}" for="idUf" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['beneficiario.endereco.pais']}:" for="idPais" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					<h:outputLabel value=""/>
+					
+					<h:inputText id="idUf" value="#{beneficiarioMB.beneficiario.endereco.uf}" label="#{msg['beneficiario.endereco.UF.label']}" required="true"
+						size="2" validatorMessage="#{msg['msg.beneficiario.endereco.uf']}">
+						<f:validateRegex pattern="[a-zA-Z]{1,2}" for="idUf" />
+					</h:inputText>
+					<h:inputText id="idPais" value="#{beneficiarioMB.beneficiario.endereco.pais}" label="#{msg['beneficiario.endereco.pais.label']}" required="true"
+						size="10" validatorMessage="#{msg['msg.beneficiario.endereco.pais']}">
+						<f:validateRegex pattern="[a-zA-Z]{1,10}" for="idPais" />
+					</h:inputText>
+				 </h:panelGrid>	
+				
+				 
+				 <h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
+				</h:panelGrid>		
+			</rich:panel>
+			
+			<rich:popupPanel id="confirmaExcluirBeneficiario" autosized="true">
+	         		 #{msg['msg.beneficiario.confirmacaoExcluir']}
+         		 <h:panelGrid columns="2">
+           	 		<h:commandButton value="#{msg.botaoExcluir}" action="#{beneficiarioMB.excluirBeneficiario}"
+						onclick=" #{rich:component('confirmaExcluirBeneficiario')}.hide();  return true;" />
+					 <h:commandButton value="#{msg.botaoCancelar}"
+						onclick="#{rich:component('confirmaExcluirBeneficiario')}.hide(); return false;" />						
+				</h:panelGrid>
+			</rich:popupPanel>
+			
+			
+			<h:panelGrid columns="3">                                 
+				<h:commandButton value="#{msg.botaoAtualizar}" action="#{beneficiarioMB.atualizarBeneficiario}" />
+				<h:commandButton value="#{msg.botaoExcluir}">
+					<rich:componentControl target="confirmaExcluirBeneficiario" operation="show"/>
+				</h:commandButton>		
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{beneficiarioMB.cancelarBeneficiario}" immediate="true" />
+			</h:panelGrid>	
+			
+			
+		</h:form>		
+		
+	</ui:define>
+
+</ui:composition>

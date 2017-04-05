@@ -51,16 +51,19 @@
 						<h:outputLabel value="#{msg['contador.email']}:" for="idEmail" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>					
+					<h:outputLabel value="#{msg['contador.cpf']}:" for="idCpf" />
+					
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['contador.senha']}:" for="idSenha" />
 						<span class="asterisco">*</span>
-					</h:panelGroup>					
-					<h:panelGroup>
-						<h:outputLabel value="#{msg['contador.confirmarSenha']}:" for="idConfirmarSenha" />
-						<span class="asterisco">*</span>
-					</h:panelGroup>
+					</h:panelGroup>		
 										
 					<h:inputText id="idEmail" value="#{contadorMB.contador.email.email}" required="true" size="40" label="#{msg['contador.email.label']}"/>
+					
+					<h:inputText id="idCpf" value="#{contadorMB.contador.cpf}" label="#{msg['contador.cpf.label']}"
+						size="30" validatorMessage="#{msg['msg.contador.cpf']}">
+						<f:validateLength minimum="1" maximum="20" />
+					</h:inputText>
 					
 					<h:panelGroup>
 						<h:inputSecret id="idSenha" value="#{contadorMB.contador.senha}" required="true" label="#{msg['contador.senha.label']}"
@@ -68,6 +71,15 @@
 							<f:validateLength minimum="6" maximum="15" />
 						</h:inputSecret>
 					</h:panelGroup>
+						
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['contador.confirmarSenha']}:" for="idConfirmarSenha" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+										
+					<h:outputLabel value=""/>
+					<h:outputLabel value=""/>
+					
 					<h:panelGroup>
 						<h:inputSecret id="idConfirmarSenha" value="#{contadorMB.contador.confirmarSenha}" required="true" label="#{msg['contador.confirmarSenha.label']}"
 							validatorMessage="#{msg['msg.contador.confirmarSenha']}">

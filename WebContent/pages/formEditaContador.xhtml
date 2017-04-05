@@ -47,12 +47,17 @@
 						<h:outputLabel value="#{msg['contador.situacao']}:" for="idSituacao" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
-					<h:outputLabel value=""/>
+					<h:outputLabel value="#{msg['contador.cpf']}:" for="idCpf" />
 					<h:outputLabel value=""/>
 					<h:selectOneMenu id="idSituacao" value="#{contadorMB.contador.situacao}" required="true" label="#{msg['contador.situacao.label']}">
 						<f:selectItem itemLabel="#{msg['contador.situacao.DefaultLabel']}" noSelectionOption="true" />
 						<f:selectItems value="#{contadorMB.listaSISituacao}" />
-					</h:selectOneMenu>								
+					</h:selectOneMenu>		
+					<h:inputText id="idCpf" value="#{contadorMB.contador.cpf}" label="#{msg['contador.cpf.label']}"
+						size="30" validatorMessage="#{msg['msg.contador.cpf']}">
+						<f:validateLength minimum="1" maximum="20" />
+					</h:inputText>
+											
 				</h:panelGrid>
 			</rich:panel>
 			<rich:panel header="#{msg['contador.associarEscritorioContabilidade']}">

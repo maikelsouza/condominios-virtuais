@@ -23,6 +23,7 @@ import br.com.condominiosvirtuais.entity.Unidade;
 import br.com.condominiosvirtuais.entity.Usuario;
 import br.com.condominiosvirtuais.entity.UsuarioCondominio;
 import br.com.condominiosvirtuais.enumeration.CondominioSituacaoEnum;
+import br.com.condominiosvirtuais.enumeration.CondominoPagadorEnum;
 import br.com.condominiosvirtuais.enumeration.TipoGestorCondominioEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.persistence.ArquivoDAO;
@@ -612,37 +613,7 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 		}		
 		return condominio;
 	}
-	
-	
-// TODO: Código comentado em 24/10/2016. Apagar em 90 dias	
-//	@Override
-//	public List<Condominio> buscarPorSindicoProfissional(SindicoProfissional sindicoProfissional) throws SQLException, Exception{
-//		Condominio condominio = null;
-//		List<UsuarioCondominio> listaUsuarioCondominio = null;
-//		List<Condominio> listaCondominio = new ArrayList<Condominio>();
-//		Connection con = Conexao.getConexao();
-//		con.setAutoCommit(Boolean.FALSE);
-//		try {
-//			listaUsuarioCondominio = this.usuarioCondominioDAO.get().buscarListaPorIdUsuario(sindicoProfissional.getId(), con);
-//			for (UsuarioCondominio usuarioCondominio : listaUsuarioCondominio) {
-//				condominio = this.buscarCondominioPorId(usuarioCondominio.getIdCondominio(), con);
-//				if (condominio.getSindicoGeral().getId().intValue() == sindicoProfissional.getId().intValue()){
-//					listaCondominio.add(condominio);
-//				}
-//			}			
-//		} catch (SQLException e) {
-//			throw e;
-//		} catch (Exception e) {
-//			throw e;			
-//		}finally{
-//			try {
-//				con.close();				
-//			} catch (SQLException e) {
-//				logger.error("erro sqlstate "+e.getSQLState(), e);				
-//			}
-//		}		
-//		return listaCondominio;
-//	}	
+
 	
 	public void popularCondominioPorNomeCondominos(String nomeCondominos, Condominio condominio) throws SQLException, Exception{		
 		List<Bloco> listaDeBlocos = null;
@@ -732,6 +703,30 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 			bloco.setListaUnidade(listaDeUnidades);
 			for (Unidade unidade : listaDeUnidades) {
 				listaDeCondominos = this.condominoDAO.get().buscarListaCondominosPorUnidade(unidade);		
+				unidade.setListaCondominos(listaDeCondominos);
+			}
+		}
+	}
+	
+	/**
+	 * Método que popula um condomínio, ou seja, recebe um objeto condomínio e "seta" nele todos os blocos, unidades e condôninos desse condomínio. </br>
+	 * sendo que os condôminos estão sem imagem e estão com o status de pagador igual a sim {@link CondominoPagadorEnum}
+	 * 
+	 * @param condominio - Ao final do método esse objeto estará todo populado.
+	 * @throws Exception 
+	 */
+	public void popularCondominioComCondominoSemImagemEPagador(Condominio condominio) throws SQLException, Exception{	
+		List<Bloco> listaDeBlocos = null;
+		List<Unidade> listaDeUnidades = null;
+		List<Condomino> listaDeCondominos = null;
+	
+		listaDeBlocos = this.blocoDAO.get().buscarListaBlocosPorCondominioENome(condominio,null);		
+		condominio.setListaBlocos(listaDeBlocos);
+		for (Bloco bloco : listaDeBlocos) {
+			listaDeUnidades = this.unidadeDAO.get().buscarListaUnidadesPorBloco(bloco);
+			bloco.setListaUnidade(listaDeUnidades);
+			for (Unidade unidade : listaDeUnidades) {
+				listaDeCondominos = this.condominoDAO.get().buscarPorIdUnidadeEPagadorSemImagem(unidade.getId(), CondominoPagadorEnum.SIM.getPagador());		
 				unidade.setListaCondominos(listaDeCondominos);
 			}
 		}

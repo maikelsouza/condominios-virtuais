@@ -58,7 +58,7 @@ public enum TipoGrupoUsuarioEnum {
 
 	private void popularTelasAcessoUsuarios(){
 		this.telaAcesso = new ArrayList<String>();
-		this.grupoUsuariosTelasAcesso = new HashMap<Integer, List<String>>();
+		this.grupoUsuariosTelasAcesso = new HashMap<Integer, List<String>>();				
 		if(this.getGrupoUsuario() == 1){ // Administrador
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_PRINCIPAL.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_CONDOMINIO.getPathTelas());
@@ -126,6 +126,21 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_CONTADOR.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_CONTADOR.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_CONTADOR.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_CONTA_BANCARIA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_CONTA_BANCARIA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_CONTA_BANCARIA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_CONTA_BANCARIA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_GERAR_BOLETO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_BOLETO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_MEUS_BOLETOS.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_PRE_CADASTRO_BOLETO.getPathTelas());			
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_PRE_CADASTRO_BOLETO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_PRE_CADASTRO_BOLETO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_PRE_CADASTRO_BOLETO.getPathTelas());
 			
 			
 			
@@ -206,6 +221,14 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZA_ENQUETE.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_DOCUMENTO.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_ANEXA_DOCUMENTO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_CONTA_BANCARIA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_CONTA_BANCARIA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_CONTA_BANCARIA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_CONTA_BANCARIA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_BENEFICIARIO.getPathTelas());
 			
 			
 		}else if(this.getGrupoUsuario() == 3){ // Síndico Profissional
@@ -291,6 +314,20 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_RECEITA_DESPESA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_DESPESA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_RECEITA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_CONTA_BANCARIA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_CONTA_BANCARIA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_CONTA_BANCARIA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_CONTA_BANCARIA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_GERAR_BOLETO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_BOLETO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_PRE_CADASTRO_BOLETO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_PRE_CADASTRO_BOLETO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_PRE_CADASTRO_BOLETO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_PRE_CADASTRO_BOLETO.getPathTelas());
 			
 		}else if(this.getGrupoUsuario() == 4){ // Síndico
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_PRINCIPAL.getPathTelas());
@@ -378,6 +415,20 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_RECEITA_DESPESA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_DESPESA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_RECEITA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_CONTA_BANCARIA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_CONTA_BANCARIA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_CONTA_BANCARIA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_GERAR_BOLETO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_BOLETO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_MEUS_BOLETOS.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_PRE_CADASTRO_BOLETO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_PRE_CADASTRO_BOLETO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_PRE_CADASTRO_BOLETO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_PRE_CADASTRO_BOLETO.getPathTelas());
 			
 		}else if (this.getGrupoUsuario() == 5){ // Condômino
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_PRINCIPAL.getPathTelas());			
@@ -431,6 +482,7 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_OBRA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_OBRA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_RECEITA_DESPESA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_MEUS_BOLETOS.getPathTelas());
 			
 			
 		}else if (this.getGrupoUsuario() == 6){ // Funcionario
@@ -456,6 +508,7 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_VISITANTE.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_VISITANTE.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_VISITA.getPathTelas());
+<<<<<<< HEAD
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_PRESTADOR_SERVICO.getPathTelas());
 			
 			if(AplicacaoUtil.getUsuarioAutenticado().getId() == 367 || AplicacaoUtil.getUsuarioAutenticado().getId() == 365){
@@ -465,6 +518,9 @@ public enum TipoGrupoUsuarioEnum {
 				this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_ANEXA_DOCUMENTO.getPathTelas());
 			}
 			
+=======
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_PRESTADOR_SERVICO.getPathTelas());	
+>>>>>>> refs/heads/CriacaoBoleto
 			
 			
 		} else if (this.getGrupoUsuario() == 7){ // Escritório Contabilidade
@@ -506,6 +562,20 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_VEICULO.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_DESPESA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_RECEITA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_CONTA_BANCARIA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_CONTA_BANCARIA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_CONTA_BANCARIA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_CONTA_BANCARIA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_BENEFICIARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_GERAR_BOLETO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_BOLETO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_PRE_CADASTRO_BOLETO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_PRE_CADASTRO_BOLETO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_PRE_CADASTRO_BOLETO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_PRE_CADASTRO_BOLETO.getPathTelas());
 			
 	}
 		this.grupoUsuariosTelasAcesso.put(this.getGrupoUsuario(), this.telaAcesso);		

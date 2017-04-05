@@ -25,7 +25,10 @@ public enum ConfiguracaoAplicacaoEnum {
 	
 	ACCESS_KEY_AMAZON("access_key_amazon"),
 	
-	SECRET_KEY_AMAZON("secret_key_amazon");
+	SECRET_KEY_AMAZON("secret_key_amazon"),
+	
+	TOKEN_BOLETO_CLOUD("token_boleto_cloud");
+	
 	
 	
 	

@@ -53,26 +53,21 @@
 					<h:outputText id="idSituacao"
 						value="#{condominoMB.condominoVO.situacaoCondomino == 1 ? msg['condomino.situacao.itemLabel.1'] : msg['condomino.situacao.itemLabel.0']}" />
 					<h:outputLabel value="#{msg['condomino.email']}:" for="idEmail" />
-					<h:outputText id="idEmail"
-						value="#{condominoMB.condominoVO.emailCondomino}" />
-					<h:outputLabel value="#{msg['condomino.telefoneResidencial']}:"
-						for="idTelefoneResidencialCondomino"
-						rendered="#{condominoMB.condominoVO.telefoneResidencialCondomino != 0}" />
-					<h:outputText id="idTelefoneResidencialCondomino"
-						value="#{condominoMB.condominoVO.telefoneResidencialCondomino}"
-						rendered="#{condominoMB.condominoVO.telefoneResidencialCondomino != 0}" />
-					<h:outputLabel value="#{msg['condomino.telefoneCelular']}:"
-						for="idTelefoneCelularCondomino"
-						rendered="#{condominoMB.condominoVO.telefoneCelularCondomino != 0}" />
-					<h:outputText id="idTelefoneCelularCondomino"
-						value="#{condominoMB.condominoVO.telefoneCelularCondomino}"
-						rendered="#{condominoMB.condominoVO.telefoneCelularCondomino != 0}" />
-					<h:outputLabel value="#{msg['condomino.telefoneComercial']}:"
-						for="idTelefoneComercialCondomino"
-						rendered="#{condominoMB.condominoVO.telefoneComercialCondomino != 0}" />
-					<h:outputText id="idTelefoneComercialCondomino"
-						value="#{condominoMB.condominoVO.telefoneComercialCondomino}"
-						rendered="#{condominoMB.condominoVO.telefoneComercialCondomino != 0}" />					
+					<h:outputText id="idEmail" value="#{condominoMB.condominoVO.emailCondomino}" />
+					<h:outputLabel value="#{msg['condomino.cpf']}:" for="idCpf" rendered="#{condominoMB.condominoVO.cpfCondomino != 0 and condominoMB.condominoVO.cpfCondomino != null}" />
+					<h:outputText id="idCpf" value="#{condominoMB.condominoVO.cpfCondomino}" rendered="#{condominoMB.condominoVO.cpfCondomino != 0 and condominoMB.condominoVO.cpfCondomino != null}" />
+					<h:outputLabel value="#{msg['condomino.telefoneResidencial']}:" for="idTelefoneResidencialCondomino"
+						rendered="#{condominoMB.condominoVO.telefoneResidencialCondomino != 0 and condominoMB.condominoVO.telefoneResidencialCondomino != null}" />
+					<h:outputText id="idTelefoneResidencialCondomino" value="#{condominoMB.condominoVO.telefoneResidencialCondomino}"
+						rendered="#{condominoMB.condominoVO.telefoneResidencialCondomino != 0 and condominoMB.condominoVO.telefoneResidencialCondomino != null}" />
+					<h:outputLabel value="#{msg['condomino.telefoneCelular']}:" for="idTelefoneCelularCondomino"
+						rendered="#{condominoMB.condominoVO.telefoneCelularCondomino != 0 and condominoMB.condominoVO.telefoneCelularCondomino != null}" />
+					<h:outputText id="idTelefoneCelularCondomino" value="#{condominoMB.condominoVO.telefoneCelularCondomino}"
+						rendered="#{condominoMB.condominoVO.telefoneCelularCondomino != 0 and condominoMB.condominoVO.telefoneCelularCondomino != null}" />
+					<h:outputLabel value="#{msg['condomino.telefoneComercial']}:" for="idTelefoneComercialCondomino"
+						rendered="#{condominoMB.condominoVO.telefoneComercialCondomino != 0 and condominoMB.condominoVO.telefoneComercialCondomino != null}" />
+					<h:outputText id="idTelefoneComercialCondomino" value="#{condominoMB.condominoVO.telefoneComercialCondomino}"
+						rendered="#{condominoMB.condominoVO.telefoneComercialCondomino != 0 and condominoMB.condominoVO.telefoneComercialCondomino !=null}" />					
 				</h:panelGrid>
 				<div></div>
 			</rich:panel>

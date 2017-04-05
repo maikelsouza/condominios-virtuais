@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import br.com.condominiosvirtuais.entity.Contador;
 import br.com.condominiosvirtuais.entity.Email;
+import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.persistence.ContadorDAO;
 import br.com.condominiosvirtuais.service.CondominioService;
 import br.com.condominiosvirtuais.service.ContadorService;
@@ -29,7 +30,7 @@ public class ContadorServiceImpl implements Serializable, ContadorService {
 	private EmailService emailService;
 
 	@Override
-	public void salvar(Contador contador) throws SQLException, Exception {
+	public void salvar(Contador contador) throws SQLException, BusinessException, Exception {
 		contador.setListaCondominio(this.condominioService.buscarPorIdEscritorioContabilidade(contador.getIdEscritorioContabilidade()));
 		this.contadorDAO.salvar(contador);	
 		Email email = new Email();			

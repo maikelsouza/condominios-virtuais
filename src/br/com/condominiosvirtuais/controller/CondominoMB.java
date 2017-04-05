@@ -195,7 +195,7 @@ public class CondominoMB implements  Serializable{
 			this.condomino.setIdUnidade(this.unidade.getId());			
 			this.condomino.setIdGrupoUsuario(TipoGrupoUsuarioEnum.CONDOMINO.getGrupoUsuario());
 			this.condomino.getEmail().setPrincipal(Boolean.TRUE);
-			this.condomino.setSituacao(UsuarioEnum.ATIVO.getSituacao());
+			this.condomino.setSituacao(UsuarioEnum.ATIVO.getSituacao());			
 			this.condominoService.salvar(this.condomino);
 			this.pesquisar(null);
 			ManagedBeanUtil.setMensagemInfo("msg.condomino.salvaSucesso");
@@ -272,6 +272,7 @@ public class CondominoMB implements  Serializable{
 			this.condomino.setTelefoneResidencial(this.condominoVO.getTelefoneResidencialCondomino());
 			this.condomino.setSituacao(this.condominoVO.getSituacaoCondomino());
 			this.condomino.setIdUnidade(this.condominoVO.getIdUnidade());
+			this.condomino.setCpf(this.condominoVO.getCpfCondomino());
 			EmailUsuario emailUsuario = new EmailUsuario();
 			emailUsuario.setId(this.condominoVO.getIdEmailCondomino());
 			emailUsuario.setEmail(this.condominoVO.getEmailCondomino());		

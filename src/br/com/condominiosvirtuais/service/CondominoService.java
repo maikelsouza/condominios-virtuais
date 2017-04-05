@@ -41,4 +41,6 @@ public interface CondominoService {
 	
 	public abstract Condomino buscarPorId(Integer id) throws SQLException, Exception;	
 	
+	public abstract List<CondominoVO> buscarListaCondominosVOPorIdCondominioEPagadorSemImagem(Integer idCondominio) throws SQLException, Exception;
+	
 }

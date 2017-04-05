@@ -102,7 +102,10 @@ public class ContadorMB implements Serializable {
 			ManagedBeanUtil.setMensagemInfo("msg.contador.salvoSucesso");
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
-			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");				
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");	
+		} catch (BusinessException e) {				
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage());
+			return null;		
 		} catch (Exception e) {
 			logger.error("", e);
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
@@ -121,7 +124,10 @@ public class ContadorMB implements Serializable {
 			ManagedBeanUtil.setMensagemInfo("msg.contador.atualizadoSucesso");			
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
-			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");				
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (BusinessException e) {				
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage());
+			return null;	
 		} catch (Exception e) {
 			logger.error("", e);
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");

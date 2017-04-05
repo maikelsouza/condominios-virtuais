@@ -82,13 +82,21 @@
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 					
-					<h:outputLabel value="#{msg['receitaDespesa.observacao']}:" for="idReceitaDespesaObservacao" />
+					<h:outputLabel value="#{msg['receitaDespesa.banco']}:" for="idReceitaDespesaBanco" />
 					
-					<div/>
+					<h:outputLabel value="#{msg['receitaDespesa.observacao']}:" for="idReceitaDespesaObservacao" />					
 					
-					<h:selectOneMenu id="idReceitaDespesaMeioPagamento" value="#{receitaDespesaMB.meioPagamento.id}" 
-						required="true" label="#{msg['receitaDespesa.meioPagamento.label']}">						
-						<f:selectItems value="#{receitaDespesaMB.listaSIMeioPagamento}" />
+					
+					<h:selectOneMenu id="idReceitaDespesaMeioPagamento" value="#{receitaDespesaMB.meioPagamento}"  
+						required="true" label="#{msg['receitaDespesa.meioPagamento.label']}" converter="meioPagamentoConversor">						
+						<f:selectItems value="#{receitaDespesaMB.listaSIMeioPagamento}" itemValue="meioPagamento" var="meioPagamento" itemLabel="meioPagamento.nome"/>
+						<f:ajax listener="#{receitaDespesaMB.popularBanco}" render="idReceitaDespesaBanco"/>
+					</h:selectOneMenu>
+					
+					<h:selectOneMenu id="idReceitaDespesaBanco" value="#{receitaDespesaMB.banco.id}" readonly="#{receitaDespesaMB.bancoRequerido == false}"
+						required="#{receitaDespesaMB.bancoRequerido}" label="#{msg['receitaDespesa.banco.label']}">			
+						<f:selectItem itemLabel="#{msg['receitaDespesa.banco.DefaultLabel']}" noSelectionOption="true" />			
+						<f:selectItems value="#{receitaDespesaMB.listaSIBanco}" />
 					</h:selectOneMenu>
 								 
 					<h:inputTextarea id="idReceitaDespesaObservacao" value="#{receitaDespesaMB.observacao}" rows="3" cols="30"  label="#{msg['receitaDespesa.observacao.label']}"

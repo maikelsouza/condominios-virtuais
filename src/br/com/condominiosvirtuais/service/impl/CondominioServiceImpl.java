@@ -88,12 +88,6 @@ public class CondominioServiceImpl implements CondominioService, Serializable{
 		return this.condominioDAO.buscarPorCondomino(condomino);
 	}
 	
-// TODO: Código comentado em 24/10/2016. Apagar em 90 dias	
-//	@Override
-//	public List<Condominio> buscarPorSindicoProfissional(SindicoProfissional sindicoProfissional) throws SQLException, Exception {		
-//		return this.condominioDAO.buscarPorSindicoProfissional(sindicoProfissional);
-//	}
-	
 	@Override
 	public Condominio buscarPorCodigo(Integer codigo) throws SQLException, Exception {
 		return  this.condominioDAO.buscarPorCodigo(codigo);		
@@ -134,6 +128,12 @@ public class CondominioServiceImpl implements CondominioService, Serializable{
 	public List<Condominio> buscarPorIdEscritorioContabilidade(Integer idEscritorioContabilidade)
 			throws SQLException, Exception {		
 		return this.condominioDAO.buscarPorIdEscritorioContabilidade(idEscritorioContabilidade);
-	}	
+	}
+
+	@Override
+	public void popularCondominioComCondominoSemImagemEPagador(Condominio condominio) throws SQLException, Exception {
+		this.condominioDAO.popularCondominioComCondominoSemImagemEPagador(condominio);		
+	}
+
 
 }

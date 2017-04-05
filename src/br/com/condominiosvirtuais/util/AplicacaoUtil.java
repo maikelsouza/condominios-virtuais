@@ -87,6 +87,33 @@ public abstract class AplicacaoUtil {
 		return df.format(valor);
 	}
 	
+	public static String formatarCep(Integer cep){		
+		String cepString = String.valueOf(cep);
+		String cepStringRetorno = cepString.substring(0, 5) + "-" + cepString.substring(5, cepString.length());
+		return cepStringRetorno;
+	}
+	
+	public static String formatarCnpj(Long cnpj){		
+		String cnpjString = String.valueOf(cnpj);
+		String cnpjStringRetorno = cnpjString.substring(0, 2) + "." + cnpjString.substring(2, 5) + "." + cnpjString.substring(5,8) + "/" + cnpjString.substring(8,12) + "-" + cnpjString.substring(12,cnpjString.length());
+		return cnpjStringRetorno;
+	}
+	
+	public static String formatarCpf(Long cpf){
+		String cpfString = String.valueOf(cpf);
+		cpfString = AplicacaoUtil.completaZerosAEsquerta(cpfString, 11);
+		String cpfStringRetorno = cpfString.substring(0, 3) + "." + cpfString.substring(3, 6) + "." + cpfString.substring(6,9) + "-" + cpfString.substring(9,cpfString.length());	
+		return cpfStringRetorno;
+	}
+	
+	public static String completaZerosAEsquerta(String numero, Integer tamanho){
+		Integer tamanhoMenosTamanhoNumero = tamanho - numero.length();
+		String zeros = "";
+		for (int i = 0; i < tamanhoMenosTamanhoNumero; i++) {
+			zeros +="0";
+		}
+		return zeros+numero;
+	}
 	
 
 }

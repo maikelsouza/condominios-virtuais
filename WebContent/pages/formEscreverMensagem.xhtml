@@ -41,9 +41,15 @@
 					</h:selectOneMenu>
 					
 					
+<<<<<<< HEAD
 					<h:selectOneMenu value="#{mensagemMB.bloco.id}" id="idBloco" defaultLabel="#{msg['bloco.DefaultLabel']}" label="#{msg['bloco.label']}" required="true">
 						<f:selectItem itemLabel="#{msg['bloco.DefaultLabel']}"  noSelectionOption="true"/>
 						<f:selectItems value="#{mensagemMB.listaSIBlocos}" />
+=======
+					<h:selectOneMenu value="#{mensagemMB.bloco.id}" id="idBloco" defaultLabel="#{msg['bloco.DefaultLabel']}" label="#{msg['bloco.label']}" required="true" >
+						<f:selectItem itemValue="0" itemLabel="#{msg['todos']}" />
+						<f:selectItems value="#{mensagemMB.listaSIBlocos}"  />
+>>>>>>> refs/heads/CriacaoBoleto
 						<f:ajax listener="#{mensagemMB.popularListaCondominos}" render="idCondomino" execute="@this" />
 					</h:selectOneMenu>	
 					

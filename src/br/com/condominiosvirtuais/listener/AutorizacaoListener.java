@@ -1,5 +1,5 @@
 package br.com.condominiosvirtuais.listener;
-
+        
 import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import br.com.condominiosvirtuais.entity.Usuario;
 import br.com.condominiosvirtuais.enumeration.PathTelasAplicacaoEnum;
 
+             
 public class AutorizacaoListener implements PhaseListener {
 
 	
@@ -35,7 +36,7 @@ public class AutorizacaoListener implements PhaseListener {
 		}else{
 			Usuario usuario = (Usuario) session.getAttribute("autenticado");
 			// Situação onde o usuário não está autenticado.		
-			if(usuario == null){
+			if(usuario == null){			
 				nh.handleNavigation(facesContext, null, loginPage);			
 			// Situação onde o usuário não tem acesso a página que selecionada	
 			}else if(!usuario.getGrupoUsuario().temAcesso(paginaCorrente)){ 

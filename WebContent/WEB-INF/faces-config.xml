@@ -18,6 +18,10 @@
   <converter-id>blocoConversor</converter-id>
   <converter-class>br.com.condominiosvirtuais.converter.BlocoConversor</converter-class>
  </converter>
+ <converter>
+  <converter-id>meioPagamentoConversor</converter-id>
+  <converter-class>br.com.condominiosvirtuais.converter.MeioPagamentoConversor</converter-class>
+ </converter>
  <managed-bean>
   <managed-bean-name>ordenaCondominioMB</managed-bean-name>
   <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaCondominioMB</managed-bean-class>
@@ -148,6 +152,27 @@
   <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaContadorMB</managed-bean-class>
   <managed-bean-scope>view</managed-bean-scope>
  </managed-bean>
+ <managed-bean>
+  <managed-bean-name>ordenaContaBancariaMB</managed-bean-name>
+  <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaContaBancariaMB</managed-bean-class>
+  <managed-bean-scope>view</managed-bean-scope>
+ </managed-bean>
+ <managed-bean>
+  <managed-bean-name>ordenaBeneficiarioMB</managed-bean-name>
+  <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaBeneficiarioMB</managed-bean-class>
+  <managed-bean-scope>view</managed-bean-scope>
+ </managed-bean>
+ <managed-bean>
+  <managed-bean-name>ordenaBoletoMB</managed-bean-name>
+  <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaBoletoMB</managed-bean-class>
+  <managed-bean-scope>view</managed-bean-scope>
+ </managed-bean>
+ <managed-bean>
+  <managed-bean-name>ordenaPreCadastroBoletoMB</managed-bean-name>
+  <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaPreCadastroBoletoMB</managed-bean-class>
+  <managed-bean-scope>view</managed-bean-scope>
+ </managed-bean>
+ 
  
  <navigation-rule>
   <navigation-case>
@@ -449,7 +474,61 @@
    <from-outcome>listarContador</from-outcome>
    <to-view-id>/pages/formListaContador.xhtml</to-view-id>
     <redirect/>
-  </navigation-case>  
+  </navigation-case> 
+  <navigation-case>
+   <from-action>#{principalMB.cadastrarContaBancaria}</from-action>
+   <from-outcome>cadastrarContaBancaria</from-outcome>
+   <to-view-id>/pages/formCadastroContaBancaria.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case> 
+  <navigation-case> 
+   <from-action>#{principalMB.listarContaBancaria}</from-action>
+   <from-outcome>listarContaBancaria</from-outcome>
+   <to-view-id>/pages/formListaContaBancaria.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case> 
+  <navigation-case>
+   <from-action>#{principalMB.cadastrarBeneficiario}</from-action>
+   <from-outcome>cadastrarBeneficiario</from-outcome>
+   <to-view-id>/pages/formCadastroBeneficiario.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case> 
+  <navigation-case>
+   <from-action>#{principalMB.listarBeneficiario}</from-action>
+   <from-outcome>listarBeneficiario</from-outcome>
+   <to-view-id>/pages/formListaBeneficiario.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case> 
+  <navigation-case>
+   <from-action>#{principalMB.gerarBoleto}</from-action>
+   <from-outcome>gerarBoleto</from-outcome>
+   <to-view-id>/pages/formGerarBoleto.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case> 
+  <navigation-case>
+   <from-action>#{principalMB.listarBoleto}</from-action>
+   <from-outcome>listarBoleto</from-outcome>
+   <to-view-id>/pages/formListaBoleto.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case> 
+  <navigation-case>
+   <from-action>#{principalMB.meusBoletos}</from-action>
+   <from-outcome>meusBoletos</from-outcome>
+   <to-view-id>/pages/formMeusBoletos.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case> 
+  <navigation-case>
+   <from-action>#{principalMB.cadastroPreCadastroBoleto}</from-action>
+   <from-outcome>cadastroPreCadastroBoleto</from-outcome>
+   <to-view-id>/pages/formCadastroPreCadastroBoleto.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case> 
+  <navigation-case>
+   <from-action>#{principalMB.listaPreCadastroBoleto}</from-action>
+   <from-outcome>listaPreCadastroBoleto</from-outcome>
+   <to-view-id>/pages/formListaPreCadastroBoleto.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case> 
  </navigation-rule>
  <navigation-rule>
   <from-view-id>/pages/*</from-view-id>
@@ -1682,7 +1761,7 @@
    <from-outcome>voltar</from-outcome>
    <to-view-id>/pages/formListaSindicoProfissional.xhtml</to-view-id>
    <redirect/>
-  </navigation-case>
+  </navigation-case>  
  </navigation-rule>
  <navigation-rule>                       
   <from-view-id>/pages/formCadastroReceitaDespesa.xhtml</from-view-id>  
@@ -1794,6 +1873,225 @@
     <redirect/>
   </navigation-case>  
  </navigation-rule> 
+ <navigation-rule>                       
+  <from-view-id>/pages/formCadastroContaBancaria.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{contaBancariaMB.cancelarSalvarContaBancaria}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
+  </navigation-case>  
+  <navigation-case>                  
+   <from-action>#{contadorMB.voltarAtualizarContador}</from-action>
+   <from-outcome>voltar</from-outcome>
+   <to-view-id>/pages/formListaContador.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case>  
+ </navigation-rule> 
+ <navigation-rule>                       
+  <from-view-id>/pages/formCadastroContaBancaria.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{contaBancariaMB.salvar}</from-action>
+   <from-outcome>salvar</from-outcome>
+   <to-view-id>/pages/formListaContaBancaria.xhtml</to-view-id>
+  </navigation-case>   
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formListaContaBancaria.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{contaBancariaMB.cadastroContaBancaria}</from-action>
+   <from-outcome>cadastrar</from-outcome>
+   <to-view-id>/pages/formCadastroContaBancaria.xhtml</to-view-id>
+  </navigation-case>
+   <navigation-case>                  
+   <from-action>#{contaBancariaMB.visualizarContaBancaria}</from-action>
+   <from-outcome>visualizar</from-outcome>
+   <to-view-id>/pages/formVisualizaContaBancaria.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+   <navigation-case>              
+   <from-action>#{contaBancariaMB.editaContaBancaria}</from-action>
+   <from-outcome>editar</from-outcome>
+   <to-view-id>/pages/formEditaContaBancaria.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formVisualizaContaBancaria.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{contaBancariaMB.voltarContaBancaria}</from-action>
+   <from-outcome>voltar</from-outcome>
+   <to-view-id>/pages/formListaContaBancaria.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule> 
+ <navigation-rule>                       
+  <from-view-id>/pages/formEditaContaBancaria.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{contaBancariaMB.excluir}</from-action>
+   <from-outcome>excluir</from-outcome>
+   <to-view-id>/pages/formListaContaBancaria.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>                  
+   <from-action>#{contaBancariaMB.cancelarContaBancaria}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formListaContaBancaria.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>  
+  <navigation-case>                  
+   <from-action>#{contaBancariaMB.atualizar}</from-action>
+   <from-outcome>atualizar</from-outcome>
+   <to-view-id>/pages/formListaContaBancaria.xhtml</to-view-id>
+  </navigation-case>  
+ </navigation-rule> 
+ <navigation-rule>                       
+  <from-view-id>/pages/formListaBeneficiario.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{beneficiarioMB.cadastroBeneficiario}</from-action>
+   <from-outcome>cadastrar</from-outcome>
+   <to-view-id>/pages/formCadastroBeneficiario.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>                  
+   <from-action>#{beneficiarioMB.editaBeneficiario}</from-action>
+   <from-outcome>editar</from-outcome>
+   <to-view-id>/pages/formEditaBeneficiario.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>                  
+   <from-action>#{beneficiarioMB.visualizaBeneficiario}</from-action>
+   <from-outcome>visualizar</from-outcome>
+   <to-view-id>/pages/formVisualizaBeneficiario.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case> 
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formCadastroBeneficiario.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{beneficiarioMB.salvarBeneficiario}</from-action>
+   <from-outcome>salvar</from-outcome>
+   <to-view-id>/pages/formListaBeneficiario.xhtml</to-view-id>
+  </navigation-case> 
+  <navigation-case>                  
+   <from-action>#{beneficiarioMB.cancelarBeneficiario}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule> 
+ <navigation-rule>                       
+  <from-view-id>/pages/formVisualizaBeneficiario.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{beneficiarioMB.voltaListaBeneficiario}</from-action>
+   <from-outcome>voltar</from-outcome>
+   <to-view-id>/pages/formListaBeneficiario.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case> 
+ </navigation-rule> 
+ <navigation-rule>                       
+  <from-view-id>/pages/formEditaBeneficiario.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{beneficiarioMB.atualizarBeneficiario}</from-action>
+   <from-outcome>atualizar</from-outcome>
+   <to-view-id>/pages/formListaBeneficiario.xhtml</to-view-id>   
+  </navigation-case> 
+  <navigation-case>                  
+   <from-action>#{beneficiarioMB.excluirBeneficiario}</from-action>
+   <from-outcome>excluir</from-outcome>
+   <to-view-id>/pages/formListaBeneficiario.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>                  
+   <from-action>#{beneficiarioMB.cancelarBeneficiario}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formListaBeneficiario.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case> 
+ </navigation-rule> 
+ <navigation-rule>                       
+  <from-view-id>/pages/formGerarBoleto.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{boletoMB.gerarBoleto}</from-action>
+   <from-outcome>gerar</from-outcome>
+   <to-view-id>/pages/formListaBoleto.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>                  
+   <from-action>#{boletoMB.cancelarGerarBoleto}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule> 
+ <navigation-rule>                       
+  <from-view-id>/pages/formListaBoleto.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{boletoMB.geraBoleto}</from-action>
+   <from-outcome>gera</from-outcome>
+   <to-view-id>/pages/formGerarBoleto.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formListaPreCadastroBoleto.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{preCadastroBoletoMB.editarPreCadastroBoleto}</from-action>
+   <from-outcome>editar</from-outcome>
+   <to-view-id>/pages/formEditaPreCadastroBoleto.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>                  
+   <from-action>#{preCadastroBoletoMB.visualizarPreCadastroBoleto}</from-action>
+   <from-outcome>visualizar</from-outcome>
+   <to-view-id>/pages/formVisualizaPreCadastroBoleto.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>                  
+   <from-action>#{preCadastroBoletoMB.cadastroPreCadastroBoleto}</from-action>
+   <from-outcome>cadastrar</from-outcome>
+   <to-view-id>/pages/formCadastroPreCadastroBoleto.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formEditaPreCadastroBoleto.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{preCadastroBoletoMB.atualizar}</from-action>
+   <from-outcome>atualizar</from-outcome>
+   <to-view-id>/pages/formListaPreCadastroBoleto.xhtml</to-view-id>
+  </navigation-case> 
+  <navigation-case>                  
+   <from-action>#{preCadastroBoletoMB.excluir}</from-action>
+   <from-outcome>excluir</from-outcome>
+   <to-view-id>/pages/formListaPreCadastroBoleto.xhtml</to-view-id>
+  </navigation-case> 
+  <navigation-case>                  
+   <from-action>#{preCadastroBoletoMB.cancelarEditaPreCadastroBoleto}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formListaPreCadastroBoleto.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case> 
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formCadastroPreCadastroBoleto.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{preCadastroBoletoMB.salvar}</from-action>
+   <from-outcome>salvar</from-outcome>
+   <to-view-id>/pages/formListaPreCadastroBoleto.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>                  
+   <from-action>#{preCadastroBoletoMB.cancelarCadastroPreCadastroBoleto}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule> 
+ <navigation-rule>                       
+  <from-view-id>/pages/formVisualizaPreCadastroBoleto.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{preCadastroBoletoMB.voltarListaPreCadastroBoleto}</from-action>
+   <from-outcome>voltar</from-outcome>
+   <to-view-id>/pages/formListaPreCadastroBoleto.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ 
  
  
  <application>

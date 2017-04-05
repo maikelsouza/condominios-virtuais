@@ -3,6 +3,7 @@ package br.com.condominiosvirtuais.service.impl;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -12,6 +13,7 @@ import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.Condomino;
 import br.com.condominiosvirtuais.entity.Email;
 import br.com.condominiosvirtuais.entity.Unidade;
+import br.com.condominiosvirtuais.enumeration.CondominoPagadorEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.persistence.impl.CondominoDAOImpl;
 import br.com.condominiosvirtuais.service.BlocoService;
@@ -45,6 +47,21 @@ public class CondominoServiceImpl implements CondominoService, Serializable{
 	
 
 	public void salvar(Condomino condomino) throws SQLException, Exception{
+		Boolean encontrou = Boolean.FALSE;
+		condomino.setPagador(CondominoPagadorEnum.SIM.getPagador());
+		Unidade unidade = new Unidade();
+		unidade.setId(condomino.getIdUnidade());
+		List<Condomino> listaCondomino = this.condominoDAO.buscarListaCondominosPorUnidade(unidade);
+		Iterator<Condomino> iteratorCondomino = listaCondomino.iterator();
+		while (iteratorCondomino.hasNext() && !encontrou) {
+			Condomino condominoLocal = iteratorCondomino.next();
+			// Condição necessária para garantir que não tenha mais de um pagador por unidade.
+			if(condominoLocal.getPagador() == CondominoPagadorEnum.SIM.getPagador()){
+				encontrou = Boolean.TRUE;
+				condomino.setPagador(CondominoPagadorEnum.NAO.getPagador());
+			}
+			
+		}		
 		this.condominoDAO.salvarCondomino(condomino);
 		Email email = new Email();			
 		email.setPara(condomino.getEmail().getEmail());
@@ -57,6 +74,30 @@ public class CondominoServiceImpl implements CondominoService, Serializable{
 		this.condominoDAO.atualizarCondomino(condomino);
 	}
 		
+	public List<CondominoVO> buscarListaCondominosVOPorIdCondominioEPagadorSemImagem(Integer idCondominio) throws SQLException, Exception{
+		Condominio condominioLocal = new Condominio();
+		CondominoVO condominoVO = null;		
+		condominioLocal.setId(idCondominio);
+		this.condominioService.popularCondominioComCondominoSemImagemEPagador(condominioLocal);
+		List<CondominoVO> listaCondominoVO = new ArrayList<CondominoVO>();
+		for (Bloco bloco : condominioLocal.getListaBlocos()) {
+			for (Unidade unidade : bloco.getListaUnidade()) {
+				for (Condomino condomino : unidade.getListaCondominos()) {
+					condominoVO = new CondominoVO();
+					condominoVO.setId(condomino.getId());
+					condominoVO.setNomeBloco(bloco.getNome());
+					condominoVO.setNumeroUnidade(unidade.getNumero());
+					condominoVO.setNomeCondomino(condomino.getNome());
+					condominoVO.setPagadorCondomino(condomino.getPagador());
+					condominoVO.setCpfCondomino(condomino.getCpf());
+					condominoVO.setIdCondomino(condomino.getId());
+					listaCondominoVO.add(condominoVO);
+				}
+			}
+		} 
+		return listaCondominoVO;		
+	}
+	
 	public List<CondominoVO> buscarListaCondominosVOPorNomeCondominoECondominio(String nomeCondomino, Condominio condominio) throws SQLException, Exception{
 		Condominio condominioLocal = new Condominio();
 		CondominoVO condominoVO = null;		
@@ -223,11 +264,12 @@ public class CondominoServiceImpl implements CondominoService, Serializable{
 		condominoVO.setEmailCondomino(condomino.getEmail().getEmail());
 		condominoVO.setIdEmailCondomino(condomino.getEmail().getId());
 		condominoVO.setProprietarioCondomino(condomino.getProprietario());
+		condominoVO.setCpfCondomino(condomino.getCpf());
 		condominoVO.setTelefoneCelularCondomino(condomino.getTelefoneCelular());
 		condominoVO.setTelefoneComercialCondomino(condomino.getTelefoneComercial());
 		condominoVO.setTelefoneResidencialCondomino(condomino.getTelefoneResidencial());
 		condominoVO.setSituacaoCondomino(condomino.getSituacao());
-		condominoVO.setIdGrupoUsuario(condomino.getIdGrupoUsuario());
+		condominoVO.setIdGrupoUsuario(condomino.getIdGrupoUsuario());		
 	}
 	
 	

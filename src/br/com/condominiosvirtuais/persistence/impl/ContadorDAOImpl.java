@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Contador;
+import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.persistence.ContadorDAO;
 import br.com.condominiosvirtuais.persistence.UsuarioDAO;
 import br.com.condominiosvirtuais.util.SQLUtil;
@@ -35,7 +36,7 @@ public class ContadorDAOImpl implements ContadorDAO, Serializable {
 		
 		
 	@Override
-	public void salvar(Contador contador) throws SQLException,  Exception {
+	public void salvar(Contador contador) throws SQLException, BusinessException, Exception {
 		PreparedStatement statement = null;
 		Connection con = null;		
 		try {

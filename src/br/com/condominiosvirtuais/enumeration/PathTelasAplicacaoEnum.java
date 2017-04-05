@@ -102,8 +102,22 @@ public enum PathTelasAplicacaoEnum {
 	FORM_EDITA_RECEITA(PREFIXO.getPathTelas()+"formEditaReceita.xhtml"),
 	FORM_CADASTRO_CONTADOR(PREFIXO.getPathTelas()+"formCadastroContador.xhtml"),
 	FORM_LISTA_CONTADOR(PREFIXO.getPathTelas()+"formListaContador.xhtml"),	
-	FORM_EDITA_CONTADOR(PREFIXO.getPathTelas()+"formEditaContador.xhtml");
-	
+	FORM_EDITA_CONTADOR(PREFIXO.getPathTelas()+"formEditaContador.xhtml"),
+	FORM_CADASTRO_CONTA_BANCARIA(PREFIXO.getPathTelas()+"formCadastroContaBancaria.xhtml"),
+	FORM_VISUALIZAR_CONTA_BANCARIA(PREFIXO.getPathTelas()+"formVisualizaContaBancaria.xhtml"),
+	FORM_LISTA_CONTA_BANCARIA(PREFIXO.getPathTelas()+"formListaContaBancaria.xhtml"),
+	FORM_EDITA_CONTA_BANCARIA(PREFIXO.getPathTelas()+"formEditaContaBancaria.xhtml"),
+	FORM_CADASTRO_BENEFICIARIO(PREFIXO.getPathTelas()+"formCadastroBeneficiario.xhtml"),
+	FORM_LISTA_BENEFICIARIO(PREFIXO.getPathTelas()+"formListaBeneficiario.xhtml"),
+	FORM_VISUALIZAR_BENEFICIARIO(PREFIXO.getPathTelas()+"formVisualizaBeneficiario.xhtml"),
+	FORM_EDITA_BENEFICIARIO(PREFIXO.getPathTelas()+"formEditaBeneficiario.xhtml"),
+	FORM_GERAR_BOLETO(PREFIXO.getPathTelas()+"formGerarBoleto.xhtml"),
+	FORM_LISTA_BOLETO(PREFIXO.getPathTelas()+"formListaBoleto.xhtml"),
+	FORM_MEUS_BOLETOS(PREFIXO.getPathTelas()+"formMeusBoletos.xhtml"),
+	FORM_CADASTRO_PRE_CADASTRO_BOLETO(PREFIXO.getPathTelas()+"formCadastroPreCadastroBoleto.xhtml"),
+	FORM_LISTA_PRE_CADASTRO_BOLETO(PREFIXO.getPathTelas()+"formListaPreCadastroBoleto.xhtml"),
+	FORM_EDITA_PRE_CADASTRO_BOLETO(PREFIXO.getPathTelas()+"formEditaPreCadastroBoleto.xhtml"),
+	FORM_VISUALIZAR_PRE_CADASTRO_BOLETO(PREFIXO.getPathTelas()+"formVisualizaPreCadastroBoleto.xhtml");
 	
 	
 	

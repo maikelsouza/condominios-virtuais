@@ -24,7 +24,15 @@ private Integer id;
 	private Integer idCondominio;
 	
 	private MeioPagamento meioPagamento;
+	
+	private Banco banco;
 
+	
+	public Receita(){
+		this.banco = new Banco();
+		this.meioPagamento = new MeioPagamento();
+	}
+	
 	public Integer getId() {
 		return id;
 	}
@@ -88,6 +96,13 @@ private Integer id;
 	public void setMeioPagamento(MeioPagamento meioPagamento) {
 		this.meioPagamento = meioPagamento;
 	}
-	
+
+	public Banco getBanco() {
+		return banco;
+	}
+
+	public void setBanco(Banco banco) {
+		this.banco = banco;
+	}	
 	
 }

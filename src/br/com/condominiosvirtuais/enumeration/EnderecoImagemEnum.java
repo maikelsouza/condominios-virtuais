@@ -2,7 +2,7 @@ package br.com.condominiosvirtuais.enumeration;
 
 public enum EnderecoImagemEnum {
 	
-	URL_FOTO_NAO_DISPONIVEL ("/imagens/fotoNaoDisponivel.jpg");
+	URL_FOTO_NAO_DISPONIVEL ("/imagens/fotoNaoDisponivel."+ArquivoExtensaoEnum.JPG.getExtensao());
 	
 	private String enderecoImagem = null;	
 	

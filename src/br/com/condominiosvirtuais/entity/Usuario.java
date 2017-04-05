@@ -37,6 +37,8 @@ public class Usuario {
 	private Date ultimoLogin;
 	
 	private Date ultimoLogout;
+	
+	private Long cpf;
  	
 // TODO: Rever essa modelagem idGrupoUsuario. Porque foi criado um idGrupoUsuario e um grupoUsuario	
 	private Integer idGrupoUsuario;
@@ -216,6 +218,16 @@ public class Usuario {
 
 	public void setUltimoLogout(Date ultimoLogout) {
 		this.ultimoLogout = ultimoLogout;
+	}
+
+	public Long getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(Long cpf) {
+		this.cpf = cpf;
 	}	
+	
+	
 
 }

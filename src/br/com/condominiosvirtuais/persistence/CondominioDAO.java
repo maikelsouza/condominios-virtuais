@@ -24,8 +24,7 @@ public interface CondominioDAO {
     
     public abstract List<Condominio> buscarPorIdEscritorioContabilidade(Integer idEscritorioContabilidade) throws SQLException, Exception;
     
- // TODO: Código comentado em 24/10/2016. Apagar em 90 dias   
-  //  public abstract List<Condominio> buscarPorSindicoProfissional(SindicoProfissional sindicoProfissional) throws SQLException, Exception;
+    public abstract void popularCondominioComCondominoSemImagemEPagador(Condominio condominio) throws SQLException, Exception;
     
     
 

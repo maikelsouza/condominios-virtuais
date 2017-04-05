@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Receita;
+import br.com.condominiosvirtuais.persistence.BancoDAO;
 import br.com.condominiosvirtuais.persistence.MeioPagamentoDAO;
 import br.com.condominiosvirtuais.persistence.ReceitaDAO;
 import br.com.condominiosvirtuais.util.SQLUtil;
@@ -41,10 +42,15 @@ public class ReceitaDAOImpl implements ReceitaDAO, Serializable {
 	
 	private static final String ID_CONDOMINIO = "ID_CONDOMINIO";
 	
+	private static final String ID_BANCO = "ID_BANCO";
+	
 	private static final String ID_MEIO_PAGAMENTO = "ID_MEIO_PAGAMENTO";
 	
 	@Inject
 	private Instance<MeioPagamentoDAO> meioPagamentoDAO;
+	
+	@Inject
+	private Instance<BancoDAO> bancoDAO;
 	
 	
 	@Override
@@ -65,9 +71,11 @@ public class ReceitaDAOImpl implements ReceitaDAO, Serializable {
 		query.append(",");	
 		query.append(ID_CONDOMINIO);
 		query.append(",");
+		query.append(ID_BANCO);
+		query.append(",");
 		query.append(ID_MEIO_PAGAMENTO);
 		query.append(") ");
-		query.append("VALUES(?,?,?,?,?,?,?)");
+		query.append("VALUES(?,?,?,?,?,?,?,?)");
 		PreparedStatement statement = null;		
 		Connection con = Conexao.getConexao();
 		try {
@@ -78,7 +86,8 @@ public class ReceitaDAOImpl implements ReceitaDAO, Serializable {
 			SQLUtil.setValorPpreparedStatement(statement, 4, receita.getObservacao(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement, 5, receita.getNumeroDocumento(), java.sql.Types.VARCHAR);			
 			SQLUtil.setValorPpreparedStatement(statement, 6, receita.getIdCondominio(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement, 7, receita.getMeioPagamento().getId(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 7, receita.getBanco().getId(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 8, receita.getMeioPagamento().getId(), java.sql.Types.INTEGER);
 			statement.executeUpdate();
 		} catch (SQLException e) {			
 			throw e;
@@ -128,6 +137,7 @@ public class ReceitaDAOImpl implements ReceitaDAO, Serializable {
 				receita.setNumeroDocumento(String.valueOf(SQLUtil.getValorResultSet(resultSet, NUMERO_DOCUMENTO, java.sql.Types.VARCHAR)));				
 				receita.setData((Date) SQLUtil.getValorResultSet(resultSet, DATA, java.sql.Types.DATE));
 				receita.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
+				receita.setBanco(this.bancoDAO.get().buscarPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_BANCO, java.sql.Types.INTEGER), con));
 				receita.setMeioPagamento(this.meioPagamentoDAO.get().buscaPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_MEIO_PAGAMENTO, java.sql.Types.INTEGER), con));
 				listaReceita.add(receita);
 			}
@@ -167,6 +177,8 @@ public class ReceitaDAOImpl implements ReceitaDAO, Serializable {
 		query.append(ID_CONDOMINIO);
 		query.append("= ?, ");
 		query.append(ID_MEIO_PAGAMENTO);
+		query.append("= ?, ");		
+		query.append(ID_BANCO);
 		query.append("= ? ");		
 		query.append("WHERE ");
 		query.append(ID);
@@ -182,7 +194,8 @@ public class ReceitaDAOImpl implements ReceitaDAO, Serializable {
 			SQLUtil.setValorPpreparedStatement(statement,5, receita.getNumeroDocumento(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement,6, receita.getIdCondominio(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement,7, receita.getMeioPagamento().getId(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement,8, receita.getId(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement,8, receita.getBanco().getId(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement,9, receita.getId(), java.sql.Types.INTEGER);
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			throw e;
