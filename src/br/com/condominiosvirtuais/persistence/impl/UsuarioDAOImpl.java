@@ -117,7 +117,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 	}
 	
 	@Override
-	public void salvarUsuario(Usuario usuario, Connection con) throws NoSuchAlgorithmException, NumberFormatException,  SQLException, Exception {		
+	public void salvarUsuario(Usuario usuario, Connection con) throws NoSuchAlgorithmException, NumberFormatException,  SQLException, BusinessException, Exception {		
 		StringBuffer query = new StringBuffer();
 		query.append("INSERT INTO "); 
 		query.append(USUARIO);

@@ -9,9 +9,9 @@ import java.util.List;
  * @author Maikel Joel de Souza
  * @since 20/02/2013 
  */
-public class Condominio implements Serializable{
+public class Condominio {
 
-	private static final long serialVersionUID = 1L;
+	
 
 	private Integer id;
 	
