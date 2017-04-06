@@ -508,7 +508,7 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_VISITANTE.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_VISITANTE.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_VISITA.getPathTelas());
-<<<<<<< HEAD
+
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_PRESTADOR_SERVICO.getPathTelas());
 			
 			if(AplicacaoUtil.getUsuarioAutenticado().getId() == 367 || AplicacaoUtil.getUsuarioAutenticado().getId() == 365){
@@ -518,9 +518,9 @@ public enum TipoGrupoUsuarioEnum {
 				this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_ANEXA_DOCUMENTO.getPathTelas());
 			}
 			
-=======
+
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_PRESTADOR_SERVICO.getPathTelas());	
->>>>>>> refs/heads/CriacaoBoleto
+
 			
 			
 		} else if (this.getGrupoUsuario() == 7){ // Escritório Contabilidade
