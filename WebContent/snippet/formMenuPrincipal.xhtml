@@ -99,16 +99,16 @@
 				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,6')}" />
 		</rich:dropDownMenu>
 
-		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,3,4,5,6') and loginMB.sindicoGeralAssociado()}">
+		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,3,4,5') and loginMB.sindicoGeralAssociado() || loginMB.exibeMenuListaReservaQuintaDoHorto()}">
 			<f:facet name="label">
 				<h:panelGroup
-					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,3,4,5,6') and loginMB.sindicoGeralAssociado()}">
+					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,3,4,5') and loginMB.sindicoGeralAssociado() || loginMB.exibeMenuListaReservaQuintaDoHorto()}">
 					<h:outputText value="#{msg.reserva}" />
 				</h:panelGroup>
 			</f:facet>
 			<rich:menuItem label="#{msg['reserva.cadastrar']}" action="#{principalMB.cadastroListarReserva}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('4,5')}" />
-			<rich:menuItem label="#{msg['reserva.listar']}" action="#{principalMB.listarReserva}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,4')}" />
-			<rich:menuItem label="#{msg['reserva.cadastrar']}" action="#{principalMB.cadastrarReserva}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('6')}" />
+			<rich:menuItem label="#{msg['reserva.listar']}" action="#{principalMB.listarReserva}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,4') || loginMB.exibeMenuListaReservaQuintaDoHorto()}" />
+			<rich:menuItem label="#{msg['reserva.cadastrar']}" action="#{principalMB.cadastrarReserva}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1')}" />
 			<rich:menuItem label="#{msg['reserva.aprovar']}" action="#{principalMB.aprovarReserva}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,3,4')}" />
 		</rich:dropDownMenu>
 		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,3,4,5') and loginMB.sindicoGeralAssociado()}">
@@ -131,7 +131,7 @@
 			</f:facet>
 			<rich:menuItem label="#{msg['mensagen.mensagensRecebidas']}" action="#{principalMB.mensagensRecebidas}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,6,7')}" />
 			<rich:menuItem label="#{msg['mensagen.mensagensEnviadas']}" action="#{principalMB.mensagensEnviadas}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,6,7')}" />
-			<rich:menuItem label="#{msg['mensagen.escreverMensagem']}" action="#{principalMB.escreverMensagem}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,5,7')}" />
+			<rich:menuItem label="#{msg['mensagen.escreverMensagem']}" action="#{principalMB.escreverMensagem}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,5,7') and loginMB.exibeMenuEscreverMensagemQuintaDoHorto()}" />
 			<rich:menuItem label="#{msg['mensagen.faleComSindico']}" action="#{principalMB.faleComSindico}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,5,6,7')}" />
 		</rich:dropDownMenu>
 		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5') and loginMB.sindicoGeralAssociado()}">

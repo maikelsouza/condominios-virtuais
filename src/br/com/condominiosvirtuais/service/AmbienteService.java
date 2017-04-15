@@ -25,7 +25,9 @@ public interface AmbienteService {
 	
 	public abstract List<Ambiente> buscarPorIdConjuntoBloco(Integer idConjuntoBloco) throws SQLException, Exception;
 	
-	public abstract List<Ambiente> buscarPorCondomino(Condomino condomino) throws SQLException, Exception; 
+	public abstract List<Ambiente> buscarPorCondomino(Condomino condomino) throws SQLException, Exception;
+	
+	public abstract List<Ambiente> buscarPorCondominio(Condominio condominio) throws SQLException, Exception;
 	
 
 }

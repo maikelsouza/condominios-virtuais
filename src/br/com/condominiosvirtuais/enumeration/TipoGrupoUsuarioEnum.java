@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
 
 
@@ -459,7 +460,7 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_RESERVA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_ESQUECI_MINHA_SENHA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_FALE_COM_SINDICO.getPathTelas());
-			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_ESCREVER_MENSAGEM.getPathTelas());
+			
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_MENSAGENS_RECEBIDAS.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_MENSAGENS_ENVIADAS.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VER_MENSAGEM_RECEBIDA.getPathTelas());
@@ -484,16 +485,26 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_RECEITA_DESPESA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_MEUS_BOLETOS.getPathTelas());
 			
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_ESCREVER_MENSAGEM.getPathTelas());
+			
+			for (Condominio condominio : AplicacaoUtil.getUsuarioAutenticado().getListaCondominio()) {
+				if (condominio.getId() == 19){ // Caso seja o condomínio Quinta do Horto, então não deve exibir a opção de escrever mensagens para os condôminos
+					this.telaAcesso.remove(PathTelasAplicacaoEnum.FORM_ESCREVER_MENSAGEM.getPathTelas());
+					// id usuário síndico  José de Oliveira Júnior
+					if(AplicacaoUtil.getUsuarioAutenticado().getId() == 236 || AplicacaoUtil.getUsuarioAutenticado().getId() == 1){
+						this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_ESCREVER_MENSAGEM.getPathTelas());
+					}
+				}			
+			}
+			
 			
 		}else if (this.getGrupoUsuario() == 6){ // Funcionario
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_PRINCIPAL.getPathTelas());	
-			
-			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_RESERVA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_ESQUECI_MINHA_SENHA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_PESQUISA_CONDOMINIO.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_CONDOMINIO_PRIMEIRA_VEZ.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_FALE_COM_SINDICO.getPathTelas());
-			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_ESCREVER_MENSAGEM.getPathTelas());
+			
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_MENSAGENS_RECEBIDAS.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_MENSAGENS_ENVIADAS.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VER_MENSAGEM_RECEBIDA.getPathTelas());
@@ -511,12 +522,21 @@ public enum TipoGrupoUsuarioEnum {
 
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_PRESTADOR_SERVICO.getPathTelas());
 			
+			// Exibe tela de lista documentos para o contador e advogado do condomínio Quinta do Horto (id 19)
 			if(AplicacaoUtil.getUsuarioAutenticado().getId() == 367 || AplicacaoUtil.getUsuarioAutenticado().getId() == 365){
 				this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_DOCUMENTO.getPathTelas());				
 			}
+			// Possibilita que o contador do condomínio Quinta do Horto (id 19) possa anexar documento
 			if(AplicacaoUtil.getUsuarioAutenticado().getId() == 365){
 				this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_ANEXA_DOCUMENTO.getPathTelas());
 			}
+			
+			// Possibilita que os porteiros do condomínio Quinta do Horto (id 19) possam visualizar as reservas
+			if(AplicacaoUtil.getUsuarioAutenticado().getId() == 368 || AplicacaoUtil.getUsuarioAutenticado().getId() == 369 || AplicacaoUtil.getUsuarioAutenticado().getId() == 425 || AplicacaoUtil.getUsuarioAutenticado().getId() == 469 ){
+				this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_RESERVA.getPathTelas());
+			}	
+			
+			
 			
 
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_PRESTADOR_SERVICO.getPathTelas());	

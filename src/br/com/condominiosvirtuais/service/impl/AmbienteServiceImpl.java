@@ -53,5 +53,9 @@ public class AmbienteServiceImpl implements AmbienteService, Serializable {
 	public List<Ambiente> buscarPorCondomino(Condomino condomino) throws SQLException, Exception {
 		return this.ambienteDAO.buscarPorCondomino(condomino);
 	}
+	
+	public List<Ambiente> buscarPorCondominio(Condominio condominio) throws SQLException, Exception {
+		return this.ambienteDAO.buscarPorCondominio(condominio);
+	}
 
 }

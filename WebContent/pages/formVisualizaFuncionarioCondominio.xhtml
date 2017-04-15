@@ -15,9 +15,10 @@
 				<f:facet name="header">
 					<h:outputText value="#{msg.visualizarFuncionario}" />
 				</f:facet>
-				<h:panelGrid columns="2" styleClass="formEdit">
+				<h:panelGrid columns="2">
 					<h:outputLabel value="#{msg['funcionario.imagem']}:" for="idUpload" />
-					<a4j:mediaOutput id="idUpload" element="img" mimeType="image/jpeg"
+					
+					<a4j:mediaOutput id="idUpload" element="img" mimeType="image/jpeg" session="false"
 						createContent="#{funcionarioMB.getImagem}" cacheable="false" style="height:100px;" />
 					<h:outputLabel value="#{msg.condominio}:" for="idNomeCondominio" />
 					<h:outputText id="idNomeCondominio" value="#{funcionarioMB.condominio.nome}" />
@@ -33,8 +34,8 @@
 					<h:outputText id="idEmail" value="#{funcionarioMB.funcionario.email.email}" />
 					<h:outputLabel value="#{msg['funcionario.cpf']}:" for="idCpf" rendered="#{funcionarioMB.funcionario.cpf != null and funcionarioMB.funcionario.cpf != 0}" />                                       
 					<h:outputText id="idCpf" value="#{funcionarioMB.funcionario.cpf}" rendered="#{funcionarioMB.funcionario.cpf != null and funcionarioMB.funcionario.cpf != 0}" />
-					<h:outputLabel value="#{msg['funcionario.dataNascimento']}:" for="idDataNascimento" rendered="#{funcionarioMB.funcionario.dataNascimento != null and funcionarioMB.funcionario.dataNascimento != 0}" />
-					<h:outputText id="idDataNascimento" value="#{funcionarioMB.funcionario.dataNascimento}" rendered="#{funcionarioMB.funcionario.dataNascimento != null and funcionarioMB.funcionario.dataNascimento != 0}">
+					<h:outputLabel value="#{msg['funcionario.dataNascimento']}:" for="idDataNascimento" rendered="#{funcionarioMB.funcionario.dataNascimento != null}" />
+					<h:outputText id="idDataNascimento" value="#{funcionarioMB.funcionario.dataNascimento}" rendered="#{funcionarioMB.funcionario.dataNascimento != null}">
 						<f:convertDateTime pattern="#{msg['formatoData']}" type="date" />
 					</h:outputText>
 					<h:outputLabel value="#{msg['funcionario.telefoneCelular']}:" for="idTelefoneCelular" rendered="#{funcionarioMB.funcionario.telefoneCelular != 0 and funcionarioMB.funcionario.telefoneCelular != null}" />

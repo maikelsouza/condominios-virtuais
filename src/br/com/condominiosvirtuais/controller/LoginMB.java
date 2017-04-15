@@ -168,6 +168,25 @@ public class LoginMB implements Serializable{
 	 * Esse deverá ser removido após criar os grupos de usuários e suas autorizações.
 	 * @return True: - Exibe - False: Não exibe 
 	 */
+	public Boolean exibeMenuEscreverMensagemQuintaDoHorto(){
+		Boolean exibeMenuEscreverMensagem = Boolean.TRUE;
+		for (Condominio condominio : this.usuario.getListaCondominio()) {
+			if (condominio.getId() == 19){ // Caso seja o condomínio Quinta do Horto, então não deve exibir a opção de escrever mensagens para os condôminos
+				exibeMenuEscreverMensagem = Boolean.FALSE;
+				// id usuário síndico  José de Oliveira Júnior
+				if(this.usuario.getId() == 236 || this.usuario.getId() == 1){
+					exibeMenuEscreverMensagem = Boolean.TRUE;
+				}
+			}			
+		}
+		return exibeMenuEscreverMensagem;
+	}
+	
+	/**
+	 * FIXME: Método criado para atender o condomínio Quinta do Horto (id 19)
+	 * Esse deverá ser removido após criar os grupos de usuários e suas autorizações.
+	 * @return True: - Exibe - False: Não exibe 
+	 */
 	public Boolean exibeMenuArquivoContadorQuintaDoHorto(){
 		Boolean exibeMenuArquivo = Boolean.FALSE;
 		if(this.usuario.getId() == 365){
@@ -176,9 +195,22 @@ public class LoginMB implements Serializable{
 		return exibeMenuArquivo;
 	}
 	
+	/**
+	 * FIXME: Método criado para atender o condomínio Quinta do Horto (id 19)
+	 * Esse deverá ser removido após criar os grupos de usuários e suas autorizações.
+	 * @return True: - Exibe - False: Não exibe 
+	 */
+	public Boolean exibeMenuListaReservaQuintaDoHorto(){
+		Boolean exibeMenuArquivo = Boolean.FALSE;
+		if(this.usuario.getId() == 368 || this.usuario.getId() == 369 || this.usuario.getId() == 425 || this.usuario.getId() == 469){
+			exibeMenuArquivo = Boolean.TRUE;
+		}		
+		return exibeMenuArquivo;
+	}
+	
 	public Boolean sindicoGeralAssociado(){
 		Boolean sindicoGeralAssociado = Boolean.TRUE;
-//		// Regra válida somente para usuário não admin
+		// Regra válida somente para usuário não admin
 		for (Condominio condominio : this.usuario.getListaCondominio()) {
 			if(condominio.getSindicoGeral() == null){
 				sindicoGeralAssociado  = Boolean.FALSE;

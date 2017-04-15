@@ -28,7 +28,9 @@ public interface AmbienteDAO extends TipoConjuntoBlocoDAO {
 	
 	public abstract List<Ambiente> buscarPorCondomino(Condomino condomino) throws SQLException, Exception;
 	
-	public abstract List<Ambiente> buscarPorCondominio(Condominio condominio, Connection con) throws SQLException, Exception;	
+	public abstract List<Ambiente> buscarPorCondominio(Condominio condominio, Connection con) throws SQLException, Exception;
+	
+	public abstract List<Ambiente> buscarPorCondominio(Condominio condominio) throws SQLException, Exception;
 	
 
 }

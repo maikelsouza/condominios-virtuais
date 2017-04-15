@@ -51,10 +51,12 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 	
 	private Reserva reserva = null;
 	
-	private Ambiente ambiente = null;	
+	private Ambiente ambiente = null;
+	
+	private Bloco bloco;
 	
 	private Condomino condomino = null;
-	
+
 	private Condominio condominio = null;
 	
 	private Integer idCondomino = null;
@@ -68,6 +70,10 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 	private ListDataModel<ReservaVO> listaReservasVOs = null;
 	
 	private List<SelectItem> listaSICondominios = new ArrayList<SelectItem>();
+	
+	private List<SelectItem> listaSIBlocos = new ArrayList<SelectItem>();
+	
+	private List<SelectItem> listaSICondominos = new ArrayList<SelectItem>();	
 	
 	private List<SelectItem> listaSIMeusAmbientes = null;
 	
@@ -101,6 +107,9 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 	@Inject
 	private CondominoMB condominoMB = null;
 	
+	@Inject
+	private BlocoMB blocoMB = null;	 
+	
 	private Boolean campoCondominoDesabilitado = null;
 	
 	private Integer idAmbiente = null;
@@ -119,6 +128,8 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 	public ReservaMB(){
 		this.reserva = new Reserva();
 		this.condominio = new Condominio();
+		this.bloco = new Bloco();
+		this.condomino = new Condomino();
 	}
 	
 	@PostConstruct
@@ -153,6 +164,7 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 	
 	public String salvarReservaPeloFuncionario(){
 		try{							
+			this.condomino = condominoService.buscarPorId(this.condomino.getId());
 			this.reserva.getCondomino().setId(this.condomino.getId());			
 			this.reserva.setSituacao(ReservaSituacaoEnum.PENDENTE.getSituacao());
 			this.condominio = this.condominioService.buscarPorCondomino(this.condomino);
@@ -518,13 +530,65 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 	}
 	
 
-	public void populaIdAmbiente(){
-		ManagedBeanUtil.cleanSubmittedValues(this.componenteDataReserva);
+	public void populaIdAmbiente(){	
+		this.idAmbiente = null;
 		this.reserva.setData(null);
-		this.idAmbiente = this.reserva.getAmbiente().getId();	
-		// Necessário setar o idAmbiente na sessão, pois ao abrir o calendário para selecionar uma data para reserva, 
-		// não deve ser possível selecionar uma data que esteja com uma reserva pendente ou aprovada (validação feita em CalendarioReservaMB) 
-		ManagedBeanUtil.getSession(true).setAttribute("idAmbiente",this.idAmbiente);
+		if(this.reserva.getAmbiente().getId() != -1){
+			this.idAmbiente = this.reserva.getAmbiente().getId();	
+			// Necessário setar o idAmbiente na sessão, pois ao abrir o calendário para selecionar uma data para reserva, 
+			// não deve ser possível selecionar uma data que esteja com uma reserva pendente ou aprovada (validação feita em CalendarioReservaMB) 
+			ManagedBeanUtil.getSession(true).setAttribute("idAmbiente",this.idAmbiente);
+		}
+	}
+	
+	public void popularListaBlocos() {
+		this.limparListasAmbienteBlocoCondominoEData();
+		try {
+			List<SelectItem> listaSIBlocos = this.blocoMB.buscarListaBlocosPorCondominio(this.condominio);
+			this.setListaSIBlocos(listaSIBlocos);
+			List<Ambiente> listaAmbiente = this.ambienteService.buscarPorCondominio(this.condominio);		
+			for (Ambiente ambiente : listaAmbiente) {
+				this.listaSIAmbientes.add(new SelectItem(ambiente.getId(), ambiente.getNome()));
+			}
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}
+	}
+	
+	
+	public void popularListaCondominos() throws SQLException, Exception{
+		this.listaSICondominos = new ArrayList<SelectItem>();
+		try {
+			if (this.bloco.getId() != -1){
+				// O Bloco que vem da página não contém o nome, somente o id, por isso buscar ele na base.
+				this.bloco = this.blocoService.buscarPorId(this.bloco.getId());
+				this.blocoService.popularBloco(this.bloco);
+				for (Unidade unidade : bloco.getListaUnidade()) {
+					for (Condomino condomino : unidade.getListaCondominos()) {
+						this.listaSICondominos.add(new SelectItem(condomino.getId(), bloco.getNome() + " - " + unidade.getNumero() + " - " + condomino.getNome()));
+					}	
+				}			
+			}
+		}catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}
+	}
+	
+	private void limparListasAmbienteBlocoCondominoEData() {
+		this.listaSIAmbientes = new ArrayList<SelectItem>();
+		this.listaSIBlocos = new ArrayList<SelectItem>();
+		this.listaSICondominos = new ArrayList<SelectItem>();
+		this.reserva = new Reserva();
+		this.bloco = new Bloco();
+		this.idAmbiente = null;
 	}
 	
 	private void populaNomeAmbiente(){
@@ -769,6 +833,39 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 
 	public void setListaSISituacoes(List<SelectItem> listaSISituacoes) {
 		this.listaSISituacoes = listaSISituacoes;
+	}
+
+	public Bloco getBloco() {
+		return bloco;
+	}
+
+	public void setBloco(Bloco bloco) {
+		this.bloco = bloco;
+	}
+
+	public List<SelectItem> getListaSIBlocos() {
+		return listaSIBlocos;
+	}
+
+	public void setListaSIBlocos(List<SelectItem> listaSIBlocos) {
+		this.listaSIBlocos = listaSIBlocos;
+	}
+
+	public List<SelectItem> getListaSICondominos() {
+		return listaSICondominos;
+	}
+
+	public void setListaSICondominos(List<SelectItem> listaSICondominos) {
+		this.listaSICondominos = listaSICondominos;
 	}	
+	
+	public Condomino getCondomino() {
+		return condomino;
+	}
+
+	public void setCondomino(Condomino condomino) {
+		this.condomino = condomino;
+	}
+	
 	
 }

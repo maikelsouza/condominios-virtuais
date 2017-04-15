@@ -1,13 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:a4j="http://richfaces.org/a4j"
-	xmlns:rich="http://richfaces.org/rich"
-	xmlns:c="http://java.sun.com/jstl/core"
-	template="/templates/templatePrincipal.xhtml">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jstl/core" template="/templates/templatePrincipal.xhtml">
 
 	<ui:define name="conteudo">		
 		<h:form id="idFormListaReserva" styleClass="content">
@@ -24,15 +20,11 @@
 						<h:outputLabel value="#{msg['reserva.situacao']}:" for="idSituacao" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
-					<h:selectOneMenu value="#{reservaMB.condominio.id}"
-						defaultLabel="#{msg['condominio.DefaultLabel']}" id="idCondominio"
-						label="#{msg['condominio.label']}" required="true">
-						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}"
-							noSelectionOption="true" />
+					<h:selectOneMenu value="#{reservaMB.condominio.id}" defaultLabel="#{msg['condominio.DefaultLabel']}" id="idCondominio" label="#{msg['condominio.label']}" required="true">
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="true" />
 						<f:selectItems value="#{reservaMB.listaSICondominios}" />
 					</h:selectOneMenu>
-					<h:selectOneMenu value="#{reservaMB.reserva.situacao}" id="idSituacao"
-						label="#{msg['reserva.situacao.label']}" required="true">
+					<h:selectOneMenu value="#{reservaMB.reserva.situacao}" id="idSituacao" label="#{msg['reserva.situacao.label']}" required="true">
 						<f:selectItem itemLabel="#{msg['reserva.situacao.DefaultLabel']}" noSelectionOption="true" />
 						<f:selectItems value="#{reservaMB.listaSISituacoes}" />
 					</h:selectOneMenu>
@@ -43,10 +35,8 @@
 				    </h:panelGrid>
 
 				<h:panelGrid columns="2" styleClass="msgAsterisco">
-					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
-						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
-					<h:outputLabel value="*" id="idCampoObrigatorio"
-						styleClass="asterisco" />
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
 				</h:panelGrid>
 
 			</rich:panel>
@@ -55,51 +45,38 @@
 					<h:outputText value="#{msg.listarReservas}" />
 				</f:facet>
 				<div>
-					<rich:dataTable value="#{reservaMB.listaReservasVOs}" rows="10"
-						var="reservaVO" rowClasses="odd-row, even-row" styleClass="stable"
-						id="tableReservaVO" style="width:100%;"
+					<rich:dataTable value="#{reservaMB.listaReservasVOs}" rows="10" var="reservaVO" rowClasses="odd-row, even-row" 
+						styleClass="stable" id="tableReservaVO" style="width:100%;"
 						rendered="#{reservaMB.listaReservasVOs.rowCount > 0}">
-						<rich:column sortBy="#{reservaVO.bloco}"
-							sortOrder="#{ordenaReservaMB.bloco}">
+						<rich:column sortBy="#{reservaVO.bloco}" sortOrder="#{ordenaReservaMB.bloco}">
 							<f:facet name="header">
-								<a4j:commandLink value="#{msg['bloco']}" render="tableReservaVO"
-									action="#{ordenaReservaMB.ordenarPorBloco}" />
+								<a4j:commandLink value="#{msg['bloco']}" render="tableReservaVO" action="#{ordenaReservaMB.ordenarPorBloco}" />
 							</f:facet>
 							<h:outputText value="#{reservaVO.bloco}" />
 						</rich:column>
-						<rich:column sortBy="#{reservaVO.unidade}"
-							sortOrder="#{ordenaReservaMB.unidade}">
+						<rich:column sortBy="#{reservaVO.unidade}" sortOrder="#{ordenaReservaMB.unidade}">
 							<f:facet name="header">
-								<a4j:commandLink value="#{msg['unidade']}"
-									render="tableReservaVO"
-									action="#{ordenaReservaMB.ordenarPorUnidade}" />
+								<a4j:commandLink value="#{msg['unidade']}" render="tableReservaVO" action="#{ordenaReservaMB.ordenarPorUnidade}" />
 							</f:facet>
 							<h:outputText value="#{reservaVO.unidade}" />
 						</rich:column>
-						<rich:column sortBy="#{reservaVO.ambiente}"
-							sortOrder="#{ordenaReservaMB.nomeAmbiente}">
+						<rich:column sortBy="#{reservaVO.ambiente}" sortOrder="#{ordenaReservaMB.nomeAmbiente}">
 							<f:facet name="header">
-								<a4j:commandLink value="#{msg['reserva.ambiente']}"
-									render="tableReservaVO"
-									action="#{ordenaReservaMB.ordenarPorNomeAmbiente}" />
+								<a4j:commandLink value="#{msg['reserva.ambiente']}" render="tableReservaVO" action="#{ordenaReservaMB.ordenarPorNomeAmbiente}" />
 							</f:facet>
 							<h:outputText value="#{reservaVO.ambiente}" />
 						</rich:column>
 						<rich:column sortBy="#{reservaVO.condomino}"
 							sortOrder="#{ordenaReservaMB.condomino}">
 							<f:facet name="header">
-								<a4j:commandLink value="#{msg['reserva.condomino']}"
-									render="tableReservaVO"
-									action="#{ordenaReservaMB.ordenarPorCondomino}" />
+								<a4j:commandLink value="#{msg['reserva.condomino']}" render="tableReservaVO" action="#{ordenaReservaMB.ordenarPorCondomino}" />
 							</f:facet>
 							<h:outputText value="#{reservaVO.condomino}" />
 						</rich:column>
 						<rich:column sortBy="#{reservaVO.data}"
 							sortOrder="#{ordenaReservaMB.dataReserva}">
 							<f:facet name="header">
-								<a4j:commandLink value="#{msg['reserva.data']}"
-									render="tableReservaVO"
-									action="#{ordenaReservaMB.ordenarPorDataReserva}" />
+								<a4j:commandLink value="#{msg['reserva.data']}" render="tableReservaVO" action="#{ordenaReservaMB.ordenarPorDataReserva}" />
 							</f:facet>
 							<h:outputText value="#{reservaVO.data}">
 								<f:convertDateTime pattern="#{msg.formatoData}" />
@@ -108,9 +85,7 @@
 						<rich:column sortBy="#{reservaVO.situacao}"
 							sortOrder="#{ordenaReservaMB.situacao}">
 							<f:facet name="header">
-								<a4j:commandLink value="#{msg['reserva.situacao']}"
-									render="tableReservaVO"
-									action="#{ordenaReservaMB.ordenarPorSituacao}" />
+								<a4j:commandLink value="#{msg['reserva.situacao']}" render="tableReservaVO" action="#{ordenaReservaMB.ordenarPorSituacao}" />
 							</f:facet>
 							<h:outputText value="#{reservaVO.situacao}" />
 						</rich:column>
@@ -125,10 +100,8 @@
 
 		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
 		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
-		<rich:jQuery selector=".stable tr" event="mouseover"
-			query="jQuery(this).addClass('active-row')" />
-		<rich:jQuery selector=".stable tr" event="mouseout"
-			query="jQuery(this).removeClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseover" query="jQuery(this).addClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseout" query="jQuery(this).removeClass('active-row')" />
 	</ui:define>
 
 </ui:composition>

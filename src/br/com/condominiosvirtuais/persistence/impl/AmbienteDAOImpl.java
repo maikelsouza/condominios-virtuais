@@ -257,13 +257,52 @@ public class AmbienteDAOImpl implements AmbienteDAO, Serializable {
 				ambiente.setListaItensAmbiente(this.itemAmbienteDAO.buscarPorAmbiente(ambiente));
 				listaAmbientes.add(ambiente);
 			}
+		} catch (SQLException e) {
+			throw e;
+		} catch (Exception e) {
+			throw e;	
+		}	
+		return listaAmbientes;
+	}
+	
+	public List<Ambiente> buscarPorCondominio(Condominio condominio) throws SQLException, Exception {	
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(AMBIENTE);
+		query.append(" WHERE ");
+		query.append(ID_CONDOMINIO);		
+		query.append(" = ?");
+		query.append(";");
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;		
+		Ambiente ambiente = null;
+		List<Ambiente> listaAmbientes = new ArrayList<Ambiente>();
+		Connection con = Conexao.getConexao();
+		try {			
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement,1, condominio.getId(), java.sql.Types.INTEGER);			
+			resultSet = preparedStatement.executeQuery();			
+			while(resultSet.next()){
+				ambiente = new Ambiente();
+				ambiente.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				ambiente.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+				ambiente.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
+				ambiente.setListaItensAmbiente(this.itemAmbienteDAO.buscarPorAmbiente(ambiente));
+				listaAmbientes.add(ambiente);
+			}
 		} catch (SQLException e) {			
 			con.rollback();
 			throw e;
 		} catch (Exception e) {
 			con.rollback();
 			throw e;	
-		}	
+		}finally{			
+			try {
+				con.close();
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);
+			}
+		}		
 		return listaAmbientes;
 	}
 

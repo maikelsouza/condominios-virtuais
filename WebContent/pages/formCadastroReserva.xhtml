@@ -9,57 +9,47 @@
 	xmlns:c="http://java.sun.com/jstl/core"
 	template="/templates/templatePrincipal.xhtml">
 
-	<ui:define name="conteudo">
-		<f:metadata>
-			<f:event type="preRenderView" listener="#{reservaMB.abreSessao}" />
-		</f:metadata>
+	<ui:define name="conteudo">		
 		<h:form styleClass="content">
 			<rich:panel>
 				<f:facet name="header">
 					<h:outputText value="#{msg.cadastroReserva}" />
 				</f:facet>
-				<h:panelGrid columns="2">
+				<h:panelGrid columns="3">
 					<h:panelGroup>
-						<h:outputLabel value="#{msg['condominio']}:" for="idCondominio" />
+						<h:outputLabel value="#{msg['condominio']}:" for="idListaSICondominio" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 					
 					<h:panelGroup>
-						<h:outputLabel value="#{msg['condomino']}:" />
+						<h:outputLabel value="#{msg.bloco}:" for="idListaSIBlocos" />
 						<span class="asterisco">*</span>
-						<a4j:jsFunction name="buscarIdCondomino"
-							execute="buscarNomeCondomino"
-							action="#{reservaMB.popularIdCondomino}"
-							render="idCondominoHidden buscarNomeCondomino idAmbiente" />
 					</h:panelGroup>
 					
-					<h:selectOneMenu value="#{reservaMB.condominio.id}"
-						defaultLabel="#{msg['condominio.DefaultLabel']}" id="idCondominio"
-						binding="#{reservaMB.componenteCondominio}"
-						label="#{msg['condominio.label']}" required="true">
-						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}"
-							noSelectionOption="true" />
+					<h:panelGroup>
+						<h:outputLabel value="#{msg.condomino}:" for="idListaSICondomino" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>					
+					
+					<h:selectOneMenu value="#{reservaMB.condominio.id}"  id="idListaSICondominio" label="#{msg['condominio.label']}" required="true" >
+						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="true" />
 						<f:selectItems value="#{reservaMB.listaSICondominios}" />
-						<f:ajax listener="#{reservaMB.habilitaCamboCondomino}"
-							render="buscarNomeCondomino idAmbiente" />
+						<f:ajax listener="#{reservaMB.popularListaBlocos}" render="idListaSIBlocos idListaSICondomino idAmbiente idCalendar" />
+					</h:selectOneMenu>
+					
+					<h:selectOneMenu value="#{reservaMB.bloco.id}" id="idListaSIBlocos" label="#{msg['bloco.label']}" required="true">
+						<f:selectItem itemLabel="#{msg['bloco.DefaultLabel']}" noSelectionOption="true" />
+						<f:selectItems value="#{reservaMB.listaSIBlocos}" />
+						<f:ajax listener="#{reservaMB.popularListaCondominos}" render="idListaSICondomino"  />
+					</h:selectOneMenu>			
+					
+					<h:selectOneMenu value="#{reservaMB.condomino.id}" id="idListaSICondomino">
+						<f:selectItem itemLabel="#{msg['condomino.DefaultLabel']}"  noSelectionOption="true"/>
+						<f:selectItems value="#{reservaMB.listaSICondominos}"/>						
 					</h:selectOneMenu>
 					
 					<h:panelGroup>
-						<rich:autocomplete id="buscarNomeCondomino"
-							autocompleteMethod="#{reservaMB.buscarListaCondominoVO}"
-							var="condominoVO" minChars="3" onselectitem="buscarIdCondomino()"
-							mode="ajax" fetchValue="#{condominoVO.id}" 
-							value="#{reservaMB.nomeCondomino}" required="true"
-							label="#{msg['condominio.nome.label']}"
-							disabled="#{reservaMB.campoCondominoDesabilitado}">
-							  #{condominoVO.nomeBloco} - #{condominoVO.numeroUnidade} -	#{condominoVO.nomeCondomino}
-						</rich:autocomplete>
-						<h:inputHidden id="idCondominolHidden"
-							value="#{reservaMB.idCondomino}" />
-					</h:panelGroup>
-					<h:panelGroup>
-						<h:outputLabel value="#{msg['reserva.ambiente']}:"
-							for="idAmbiente" />
+						<h:outputLabel value="#{msg['reserva.ambiente']}:" for="idAmbiente" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 					
@@ -68,40 +58,29 @@
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 					
-					<h:selectOneMenu value="#{reservaMB.reserva.ambiente.id}"
-						defaultLabel="#{msg['reserva.ambiente.DefaultLabel']}"
-						label="#{msg['reserva.ambiente.label']}" required="true"
-						id="idAmbiente" disabled="#{reservaMB.nomeCondomino.trim() == ''}">
-						<f:selectItem itemLabel="#{msg['reserva.ambiente.DefaultLabel']}"
-							noSelectionOption="true" />
+					<h:outputLabel value=""/>
+					
+					<h:selectOneMenu value="#{reservaMB.reserva.ambiente.id}" label="#{msg['reserva.ambiente.label']}" required="true" id="idAmbiente">
+						<f:selectItem itemLabel="#{msg['reserva.ambiente.DefaultLabel']}" itemValue="-1"/>
 						<f:selectItems value="#{reservaMB.listaAmbientes}" />
-						<f:ajax render="@form" listener="#{reservaMB.populaIdAmbiente}" />
+						<f:ajax render="idCalendar" listener="#{reservaMB.populaIdAmbiente}" />
 					</h:selectOneMenu>
 					
-					
-					<rich:calendar value="#{reservaMB.reserva.data}" id="idCalendar"
-						locale="pt_BR" popup="true" mode="ajax"
-						label="#{msg['reserva.data.label']}"
-						datePattern="#{msg['formatoData']}"
-						disabled="#{reservaMB.idAmbiente == null}" cellWidth="24px"
-						cellHeight="22px" style="width:200px" required="true"
-						dataModel="#{calendarioReservaMB}" boundaryDatesMode="scroll"
-						showFooter="false">
+					<rich:calendar value="#{reservaMB.reserva.data}" id="idCalendar" locale="#{msg.locale}" popup="true" mode="ajax"
+						label="#{msg['reserva.data.label']}" datePattern="#{msg['formatoData']}" disabled="#{reservaMB.idAmbiente == null}" cellWidth="24px"
+						cellHeight="22px" style="width:200px" required="true" dataModel="#{calendarioReservaMB}" boundaryDatesMode="scroll" showFooter="false">
 					</rich:calendar>
+					
 				</h:panelGrid>
 				<h:panelGrid columns="2" styleClass="msgAsterisco">
-					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
-						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
-					<h:outputLabel value="*" id="idCampoObrigatorio"
-						styleClass="asterisco" />
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
 				</h:panelGrid>
 			</rich:panel>
+			
 			<h:panelGrid columns="2">
-				<h:commandButton value="#{msg.botaoSalvar}"
-					action="#{reservaMB.salvarReservaPeloFuncionario}" />
-				<h:commandButton value="#{msg.botaoLimpar}"
-					actionListener="#{reservaMB.limparCadastroReserva}"
-					immediate="true" />
+				<h:commandButton value="#{msg.botaoSalvar}" action="#{reservaMB.salvarReservaPeloFuncionario}" />
+				<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{reservaMB.limparCadastroReserva}" immediate="true" />
 			</h:panelGrid>
 		</h:form>
 	</ui:define>

@@ -86,11 +86,6 @@ public class ReservaServiceImpl implements ReservaService, Serializable {
 		Email email = new Email();		
 		email.setPara(emailSindico);
 		email.setAssunto(AplicacaoUtil.i18n("msg.solicitacaoReserva.assunto"));
-// TODO: Código comentado em 05/08/2016. Apagar em 90 dias		
-//		Object[] parametros = new Object[3];
-//		parametros[0] = nomeSindico;
-//		parametros[1] = reserva.getAmbiente().getNome().toUpperCase();		   
-//		parametros[2] = AplicacaoUtil.formatarData(AplicacaoUtil.i18n("formatoData"), reserva.getData());
 		email.setMensagem(MensagensEmailUtil.solicitacaoDeReserva(reserva, nomeSindico));
 		this.emailService.salvar(email);
 	}
