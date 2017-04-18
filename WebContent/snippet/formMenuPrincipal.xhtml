@@ -53,17 +53,17 @@
 			<rich:menuItem label="#{msg['arquivo.imagem']}" action="#{principalMB.listarImagem}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,7')}" />
 			<rich:menuItem label="#{msg['arquivo.imagem.anexar']}" action="#{principalMB.anexarImagem}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}" />
 		</rich:dropDownMenu>
-		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,7')}">
+		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,7') || loginMB.exibeMenuListaReservaQuintaDoHorto()}">
 			<f:facet name="label">
 				<h:panelGroup
-					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,7')}">
+					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,5,6,7') || loginMB.exibeMenuListaReservaQuintaDoHorto()}">
 					<h:outputText value="#{msg.cadastro}" />
 				</h:panelGroup>
 			</f:facet>
 			<rich:menuItem label="#{msg['cadastro.condominio']}" action="#{principalMB.listarCondominio}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}" />
 			<rich:menuItem label="#{msg['cadastro.bloco']}" action="#{principalMB.listarBloco}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}" />
 			<rich:menuItem label="#{msg['cadastro.unidade']}" action="#{principalMB.listarUnidade}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}" />
-			<rich:menuItem label="#{msg['cadastro.condomino']}" action="#{principalMB.listarCondomino}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}" />
+			<rich:menuItem label="#{msg['cadastro.condomino']}" action="#{principalMB.listarCondomino}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7') || loginMB.exibeMenuListaReservaQuintaDoHorto()}" />
 			<rich:menuItem label="#{msg['cadastro.ambiente']}" action="#{principalMB.listarAmbienteCondominio}" title="#{msg['cadastro.ambiente.condominio.title']}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}" />
 			<rich:menuItem label="#{msg['cadastro.funcionario']}" action="#{principalMB.listarFuncionarioCondominio}" title="#{msg['cadastro.funcionario.condominio.title']}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}" />
 			<!-- Apagar código fonte abaixo (grupo de ambiente bloco e funcionário) após 180 dia. Data 07/11/2016 -->
