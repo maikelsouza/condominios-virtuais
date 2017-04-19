@@ -511,9 +511,6 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VER_MENSAGEM_ENVIADA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_MEU_PAINEL.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_TELEFONES_UTEIS.getPathTelas());
-			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_CLASSIFICADOS.getPathTelas());
-			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_CLASSIFICADOS.getPathTelas());
-			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_CLASSIFICADOS.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_VEICULO.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_CHAMADO.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_VISITANTE.getPathTelas());

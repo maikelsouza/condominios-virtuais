@@ -127,7 +127,7 @@
 					</rich:dataTable>
 				</div>
 			</rich:panel>
-			<h:commandButton value="#{msg.botaoCriarNovo}"
+			<h:commandButton value="#{msg.botaoCriarNovo}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,4,7')}"
 				action="#{condominoMB.cadastroCondomino}" immediate="true"></h:commandButton>
 		</h:form>
 
