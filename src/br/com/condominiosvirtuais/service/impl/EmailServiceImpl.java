@@ -24,6 +24,7 @@ import javax.mail.internet.MimeMultipart;
 
 import br.com.condominiosvirtuais.entity.Email;
 import br.com.condominiosvirtuais.enumeration.ConfiguracaoAplicacaoEnum;
+import br.com.condominiosvirtuais.enumeration.MimeTypeEnum;
 import br.com.condominiosvirtuais.persistence.EmailDAO;
 import br.com.condominiosvirtuais.service.ConfiguracaoAplicacaoService;
 import br.com.condominiosvirtuais.service.EmailService;
@@ -54,7 +55,7 @@ public class EmailServiceImpl implements EmailService, Serializable {
 		propertie.put(ConfiguracaoAplicacaoEnum.MAIL_SMTP_AUTH.getChave(),
 				this.configuracaoAplicacaoService.getConfiguracoes().get(ConfiguracaoAplicacaoEnum.MAIL_SMTP_AUTH.getChave()));  	
 		propertie.put(ConfiguracaoAplicacaoEnum.MAIL_SMTP_PORT.getChave(),
-				this.configuracaoAplicacaoService.getConfiguracoes().get(ConfiguracaoAplicacaoEnum.MAIL_SMTP_PORT.getChave()));  
+				this.configuracaoAplicacaoService.getConfiguracoes().get(ConfiguracaoAplicacaoEnum.MAIL_SMTP_PORT.getChave()));		
 		Session session = Session.getInstance(propertie);
 		Message msg = new MimeMessage(session);
 		InternetAddress enderecoDe = null;
@@ -105,12 +106,13 @@ public class EmailServiceImpl implements EmailService, Serializable {
 		tr.close();		
 	}
 	
- public void enviarHTML(Email email, String endereçoLogo) throws MessagingException {
-	 
+ public void enviarHTML(Email email, String endereçoLogo, String charset) throws MessagingException {
+
+	 	 String typeText = 	MimeTypeEnum.TXT_HTML.getMimeType()+";charset="+charset+";";
 		 Multipart multipart = new MimeMultipart("related");
 		 
 	     BodyPart messageBodyPart = new MimeBodyPart();     
-	     messageBodyPart.setContent(email.getMensagem(), "text/html");
+	     messageBodyPart.setContent(email.getMensagem(), typeText);
 	     multipart.addBodyPart(messageBodyPart);
 	      
 	     messageBodyPart = new MimeBodyPart();
@@ -153,7 +155,8 @@ public class EmailServiceImpl implements EmailService, Serializable {
 				this.configuracaoAplicacaoService.getConfiguracoes().get(ConfiguracaoAplicacaoEnum.MAIL_SMTP_PORT.getChave()));  
 		Session session = Session.getInstance(propertie);
 		
-		Message msg = new MimeMessage(session);
+		MimeMessage msg = new MimeMessage(session);
+		
 		InternetAddress enderecoDe = null;
 		if (email.getDe() == null){ // Situação onde não foi expecificado um remetente, logo o remetente é a aplicação.
 			enderecoDe = new InternetAddress(this.configuracaoAplicacaoService.getConfiguracoes().get(ConfiguracaoAplicacaoEnum.USUARIO_EMAIL.getChave()));			
@@ -186,9 +189,11 @@ public class EmailServiceImpl implements EmailService, Serializable {
 		    }			
 			msg.setRecipients(Message.RecipientType.BCC, enderecoComCopiaOculta);
 		}
+		    
 		msg.setReplyTo(new InternetAddress[]{ new InternetAddress("Não Responda <nao-responda@condominiosvirtuais.com.br>")});		
 		msg.setSubject(email.getAssunto());	
-		msg.setContent(multipart);
+		msg.setContent(multipart,typeText);
+		
 		
 		Transport tr = session.getTransport(this.configuracaoAplicacaoService.getConfiguracoes().get(
 				ConfiguracaoAplicacaoEnum.PROTOCOLO_EMAIL_SECURITY.getChave()));

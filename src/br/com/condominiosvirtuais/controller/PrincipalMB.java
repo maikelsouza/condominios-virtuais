@@ -21,6 +21,8 @@ public class PrincipalMB  implements Serializable{
 	
 	private String caminhoAplicacao = null; 
 	
+	private String charset = null;
+	
 	@Inject
 	private CondominioMB condominioMB = null;
 	
@@ -317,6 +319,7 @@ public class PrincipalMB  implements Serializable{
 		//classificadosThread.start();
 		//logger.info("Start "+ ClassificadosThread.class);
 		this.caminhoAplicacao = AplicacaoUtil.getCaminhoAplicacao();		
+		this.charset = AplicacaoUtil.i18n("charset");
 	}	
 	
 
@@ -410,6 +413,10 @@ public class PrincipalMB  implements Serializable{
 
 	public String getCaminhoAplicacao() {
 		return caminhoAplicacao;
+	}
+
+	public String getCharset() {
+		return charset;
 	}
 
 	public DespesasMB getDespesasMB() {

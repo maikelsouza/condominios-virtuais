@@ -16,7 +16,7 @@ public interface EmailService {
 	
 	public abstract void enviar(Email email) throws MessagingException;
 	
-	public abstract void enviarHTML(Email email, String enderecoLogo) throws MessagingException;
+	public abstract void enviarHTML(Email email, String enderecoLogo, String charset) throws MessagingException;
 	
 	public abstract void enviarSESAmazon(Email email) throws MessagingException;	
 	

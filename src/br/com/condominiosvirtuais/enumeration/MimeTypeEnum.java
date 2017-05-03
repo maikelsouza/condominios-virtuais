@@ -20,7 +20,9 @@ public enum MimeTypeEnum {
 	
 	PPTX ("application/vnd.openxmlformats-officedocument.presentationml.presentation"),	
 	
-	TXT ("text/plain");
+	TXT ("text/plain"),
+	
+	TXT_HTML ("text/html");
 	
 	
 	
