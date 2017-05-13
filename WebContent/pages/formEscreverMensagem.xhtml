@@ -8,15 +8,14 @@
 	xmlns:rich="http://richfaces.org/rich"
 	template="/templates/templatePrincipal.xhtml">
 
-	<ui:define name="conteudo">
-		<f:metadata>
-			<f:event type="preRenderView" listener="#{mensagemMB.abreSessao}" />
-		</f:metadata>
-		<h:form id="formEscreverMensagem" styleClass="content">
-			<rich:panel>
-				<f:facet name="header">
-					<h:outputText value="#{msg.mensagen}" />
-				</f:facet>
+	<ui:define name="conteudo">		
+	<br />
+		<rich:tabPanel styleClass="content" id="AII" switchType="client">
+		
+		
+			<rich:tab header="MAIKEK" id="MMMA">
+			
+				<h:form id="formEscreverMensagem">	
 				<h:panelGrid columns="3">
 					<h:panelGroup>
 						<h:outputLabel value="#{msg.condominio}:" for="idCondominio" />
@@ -101,7 +100,7 @@
 					<h:outputLabel value="*" id="idCampoObrigatorio"
 						styleClass="asterisco" />
 				</h:panelGrid>
-			</rich:panel>
+			
 			<h:panelGrid columns="2">
 				<h:commandButton value="#{msg.botaoEnviarMensagem}"
 					action="#{mensagemMB.enviarMensagemBloco}" />
@@ -109,6 +108,10 @@
 					actionListener="#{mensagemMB.limparMensagem}" immediate="true" />
 			</h:panelGrid>
 		</h:form>
+	</rich:tab>
+	<rich:tab header="MAIKEKAA" id="MMMAF">
+	</rich:tab>
+</rich:tabPanel>
 	</ui:define>
 
 </ui:composition>

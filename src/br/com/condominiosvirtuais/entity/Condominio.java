@@ -1,7 +1,6 @@
-
+	
 package br.com.condominiosvirtuais.entity;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -9,9 +8,7 @@ import java.util.List;
  * @author Maikel Joel de Souza
  * @since 20/02/2013 
  */
-public class Condominio {
-
-	
+public class Condominio {	
 
 	private Integer id;
 	

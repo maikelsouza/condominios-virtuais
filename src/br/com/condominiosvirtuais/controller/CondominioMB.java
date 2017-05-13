@@ -132,11 +132,13 @@ public class CondominioMB implements IConversationScopeMB, Serializable{
 	
 	public String pesquisarPorCodigo(){
 		String retorno = null;
+		Boolean existeCondominio = Boolean.FALSE;
 		try {				
-			this.condominio = this.condominioService.buscarPorCodigo(this.condominio.getCodigo());
-			if (this.condominio == null){
+			existeCondominio = this.condominioService.existeCondominioPorCodigo(this.condominio.getCodigo());
+			if (existeCondominio == Boolean.FALSE){
 				ManagedBeanUtil.setMensagemInfo("msg.condominio.condominioCodigoNaoEncontrado");
 			}else{
+				this.condominio = this.condominioService.buscarPorCodigo(this.condominio.getCodigo());
 				ManagedBeanUtil.getSession(true).setAttribute(AtributoSessaoEnum.CONDOMINIO.getAtributo(), this.condominio);
 				retorno = "cadastroCondominoPrimeiraVez";
 			}

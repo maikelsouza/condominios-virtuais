@@ -644,6 +644,36 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 	}
 	
 	@Override
+	public Boolean existeCondominioPorCodigo(Integer codigo) throws SQLException, Exception {
+		Boolean existeCondominio = Boolean.FALSE;
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(CONDOMINIO);
+		query.append(" WHERE ");
+		query.append(CODIGO);	
+		query.append(" = ?");		
+		Connection con = Conexao.getConexao();
+		PreparedStatement preparedStatement = null;
+		try {
+			preparedStatement = con.prepareStatement(query.toString());		
+			SQLUtil.setValorPpreparedStatement(preparedStatement,1, codigo, java.sql.Types.INTEGER);
+			existeCondominio = preparedStatement.executeQuery().next();		
+		} catch (SQLException e) {			
+			throw e;
+		} catch (Exception e) {			
+			throw e;
+		}finally{
+			try {
+				preparedStatement.close();
+				con.close();				
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);				
+			}
+		}	
+		return existeCondominio;
+	}
+	
+	@Override
 	public Condominio buscarPorCodigo(Integer codigo) throws SQLException,
 			Exception {
 		StringBuffer query = new StringBuffer();

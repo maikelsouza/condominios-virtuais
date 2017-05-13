@@ -135,5 +135,10 @@ public class CondominioServiceImpl implements CondominioService, Serializable{
 		this.condominioDAO.popularCondominioComCondominoSemImagemEPagador(condominio);		
 	}
 
+	@Override
+	public Boolean existeCondominioPorCodigo(Integer codigo) throws SQLException, Exception {
+		return this.condominioDAO.existeCondominioPorCodigo(codigo);
+	}
+
 
 }

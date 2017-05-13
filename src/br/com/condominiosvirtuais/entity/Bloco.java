@@ -176,11 +176,6 @@ public class Bloco implements Comparable<Bloco>{
 
 	@Override
 	public int compareTo(Bloco arg0) {
-		
-//		int a = this.nome.compareTo(arg0.getNome());
-//	
-//		return 0; 
-
 		return this.nome.compareTo(arg0.getNome());
 	}
 	

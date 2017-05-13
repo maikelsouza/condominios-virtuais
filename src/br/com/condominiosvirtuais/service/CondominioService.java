@@ -41,5 +41,7 @@ public interface CondominioService {
 	
 	public abstract void popularCondominioComCondominoSemImagemEPagador(Condominio condominio) throws SQLException, Exception;
 	
+	public abstract Boolean existeCondominioPorCodigo(Integer codigo) throws SQLException, Exception;
+	
 
 }

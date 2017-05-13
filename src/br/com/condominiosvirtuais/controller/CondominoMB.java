@@ -227,8 +227,9 @@ public class CondominoMB implements  Serializable{
 			List<Condominio> listaCondominio = new ArrayList<Condominio>();
 			listaCondominio.add(this.condominio);
 			this.condomino.setListaCondominio(listaCondominio);
-			this.condomino.setIdUnidade(this.unidade.getId());			
-			this.condomino.setIdGrupoUsuario(TipoGrupoUsuarioEnum.CONDOMINO.getGrupoUsuario());
+			this.condomino.setIdUnidade(this.unidade.getId());
+			// TODO: Após criar a estrutura de grupos de usuários modificar o 5 pela constante. TipoGrupoUsuarioEnum.CONDOMINO.getGrupoUsuario()
+			this.condomino.setIdGrupoUsuario(5);
 			this.condomino.getEmail().setPrincipal(Boolean.TRUE);
 			this.condomino.setSituacao(UsuarioEnum.ATIVO.getSituacao());
 			this.condominoService.salvar(this.condomino);			
