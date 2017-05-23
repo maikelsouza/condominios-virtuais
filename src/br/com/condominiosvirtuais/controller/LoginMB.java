@@ -20,7 +20,7 @@ import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.Email;
 import br.com.condominiosvirtuais.entity.Usuario;
 import br.com.condominiosvirtuais.enumeration.AtributoSessaoEnum;
-import br.com.condominiosvirtuais.enumeration.UsuarioEnum;
+import br.com.condominiosvirtuais.enumeration.UsuarioSituacaoEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.service.EmailService;
 import br.com.condominiosvirtuais.service.UsuarioService;
@@ -63,7 +63,7 @@ public class LoginMB implements Serializable{
 				ManagedBeanUtil.setMensagemErro("msg.usuario.email.senha.incorretos");	
 				return null;
 			}				
-			if (this.usuario.getSituacao() == UsuarioEnum.INATIVO.getSituacao()){
+			if (this.usuario.getSituacao() == UsuarioSituacaoEnum.INATIVO.getSituacao()){
 				ManagedBeanUtil.setMensagemErro("msg.usuario.situacao.inativo");
 				return null;
 			}			

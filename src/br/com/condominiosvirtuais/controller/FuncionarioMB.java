@@ -26,7 +26,7 @@ import br.com.condominiosvirtuais.entity.Funcionario;
 import br.com.condominiosvirtuais.entity.TipoConjuntoBloco;
 import br.com.condominiosvirtuais.enumeration.TipoConjuntoBlocoEnum;
 import br.com.condominiosvirtuais.enumeration.TipoGrupoUsuarioEnum;
-import br.com.condominiosvirtuais.enumeration.UsuarioEnum;
+import br.com.condominiosvirtuais.enumeration.UsuarioSituacaoEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.service.BlocoService;
 import br.com.condominiosvirtuais.service.ConjuntoBlocoService;
@@ -194,8 +194,8 @@ public class FuncionarioMB implements  Serializable {
 	
 	public List<SelectItem> getListaSituacoes(){
 		List<SelectItem> listaSituacoes = new ArrayList<SelectItem>();
-		listaSituacoes.add(new SelectItem(UsuarioEnum.INATIVO.getSituacao(), AplicacaoUtil.i18n("funcionario.situacao.itemLabel.0")));
-		listaSituacoes.add(new SelectItem(UsuarioEnum.ATIVO.getSituacao(), AplicacaoUtil.i18n("funcionario.situacao.itemLabel.1")));
+		listaSituacoes.add(new SelectItem(UsuarioSituacaoEnum.INATIVO.getSituacao(), AplicacaoUtil.i18n("funcionario.situacao.itemLabel.0")));
+		listaSituacoes.add(new SelectItem(UsuarioSituacaoEnum.ATIVO.getSituacao(), AplicacaoUtil.i18n("funcionario.situacao.itemLabel.1")));
 		return listaSituacoes;
 	}
 	

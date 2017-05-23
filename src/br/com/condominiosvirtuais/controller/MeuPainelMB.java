@@ -35,7 +35,7 @@ import br.com.condominiosvirtuais.entity.Usuario;
 import br.com.condominiosvirtuais.entity.Veiculo;
 import br.com.condominiosvirtuais.enumeration.GaragemEnum;
 import br.com.condominiosvirtuais.enumeration.TipoGrupoUsuarioEnum;
-import br.com.condominiosvirtuais.enumeration.UsuarioEnum;
+import br.com.condominiosvirtuais.enumeration.UsuarioSituacaoEnum;
 import br.com.condominiosvirtuais.enumeration.VeiculoTipoEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.service.ArquivoService;
@@ -522,7 +522,7 @@ public class MeuPainelMB implements  Serializable{
 				this.novoCondomino.setTelefoneResidencial(Long.parseLong(this.telefoneResidencialNovoCondomino));				
 				this.novoCondomino.setIdGrupoUsuario(TipoGrupoUsuarioEnum.CONDOMINO.getGrupoUsuario());
 				this.novoCondomino.getEmail().setPrincipal(Boolean.TRUE);				
-				this.novoCondomino.setSituacao(UsuarioEnum.ATIVO.getSituacao());
+				this.novoCondomino.setSituacao(UsuarioSituacaoEnum.ATIVO.getSituacao());
 				Unidade unidade = this.unidadeService.buscarPorId(this.novoCondomino.getIdUnidade());
 				Bloco bloco = this.blocoService.buscarPorId(unidade.getIdBloco());				
 				Condominio condominio = this.condominioService.buscarPorId(bloco.getIdCondominio());

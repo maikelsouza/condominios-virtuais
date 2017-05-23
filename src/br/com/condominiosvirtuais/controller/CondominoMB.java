@@ -25,7 +25,7 @@ import br.com.condominiosvirtuais.entity.EmailUsuario;
 import br.com.condominiosvirtuais.entity.Unidade;
 import br.com.condominiosvirtuais.enumeration.AtributoSessaoEnum;
 import br.com.condominiosvirtuais.enumeration.TipoGrupoUsuarioEnum;
-import br.com.condominiosvirtuais.enumeration.UsuarioEnum;
+import br.com.condominiosvirtuais.enumeration.UsuarioSituacaoEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.service.CondominoService;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
@@ -195,7 +195,7 @@ public class CondominoMB implements  Serializable{
 			this.condomino.setIdUnidade(this.unidade.getId());			
 			this.condomino.setIdGrupoUsuario(TipoGrupoUsuarioEnum.CONDOMINO.getGrupoUsuario());
 			this.condomino.getEmail().setPrincipal(Boolean.TRUE);
-			this.condomino.setSituacao(UsuarioEnum.ATIVO.getSituacao());			
+			this.condomino.setSituacao(UsuarioSituacaoEnum.ATIVO.getSituacao());			
 			this.condominoService.salvar(this.condomino);
 			this.pesquisar(null);
 			ManagedBeanUtil.setMensagemInfo("msg.condomino.salvaSucesso");
@@ -231,7 +231,7 @@ public class CondominoMB implements  Serializable{
 			// TODO: Após criar a estrutura de grupos de usuários modificar o 5 pela constante. TipoGrupoUsuarioEnum.CONDOMINO.getGrupoUsuario()
 			this.condomino.setIdGrupoUsuario(5);
 			this.condomino.getEmail().setPrincipal(Boolean.TRUE);
-			this.condomino.setSituacao(UsuarioEnum.ATIVO.getSituacao());
+			this.condomino.setSituacao(UsuarioSituacaoEnum.ATIVO.getSituacao());
 			this.condominoService.salvar(this.condomino);			
 			ManagedBeanUtil.setMensagemInfo("msg.condomino.salvaSucessoPrimeiraVez");
 			return "salvarCondominoPrimeiraVez";
@@ -394,8 +394,8 @@ public class CondominoMB implements  Serializable{
 	
 	public List<SelectItem> getListaSituacoes(){
 		List<SelectItem> listaSituacoes = new ArrayList<SelectItem>();
-		listaSituacoes.add(new SelectItem(UsuarioEnum.INATIVO.getSituacao(), AplicacaoUtil.i18n("condomino.situacao.itemLabel.0")));
-		listaSituacoes.add(new SelectItem(UsuarioEnum.ATIVO.getSituacao(), AplicacaoUtil.i18n("condomino.situacao.itemLabel.1")));
+		listaSituacoes.add(new SelectItem(UsuarioSituacaoEnum.INATIVO.getSituacao(), AplicacaoUtil.i18n("condomino.situacao.itemLabel.0")));
+		listaSituacoes.add(new SelectItem(UsuarioSituacaoEnum.ATIVO.getSituacao(), AplicacaoUtil.i18n("condomino.situacao.itemLabel.1")));
 		return listaSituacoes;
 	}
 	

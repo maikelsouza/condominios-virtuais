@@ -27,6 +27,7 @@ import br.com.condominiosvirtuais.entity.MensagemRecebida;
 import br.com.condominiosvirtuais.entity.Unidade;
 import br.com.condominiosvirtuais.entity.Usuario;
 import br.com.condominiosvirtuais.enumeration.CondominioSituacaoEnum;
+import br.com.condominiosvirtuais.enumeration.UsuarioSituacaoEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.service.BlocoService;
 import br.com.condominiosvirtuais.service.CondominioService;
@@ -42,14 +43,15 @@ import br.com.condominiosvirtuais.vo.MensagemEnviadaVO;
 import br.com.condominiosvirtuais.vo.MensagemRecebidaVO;
 
 @Named @SessionScoped
-public class MensagemMB implements IConversationScopeMB, Serializable {
+public class MensagemMB implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
 	private static Logger logger = Logger.getLogger(MensagemMB.class);
 	
-	@Inject
-	private Conversation conversation;
+	private static final String ID_TAB_MENSAGEM_CONDOMINIOS = "idTabMensagemCondominios";
+	
+	private static final String ID_TAB_MENSAGEM_FUNCIONARIOS = "idTabMensagemFuncionarios";
 	
 	@Inject
 	private CondominioService condominioService = null;
@@ -78,11 +80,15 @@ public class MensagemMB implements IConversationScopeMB, Serializable {
 	@Inject
 	private BlocoMB blocoMB = null;	 
 	
+	private String tabSelecionada;
+	
 	private List<SelectItem> listaSICondominio;
 	
 	private List<SelectItem> listaSIBlocos = new ArrayList<SelectItem>();
 	
 	private List<SelectItem> listaSICondominos = new ArrayList<SelectItem>();
+	
+	private List<SelectItem> listaSIFuncionarios;
 	
 	private List<Condominio> listaCondominios;
 	
@@ -102,6 +108,8 @@ public class MensagemMB implements IConversationScopeMB, Serializable {
 	
 	private Condomino condomino;
 	
+	private Funcionario funcionario;
+	
 	private MensagemRecebida mensagemRecebida;
 	
 	private MensagemRecebidaVO mensagemRecebidaVO;
@@ -111,10 +119,6 @@ public class MensagemMB implements IConversationScopeMB, Serializable {
 	private MensagemEnviadaVO mensagemEnviadaVO;
 	
 	private Boolean enviarParaMimTambem = null;
-	
-	private UIInput componenteAssuntoMensagem;
-	
-	private UIInput componenteTextoMensagem;
 	
 	private Usuario usuarioAutenticado;
 		
@@ -126,6 +130,7 @@ public class MensagemMB implements IConversationScopeMB, Serializable {
 		this.condominio = new Condominio();
 		this.bloco = new Bloco();
 		this.condomino = new Condomino();
+		this.funcionario = new Funcionario();
 		this.mensagemRecebida = new MensagemRecebida();
 		this.usuarioAutenticado = AplicacaoUtil.getUsuarioAutenticado();
 		this.enviarParaMimTambem = Boolean.FALSE;
@@ -156,18 +161,6 @@ public class MensagemMB implements IConversationScopeMB, Serializable {
 				mensagemParaMim.setTexto(this.mensagemRecebida.getTexto());
 				listaMensagemRecebida.add(mensagemParaMim);				
 			}
-//			  File file = new File(AplicacaoUtil.getCaminhoAplicacao()+EnderecoImagemEnum.URL_FOTO_NAO_DISPONIVEL.getEnderecoImagem());
-//				emailService.set(file);
-//				List<Email> listaEmail = this.emailService.buscar(Integer.parseInt(this.configuracaoAplicacaoService.getConfiguracoes().
-//					    get(ConfiguracaoAplicacaoEnum.QTD_ENVIO_EMAIL_LOTE.getChave())));
-////						for (Email email : listaEmail) {
-//			// FIXME: REMOVER ANTER DE COLOCAR EM PRODUÇÃO			    	
-//							email.setPara("maikel.souza@gmail.com");
-//							//this.emailService.enviar(email);
-//							this.emailService.enviarHTML(email);
-//							this.emailService.excluir(email);					 
-//						 }
-			//	emailService.enviar(email);
 			this.mensagemRecebidaService.enviarListaMensagemRecebida(listaMensagemRecebida);						
 			ManagedBeanUtil.setMensagemInfo("msg.mensagem.enviadaSucesso");
 		} catch (SQLException e) {
@@ -182,7 +175,7 @@ public class MensagemMB implements IConversationScopeMB, Serializable {
 
 	
 	
-	public String enviarMensagemBloco(){
+	public String enviarMensagemCondominos(){
 		try{
 			// Caso tenha sido selecionado um bloco, mas não existe condôminos para esse bloco então não envia a msg.
 			if(this.bloco.getId() != 0 && this.listaSICondominos.isEmpty()){
@@ -244,20 +237,6 @@ public class MensagemMB implements IConversationScopeMB, Serializable {
 				listaMensagemRecebida.add(mensagemParaMim);
 								
 			}
-			
-//			File file = new File(AplicacaoUtil.getCaminhoAplicacao()+EnderecoImagemEnum.URL_FOTO_NAO_DISPONIVEL.getEnderecoImagem());
-//			emailService.set(file);
-//			List<Email> listaEmail = this.emailService.buscar(Integer.parseInt(this.configuracaoAplicacaoService.getConfiguracoes().
-//				    get(ConfiguracaoAplicacaoEnum.QTD_ENVIO_EMAIL_LOTE.getChave())));
-//					for (Email email : listaEmail) {
-//		// FIXME: REMOVER ANTER DE COLOCAR EM PRODUÇÃO			    	
-//						email.setPara("maikel.souza@gmail.com");
-//						//this.emailService.enviar(email);
-//						this.emailService.enviarHTML(email);
-//						this.emailService.excluir(email);					 
-//					 }
-//			
-			
 			if (listaMensagemRecebida.size() > 0){
 				this.mensagemRecebidaService.enviarListaMensagemRecebida(listaMensagemRecebida);
 				ManagedBeanUtil.setMensagemInfo("msg.mensagem.enviadaSucesso");				
@@ -281,10 +260,76 @@ public class MensagemMB implements IConversationScopeMB, Serializable {
 		return "enviar";
 	}
 	
+	public String enviarMensagemFuncionarios(){
+		try{
+			// Caso tenha sido selecionado um bloco, mas não existe condôminos para esse bloco então não envia a msg.
+			if(this.listaSIFuncionarios.isEmpty()){
+				throw new BusinessException("msg.mensagem.MensagemNaoEnviadaFuncionariosNaoCadastrados");
+			}			
+			
+			String mensagemFuncionariosNaoCadastrados = "";
+			List<MensagemRecebida> listaMensagemRecebida = new ArrayList<MensagemRecebida>();			
+			List<Funcionario> listaFuncionarios = new ArrayList<Funcionario>();
+			
+			// Condição que contempla o caso onde envia para todos
+			if(this.funcionario.getId().equals(0)){
+				listaFuncionarios = this.funcionarioService.buscarPorCondominioSemImagem(this.condominio.getId(), UsuarioSituacaoEnum.ATIVO.getSituacao());
+			}else{
+				listaFuncionarios.add(this.funcionarioService.buscarPorId(this.funcionario.getId()));
+			}
+			
+			MensagemRecebida mensagem = null;		
+			for (Funcionario funcionario : listaFuncionarios) {
+				mensagem = new MensagemRecebida();
+				mensagem.setAssunto(this.mensagemRecebida.getAssunto());
+				mensagem.setTexto(this.mensagemRecebida.getTexto());
+				mensagem.setData(new Date());
+				mensagem.setVisualizada(Boolean.FALSE);
+				mensagem.setUsuarioRemetente(AplicacaoUtil.getUsuarioAutenticado());
+				mensagem.setUsuarioDestinatario(funcionario);
+				// Condição que contempla o cenário onde o usuário informou se pode ou não enviar a msg para ele também.
+				if (funcionario.getId() != mensagem.getUsuarioRemetente().getId()){
+					listaMensagemRecebida.add(mensagem);
+				}
+			}
+			
+			
+			if(this.enviarParaMimTambem){
+				MensagemRecebida mensagemParaMim = new MensagemRecebida();
+				mensagemParaMim.setAssunto(this.mensagemRecebida.getAssunto());
+				mensagemParaMim.setTexto(this.mensagemRecebida.getTexto());
+				mensagemParaMim.setData(new Date());
+				mensagemParaMim.setVisualizada(Boolean.FALSE);
+				mensagemParaMim.setUsuarioRemetente(AplicacaoUtil.getUsuarioAutenticado());
+				mensagemParaMim.setUsuarioDestinatario(AplicacaoUtil.getUsuarioAutenticado());
+				listaMensagemRecebida.add(mensagemParaMim);
+				
+			}
+			if (listaMensagemRecebida.size() > 0){
+				this.mensagemRecebidaService.enviarListaMensagemRecebida(listaMensagemRecebida);
+				ManagedBeanUtil.setMensagemInfo("msg.mensagem.enviadaSucesso");				
+			}
+			//Exibe msg worn caso não tenha enviado msg para ninguém ou somente para o próprio remetente.
+			if (listaMensagemRecebida.size() == 0 || listaMensagemRecebida.size() == 1 && this.enviarParaMimTambem){
+				// Remove a última vírgula e acrescenta o ponto e vírgula
+				mensagemFuncionariosNaoCadastrados = mensagemFuncionariosNaoCadastrados.substring(0,mensagemFuncionariosNaoCadastrados.length()-2) + ";"; 
+				ManagedBeanUtil.setMensagemWarn("msg.mensagem.NaoEnviadaCondominos",mensagemFuncionariosNaoCadastrados);
+			}
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}catch (BusinessException e) {				
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage());
+			return null;
+		}catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}
+		return "enviar";
+	}
+	
 	public void limparMensagem(ActionEvent event){
 		this.mensagemRecebida = new MensagemRecebida();
-		ManagedBeanUtil.cleanSubmittedValues(this.componenteAssuntoMensagem);
-		ManagedBeanUtil.cleanSubmittedValues(this.componenteTextoMensagem);
 		this.listaCondominiosSelecionados = new ArrayList<Condominio>();
 		this.listaBlocoVOSelecionados = new ArrayList<BlocoVO>();
 		this.listaBlocoVO = new ArrayList<BlocoVO>();		
@@ -339,7 +384,6 @@ public class MensagemMB implements IConversationScopeMB, Serializable {
 	
 	public void popularListaMensagensRecebidas(){
 		try {
-			this.abreSessao();
 			this.listaDeMensagemRecebidasVO = new ListDataModel<MensagemRecebidaVO>(this.mensagemRecebidaService.buscarPorUsuarioDestinatario(AplicacaoUtil.getUsuarioAutenticado()));			
 			if (this.listaDeMensagemRecebidasVO.getRowCount() == 0){
 				ManagedBeanUtil.setMensagemInfo("msg.mensagemRecebida.semMensagensRecebidas");
@@ -354,8 +398,7 @@ public class MensagemMB implements IConversationScopeMB, Serializable {
 	}
 	
 	public void popularListaMensagensEnviadas(){
-		try {
-			this.abreSessao();
+		try {			
 			this.listaDeMensagemEnviadas = new ListDataModel<MensagemEnviada>(this.mensagemEnviadaService.buscarPorUsuarioRemetente(AplicacaoUtil.getUsuarioAutenticado()));
 			if (this.listaDeMensagemEnviadas.getRowCount() == 0){
 				ManagedBeanUtil.setMensagemInfo("msg.mensagemEnviada.semMensagensEnviadas");
@@ -455,17 +498,6 @@ public class MensagemMB implements IConversationScopeMB, Serializable {
 		}
 	}
 	
-
-	@Override
-	public void abreSessao() {
-		ManagedBeanUtil.abreSessao(conversation);		
-	}
-
-	@Override
-	public void fechaSessao() {
-		ManagedBeanUtil.fechaSessao(conversation);		
-	}
-	
 	private void removeCondominioInativo(){
 		List<Condominio> listaRemoverCondominios = new ArrayList<Condominio>();
 		for (Condominio condominio : this.listaCondominios) {
@@ -488,6 +520,29 @@ public class MensagemMB implements IConversationScopeMB, Serializable {
 			}
 		}
 		this.setListaSIBlocos(listaSIBlocos);	
+	}
+	
+	public void popularListaFuncionarios(){
+		Integer situacaoAtivo = 1;
+		List<Funcionario> listaFuncionarios;
+		this.listaSIFuncionarios = new ArrayList<SelectItem>();
+		
+		try {
+			listaFuncionarios = this.funcionarioService.buscarPorCondominioSemImagem(this.condominio.getId(),situacaoAtivo);
+			if(!listaFuncionarios.isEmpty()){
+				listaSIFuncionarios.add(0,new SelectItem(0, AplicacaoUtil.i18n("todos")));
+			}
+			for (int i = 0; i < listaFuncionarios.size(); i++) {
+				Funcionario funcionario = listaFuncionarios.get(i);
+				this.listaSIFuncionarios.add(new SelectItem(funcionario.getId(), funcionario.getNome()));					
+			}
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");				
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}	
 	}
 	
 	public void popularListaCondominos(){	
@@ -532,15 +587,59 @@ public class MensagemMB implements IConversationScopeMB, Serializable {
 		}	
 	}
 	
-	
-	
-	public Conversation getConversation() {
-		return conversation;
-	}
+	private Boolean validaMensagemCondominos() {
+		Integer quantidadeErros = 0; 
+		if(this.condominio.getId() == null){
+			ManagedBeanUtil.setMensagemErro("msg.mensagem.condominos.condominioRequerido");
+			quantidadeErros++;			
+		}
+		if(this.bloco.getId() == null){
+			ManagedBeanUtil.setMensagemErro("msg.mensagem.condominos.blocoRequerido");
+			quantidadeErros++;			
+		}
 
-	public void setConversation(Conversation conversation) {
-		this.conversation = conversation;
+		if(this.condomino.getId() == null){
+			ManagedBeanUtil.setMensagemErro("msg.mensagem.condominos.condominoRequerido");
+			quantidadeErros++;		
+		}		
+		// Regra de valicação tamanho de campos
+		if(this.mensagemRecebida.getAssunto().trim().length() < 1 || this.mensagemRecebida.getAssunto().trim().length() > 50){
+			ManagedBeanUtil.setMensagemErro("msg.mensagem.assuntoTamanho");
+			quantidadeErros++;		
+		}
+		// Regra formato de email
+		if (this.mensagemRecebida.getTexto().trim().length() > 0){
+			ManagedBeanUtil.setMensagemErro("msg.mensagem.textoRequerido");
+			quantidadeErros++;
+		}		
+		return quantidadeErros == 0 ? Boolean.TRUE : Boolean.FALSE;
 	}
+	
+	
+	private Boolean validaMensagemFuncionarios() {
+		Integer quantidadeErros = 0; 
+		if(this.condominio.getId() == null){
+			ManagedBeanUtil.setMensagemErro("msg.mensagem.funcionarios.condominioRequerido");
+			quantidadeErros++;			
+		}		
+		
+		if(this.funcionario.getId() == null){
+			ManagedBeanUtil.setMensagemErro("msg.mensagem.funcionarios.condominioRequerido");
+			quantidadeErros++;		
+		}		
+		// Regra de valicação tamanho de campos
+		if(this.mensagemRecebida.getAssunto().trim().length() < 1 || this.mensagemRecebida.getAssunto().trim().length() > 50){
+			ManagedBeanUtil.setMensagemErro("msg.mensagem.assuntoTamanho");
+			quantidadeErros++;		
+		}
+		
+		if (this.mensagemRecebida.getTexto().trim().length() > 0){
+			ManagedBeanUtil.setMensagemErro("msg.mensagem.textoRequerido");
+			quantidadeErros++;
+		}		
+		return quantidadeErros == 0 ? Boolean.TRUE : Boolean.FALSE;
+	}
+	
 
 	public List<BlocoVO> getListaBlocoVO() {
 		return listaBlocoVO;
@@ -731,23 +830,7 @@ public class MensagemMB implements IConversationScopeMB, Serializable {
 	public void setListaDeMensagemRecebidasVO(
 			ListDataModel<MensagemRecebidaVO> listaDeMensagemRecebidasVO) {
 		this.listaDeMensagemRecebidasVO = listaDeMensagemRecebidasVO;
-	}
-
-	public UIInput getComponenteAssuntoMensagem() {
-		return componenteAssuntoMensagem;
-	}
-
-	public void setComponenteAssuntoMensagem(UIInput componenteAssuntoMensagem) {
-		this.componenteAssuntoMensagem = componenteAssuntoMensagem;
-	}
-
-	public UIInput getComponenteTextoMensagem() {
-		return componenteTextoMensagem;
-	}
-
-	public void setComponenteTextoMensagem(UIInput componenteTextoMensagem) {
-		this.componenteTextoMensagem = componenteTextoMensagem;
-	}
+	}	
 
 	public List<SelectItem> getListaSIBlocos() {
 		return listaSIBlocos;
@@ -763,6 +846,30 @@ public class MensagemMB implements IConversationScopeMB, Serializable {
 
 	public void setListaSICondominos(List<SelectItem> listaSICondominos) {
 		this.listaSICondominos = listaSICondominos;
-	}		
+	}
+
+	public List<SelectItem> getListaSIFuncionarios() {
+		return listaSIFuncionarios;
+	}
+
+	public void setListaSIFuncionarios(List<SelectItem> listaSIFuncionarios) {
+		this.listaSIFuncionarios = listaSIFuncionarios;
+	}
+
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
+	}
+
+	public String getTabSelecionada() {
+		return tabSelecionada;
+	}
+
+	public void setTabSelecionada(String tabSelecionada) {
+		this.tabSelecionada = tabSelecionada;
+	}	
 	
 }

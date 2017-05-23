@@ -18,7 +18,7 @@ import br.com.condominiosvirtuais.entity.Contador;
 import br.com.condominiosvirtuais.entity.EscritorioContabilidade;
 import br.com.condominiosvirtuais.enumeration.EscritorioContabilidadeSituacaoEnum;
 import br.com.condominiosvirtuais.enumeration.TipoGrupoUsuarioEnum;
-import br.com.condominiosvirtuais.enumeration.UsuarioEnum;
+import br.com.condominiosvirtuais.enumeration.UsuarioSituacaoEnum;
 import br.com.condominiosvirtuais.enumeration.UsuarioSexoEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.service.ContadorService;
@@ -86,7 +86,7 @@ public class ContadorMB implements Serializable {
 	}
 	
 	public String salvar(){
-		this.contador.setSituacao(UsuarioEnum.ATIVO.getSituacao());
+		this.contador.setSituacao(UsuarioSituacaoEnum.ATIVO.getSituacao());
 		this.contador.setIdGrupoUsuario(TipoGrupoUsuarioEnum.ESCRITORIO_CONTABILIDADE.getGrupoUsuario());
 		this.contador.getEmail().setPrincipal(Boolean.TRUE);		
 		try {
@@ -199,8 +199,8 @@ public class ContadorMB implements Serializable {
 	
 	private void popularListaSISituacao(){
 		this.listaSISituacao = new ArrayList<SelectItem>();
-		this.listaSISituacao.add(new SelectItem(UsuarioEnum.ATIVO.getSituacao(), AplicacaoUtil.i18n("contador.situacao.1")));
-		this.listaSISituacao.add(new SelectItem(UsuarioEnum.INATIVO.getSituacao(), AplicacaoUtil.i18n("contador.situacao.0")));
+		this.listaSISituacao.add(new SelectItem(UsuarioSituacaoEnum.ATIVO.getSituacao(), AplicacaoUtil.i18n("contador.situacao.1")));
+		this.listaSISituacao.add(new SelectItem(UsuarioSituacaoEnum.INATIVO.getSituacao(), AplicacaoUtil.i18n("contador.situacao.0")));
 	}
 	
 	public Contador getContador() {

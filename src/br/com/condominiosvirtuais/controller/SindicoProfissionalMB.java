@@ -18,7 +18,7 @@ import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.SindicoProfissional;
 import br.com.condominiosvirtuais.enumeration.CondominioSituacaoEnum;
 import br.com.condominiosvirtuais.enumeration.TipoGrupoUsuarioEnum;
-import br.com.condominiosvirtuais.enumeration.UsuarioEnum;
+import br.com.condominiosvirtuais.enumeration.UsuarioSituacaoEnum;
 import br.com.condominiosvirtuais.enumeration.UsuarioSexoEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.service.CondominioService;
@@ -74,7 +74,7 @@ public class SindicoProfissionalMB implements Serializable {
 	}	
 	
 	public String salvar (){
-		this.sindicoProfissional.setSituacao(UsuarioEnum.ATIVO.getSituacao());
+		this.sindicoProfissional.setSituacao(UsuarioSituacaoEnum.ATIVO.getSituacao());
 		this.sindicoProfissional.setIdGrupoUsuario(TipoGrupoUsuarioEnum.SINDICO_PROFISSIONAL.getGrupoUsuario());
 		this.sindicoProfissional.getEmail().setPrincipal(Boolean.TRUE);
 		this.sindicoProfissional.setListaCondominio(this.listaDeCondominiosAssociados);
@@ -188,8 +188,8 @@ public class SindicoProfissionalMB implements Serializable {
 	
 	private void popularListaSISituacao(){
 		this.listaSISituacao = new ArrayList<SelectItem>();
-		this.listaSISituacao.add(new SelectItem(UsuarioEnum.ATIVO.getSituacao(), AplicacaoUtil.i18n("sindicoProfissional.situacao.1")));
-		this.listaSISituacao.add(new SelectItem(UsuarioEnum.INATIVO.getSituacao(), AplicacaoUtil.i18n("sindicoProfissional.situacao.0")));
+		this.listaSISituacao.add(new SelectItem(UsuarioSituacaoEnum.ATIVO.getSituacao(), AplicacaoUtil.i18n("sindicoProfissional.situacao.1")));
+		this.listaSISituacao.add(new SelectItem(UsuarioSituacaoEnum.INATIVO.getSituacao(), AplicacaoUtil.i18n("sindicoProfissional.situacao.0")));
 	}
 	
 	public void popularListaCondominiosAtivosESemGestores(){

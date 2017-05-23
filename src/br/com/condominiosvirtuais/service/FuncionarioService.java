@@ -24,5 +24,7 @@ public interface FuncionarioService {
 	public abstract List<Funcionario> buscarPorIdConjuntoBloco(Integer idConjuntoBloco) throws SQLException, Exception;
 	
 	public abstract Funcionario buscarPorId(Integer id) throws SQLException, Exception;
+	
+	public List<Funcionario> buscarPorCondominioSemImagem(Integer idCondominio, Integer situacao) throws SQLException, Exception;
 
 }

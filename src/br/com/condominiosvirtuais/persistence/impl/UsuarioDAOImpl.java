@@ -217,6 +217,55 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 		}		
 	}
 	
+	public Boolean buscarEPopularUsuarioPeloId(Usuario usuario, Integer situacao, Connection con ) throws SQLException, Exception{
+		Boolean encontrou = Boolean.FALSE;
+		List<UsuarioCondominio> listaUsuarioCondominio = null; 		
+		List<Condominio> listaCondominio = null;
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(USUARIO);
+		query.append(" WHERE ");
+		query.append(ID);
+		query.append(" = ?");
+		query.append(" AND ");
+		query.append(SITUACAO);
+		query.append(" = ?");
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		try {
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1,usuario.getId(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 2,situacao, java.sql.Types.INTEGER);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				encontrou = Boolean.TRUE;
+				listaCondominio = new ArrayList<Condominio>();				
+				usuario.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+				usuario.setSexo((Integer) SQLUtil.getValorResultSet(resultSet, SEXO, java.sql.Types.INTEGER));
+				usuario.setDataNascimento((Date) SQLUtil.getValorResultSet(resultSet, DATA_NASCIMENTO, java.sql.Types.DATE));
+				usuario.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
+				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
+				usuario.setSenha(String.valueOf(SQLUtil.getValorResultSet(resultSet, SENHA, java.sql.Types.VARCHAR)));	
+				usuario.setCpf((Long) SQLUtil.getValorResultSet(resultSet, CPF, java.sql.Types.BIGINT));
+				usuario.setEmail(this.emailUsuarioDAO.get().buscarEmailPrincipalPorUsuario(usuario,con));
+				listaUsuarioCondominio = this.usuarioCondominioDAO.get().buscarListaPorIdUsuario(usuario.getId(),con);
+				for (UsuarioCondominio usuarioCondominio : listaUsuarioCondominio) {
+					Condominio condominio = new Condominio();
+					condominio.setId(usuarioCondominio.getIdCondominio());				
+					listaCondominio.add(condominio);			
+				}
+				usuario.setListaCondominio(listaCondominio);
+			}
+		}catch (SQLException e) {
+			con.rollback();
+			throw e;
+		} catch (Exception e) {
+			con.rollback();
+			throw e; 
+		}	
+		return encontrou;
+	}
+	
 	public Boolean buscarPorIdESituacaoEPopularUsuarioPeloId(Usuario usuario, Connection con ) throws SQLException, Exception{
 		Boolean encontrou = Boolean.FALSE;
 		List<UsuarioCondominio> listaUsuarioCondominio = null; 		

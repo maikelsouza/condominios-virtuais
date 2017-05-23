@@ -19,8 +19,11 @@
 				<f:facet name="header">
 					<h:outputText value="#{msg.listarReservas}" />
 				</f:facet>
-				<h:outputLabel value="Valor do salão de festas: R$ 88,00" style="color: red !important;" rendered="#{reservaMB.reserva.ambiente.id == 3 || reservaMB.reserva.ambiente.id == 4  ? true: false}"/>
-				<h:outputLabel value="Valor da churrasqueira: R$ 22,00" style="color: red !important;" rendered="#{reservaMB.reserva.ambiente.id == 5 || reservaMB.reserva.ambiente.id == 6 || reservaMB.reserva.ambiente.id == 7 ? true: false}"/>
+				<h:outputLabel value="Valor do salão de festas: R$ 97,30" style="color: red !important;" rendered="#{reservaMB.reserva.ambiente.id == 3 || reservaMB.reserva.ambiente.id == 4  ? true: false}"/>
+				<h:outputLabel value="Valor do espaço mulher: R$ 97,30" style="color: red !important;" rendered="#{reservaMB.reserva.ambiente.id == 11  ? true: false}"/>
+				<h:outputLabel value="Valor da churrasqueira: R$ 23,40" style="color: red !important;" rendered="#{reservaMB.reserva.ambiente.id == 5 || reservaMB.reserva.ambiente.id == 6 || reservaMB.reserva.ambiente.id == 7 ? true: false}"/>
+				<h:outputLabel value="Valor do cinema: R$ 23,40" style="color: red !important;" rendered="#{reservaMB.reserva.ambiente.id == 12 ? true: false}"/>
+				<h:outputLabel value="Valor do espaço gourmet: R$ 23,40" style="color: red !important;" rendered="#{reservaMB.reserva.ambiente.id == 13 ? true: false}"/>
 				<h:panelGrid columns="#{reservaMB.idAmbiente == null ? 1: 2}">
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['reserva.ambiente']}:"

@@ -25,8 +25,10 @@ public interface UsuarioDAO {
 	
 	public abstract void atualizarSenha(Usuario usuario) throws SQLException, Exception;
 	
-	public void salvarUsuario(Usuario usuario, Connection con) throws NoSuchAlgorithmException, NumberFormatException, SQLException, Exception;
+	public abstract void salvarUsuario(Usuario usuario, Connection con) throws NoSuchAlgorithmException, NumberFormatException, SQLException, Exception;
 	
 	public abstract void atualizarUsuario(Usuario usuario, Connection con) throws SQLException, Exception;
+	
+	public abstract Boolean buscarEPopularUsuarioPeloId(Usuario usuario, Integer situacao, Connection con ) throws SQLException, Exception;
 
 }

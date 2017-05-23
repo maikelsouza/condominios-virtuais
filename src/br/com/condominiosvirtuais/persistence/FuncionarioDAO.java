@@ -25,5 +25,7 @@ public interface FuncionarioDAO extends TipoConjuntoBlocoDAO  {
 	public abstract Funcionario buscarPorId(Integer id) throws SQLException, Exception;
 	
 	public abstract Funcionario buscarPorId(Integer id, Connection con ) throws SQLException, Exception;
+	
+	public abstract List<Funcionario> buscarPorCondominioSemImagem(Integer idCondominio, Integer situacao) throws SQLException, Exception;
 
 }

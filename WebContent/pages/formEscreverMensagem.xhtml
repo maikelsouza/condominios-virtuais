@@ -8,110 +8,138 @@
 	xmlns:rich="http://richfaces.org/rich"
 	template="/templates/templatePrincipal.xhtml">
 
-	<ui:define name="conteudo">		
-	<br />
-		<rich:tabPanel styleClass="content" id="AII" switchType="client">
-		
-		
-			<rich:tab header="MAIKEK" id="MMMA">
+	<ui:define name="conteudo">	
+		<br/>	
+		<rich:tabPanel styleClass="content" switchType="client" activeItem="#{mensagemMB.tabSelecionada}">	
+			<rich:tab header="#{msg['mensagem.condominios']}" id="idTabMensagemCondominios">
+				<h:form id="formEscreverMensagemCondominos" styleClass="content">
+					<rich:panel>
+						<f:facet name="header">
+							<h:outputText value="#{msg.mensagen}" />
+						</f:facet>
+						<h:panelGrid columns="3">
+							<h:panelGroup>
+								<h:outputLabel value="#{msg.condominio}:" for="idCondominio" />
+								<span class="asterisco">*</span>
+							</h:panelGroup>						
+							<h:panelGroup>
+								<h:outputLabel value="#{msg.bloco}:" for="idBloco" />
+								<span class="asterisco">*</span>
+							</h:panelGroup>	
+							<h:panelGroup>
+								<h:outputLabel value="#{msg.condomino}:" for="idCondomino" />
+								<span class="asterisco">*</span>
+							</h:panelGroup>
+							<h:selectOneMenu id="idCondominio" value="#{mensagemMB.condominio.id}" defaultLabel="#{msg['condominio.DefaultLabel']}"
+								label="#{msg['condominio.label']}">
+								<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="true" />
+								<f:selectItems value="#{mensagemMB.listaSICondominio}" />
+								<f:ajax listener="#{mensagemMB.popularListaBlocos}" render="idBloco" execute="@this" />
+							</h:selectOneMenu>
+							<h:selectOneMenu value="#{mensagemMB.bloco.id}" id="idBloco" defaultLabel="#{msg['bloco.DefaultLabel']}" label="#{msg['bloco.label']}">
+								<f:selectItem itemLabel="#{msg['bloco.DefaultLabel']}"  noSelectionOption="true"/>
+								<f:selectItems value="#{mensagemMB.listaSIBlocos}" />
+								<f:ajax listener="#{mensagemMB.popularListaCondominos}" render="idCondomino" execute="@this" />
+							</h:selectOneMenu>					
+							<h:selectOneMenu value="#{mensagemMB.condomino.id}" id="idCondomino"
+								defaultLabel="#{msg['condomino.DefaultLabel']}">
+								<f:selectItem itemLabel="#{msg['condomino.DefaultLabel']}"  noSelectionOption="true"/>
+								<f:selectItems value="#{mensagemMB.listaSICondominos}"/>						
+							</h:selectOneMenu>
+						</h:panelGrid>	
+						<h:panelGrid columns="1">
+							<h:panelGroup>
+								<h:outputLabel value="#{msg['mensagemRecebida.assunto']}:" for="idAssunto" />
+								<span class="asterisco">*</span>
+							</h:panelGroup>
+							<h:inputText id="idAssunto" value="#{mensagemMB.mensagem.assunto}" label="#{msg['mensagemRecebida.assunto.label']}"
+								size="79" />
+							<h:panelGroup>
+								<h:outputLabel value="#{msg['mensagemRecebida.texto']}:" for="idMensagem" />
+								<span class="asterisco">*</span>
+							</h:panelGroup>
+							<h:inputTextarea id="idMensagem" value="#{mensagemMB.mensagem.texto}"
+								label="#{msg['mensagemRecebida.texto.label']}" rows="6" cols="100" />
+						</h:panelGrid>
+						<h:panelGrid columns="2">
+							<h:panelGroup>
+								<h:outputLabel value="#{msg['enviaParaMimTambem']}:" for="idEnviaParaMimTambem" />
+								<span class="asterisco">*</span>
+							</h:panelGroup>
+							<h:selectOneRadio id="idEnviaParaMimTambem" value="#{mensagemMB.enviarParaMimTambem}">
+								<f:selectItem itemValue="#{true}" itemLabel="#{msg['sim']}" />
+								<f:selectItem itemValue="#{false}" itemLabel="#{msg['nao']}" />
+							</h:selectOneRadio>
+						</h:panelGrid>
+						<h:panelGrid columns="2" styleClass="msgAsterisco">
+							<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+							<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
+						</h:panelGrid>
+					</rich:panel>
+					<h:panelGrid columns="2">
+						<h:commandButton value="#{msg.botaoEnviarMensagem}" action="#{mensagemMB.enviarMensagemCondominos}" />
+						<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{mensagemMB.limparMensagem}" immediate="true" />
+					</h:panelGrid>
+				</h:form>
+			</rich:tab>
 			
-				<h:form id="formEscreverMensagem">	
-				<h:panelGrid columns="3">
-					<h:panelGroup>
-						<h:outputLabel value="#{msg.condominio}:" for="idCondominio" />
-						<span class="asterisco">*</span>
-					</h:panelGroup>	
-					
-					<h:panelGroup>
-						<h:outputLabel value="#{msg.bloco}:" for="idBloco" />
-						<span class="asterisco">*</span>
-					</h:panelGroup>					
-					
-					<h:panelGroup>
-						<h:outputLabel value="#{msg.condomino}:" for="idCondomino" />
-						<span class="asterisco">*</span>
-					</h:panelGroup>
-					
-					<h:selectOneMenu id="idCondominio" value="#{mensagemMB.condominio.id}" defaultLabel="#{msg['condominio.DefaultLabel']}"
-						label="#{msg['condominio.label']}" required="true">
-						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="true" />
-						<f:selectItems value="#{mensagemMB.listaSICondominio}" />
-						<f:ajax listener="#{mensagemMB.popularListaBlocos}" render="idBloco" execute="@this" />
-					</h:selectOneMenu>
-					
-					
-
-					<h:selectOneMenu value="#{mensagemMB.bloco.id}" id="idBloco" defaultLabel="#{msg['bloco.DefaultLabel']}" label="#{msg['bloco.label']}" required="true">
-						<f:selectItem itemLabel="#{msg['bloco.DefaultLabel']}"  noSelectionOption="true"/>
-						<f:selectItems value="#{mensagemMB.listaSIBlocos}" />
-						<f:ajax listener="#{mensagemMB.popularListaCondominos}" render="idCondomino" execute="@this" />
-					</h:selectOneMenu>	
-
-		
-					
-					<h:selectOneMenu value="#{mensagemMB.condomino.id}" id="idCondomino"
-						defaultLabel="#{msg['condomino.DefaultLabel']}">
-						<f:selectItem itemLabel="#{msg['condomino.DefaultLabel']}"  noSelectionOption="true"/>
-						<f:selectItems value="#{mensagemMB.listaSICondominos}"/>						
-					</h:selectOneMenu>
-									
-				</h:panelGrid>	
-				<h:panelGrid columns="1">
-					 
-					
-					
-					<h:panelGroup>
-						<h:outputLabel value="#{msg['mensagemRecebida.assunto']}:"
-							for="idAssunto" />
-						<span class="asterisco">*</span>
-					</h:panelGroup>
-					<h:inputText id="idAssunto" value="#{mensagemMB.mensagem.assunto}"
-						required="true" label="#{msg['mensagemRecebida.assunto.label']}"
-						size="79" binding="#{mensagemMB.componenteAssuntoMensagem}"
-						validatorMessage="#{msg['msg.mensagem.assunto']}">
-						<f:validateLength minimum="1" maximum="50" />
-					</h:inputText>
-					<h:panelGroup>
-						<h:outputLabel value="#{msg['mensagemRecebida.texto']}:"
-							for="idMensagem" />
-						<span class="asterisco">*</span>
-					</h:panelGroup>
-					<h:inputTextarea id="idMensagem"
-						value="#{mensagemMB.mensagem.texto}" required="true"
-						label="#{msg['mensagemRecebida.texto.label']}"
-						binding="#{mensagemMB.componenteTextoMensagem}" rows="6"
-						cols="100" />
-				</h:panelGrid>
-				<h:panelGrid columns="2">
-					<h:panelGroup>
-						<h:outputLabel value="#{msg['enviaParaMimTambem']}:"
-							for="idEnviaParaMimTambem" />
-						<span class="asterisco">*</span>
-					</h:panelGroup>
-					<h:selectOneRadio id="idEnviaParaMimTambem"
-						value="#{mensagemMB.enviarParaMimTambem}">
-						<f:selectItem itemValue="#{true}" itemLabel="#{msg['sim']}" />
-						<f:selectItem itemValue="#{false}" itemLabel="#{msg['nao']}" />
-					</h:selectOneRadio>
-				</h:panelGrid>
-				<h:panelGrid columns="2" styleClass="msgAsterisco">
-					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}"
-						for="idCampoObrigatorio" styleClass="camposObrigatorios" />
-					<h:outputLabel value="*" id="idCampoObrigatorio"
-						styleClass="asterisco" />
-				</h:panelGrid>
-			
-			<h:panelGrid columns="2">
-				<h:commandButton value="#{msg.botaoEnviarMensagem}"
-					action="#{mensagemMB.enviarMensagemBloco}" />
-				<h:commandButton value="#{msg.botaoLimpar}"
-					actionListener="#{mensagemMB.limparMensagem}" immediate="true" />
-			</h:panelGrid>
-		</h:form>
-	</rich:tab>
-	<rich:tab header="MAIKEKAA" id="MMMAF">
-	</rich:tab>
-</rich:tabPanel>
+			<rich:tab header="#{msg['mensagem.funcionarios']}" id="idTabMensagemFuncionarios">
+				<h:form id="formEscreverMensagemFuncionarios" styleClass="content">
+					<rich:panel header="#{msg.mensagen}">
+						<h:panelGrid columns="2">
+							<h:panelGroup>
+								<h:outputLabel value="#{msg.condominio}:" for="idCondominio" />
+								<span class="asterisco">*</span>
+							</h:panelGroup>						
+							<h:panelGroup>
+								<h:outputLabel value="#{msg.funcionario}:" for="idFuncionario" />
+								<span class="asterisco">*</span>
+							</h:panelGroup>	
+							<h:selectOneMenu id="idCondominio" value="#{mensagemMB.condominio.id}"  label="#{msg['condominio.label']}">
+								<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="true" />
+								<f:selectItems value="#{mensagemMB.listaSICondominio}" />
+								<f:ajax listener="#{mensagemMB.popularListaFuncionarios}" render="idFuncionario" execute="@this" />
+							</h:selectOneMenu>
+							<h:selectOneMenu id="idFuncionario" value="#{mensagemMB.funcionario.id}"  label="#{msg['funcionario.label']}" >
+								<f:selectItem itemLabel="#{msg['funcionario.DefaultLabel']}" noSelectionOption="true" />
+								<f:selectItems value="#{mensagemMB.listaSIFuncionarios}" />
+							</h:selectOneMenu>
+						</h:panelGrid>
+						<h:panelGrid columns="1">
+							<h:panelGroup>
+								<h:outputLabel value="#{msg['mensagemRecebida.assunto']}:" for="idAssunto" />
+								<span class="asterisco">*</span>
+							</h:panelGroup>
+							<h:inputText id="idAssunto" value="#{mensagemMB.mensagem.assunto}" label="#{msg['mensagemRecebida.assunto.label']}"
+								size="79" />
+							<h:panelGroup>
+								<h:outputLabel value="#{msg['mensagemRecebida.texto']}:" for="idMensagem" />
+								<span class="asterisco">*</span>
+							</h:panelGroup>
+							<h:inputTextarea id="idMensagem" value="#{mensagemMB.mensagem.texto}" 
+								label="#{msg['mensagemRecebida.texto.label']}" rows="6" cols="100" />
+						</h:panelGrid>
+						<h:panelGrid columns="2">
+							<h:panelGroup>
+								<h:outputLabel value="#{msg['enviaParaMimTambem']}:" for="idEnviaParaMimTambem" />
+								<span class="asterisco">*</span>
+							</h:panelGroup>
+							<h:selectOneRadio id="idEnviaParaMimTambem" value="#{mensagemMB.enviarParaMimTambem}">
+								<f:selectItem itemValue="#{true}" itemLabel="#{msg['sim']}" />
+								<f:selectItem itemValue="#{false}" itemLabel="#{msg['nao']}" />
+							</h:selectOneRadio>
+						</h:panelGrid>
+						<h:panelGrid columns="2" styleClass="msgAsterisco">
+							<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+							<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
+						</h:panelGrid>
+					</rich:panel>
+					<h:panelGrid columns="2">
+						<h:commandButton value="#{msg.botaoEnviarMensagem}" action="#{mensagemMB.enviarMensagemFuncionarios}" />
+						<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{mensagemMB.limparMensagem}" immediate="true" />
+					</h:panelGrid>	
+				</h:form>
+			</rich:tab>
+		</rich:tabPanel>
 	</ui:define>
-
 </ui:composition>

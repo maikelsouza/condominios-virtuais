@@ -34,11 +34,6 @@ public class FuncionarioServiceImpl implements FuncionarioService, Serializable 
 		Email email = new Email();			
 		email.setPara(funcionario.getEmail().getEmail());
 		email.setAssunto(AplicacaoUtil.i18n("msg.cadastroFuncionario.assunto"));
-// TODO: Código comentado em 15/09/2016. Apagar em 90 dias		
-//		Object[] parametros = new Object[3];
-//		parametros[0] = funcionario.getNome().toUpperCase();
-//		parametros[1] = funcionario.getEmail().getEmail();
-//		parametros[2] = funcionario.getSenha();
 		email.setMensagem(MensagensEmailUtil.cadastroFuncionario(funcionario));
 		this.emailService.salvar(email);
 	}
@@ -84,10 +79,14 @@ public class FuncionarioServiceImpl implements FuncionarioService, Serializable 
 	}
 
 	@Override
-	public void atualizarSenha(Funcionario funcionario) throws SQLException,
-			Exception {
+	public void atualizarSenha(Funcionario funcionario) throws SQLException, Exception {
 		this.funcionarioDAO.atualizarSenha(funcionario);	
 		
+	}
+
+	@Override
+	public List<Funcionario> buscarPorCondominioSemImagem(Integer idCondominio, Integer situacao) throws SQLException, Exception {
+		return this.funcionarioDAO.buscarPorCondominioSemImagem(idCondominio, situacao);
 	}
 
 }
