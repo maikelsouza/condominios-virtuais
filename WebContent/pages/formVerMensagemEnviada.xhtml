@@ -9,13 +9,9 @@
 	template="/templates/templatePrincipal.xhtml"
 	xmlns:c="http://java.sun.com/jstl/core">
 
-	<ui:define name="conteudo">
-		<f:metadata>
-			<f:event type="preRenderView" listener="#{mensagemMB.abreSessao}" />
-		</f:metadata>
+	<ui:define name="conteudo">		
 		<h:form styleClass="content formView">
-			<rich:panel>
-				
+			<rich:panel>				
 				<f:facet name="header">
 					<h:outputText value="#{msg.mensagemEnviada}" />
 				</f:facet>

@@ -7,9 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.Conversation;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.component.UIInput;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
@@ -102,7 +100,11 @@ public class MensagemMB implements Serializable {
 	
 	private ListDataModel<MensagemEnviada> listaDeMensagemEnviadas = null;
 	
-	private Condominio condominio;
+	private Condominio condominioCondomino;
+	
+	private Condominio condominioFuncionario;
+	
+	private Condominio condominioFaleComSindico;
 	
 	private Bloco bloco;
 	
@@ -110,7 +112,11 @@ public class MensagemMB implements Serializable {
 	
 	private Funcionario funcionario;
 	
-	private MensagemRecebida mensagemRecebida;
+	private MensagemRecebida mensagemRecebidaCondomino;
+	
+	private MensagemRecebida mensagemRecebidaFuncionario;
+	
+	private MensagemRecebida mensagemRecebidaFaleComSindico;
 	
 	private MensagemRecebidaVO mensagemRecebidaVO;
 	
@@ -118,7 +124,11 @@ public class MensagemMB implements Serializable {
 	
 	private MensagemEnviadaVO mensagemEnviadaVO;
 	
-	private Boolean enviarParaMimTambem = null;
+	private Boolean enviarParaMimTambemCondomino = null;
+	
+	private Boolean enviarParaMimTambemFuncionario = null;
+	
+	private Boolean enviarParaMimTambemFaleComSindico = null;
 	
 	private Usuario usuarioAutenticado;
 		
@@ -127,38 +137,45 @@ public class MensagemMB implements Serializable {
 	
 	@PostConstruct
 	public void inciarMensagemMB(){
-		this.condominio = new Condominio();
+		this.condominioCondomino = new Condominio();
+		this.condominioFuncionario = new Condominio();
+		this.condominioFaleComSindico = new Condominio();
 		this.bloco = new Bloco();
 		this.condomino = new Condomino();
 		this.funcionario = new Funcionario();
-		this.mensagemRecebida = new MensagemRecebida();
+		this.mensagemRecebidaCondomino = new MensagemRecebida();
+		this.mensagemRecebidaFuncionario = new MensagemRecebida();
+		this.mensagemRecebidaFaleComSindico = new MensagemRecebida();
 		this.usuarioAutenticado = AplicacaoUtil.getUsuarioAutenticado();
-		this.enviarParaMimTambem = Boolean.FALSE;
-		this.carregarCondominios();		
+		this.enviarParaMimTambemCondomino = Boolean.FALSE;
+		this.enviarParaMimTambemFuncionario = Boolean.FALSE;
+		this.enviarParaMimTambemFaleComSindico = Boolean.FALSE;
+		this.carregarCondominios();
+		this.setTabSelecionada(ID_TAB_MENSAGEM_CONDOMINIOS);
 	}
 	
 	public MensagemMB(MensagemRecebida mensagem) {		
-		this.mensagemRecebida = mensagem;		
+		this.mensagemRecebidaCondomino = mensagem;		
 	}
 	
-	public String enviarMensagem(){
+	public String enviarMensagemFaleComSindico(){
 		try {
 			List<MensagemRecebida> listaMensagemRecebida = new ArrayList<MensagemRecebida>();
-			this.condominio = condominioService.buscarPorId(this.condominio.getId());
-			this.mensagemRecebida.setData(new Date());
-			this.mensagemRecebida.setVisualizada(Boolean.FALSE);
-			this.mensagemRecebida.setUsuarioRemetente(AplicacaoUtil.getUsuarioAutenticado());
-			this.mensagemRecebida.setUsuarioDestinatario(this.condominio.getSindicoGeral());
-			listaMensagemRecebida.add(this.mensagemRecebida);
+			this.condominioFaleComSindico = condominioService.buscarPorId(this.condominioFaleComSindico.getId());
+			this.mensagemRecebidaFaleComSindico.setData(new Date());
+			this.mensagemRecebidaFaleComSindico.setVisualizada(Boolean.FALSE);
+			this.mensagemRecebidaFaleComSindico.setUsuarioRemetente(AplicacaoUtil.getUsuarioAutenticado());
+			this.mensagemRecebidaFaleComSindico.setUsuarioDestinatario(this.condominioFaleComSindico.getSindicoGeral());
+			listaMensagemRecebida.add(this.mensagemRecebidaFaleComSindico);
 			// Condição que contempla o cenário onde o usuário informou se pode ou não enviar a msg para ele também.
-			if(this.enviarParaMimTambem){
+			if(this.enviarParaMimTambemFaleComSindico){
 				MensagemRecebida mensagemParaMim = new MensagemRecebida();
 				mensagemParaMim.setData(new Date());
 				mensagemParaMim.setVisualizada(Boolean.FALSE);
 				mensagemParaMim.setUsuarioRemetente(AplicacaoUtil.getUsuarioAutenticado());
 				mensagemParaMim.setUsuarioDestinatario(AplicacaoUtil.getUsuarioAutenticado());
-				mensagemParaMim.setAssunto(this.mensagemRecebida.getAssunto());
-				mensagemParaMim.setTexto(this.mensagemRecebida.getTexto());
+				mensagemParaMim.setAssunto(this.mensagemRecebidaFaleComSindico.getAssunto());
+				mensagemParaMim.setTexto(this.mensagemRecebidaFaleComSindico.getTexto());
 				listaMensagemRecebida.add(mensagemParaMim);				
 			}
 			this.mensagemRecebidaService.enviarListaMensagemRecebida(listaMensagemRecebida);						
@@ -170,6 +187,7 @@ public class MensagemMB implements Serializable {
 			logger.error("", e);
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
 		}
+		this.limparMensagemFaleComSindico(null);
 		return "enviar";
 	}
 
@@ -177,75 +195,79 @@ public class MensagemMB implements Serializable {
 	
 	public String enviarMensagemCondominos(){
 		try{
-			// Caso tenha sido selecionado um bloco, mas não existe condôminos para esse bloco então não envia a msg.
-			if(this.bloco.getId() != 0 && this.listaSICondominos.isEmpty()){
-				throw new BusinessException("msg.mensagem.MensagemNaoEnviadaCondominosNaoCadastrados");
-			}			
-			List<Unidade> listaUnidade = null;
-			String mensagemCondominosNaoCadastrados = "";
-			List<Condomino> listaCondominos = new ArrayList<Condomino>();;
-			MensagemRecebida mensagem = null;
-			List<MensagemRecebida> listaMensagemRecebida = new ArrayList<MensagemRecebida>();			
-			// Condição que contempla o caso onde envia para todos os condôminos.
-			if(this.bloco.getId() == 0 && this.condomino.getId() == 0){
-				this.condominioService.popularCondominos(this.condominio);
-				for (Bloco bloco : this.condominio.getListaBlocos()) {
-					listaUnidade = this.unidadeService.buscarListaUnidadesPorBloco(bloco);
-					for (Unidade unidade : listaUnidade) {
+			if(this.validaMensagemCondominos()){
+				// Caso tenha sido selecionado um bloco, mas não existe condôminos para esse bloco então não envia a msg.
+				if(this.bloco.getId() != 0 && this.listaSICondominos.isEmpty()){
+					throw new BusinessException("msg.mensagem.MensagemNaoEnviadaCondominosNaoCadastrados");
+				}			
+				List<Unidade> listaUnidade = null;
+				String mensagemCondominosNaoCadastrados = "";
+				List<Condomino> listaCondominos = new ArrayList<Condomino>();;
+				MensagemRecebida mensagem = null;
+				List<MensagemRecebida> listaMensagemRecebida = new ArrayList<MensagemRecebida>();			
+				// Condição que contempla o caso onde envia para todos os condôminos.
+				if(this.bloco.getId() == 0 && this.condomino.getId() == 0){
+					this.condominioService.popularCondominos(this.condominioCondomino);
+					for (Bloco bloco : this.condominioCondomino.getListaBlocos()) {
+						listaUnidade = this.unidadeService.buscarListaUnidadesPorBloco(bloco);
+						for (Unidade unidade : listaUnidade) {
+							for (Condomino condomino : this.condominoService.buscarPorUnidade(unidade)) {
+								listaCondominos.add(condomino);
+							}
+							
+						}			
+					}
+					// Condição que contempla o caso onde envia para todos os condôminos de um determinado bloco	
+				}else if (this.condomino.getId() == 0){
+					listaUnidade = this.unidadeService.buscarListaUnidadesPorBloco(this.bloco);
+					for (Unidade unidade : listaUnidade) {				
 						for (Condomino condomino : this.condominoService.buscarPorUnidade(unidade)) {
 							listaCondominos.add(condomino);
-						}
-												
-					}			
+						}					
+					}
+					// Caso onde envia para um único condômino	
+				}else{
+					this.condomino = this.condominoService.buscarPorId(this.condomino.getId());
+					listaCondominos.add(this.condomino);				
+				}			
+				for (Condomino condomino : listaCondominos) {
+					mensagem = new MensagemRecebida();
+					mensagem.setAssunto(this.mensagemRecebidaCondomino.getAssunto());
+					mensagem.setTexto(this.mensagemRecebidaCondomino.getTexto());
+					mensagem.setData(new Date());
+					mensagem.setVisualizada(Boolean.FALSE);
+					mensagem.setUsuarioRemetente(AplicacaoUtil.getUsuarioAutenticado());
+					mensagem.setUsuarioDestinatario(condomino);
+					// Condição que contempla o cenário onde o usuário informou se pode ou não enviar a msg para ele também.
+					if (!condomino.getId().equals(mensagem.getUsuarioRemetente().getId())){
+						listaMensagemRecebida.add(mensagem);
+					}
 				}
-			// Condição que contempla o caso onde envia para todos os condôminos de um determinado bloco	
-			}else if (this.condomino.getId() == 0){
-				listaUnidade = this.unidadeService.buscarListaUnidadesPorBloco(this.bloco);
-				for (Unidade unidade : listaUnidade) {				
-					for (Condomino condomino : this.condominoService.buscarPorUnidade(unidade)) {
-						listaCondominos.add(condomino);
-					}					
+				
+				
+				if(this.enviarParaMimTambemCondomino){
+					MensagemRecebida mensagemParaMim = new MensagemRecebida();
+					mensagemParaMim.setAssunto(this.mensagemRecebidaCondomino.getAssunto());
+					mensagemParaMim.setTexto(this.mensagemRecebidaCondomino.getTexto());
+					mensagemParaMim.setData(new Date());
+					mensagemParaMim.setVisualizada(Boolean.FALSE);
+					mensagemParaMim.setUsuarioRemetente(AplicacaoUtil.getUsuarioAutenticado());
+					mensagemParaMim.setUsuarioDestinatario(AplicacaoUtil.getUsuarioAutenticado());
+					listaMensagemRecebida.add(mensagemParaMim);
+					
 				}
-			// Caso onde envia para um único condômino	
-			}else{
-				this.condomino = this.condominoService.buscarPorId(this.condomino.getId());
-				listaCondominos.add(this.condomino);				
-			}			
-			for (Condomino condomino : listaCondominos) {
-				mensagem = new MensagemRecebida();
-				mensagem.setAssunto(this.mensagemRecebida.getAssunto());
-				mensagem.setTexto(this.mensagemRecebida.getTexto());
-				mensagem.setData(new Date());
-				mensagem.setVisualizada(Boolean.FALSE);
-				mensagem.setUsuarioRemetente(AplicacaoUtil.getUsuarioAutenticado());
-				mensagem.setUsuarioDestinatario(condomino);
-				// Condição que contempla o cenário onde o usuário informou se pode ou não enviar a msg para ele também.
-				if (condomino.getId() != mensagem.getUsuarioRemetente().getId()){
-					listaMensagemRecebida.add(mensagem);
+				if (listaMensagemRecebida.size() > 0){
+					this.mensagemRecebidaService.enviarListaMensagemRecebida(listaMensagemRecebida);
+					ManagedBeanUtil.setMensagemInfo("msg.mensagem.enviadaSucesso");				
 				}
-			}
-			
-			
-			if(this.enviarParaMimTambem){
-				MensagemRecebida mensagemParaMim = new MensagemRecebida();
-				mensagemParaMim.setAssunto(this.mensagemRecebida.getAssunto());
-				mensagemParaMim.setTexto(this.mensagemRecebida.getTexto());
-				mensagemParaMim.setData(new Date());
-				mensagemParaMim.setVisualizada(Boolean.FALSE);
-				mensagemParaMim.setUsuarioRemetente(AplicacaoUtil.getUsuarioAutenticado());
-				mensagemParaMim.setUsuarioDestinatario(AplicacaoUtil.getUsuarioAutenticado());
-				listaMensagemRecebida.add(mensagemParaMim);
-								
-			}
-			if (listaMensagemRecebida.size() > 0){
-				this.mensagemRecebidaService.enviarListaMensagemRecebida(listaMensagemRecebida);
-				ManagedBeanUtil.setMensagemInfo("msg.mensagem.enviadaSucesso");				
-			}
-			//Exibe msg worn caso não tenha enviado msg para ninguém ou somente para o próprio remetente.
-			if (listaMensagemRecebida.size() == 0 || listaMensagemRecebida.size() == 1 && this.enviarParaMimTambem){
-				// Remove a última vírgula e acrescenta o ponto e vírgula
-				mensagemCondominosNaoCadastrados = mensagemCondominosNaoCadastrados.substring(0,mensagemCondominosNaoCadastrados.length()-2) + ";"; 
-				ManagedBeanUtil.setMensagemWarn("msg.mensagem.NaoEnviadaCondominos",mensagemCondominosNaoCadastrados);
+				//Exibe msg worn caso não tenha enviado msg para ninguém ou somente para o próprio remetente.
+				if (listaMensagemRecebida.size() == 0 || listaMensagemRecebida.size() == 1 && this.enviarParaMimTambemCondomino){
+					// Remove a última vírgula e acrescenta o ponto e vírgula
+					mensagemCondominosNaoCadastrados = mensagemCondominosNaoCadastrados.substring(0,mensagemCondominosNaoCadastrados.length()-2) + ";"; 
+					ManagedBeanUtil.setMensagemWarn("msg.mensagem.NaoEnviadaCondominos",mensagemCondominosNaoCadastrados);
+				}
+				this.limparMensagemCondomino(null);
+				return "enviar";
 			}
 		 } catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
@@ -256,64 +278,68 @@ public class MensagemMB implements Serializable {
 		 }catch (Exception e) {
 			logger.error("", e);
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
-		}
-		return "enviar";
+		}		
+		return null;
 	}
 	
 	public String enviarMensagemFuncionarios(){
 		try{
-			// Caso tenha sido selecionado um bloco, mas não existe condôminos para esse bloco então não envia a msg.
-			if(this.listaSIFuncionarios.isEmpty()){
-				throw new BusinessException("msg.mensagem.MensagemNaoEnviadaFuncionariosNaoCadastrados");
-			}			
-			
-			String mensagemFuncionariosNaoCadastrados = "";
-			List<MensagemRecebida> listaMensagemRecebida = new ArrayList<MensagemRecebida>();			
-			List<Funcionario> listaFuncionarios = new ArrayList<Funcionario>();
-			
-			// Condição que contempla o caso onde envia para todos
-			if(this.funcionario.getId().equals(0)){
-				listaFuncionarios = this.funcionarioService.buscarPorCondominioSemImagem(this.condominio.getId(), UsuarioSituacaoEnum.ATIVO.getSituacao());
-			}else{
-				listaFuncionarios.add(this.funcionarioService.buscarPorId(this.funcionario.getId()));
-			}
-			
-			MensagemRecebida mensagem = null;		
-			for (Funcionario funcionario : listaFuncionarios) {
-				mensagem = new MensagemRecebida();
-				mensagem.setAssunto(this.mensagemRecebida.getAssunto());
-				mensagem.setTexto(this.mensagemRecebida.getTexto());
-				mensagem.setData(new Date());
-				mensagem.setVisualizada(Boolean.FALSE);
-				mensagem.setUsuarioRemetente(AplicacaoUtil.getUsuarioAutenticado());
-				mensagem.setUsuarioDestinatario(funcionario);
-				// Condição que contempla o cenário onde o usuário informou se pode ou não enviar a msg para ele também.
-				if (funcionario.getId() != mensagem.getUsuarioRemetente().getId()){
-					listaMensagemRecebida.add(mensagem);
-				}
-			}
-			
-			
-			if(this.enviarParaMimTambem){
-				MensagemRecebida mensagemParaMim = new MensagemRecebida();
-				mensagemParaMim.setAssunto(this.mensagemRecebida.getAssunto());
-				mensagemParaMim.setTexto(this.mensagemRecebida.getTexto());
-				mensagemParaMim.setData(new Date());
-				mensagemParaMim.setVisualizada(Boolean.FALSE);
-				mensagemParaMim.setUsuarioRemetente(AplicacaoUtil.getUsuarioAutenticado());
-				mensagemParaMim.setUsuarioDestinatario(AplicacaoUtil.getUsuarioAutenticado());
-				listaMensagemRecebida.add(mensagemParaMim);
+			if(this.validaMensagemFuncionarios()){
+				// Caso tenha sido selecionado um bloco, mas não existe condôminos para esse bloco então não envia a msg.
+				if(this.listaSIFuncionarios.isEmpty()){
+					throw new BusinessException("msg.mensagem.MensagemNaoEnviadaFuncionariosNaoCadastrados");
+				}			
 				
-			}
-			if (listaMensagemRecebida.size() > 0){
-				this.mensagemRecebidaService.enviarListaMensagemRecebida(listaMensagemRecebida);
-				ManagedBeanUtil.setMensagemInfo("msg.mensagem.enviadaSucesso");				
-			}
-			//Exibe msg worn caso não tenha enviado msg para ninguém ou somente para o próprio remetente.
-			if (listaMensagemRecebida.size() == 0 || listaMensagemRecebida.size() == 1 && this.enviarParaMimTambem){
-				// Remove a última vírgula e acrescenta o ponto e vírgula
-				mensagemFuncionariosNaoCadastrados = mensagemFuncionariosNaoCadastrados.substring(0,mensagemFuncionariosNaoCadastrados.length()-2) + ";"; 
-				ManagedBeanUtil.setMensagemWarn("msg.mensagem.NaoEnviadaCondominos",mensagemFuncionariosNaoCadastrados);
+				String mensagemFuncionariosNaoCadastrados = "";
+				List<MensagemRecebida> listaMensagemRecebida = new ArrayList<MensagemRecebida>();			
+				List<Funcionario> listaFuncionarios = new ArrayList<Funcionario>();
+				
+				// Condição que contempla o caso onde envia para todos
+				if(this.funcionario.getId().equals(0)){
+					listaFuncionarios = this.funcionarioService.buscarPorCondominioSemImagem(this.condominioFuncionario.getId(), UsuarioSituacaoEnum.ATIVO.getSituacao());
+				}else{
+					listaFuncionarios.add(this.funcionarioService.buscarPorId(this.funcionario.getId()));
+				}
+				
+				MensagemRecebida mensagem = null;		
+				for (Funcionario funcionario : listaFuncionarios) {
+					mensagem = new MensagemRecebida();
+					mensagem.setAssunto(this.mensagemRecebidaFuncionario.getAssunto());
+					mensagem.setTexto(this.mensagemRecebidaFuncionario.getTexto());
+					mensagem.setData(new Date());
+					mensagem.setVisualizada(Boolean.FALSE);
+					mensagem.setUsuarioRemetente(AplicacaoUtil.getUsuarioAutenticado());
+					mensagem.setUsuarioDestinatario(funcionario);
+					// Condição que contempla o cenário onde o usuário informou se pode ou não enviar a msg para ele também.
+					if (funcionario.getId() != mensagem.getUsuarioRemetente().getId()){
+						listaMensagemRecebida.add(mensagem);
+					}
+				}
+				
+				
+				if(this.enviarParaMimTambemFuncionario){
+					MensagemRecebida mensagemParaMim = new MensagemRecebida();
+					mensagemParaMim.setAssunto(this.mensagemRecebidaFuncionario.getAssunto());
+					mensagemParaMim.setTexto(this.mensagemRecebidaFuncionario.getTexto());
+					mensagemParaMim.setData(new Date());
+					mensagemParaMim.setVisualizada(Boolean.FALSE);
+					mensagemParaMim.setUsuarioRemetente(AplicacaoUtil.getUsuarioAutenticado());
+					mensagemParaMim.setUsuarioDestinatario(AplicacaoUtil.getUsuarioAutenticado());
+					listaMensagemRecebida.add(mensagemParaMim);
+					
+				}
+				if (listaMensagemRecebida.size() > 0){
+					this.mensagemRecebidaService.enviarListaMensagemRecebida(listaMensagemRecebida);
+					ManagedBeanUtil.setMensagemInfo("msg.mensagem.enviadaSucesso");				
+				}
+				//Exibe msg worn caso não tenha enviado msg para ninguém ou somente para o próprio remetente.
+				if (listaMensagemRecebida.size() == 0 || listaMensagemRecebida.size() == 1 && this.enviarParaMimTambemFuncionario){
+					// Remove a última vírgula e acrescenta o ponto e vírgula
+					mensagemFuncionariosNaoCadastrados = mensagemFuncionariosNaoCadastrados.substring(0,mensagemFuncionariosNaoCadastrados.length()-2) + ";"; 
+					ManagedBeanUtil.setMensagemWarn("msg.mensagem.NaoEnviadaFuncionarios",mensagemFuncionariosNaoCadastrados);
+				}
+				this.limparMensagemFuncionario(null);
+				return "enviar";
 			}
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
@@ -324,15 +350,34 @@ public class MensagemMB implements Serializable {
 		}catch (Exception e) {
 			logger.error("", e);
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
-		}
-		return "enviar";
+		}		
+		return null;
 	}
 	
-	public void limparMensagem(ActionEvent event){
-		this.mensagemRecebida = new MensagemRecebida();
-		this.listaCondominiosSelecionados = new ArrayList<Condominio>();
-		this.listaBlocoVOSelecionados = new ArrayList<BlocoVO>();
-		this.listaBlocoVO = new ArrayList<BlocoVO>();		
+	public void limparMensagemFaleComSindico(ActionEvent event){
+		this.mensagemRecebidaFaleComSindico = new MensagemRecebida();
+		this.condominioFaleComSindico = new Condominio();
+		this.enviarParaMimTambemFaleComSindico = Boolean.FALSE;
+	}	
+	
+	public void limparMensagemCondomino(ActionEvent event){
+		this.mensagemRecebidaCondomino = new MensagemRecebida();
+		this.condominioCondomino = new Condominio();
+		this.bloco = new Bloco();
+		this.condomino = new Condomino();
+		this.listaSIBlocos = new ArrayList<SelectItem>();
+		this.listaSICondominos = new ArrayList<SelectItem>();
+		this.enviarParaMimTambemCondomino = Boolean.FALSE;
+		this.setTabSelecionada(ID_TAB_MENSAGEM_CONDOMINIOS);
+	}	
+	
+	public void limparMensagemFuncionario(ActionEvent event){
+		this.mensagemRecebidaFuncionario = new MensagemRecebida();
+		this.condominioFuncionario = new Condominio();
+		this.funcionario = new Funcionario();
+		this.listaSIFuncionarios = new ArrayList<SelectItem>();
+		this.enviarParaMimTambemFuncionario = Boolean.FALSE;
+		this.setTabSelecionada(ID_TAB_MENSAGEM_FUNCIONARIOS);
 	}	
 
 	public String voltarListarMensagemRecebida(){
@@ -509,15 +554,23 @@ public class MensagemMB implements Serializable {
 	}
 	
 	public void popularListaBlocos(){
-		List<SelectItem> listaSIBlocos = this.blocoMB.buscarListaBlocosPorCondominio(this.condominio);
-		listaSIBlocos.add(0,new SelectItem(0, AplicacaoUtil.i18n("todos")));
-		Usuario usuarioLogado = AplicacaoUtil.getUsuarioAutenticado();
-		List<Condominio> listaCondominio = usuarioLogado.getListaCondominio();
-		for (Condominio condominio : listaCondominio) {
-			// FIXME - Regra temporária. Se for do condomínio Residencial Quinta do Horto e não for o síndico, então remove a opção TODOS 
-			if(condominio.getId() == 19 && usuarioLogado.getIdGrupoUsuario() != 4 && usuarioLogado.getIdGrupoUsuario() != 1){
-				listaSIBlocos.remove(0);
+		this.listaSICondominos = new ArrayList<SelectItem>();
+		List<SelectItem> listaSIBlocos = null;
+		// Se opção é Selecione um condomínio, então limpa os blocos
+		if(this.condominioCondomino.getId() == null){
+			listaSIBlocos = new ArrayList<SelectItem>();	
+		}else{
+			listaSIBlocos = this.blocoMB.buscarListaBlocosPorCondominio(this.condominioCondomino);
+			listaSIBlocos.add(0,new SelectItem(0, AplicacaoUtil.i18n("todos")));
+			Usuario usuarioLogado = AplicacaoUtil.getUsuarioAutenticado();
+			List<Condominio> listaCondominio = usuarioLogado.getListaCondominio();
+			for (Condominio condominio : listaCondominio) {
+				// FIXME - Regra temporária. Se for do condomínio Residencial Quinta do Horto e não for o síndico, então remove a opção TODOS 
+				if(condominio.getId() == 19 && usuarioLogado.getIdGrupoUsuario() != 4 && usuarioLogado.getIdGrupoUsuario() != 1){
+					listaSIBlocos.remove(0);
+				}
 			}
+			this.popularListaCondominos();
 		}
 		this.setListaSIBlocos(listaSIBlocos);	
 	}
@@ -528,7 +581,7 @@ public class MensagemMB implements Serializable {
 		this.listaSIFuncionarios = new ArrayList<SelectItem>();
 		
 		try {
-			listaFuncionarios = this.funcionarioService.buscarPorCondominioSemImagem(this.condominio.getId(),situacaoAtivo);
+			listaFuncionarios = this.funcionarioService.buscarPorCondominioSemImagem(this.condominioFuncionario.getId(),situacaoAtivo);
 			if(!listaFuncionarios.isEmpty()){
 				listaSIFuncionarios.add(0,new SelectItem(0, AplicacaoUtil.i18n("todos")));
 			}
@@ -548,35 +601,37 @@ public class MensagemMB implements Serializable {
 	public void popularListaCondominos(){	
 		this.listaSICondominos = new ArrayList<SelectItem>();	
 		List<Bloco> listBlocos = null;
-		// Caso onde selecionou todos os blocos
 		try {
-			if(this.bloco.getId() == 0){
-				this.condominioService.popularCondominos(this.condominio);
-				listBlocos = this.condominio.getListaBlocos();
-			}else{
-				// O Bloco que vem da página não contém o nome, somente o id, por isso buscar ele na base.
-				this.bloco = this.blocoService.buscarPorId(this.bloco.getId());
-				this.blocoService.popularBloco(this.bloco);
-				listBlocos = new ArrayList<Bloco>();
-				listBlocos.add(this.bloco);
-			}	
-			this.listaSICondominos.add(0,new SelectItem(0, AplicacaoUtil.i18n("todos")));
-			for (Bloco bloco : listBlocos) {
-				for (Unidade unidade : bloco.getListaUnidade()) {
-					for (Condomino condomino : unidade.getListaCondominos()) {
-						// Condição que garante que não vai aparecer o usuário logado na lista dos destinatários.
-						if(AplicacaoUtil.getUsuarioAutenticado().getId() != condomino.getId())
-						this.listaSICondominos.add(new SelectItem(condomino.getId(), bloco.getNome() + " - " + unidade.getNumero() + " - " + condomino.getNome()));
-					}	
-				 }
-			}
-			Usuario usuarioLogado = AplicacaoUtil.getUsuarioAutenticado();
-			List<Condominio> listaCondominio = usuarioLogado.getListaCondominio();
-			for (Condominio condominio : listaCondominio) {
-				// FIXME - Regra temporária. Se for do condomínio Residencial Quinta do Horto e não for o síndico, então remove a opção TODOS 
-				if(condominio.getId() == 19 && usuarioLogado.getIdGrupoUsuario() != 4 && usuarioLogado.getIdGrupoUsuario() != 1){
-					listaSICondominos.remove(0);
+			if(this.bloco.getId() != null){
+				// Caso onde selecionou todos os blocos
+				if(this.bloco.getId() == 0){
+					this.condominioService.popularCondominos(this.condominioCondomino);
+					listBlocos = this.condominioCondomino.getListaBlocos();
+				}else{
+					// O Bloco que vem da página não contém o nome, somente o id, por isso buscar ele na base.
+					this.bloco = this.blocoService.buscarPorId(this.bloco.getId());
+					this.blocoService.popularBloco(this.bloco);
+					listBlocos = new ArrayList<Bloco>();
+					listBlocos.add(this.bloco);
+				}	
+				this.listaSICondominos.add(0,new SelectItem(0, AplicacaoUtil.i18n("todos")));
+				for (Bloco bloco : listBlocos) {
+					for (Unidade unidade : bloco.getListaUnidade()) {
+						for (Condomino condomino : unidade.getListaCondominos()) {
+							// Condição que garante que não vai aparecer o usuário logado na lista dos destinatários.
+							if(AplicacaoUtil.getUsuarioAutenticado().getId() != condomino.getId())
+								this.listaSICondominos.add(new SelectItem(condomino.getId(), bloco.getNome() + " - " + unidade.getNumero() + " - " + condomino.getNome()));
+						}	
+					}
 				}
+				Usuario usuarioLogado = AplicacaoUtil.getUsuarioAutenticado();
+				List<Condominio> listaCondominio = usuarioLogado.getListaCondominio();
+				for (Condominio condominio : listaCondominio) {
+					// FIXME - Regra temporária. Se for do condomínio Residencial Quinta do Horto e não for o síndico, então remove a opção TODOS 
+					if(condominio.getId() == 19 && usuarioLogado.getIdGrupoUsuario() != 4 && usuarioLogado.getIdGrupoUsuario() != 1){
+						listaSICondominos.remove(0);
+					}
+				}				
 			}
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
@@ -588,8 +643,9 @@ public class MensagemMB implements Serializable {
 	}
 	
 	private Boolean validaMensagemCondominos() {
+		this.setTabSelecionada(ID_TAB_MENSAGEM_CONDOMINIOS);
 		Integer quantidadeErros = 0; 
-		if(this.condominio.getId() == null){
+		if(this.condominioCondomino.getId() == null){
 			ManagedBeanUtil.setMensagemErro("msg.mensagem.condominos.condominioRequerido");
 			quantidadeErros++;			
 		}
@@ -603,12 +659,12 @@ public class MensagemMB implements Serializable {
 			quantidadeErros++;		
 		}		
 		// Regra de valicação tamanho de campos
-		if(this.mensagemRecebida.getAssunto().trim().length() < 1 || this.mensagemRecebida.getAssunto().trim().length() > 50){
+		if(this.mensagemRecebidaCondomino.getAssunto().trim().length() < 1 || this.mensagemRecebidaCondomino.getAssunto().trim().length() > 50){
 			ManagedBeanUtil.setMensagemErro("msg.mensagem.assuntoTamanho");
 			quantidadeErros++;		
 		}
 		// Regra formato de email
-		if (this.mensagemRecebida.getTexto().trim().length() > 0){
+		if (this.mensagemRecebidaCondomino.getTexto().trim().length() < 1){
 			ManagedBeanUtil.setMensagemErro("msg.mensagem.textoRequerido");
 			quantidadeErros++;
 		}		
@@ -617,27 +673,37 @@ public class MensagemMB implements Serializable {
 	
 	
 	private Boolean validaMensagemFuncionarios() {
+		this.setTabSelecionada(ID_TAB_MENSAGEM_FUNCIONARIOS);
 		Integer quantidadeErros = 0; 
-		if(this.condominio.getId() == null){
+		if(this.condominioFuncionario.getId() == null){
 			ManagedBeanUtil.setMensagemErro("msg.mensagem.funcionarios.condominioRequerido");
 			quantidadeErros++;			
 		}		
 		
 		if(this.funcionario.getId() == null){
-			ManagedBeanUtil.setMensagemErro("msg.mensagem.funcionarios.condominioRequerido");
+			ManagedBeanUtil.setMensagemErro("msg.mensagem.funcionarios.funcionarioRequerido");
 			quantidadeErros++;		
 		}		
 		// Regra de valicação tamanho de campos
-		if(this.mensagemRecebida.getAssunto().trim().length() < 1 || this.mensagemRecebida.getAssunto().trim().length() > 50){
+		if(this.mensagemRecebidaFuncionario.getAssunto().trim().length() < 1 || this.mensagemRecebidaFuncionario.getAssunto().trim().length() > 50){
 			ManagedBeanUtil.setMensagemErro("msg.mensagem.assuntoTamanho");
 			quantidadeErros++;		
 		}
 		
-		if (this.mensagemRecebida.getTexto().trim().length() > 0){
+		if (this.mensagemRecebidaFuncionario.getTexto().trim().length() < 1){
 			ManagedBeanUtil.setMensagemErro("msg.mensagem.textoRequerido");
 			quantidadeErros++;
 		}		
 		return quantidadeErros == 0 ? Boolean.TRUE : Boolean.FALSE;
+	}
+	
+	public Boolean ehSindicoOuAdmin(){
+		Boolean ehSindicoOuAdmin = Boolean.FALSE;
+		Usuario usuario = AplicacaoUtil.getUsuarioAutenticado();
+		if(usuario.getId().equals(1) || usuario.getId().equals(236) || usuario.getId().equals(295)){
+			ehSindicoOuAdmin = Boolean.TRUE;
+		}		
+		return ehSindicoOuAdmin;
 	}
 	
 
@@ -657,13 +723,21 @@ public class MensagemMB implements Serializable {
 		this.listaBlocoVOSelecionados = listaBlocoVOSelecionados;
 	}
 
-	public Condominio getCondominio() {
-		return condominio;
+	public Condominio getCondominioCondomino() {
+		return condominioCondomino;
 	}
 
-	public void setCondominio(Condominio condominio) {
-		this.condominio = condominio;
-	}		
+	public void setCondominioCondomino(Condominio condominioCondomino) {
+		this.condominioCondomino = condominioCondomino;
+	}	
+
+	public Condominio getCondominioFuncionario() {
+		return condominioFuncionario;
+	}
+
+	public void setCondominioFuncionario(Condominio condominioFuncionario) {
+		this.condominioFuncionario = condominioFuncionario;
+	}
 
 	public Bloco getBloco() {
 		return bloco;
@@ -677,11 +751,9 @@ public class MensagemMB implements Serializable {
 		return condomino;
 	}
 
-
 	public void setCondomino(Condomino condomino) {
 		this.condomino = condomino;
 	}
-
 
 	public CondominioService getCondominioService() {
 		return condominioService;
@@ -750,15 +822,23 @@ public class MensagemMB implements Serializable {
 		this.listaDeMensagemRecebidasVO = listaDeMensagem;
 	}
 
-	public MensagemRecebida getMensagem() {
-		return mensagemRecebida;
+	public MensagemRecebida getMensagemRecebidaCondomino() {
+		return mensagemRecebidaCondomino;
 	}
 
-	public void setMensagem(MensagemRecebida mensagem) {
-		this.mensagemRecebida = mensagem;
-	}	
+	public void setMensagemRecebidaCondomino(MensagemRecebida mensagemRecebidaCondomino) {
+		this.mensagemRecebidaCondomino = mensagemRecebidaCondomino;
+	}		
 
- 	public MensagemEnviadaVO getMensagemEnviadaVO() {
+ 	public MensagemRecebida getMensagemRecebidaFuncionario() {
+		return mensagemRecebidaFuncionario;
+	}
+
+	public void setMensagemRecebidaFuncionario(MensagemRecebida mensagemRecebidaFuncionario) {
+		this.mensagemRecebidaFuncionario = mensagemRecebidaFuncionario;
+	}
+
+	public MensagemEnviadaVO getMensagemEnviadaVO() {
 		return mensagemEnviadaVO;
 	}
 
@@ -815,12 +895,20 @@ public class MensagemMB implements Serializable {
 		this.mensagemRecebidaVO = mensagemRecebidaVO;
 	}
 
-	public Boolean getEnviarParaMimTambem() {
-		return enviarParaMimTambem;
+	public Boolean getEnviarParaMimTambemCondomino() {
+		return enviarParaMimTambemCondomino;
 	}
 
-	public void setEnviarParaMimTambem(Boolean enviarParaMimTambem) {
-		this.enviarParaMimTambem = enviarParaMimTambem;
+	public void setEnviarParaMimTambemCondomino(Boolean enviarParaMimTambemCondomino) {
+		this.enviarParaMimTambemCondomino = enviarParaMimTambemCondomino;
+	}	
+
+	public void setEnviarParaMimTambemFuncionario(Boolean enviarParaMimTambemFuncionario) {
+		this.enviarParaMimTambemFuncionario = enviarParaMimTambemFuncionario;
+	}
+
+	public Boolean getEnviarParaMimTambemFuncionario() {
+		return enviarParaMimTambemFuncionario;
 	}
 
 	public ListDataModel<MensagemRecebidaVO> getListaDeMensagemRecebidasVO() {
@@ -870,6 +958,36 @@ public class MensagemMB implements Serializable {
 
 	public void setTabSelecionada(String tabSelecionada) {
 		this.tabSelecionada = tabSelecionada;
+	}
+
+
+	public Condominio getCondominioFaleComSindico() {
+		return condominioFaleComSindico;
+	}
+
+
+	public void setCondominioFaleComSindico(Condominio condominioFaleComSindico) {
+		this.condominioFaleComSindico = condominioFaleComSindico;
+	}
+
+
+	public MensagemRecebida getMensagemRecebidaFaleComSindico() {
+		return mensagemRecebidaFaleComSindico;
+	}
+
+
+	public void setMensagemRecebidaFaleComSindico(MensagemRecebida mensagemRecebidaFaleComSindico) {
+		this.mensagemRecebidaFaleComSindico = mensagemRecebidaFaleComSindico;
+	}
+
+
+	public Boolean getEnviarParaMimTambemFaleComSindico() {
+		return enviarParaMimTambemFaleComSindico;
+	}
+
+
+	public void setEnviarParaMimTambemFaleComSindico(Boolean enviarParaMimTambemFaleComSindico) {
+		this.enviarParaMimTambemFaleComSindico = enviarParaMimTambemFaleComSindico;
 	}	
 	
 }

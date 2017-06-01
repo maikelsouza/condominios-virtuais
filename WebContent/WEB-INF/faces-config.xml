@@ -1194,9 +1194,14 @@
  <navigation-rule>
   <from-view-id>/pages/formEscreverMensagem.xhtml</from-view-id>
   <navigation-case>
-   <from-action>#{mensagemMB.enviarMensagemBloco}</from-action>
+   <from-action>#{mensagemMB.enviarMensagemCondominos}</from-action>
    <from-outcome>enviar</from-outcome>
    <to-view-id>/pages/formMensagensEnviadas.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+  	<from-action>#{mensagemMB.enviarMensagemFuncionarios}</from-action>
+   	<from-outcome>enviar</from-outcome>
+   	<to-view-id>/pages/formMensagensEnviadas.xhtml</to-view-id>
   </navigation-case>
  </navigation-rule>
  <navigation-rule>
@@ -1243,7 +1248,7 @@
  <navigation-rule>
   <from-view-id>/pages/formFaleComSindico.xhtml</from-view-id>
   <navigation-case>
-   <from-action>#{mensagemMB.enviarMensagem}</from-action>
+   <from-action>#{mensagemMB.enviarMensagemFaleComSindico}</from-action>
    <from-outcome>enviar</from-outcome>
    <to-view-id>/pages/formMensagensEnviadas.xhtml</to-view-id>
   </navigation-case>

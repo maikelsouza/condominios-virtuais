@@ -30,11 +30,11 @@
 								<h:outputLabel value="#{msg.condomino}:" for="idCondomino" />
 								<span class="asterisco">*</span>
 							</h:panelGroup>
-							<h:selectOneMenu id="idCondominio" value="#{mensagemMB.condominio.id}" defaultLabel="#{msg['condominio.DefaultLabel']}"
+							<h:selectOneMenu id="idCondominio" value="#{mensagemMB.condominioCondomino.id}" defaultLabel="#{msg['condominio.DefaultLabel']}"
 								label="#{msg['condominio.label']}">
 								<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="true" />
 								<f:selectItems value="#{mensagemMB.listaSICondominio}" />
-								<f:ajax listener="#{mensagemMB.popularListaBlocos}" render="idBloco" execute="@this" />
+								<f:ajax listener="#{mensagemMB.popularListaBlocos}" render="idBloco idCondomino" execute="@this" />
 							</h:selectOneMenu>
 							<h:selectOneMenu value="#{mensagemMB.bloco.id}" id="idBloco" defaultLabel="#{msg['bloco.DefaultLabel']}" label="#{msg['bloco.label']}">
 								<f:selectItem itemLabel="#{msg['bloco.DefaultLabel']}"  noSelectionOption="true"/>
@@ -52,13 +52,13 @@
 								<h:outputLabel value="#{msg['mensagemRecebida.assunto']}:" for="idAssunto" />
 								<span class="asterisco">*</span>
 							</h:panelGroup>
-							<h:inputText id="idAssunto" value="#{mensagemMB.mensagem.assunto}" label="#{msg['mensagemRecebida.assunto.label']}"
+							<h:inputText id="idAssunto" value="#{mensagemMB.mensagemRecebidaCondomino.assunto}" label="#{msg['mensagemRecebida.assunto.label']}"
 								size="79" />
 							<h:panelGroup>
 								<h:outputLabel value="#{msg['mensagemRecebida.texto']}:" for="idMensagem" />
 								<span class="asterisco">*</span>
 							</h:panelGroup>
-							<h:inputTextarea id="idMensagem" value="#{mensagemMB.mensagem.texto}"
+							<h:inputTextarea id="idMensagem" value="#{mensagemMB.mensagemRecebidaCondomino.texto}"
 								label="#{msg['mensagemRecebida.texto.label']}" rows="6" cols="100" />
 						</h:panelGrid>
 						<h:panelGrid columns="2">
@@ -66,7 +66,7 @@
 								<h:outputLabel value="#{msg['enviaParaMimTambem']}:" for="idEnviaParaMimTambem" />
 								<span class="asterisco">*</span>
 							</h:panelGroup>
-							<h:selectOneRadio id="idEnviaParaMimTambem" value="#{mensagemMB.enviarParaMimTambem}">
+							<h:selectOneRadio id="idEnviaParaMimTambem" value="#{mensagemMB.enviarParaMimTambemCondomino}">
 								<f:selectItem itemValue="#{true}" itemLabel="#{msg['sim']}" />
 								<f:selectItem itemValue="#{false}" itemLabel="#{msg['nao']}" />
 							</h:selectOneRadio>
@@ -78,12 +78,12 @@
 					</rich:panel>
 					<h:panelGrid columns="2">
 						<h:commandButton value="#{msg.botaoEnviarMensagem}" action="#{mensagemMB.enviarMensagemCondominos}" />
-						<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{mensagemMB.limparMensagem}" immediate="true" />
+						<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{mensagemMB.limparMensagemCondomino}" />
 					</h:panelGrid>
 				</h:form>
 			</rich:tab>
 			
-			<rich:tab header="#{msg['mensagem.funcionarios']}" id="idTabMensagemFuncionarios">
+			<rich:tab header="#{msg['mensagem.funcionarios']}" id="idTabMensagemFuncionarios" rendered="#{mensagemMB.ehSindicoOuAdmin()}">
 				<h:form id="formEscreverMensagemFuncionarios" styleClass="content">
 					<rich:panel header="#{msg.mensagen}">
 						<h:panelGrid columns="2">
@@ -95,7 +95,7 @@
 								<h:outputLabel value="#{msg.funcionario}:" for="idFuncionario" />
 								<span class="asterisco">*</span>
 							</h:panelGroup>	
-							<h:selectOneMenu id="idCondominio" value="#{mensagemMB.condominio.id}"  label="#{msg['condominio.label']}">
+							<h:selectOneMenu id="idCondominio" value="#{mensagemMB.condominioFuncionario.id}"  label="#{msg['condominio.label']}">
 								<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="true" />
 								<f:selectItems value="#{mensagemMB.listaSICondominio}" />
 								<f:ajax listener="#{mensagemMB.popularListaFuncionarios}" render="idFuncionario" execute="@this" />
@@ -110,13 +110,13 @@
 								<h:outputLabel value="#{msg['mensagemRecebida.assunto']}:" for="idAssunto" />
 								<span class="asterisco">*</span>
 							</h:panelGroup>
-							<h:inputText id="idAssunto" value="#{mensagemMB.mensagem.assunto}" label="#{msg['mensagemRecebida.assunto.label']}"
+							<h:inputText id="idAssunto" value="#{mensagemMB.mensagemRecebidaFuncionario.assunto}" label="#{msg['mensagemRecebida.assunto.label']}"
 								size="79" />
 							<h:panelGroup>
 								<h:outputLabel value="#{msg['mensagemRecebida.texto']}:" for="idMensagem" />
 								<span class="asterisco">*</span>
 							</h:panelGroup>
-							<h:inputTextarea id="idMensagem" value="#{mensagemMB.mensagem.texto}" 
+							<h:inputTextarea id="idMensagem" value="#{mensagemMB.mensagemRecebidaFuncionario.texto}" 
 								label="#{msg['mensagemRecebida.texto.label']}" rows="6" cols="100" />
 						</h:panelGrid>
 						<h:panelGrid columns="2">
@@ -124,7 +124,7 @@
 								<h:outputLabel value="#{msg['enviaParaMimTambem']}:" for="idEnviaParaMimTambem" />
 								<span class="asterisco">*</span>
 							</h:panelGroup>
-							<h:selectOneRadio id="idEnviaParaMimTambem" value="#{mensagemMB.enviarParaMimTambem}">
+							<h:selectOneRadio id="idEnviaParaMimTambem" value="#{mensagemMB.enviarParaMimTambemFuncionario}">
 								<f:selectItem itemValue="#{true}" itemLabel="#{msg['sim']}" />
 								<f:selectItem itemValue="#{false}" itemLabel="#{msg['nao']}" />
 							</h:selectOneRadio>
@@ -136,7 +136,7 @@
 					</rich:panel>
 					<h:panelGrid columns="2">
 						<h:commandButton value="#{msg.botaoEnviarMensagem}" action="#{mensagemMB.enviarMensagemFuncionarios}" />
-						<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{mensagemMB.limparMensagem}" immediate="true" />
+						<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{mensagemMB.limparMensagemFuncionario}" />
 					</h:panelGrid>	
 				</h:form>
 			</rich:tab>
