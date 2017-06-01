@@ -16,6 +16,12 @@ public class GrupoUsuario {
 	
 	private String nome;	
 	
+	private String descricao;
+	
+	private Boolean ativo;
+	
+	private Integer idCondominio;
+	
 	// Identificador do grupo de usuário ADMINISTRADOR (1), ADMINISTRADORA (2) e etc 
 	private TipoGrupoUsuarioEnum tipoGrupoUsuario; 
 	
@@ -83,6 +89,31 @@ public class GrupoUsuario {
 		
 	}
 	
+	
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}	
+	
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
+	}
+
+	public Integer getIdCondominio() {
+		return idCondominio;
+	}
+
+	public void setIdCondominio(Integer idCondominio) {
+		this.idCondominio = idCondominio;
+	}
+
 	private Boolean contemTela(String tela, List<String> listaTelas){
 		Boolean contem = Boolean.FALSE;		
 		Iterator<String> iteratorListaTelas = listaTelas.iterator();
