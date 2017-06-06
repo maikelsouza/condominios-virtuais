@@ -22,6 +22,10 @@ public class GrupoUsuario {
 	
 	private Integer idCondominio;
 	
+	private Integer idSindicoProfissional;
+	
+	private Integer idEscritorioContabilidade;
+	
 	// Identificador do grupo de usuário ADMINISTRADOR (1), ADMINISTRADORA (2) e etc 
 	private TipoGrupoUsuarioEnum tipoGrupoUsuario; 
 	
@@ -112,6 +116,22 @@ public class GrupoUsuario {
 
 	public void setIdCondominio(Integer idCondominio) {
 		this.idCondominio = idCondominio;
+	}	
+
+	public Integer getIdSindicoProfissional() {
+		return idSindicoProfissional;
+	}
+
+	public void setIdSindicoProfissional(Integer idSindicoProfissional) {
+		this.idSindicoProfissional = idSindicoProfissional;
+	}
+
+	public Integer getIdEscritorioContabilidade() {
+		return idEscritorioContabilidade;
+	}
+
+	public void setIdEscritorioContabilidade(Integer idEscritorioContabilidade) {
+		this.idEscritorioContabilidade = idEscritorioContabilidade;
 	}
 
 	private Boolean contemTela(String tela, List<String> listaTelas){

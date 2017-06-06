@@ -16,7 +16,7 @@ public class Tela {
 	
 	private String nomeArquivo;
 	
-	private String acao;
+	
 	
 	private List<Aba> listaAbas;
 
@@ -42,14 +42,6 @@ public class Tela {
 
 	public void setNomeArquivo(String nomeArquivo) {
 		this.nomeArquivo = nomeArquivo;
-	}
-
-	public String getAcao() {
-		return acao;
-	}
-
-	public void setAcao(String acao) {
-		this.acao = acao;
 	}
 
 	public List<Aba> getListaAbas() {

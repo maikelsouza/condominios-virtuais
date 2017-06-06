@@ -15,6 +15,8 @@ public class Aba {
 	
 	private String idAba;
 	
+	private Integer idTela;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -45,10 +47,7 @@ public class Aba {
 
 	public void setIdTela(Integer idTela) {
 		this.idTela = idTela;
-	}
-
-	private Integer idTela;
-	
+	}	
 	
 
 }
