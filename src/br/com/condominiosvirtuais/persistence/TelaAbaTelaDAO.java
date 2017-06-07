@@ -10,7 +10,7 @@ public interface TelaAbaTelaDAO {
 	
 	public abstract void salvar(TelaAbaTela telaAbaTela, Connection con) throws SQLException, Exception;
 	
-	public abstract void excluir(Integer id, Connection con) throws SQLException, Exception;
+	public abstract void excluirPorIdTela(Integer idTela, Connection con) throws SQLException, Exception;
 	
 	public abstract List<TelaAbaTela> buscarPorIdTela(Integer idTela, Connection con) throws SQLException, Exception;
 	

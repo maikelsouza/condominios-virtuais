@@ -1,5 +1,6 @@
 package br.com.condominiosvirtuais.persistence;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -12,5 +13,11 @@ public interface GrupoUsuarioTelaDAO {
 	public abstract void salvar(GrupoUsuarioTela grupoUsuarioTela) throws SQLException, Exception;
 	
 	public abstract void excluir(Integer idGrupoUsuarioTela) throws SQLException, Exception;
+	
+	public abstract void excluirPorIdGrupoUsuario(Integer idGrupoUsuario,  Connection con) throws SQLException, Exception;
+	
+	public abstract List<GrupoUsuarioTela> buscarPorIdGrupoUsuario(Integer idGrupoUsuario, Connection con) throws SQLException, Exception;
+	
+	
 
 }

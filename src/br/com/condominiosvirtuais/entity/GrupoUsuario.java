@@ -20,6 +20,8 @@ public class GrupoUsuario {
 	
 	private Boolean ativo;
 	
+	private List<Tela> listaTela;
+	
 	private Integer idCondominio;
 	
 	private Integer idSindicoProfissional;
@@ -108,6 +110,14 @@ public class GrupoUsuario {
 
 	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
+	}	
+
+	public List<Tela> getListaTela() {
+		return listaTela;
+	}
+
+	public void setListaTela(List<Tela> listaTela) {
+		this.listaTela = listaTela;
 	}
 
 	public Integer getIdCondominio() {

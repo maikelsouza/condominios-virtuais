@@ -2,6 +2,8 @@ package br.com.condominiosvirtuais.entity;
 
 import java.util.List;
 
+import br.com.condominiosvirtuais.util.AplicacaoUtil;
+
 /**
  * Entidade que representa uma tela da aplicação. Será cadastrado todas as telas para que possa ser listadas e adicionadas <\br>
  * em um grupo de usuário específico
@@ -14,9 +16,7 @@ public class Tela {
 	
 	private String nome;
 	
-	private String nomeArquivo;
-	
-	
+	private String nomeArquivo;	
 	
 	private List<Aba> listaAbas;
 
@@ -50,6 +50,10 @@ public class Tela {
 
 	public void setListaAbas(List<Aba> listaAbas) {
 		this.listaAbas = listaAbas;
+	}
+	
+	public String getNomeI18n(){
+		return AplicacaoUtil.i18n(this.getNome());
 	}
 	
 	
