@@ -1,13 +1,15 @@
 package br.com.condominiosvirtuais.entity;
 
+import br.com.condominiosvirtuais.util.AplicacaoUtil;
 
 /**
  * Entidade que representa uma aba de uma determinada tela. Usado para verificar se será ou não exibido essa aba para
  * um grupo de usuário
+ * Obs.: Essa entidade é usada para recupetar as abas que são cadastradas pela administrados do sistema e não pelo usuário
  * @author Maikel Joel de Souza
  * @since 31/05/2017
  */
-public class Aba {
+public class Aba implements Comparable<Aba>{
 	
 	private Integer id;
 	
@@ -48,6 +50,15 @@ public class Aba {
 	public void setIdTela(Integer idTela) {
 		this.idTela = idTela;
 	}	
+	
+	public String getNomeI18n(){
+		return AplicacaoUtil.i18n(this.getNome());
+	}
+
+	@Override
+	public int compareTo(Aba aba) {
+		return this.getNomeI18n().compareTo(aba.getNomeI18n());
+	}
 	
 
 }

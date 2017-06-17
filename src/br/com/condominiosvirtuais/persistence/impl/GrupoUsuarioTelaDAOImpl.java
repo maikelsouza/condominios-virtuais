@@ -12,9 +12,7 @@ import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
 
-import br.com.condominiosvirtuais.entity.GrupoUsuario;
 import br.com.condominiosvirtuais.entity.GrupoUsuarioTela;
-import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.persistence.GrupoUsuarioTelaDAO;
 import br.com.condominiosvirtuais.persistence.TelaAbaTelaDAO;
 import br.com.condominiosvirtuais.util.SQLUtil;
@@ -70,16 +68,11 @@ public class GrupoUsuarioTelaDAOImpl implements GrupoUsuarioTelaDAO, Serializabl
 				listaGrupoUsuarioTela.add(grupoUsuarioTela);
 			}
 		}catch (SQLException e) {
+			con.rollback();
 			throw e;
 		}catch (Exception e) {		
+			con.rollback();
 			throw e;
-		}finally{
-			try {
-				statement.close();
-				con.close();				
-			} catch (SQLException e) {
-				logger.error("erro sqlstate "+e.getSQLState(), e);
-			}
 		}	
 		return listaGrupoUsuarioTela;
 	}

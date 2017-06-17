@@ -2,6 +2,7 @@ package br.com.condominiosvirtuais.service.impl;
 
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -26,6 +27,17 @@ public class GrupoUsuarioServiceImpl implements GrupoUsuarioService, Serializabl
 
 	public void setGrupoUsuarioDAO(GrupoUsuarioDAO grupoUsuarioDAO) {
 		this.grupoUsuarioDAO = grupoUsuarioDAO;
+	}
+
+	@Override
+	public List<GrupoUsuario> buscarPorIdCondominioESituacao(Integer idCondominio, Boolean situacao)
+			throws SQLException, Exception {
+		return this.grupoUsuarioDAO.buscarPorIdCondominioESituacao(idCondominio, situacao);
+	}
+
+	@Override
+	public List<GrupoUsuario> buscarPorIdCondominio(Integer idCondominio) throws SQLException, Exception {
+		return this.grupoUsuarioDAO.buscarPorIdCondominio(idCondominio);
 	}	
 
 }

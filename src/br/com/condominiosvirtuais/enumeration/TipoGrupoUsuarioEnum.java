@@ -142,6 +142,8 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_PRE_CADASTRO_BOLETO.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_PRE_CADASTRO_BOLETO.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_PRE_CADASTRO_BOLETO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_GRUPO_USUARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_GRUPO_USUARIO.getPathTelas());
 			
 			
 			

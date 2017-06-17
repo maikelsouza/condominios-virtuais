@@ -71,6 +71,9 @@ public class PrincipalMB  implements Serializable{
 	@Inject
 	private ObraMB obraMB;
 	
+	@Inject
+	private GrupoUsuarioMB grupoUsuarioMB;
+	
 	
 	@PostConstruct
 	public void init() {
@@ -308,6 +311,10 @@ public class PrincipalMB  implements Serializable{
 	
 	public String listaPreCadastroBoleto(){
 		return "listaPreCadastroBoleto";		        
+	}
+	
+	public String listarGrupoUsuario(){
+		return "listaGrupoUsuario";		        
 	}
 	
 	

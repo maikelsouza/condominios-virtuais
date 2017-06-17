@@ -7,10 +7,11 @@ import br.com.condominiosvirtuais.util.AplicacaoUtil;
 /**
  * Entidade que representa uma tela da aplicação. Será cadastrado todas as telas para que possa ser listadas e adicionadas <\br>
  * em um grupo de usuário específico
- * @author Maikel Joel de Souza
+ * Obs.: Essa entidade é usada para recupetar as telas que são cadastradas pela administrados do sistema e não pelo usuário 
+ * @author Maikel Joel de Souza 
  * @since 31/05/2017
  */
-public class Tela {
+public class Tela implements Comparable<Tela>{
 	
 	private Integer id;
 	
@@ -44,7 +45,7 @@ public class Tela {
 		this.nomeArquivo = nomeArquivo;
 	}
 
-	public List<Aba> getListaAbas() {
+	public List<Aba> getListaAbas() {		
 		return listaAbas;
 	}
 
@@ -55,7 +56,11 @@ public class Tela {
 	public String getNomeI18n(){
 		return AplicacaoUtil.i18n(this.getNome());
 	}
-	
+
+	@Override
+	public int compareTo(Tela tela) {
+		return this.getNomeI18n().compareTo(tela.getNomeI18n());
+	}
 	
 
 }

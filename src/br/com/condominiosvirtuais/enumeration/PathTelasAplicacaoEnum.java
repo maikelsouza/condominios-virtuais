@@ -117,7 +117,13 @@ public enum PathTelasAplicacaoEnum {
 	FORM_CADASTRO_PRE_CADASTRO_BOLETO(PREFIXO.getPathTelas()+"formCadastroPreCadastroBoleto.xhtml"),
 	FORM_LISTA_PRE_CADASTRO_BOLETO(PREFIXO.getPathTelas()+"formListaPreCadastroBoleto.xhtml"),
 	FORM_EDITA_PRE_CADASTRO_BOLETO(PREFIXO.getPathTelas()+"formEditaPreCadastroBoleto.xhtml"),
-	FORM_VISUALIZAR_PRE_CADASTRO_BOLETO(PREFIXO.getPathTelas()+"formVisualizaPreCadastroBoleto.xhtml");
+	FORM_VISUALIZAR_PRE_CADASTRO_BOLETO(PREFIXO.getPathTelas()+"formVisualizaPreCadastroBoleto.xhtml"),
+	FORM_LISTA_GRUPO_USUARIO(PREFIXO.getPathTelas()+"formListaGrupoUsuario.xhtml"),
+	FORM_VISUALIZAR_GRUPO_USUARIO(PREFIXO.getPathTelas()+"formVisualizaGrupoUsuario.xhtml");
+	
+	
+	
+	
 	
 	
 	

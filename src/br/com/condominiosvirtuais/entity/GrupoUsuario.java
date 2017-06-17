@@ -3,7 +3,11 @@ package br.com.condominiosvirtuais.entity;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.faces.model.ListDataModel;
+
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioSituacaoEnum;
 import br.com.condominiosvirtuais.enumeration.TipoGrupoUsuarioEnum;
+import br.com.condominiosvirtuais.util.AplicacaoUtil;
 
 /**
  * Entidade que representa um grupo de usuário. Exemplo: Administrador, Síndico, Condômino e etc.
@@ -18,9 +22,9 @@ public class GrupoUsuario {
 	
 	private String descricao;
 	
-	private Boolean ativo;
+	private Boolean situacao;
 	
-	private List<Tela> listaTela;
+	private ListDataModel<Tela> listaTela;
 	
 	private Integer idCondominio;
 	
@@ -95,6 +99,10 @@ public class GrupoUsuario {
 		
 	}
 	
+	public String getDescricaoLimitado(){
+		Integer limite = 80;
+		return this.descricao.length() > limite ? this.descricao.substring(0,limite) + "..." : this.descricao; 
+	}
 	
 	public String getDescricao() {
 		return descricao;
@@ -104,19 +112,23 @@ public class GrupoUsuario {
 		this.descricao = descricao;
 	}	
 	
-	public Boolean getAtivo() {
-		return ativo;
+	public Boolean getSituacao() {
+		return situacao;
+	}
+	
+	public String getSituacaoI18n() {
+		return this.situacao == GrupoUsuarioSituacaoEnum.ATIVO.getSituacao() ? AplicacaoUtil.i18n("grupoUsuario.situacao.1") : AplicacaoUtil.i18n("grupoUsuario.situacao.0");
 	}
 
-	public void setAtivo(Boolean ativo) {
-		this.ativo = ativo;
+	public void setSituacao(Boolean situacao) {
+		this.situacao = situacao;
 	}	
 
-	public List<Tela> getListaTela() {
+	public ListDataModel<Tela> getListaTela() {
 		return listaTela;
 	}
 
-	public void setListaTela(List<Tela> listaTela) {
+	public void setListaTela(ListDataModel<Tela> listaTela) {
 		this.listaTela = listaTela;
 	}
 

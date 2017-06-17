@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormVisualizaGrupoUsuario" styleClass="content formView">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.visualizarGrupoUsuario}" />
+				</f:facet>
+				<h:panelGrid columns="2">
+					<h:outputLabel value="#{msg['grupoUsuario.nome']}: " for="idGrupoUsuarioNome" />
+					<h:outputText id="idGrupoUsuarioNome" value="#{grupoUsuarioMB.grupoUsuario.nome}" />
+					<h:outputLabel value="#{msg['grupoUsuario.descricao']}: " for="idGrupoUsuarioDescricao"/>
+					<h:outputText id="idGrupoUsuarioDescricao" value="#{grupoUsuarioMB.grupoUsuario.descricao}"/>
+					<h:outputLabel value="#{msg['grupoUsuario.situacao']}: " for="idGrupoUsuarioSituacao" />
+					<h:outputText id="idGrupoUsuarioSituacao" value="#{grupoUsuarioMB.grupoUsuario.situacaoI18n}" />					
+				</h:panelGrid>
+				<div></div>
+			</rich:panel>
+			<rich:panel header="#{msg['painelTelasGruposUsuario']}">
+				<rich:dataTable id="idListaTelas" var="tela"  value="#{grupoUsuarioMB.grupoUsuario.listaTela}" rendered="#{grupoUsuarioMB.grupoUsuario.listaTela.rowCount > 0}">
+					<rich:column>
+						<f:facet name="header">
+							<h:outputLabel value="#{msg['tela.nome']}"/>
+						</f:facet>
+						<h:outputText value="#{tela.nomeI18n}" /> 
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputLabel value="#{msg['tela.possuiAbas']}"/>
+						</f:facet>
+	        			<h:outputText value="#{tela.listaAbas.isEmpty() ? msg['nao'] : msg['sim']}" /> 
+			        </rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="#{msg.rotuloAcao}" />
+						</f:facet>
+						<a4j:commandLink value="#{msg.linkVisualizarAbas}"  action="#{grupoUsuarioMB.visualizarAbas}" immediate="true" rendered="#{!tela.listaAbas.isEmpty()}"/>
+					</rich:column>
+				</rich:dataTable>
+			</rich:panel>
+			<h:panelGrid columns="2">
+				<h:commandButton value="#{msg.botaoVoltar}" action="#{grupoUsuarioMB.voltarVisualizarGrupoUsuario}" immediate="true"/>
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{grupoUsuarioMB.cancelarVisualizarGrupoUsuario}" immediate="true"></h:commandButton>
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
