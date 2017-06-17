@@ -202,7 +202,7 @@ public class LoginMB implements Serializable{
 	 */
 	public Boolean exibeMenuListaReservaQuintaDoHorto(){
 		Boolean exibeMenuArquivo = Boolean.FALSE;
-		if(this.usuario.getId() == 368 || this.usuario.getId() == 369 || this.usuario.getId() == 425 || this.usuario.getId() == 469){
+		if(this.usuario.getId() == 368 || this.usuario.getId() == 369 || this.usuario.getId() == 425 || this.usuario.getId() == 469 || this.usuario.getId() == 514){
 			exibeMenuArquivo = Boolean.TRUE;
 		}		
 		return exibeMenuArquivo;

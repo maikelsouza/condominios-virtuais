@@ -531,7 +531,8 @@ public enum TipoGrupoUsuarioEnum {
 			}
 			
 			// Possibilita que os porteiros do condomínio Quinta do Horto (id 19) possam visualizar as reservas
-			if(AplicacaoUtil.getUsuarioAutenticado().getId() == 368 || AplicacaoUtil.getUsuarioAutenticado().getId() == 369 || AplicacaoUtil.getUsuarioAutenticado().getId() == 425 || AplicacaoUtil.getUsuarioAutenticado().getId() == 469 ){
+			if(AplicacaoUtil.getUsuarioAutenticado().getId() == 368 || AplicacaoUtil.getUsuarioAutenticado().getId() == 369 || 
+					AplicacaoUtil.getUsuarioAutenticado().getId() == 425 || AplicacaoUtil.getUsuarioAutenticado().getId() == 469 || AplicacaoUtil.getUsuarioAutenticado().getId() == 514){
 				this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_RESERVA.getPathTelas());
 				this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_CONDOMINO.getPathTelas());
 				this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZA_CONDOMINO.getPathTelas());
