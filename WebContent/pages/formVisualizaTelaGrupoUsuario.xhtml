@@ -9,7 +9,10 @@
 	template="/templates/templatePrincipal.xhtml">
 
 	<ui:define name="conteudo">
-		<h:form id="idFormVisualizaGrupoUsuario" styleClass="content formView">
+		<f:metadata>
+			<f:event type="preRenderView" listener="#{telaMB.inicializaTelaMB}" />
+		</f:metadata>
+		<h:form id="idFormVisualizaTelaDoGrupoUsuario" styleClass="content formView">
 			<rich:panel>
 				<f:facet name="header">
 					<h:outputText value="#{msg.visualizarGrupoUsuario}" />
@@ -24,13 +27,19 @@
 				</h:panelGrid>
 				<div></div>
 			</rich:panel>
-			<rich:panel header="#{msg['painelTelasGruposUsuario']}">
-				<rich:dataTable id="idListaTelas" var="tela"  value="#{grupoUsuarioMB.grupoUsuario.listaTela}" rendered="#{grupoUsuarioMB.grupoUsuario.listaTela.rowCount > 0}">
+			<rich:panel header="#{msg['painelTelasDoGruposUsuario']}">
+				<rich:dataTable id="idListaTelas" var="tela"  value="#{telaMB.listaTela}" rendered="#{telaMB.listaTela.rowCount > 0}">
 					<rich:column>
 						<f:facet name="header">
 							<h:outputLabel value="#{msg['tela.nome']}"/>
 						</f:facet>
 						<h:outputText value="#{tela.nomeI18n}" /> 
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputLabel value="#{msg['tela.descricao']}"/>
+						</f:facet>
+						<h:outputText value="#{tela.descricaoI18n}" /> 
 					</rich:column>
 					<rich:column>
 						<f:facet name="header">
@@ -42,7 +51,7 @@
 						<f:facet name="header">
 							<h:outputText value="#{msg.rotuloAcao}" />
 						</f:facet>
-						<a4j:commandLink value="#{msg.linkVisualizarAbas}"  action="#{grupoUsuarioMB.visualizarAbas}" immediate="true" rendered="#{!tela.listaAbas.isEmpty()}"/>
+						<a4j:commandLink value="#{msg.linkVisualizarAbas}"  action="#{telaMB.visualizarAbaTela}" immediate="true" rendered="#{!tela.listaAbas.isEmpty()}"/>
 					</rich:column>
 				</rich:dataTable>
 			</rich:panel>

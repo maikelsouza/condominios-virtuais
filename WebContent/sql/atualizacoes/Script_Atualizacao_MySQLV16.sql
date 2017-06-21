@@ -18,6 +18,7 @@ ALTER TABLE GRUPO_USUARIO ADD CONSTRAINT FK_GRUPO_USUARIO_ID_ESCRITORIO_CONTABIL
 CREATE TABLE IF NOT EXISTS TELA(
 	ID integer NOT NULL AUTO_INCREMENT,	 
 	NOME VARCHAR(150) NOT NULL,
+	DESCRICAO VARCHAR(150) NOT NULL,
 	NOME_ARQUIVO VARCHAR(150) NOT NULL,
 	PRIMARY KEY(ID)
 );
@@ -25,6 +26,7 @@ CREATE TABLE IF NOT EXISTS TELA(
 CREATE TABLE IF NOT EXISTS ABA(
 	ID integer NOT NULL AUTO_INCREMENT,
 	NOME VARCHAR(150) NOT NULL,
+	DESCRICAO VARCHAR(150) NOT NULL,
 	ID_ABA VARCHAR(150) NOT NULL,
 	ID_TELA integer NOT NULL,
 	CONSTRAINT FK_ABA_ID_TELA_TELA_ID FOREIGN KEY (ID_TELA) REFERENCES TELA(ID),
@@ -51,15 +53,20 @@ CREATE TABLE IF NOT EXISTS TELA_ABA_TELA(
 	PRIMARY KEY(ID)
 );
 
-INSERT INTO TELA VALUES(DEFAULT,'formAnexaDocumento','formAnexaDocumento.xhtml'),
-(DEFAULT,'formAnexaImagem','formAnexaImagem.xhtml'),
-(DEFAULT,'formAprovaAgendamento','formAprovaAgendamento.xhtml'),
-(DEFAULT,'formAprovaReserva','formAprovaReserva.xhtml'),
-(DEFAULT,'formCadastroAgendamento','formCadastroAgendamento.xhtml'),
-(DEFAULT,'formCadastroAmbienteCondominio','formCadastroAmbienteCondominio.xhtml'),
-(DEFAULT,'formCadastroBeneficiario','formCadastroBeneficiario.xhtml'),
-(DEFAULT,'formCadastroBloco','formCadastroBloco.xhtml'),
-(DEFAULT,'formCadastroChamado','formCadastroChamado.xhtml'),
-(DEFAULT,'formCadastroClassificados','formCadastroClassificados.xhtml');
+INSERT INTO TELA VALUES(DEFAULT,'formAnexaDocumento','formAnexoDocumentoDescricao','formAnexaDocumento.xhtml'),
+(DEFAULT,'formAnexaImagem','formAnexaImagemDescricao','formAnexaImagem.xhtml'),
+(DEFAULT,'formAprovaAgendamento','formAprovaAgendamentoDescricao','formAprovaAgendamento.xhtml'),
+(DEFAULT,'formAprovaReserva','formAprovaReservaDescricao','formAprovaReserva.xhtml'),
+(DEFAULT,'formCadastroAgendamento','formCadastroAgendamentoDescricao','formCadastroAgendamento.xhtml'),
+(DEFAULT,'formCadastroAmbienteCondominio','formCadastroAmbienteCondominioDescricao','formCadastroAmbienteCondominio.xhtml'),
+(DEFAULT,'formCadastroBeneficiario','formCadastroBeneficiarioDescricao','formCadastroBeneficiario.xhtml'),
+(DEFAULT,'formCadastroBloco','formCadastroBlocoDescricao','formCadastroBloco.xhtml'),
+(DEFAULT,'formCadastroChamado','formCadastroChamadoDescricao','formCadastroChamado.xhtml'),
+(DEFAULT,'formCadastroClassificados','formCadastroClassificadosDescricao','formCadastroClassificados.xhtml'),
+(DEFAULT,'formMeuPainel','formMeuPainelDescricao','formMeuPainel.xhtml');
+
+INSERT INTO ABA VALUES(DEFAULT,'formMeuPainel.idTabDadosPessoais','formMeuPainel.idTabDadosPessoais.descricao','idTabDadosPessoais',11),
+(DEFAULT,'formMeuPainel.idTabAlterarImagemCondomino','formMeuPainel.idTabAlterarImagemCondomino.descricao','idTabAlterarImagemCondomino',11);
+
 
 

@@ -17,6 +17,8 @@ public class Tela implements Comparable<Tela>{
 	
 	private String nome;
 	
+	private String descricao;
+	
 	private String nomeArquivo;	
 	
 	private List<Aba> listaAbas;
@@ -35,6 +37,18 @@ public class Tela implements Comparable<Tela>{
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}	
+	
+	public String getDescricao() {
+		return descricao;
+	}
+	
+	public String getDescricaoI18n() {
+		return AplicacaoUtil.i18n(this.getDescricao());
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 	public String getNomeArquivo() {

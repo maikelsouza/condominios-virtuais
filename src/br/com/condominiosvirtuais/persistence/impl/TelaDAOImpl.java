@@ -39,6 +39,8 @@ public class TelaDAOImpl implements TelaDAO, Serializable {
 	
 	private static final String NOME = "NOME";
 	
+	private static final String DESCRICAO = "DESCRICAO";
+	
 	private static final String NOME_ARQUIVO = "NOME_ARQUIVO";
 
 	@Override
@@ -62,7 +64,8 @@ public class TelaDAOImpl implements TelaDAO, Serializable {
 				tela = new Tela();
 				tela.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
 				tela.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
-				tela.setNomeArquivo(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME_ARQUIVO, java.sql.Types.VARCHAR)));			
+				tela.setNomeArquivo(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME_ARQUIVO, java.sql.Types.VARCHAR)));
+				tela.setDescricao(String.valueOf(SQLUtil.getValorResultSet(resultSet, DESCRICAO, java.sql.Types.VARCHAR)));
 				tela.setListaAbas(this.abaDAO.buscarPorIdTela(tela.getId(), con));
 			}
 		}catch (SQLException e) {
@@ -111,6 +114,7 @@ public class TelaDAOImpl implements TelaDAO, Serializable {
 					tela.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
 					tela.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
 					tela.setNomeArquivo(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME_ARQUIVO, java.sql.Types.VARCHAR)));
+					tela.setDescricao(String.valueOf(SQLUtil.getValorResultSet(resultSet, DESCRICAO, java.sql.Types.VARCHAR)));
 					listaAbas = this.abaDAO.buscarPorIdTela(tela.getId(), con);
 					// Ordenação realizada no código, pois o dado que é persistido no banco é a chave para o I18N
 					Collections.sort(listaAbas);

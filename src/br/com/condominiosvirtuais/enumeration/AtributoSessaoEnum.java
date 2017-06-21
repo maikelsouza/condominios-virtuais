@@ -4,7 +4,11 @@ public enum AtributoSessaoEnum {
 	
 	CONDOMINIO("condominio"),
 	
-	AUTENTICADO("autenticado");
+	AUTENTICADO("autenticado"),
+	
+	GRUPO_USUARIO("grupoUsuario"),
+	
+	TELA("tela");
 	
 	
 	private String atributo = null;	

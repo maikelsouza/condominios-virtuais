@@ -3,8 +3,6 @@ package br.com.condominiosvirtuais.entity;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.faces.model.ListDataModel;
-
 import br.com.condominiosvirtuais.enumeration.GrupoUsuarioSituacaoEnum;
 import br.com.condominiosvirtuais.enumeration.TipoGrupoUsuarioEnum;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
@@ -24,7 +22,7 @@ public class GrupoUsuario {
 	
 	private Boolean situacao;
 	
-	private ListDataModel<Tela> listaTela;
+	private List<Tela> listaTela;
 	
 	private Integer idCondominio;
 	
@@ -124,11 +122,11 @@ public class GrupoUsuario {
 		this.situacao = situacao;
 	}	
 
-	public ListDataModel<Tela> getListaTela() {
+	public List<Tela> getListaTela() {
 		return listaTela;
 	}
 
-	public void setListaTela(ListDataModel<Tela> listaTela) {
+	public void setListaTela(List<Tela> listaTela) {
 		this.listaTela = listaTela;
 	}
 

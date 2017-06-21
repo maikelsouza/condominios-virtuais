@@ -80,12 +80,12 @@ public class TelaAbaTelaDAOImpl implements TelaAbaTelaDAO, Serializable {
 			SQLUtil.setValorPpreparedStatement(statement, 1,idTela, java.sql.Types.INTEGER);
 			resultSet = statement.executeQuery();
 			while(resultSet.next()){
-//				grupoUsuarioTela = new GrupoUsuarioTela();
-//				grupoUsuarioTela.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
-//				grupoUsuarioTela.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
-//				grupoUsuarioTela.setIdTela((Integer) SQLUtil.getValorResultSet(resultSet, ID_TELA, java.sql.Types.INTEGER));
-//				grupoUsuarioTela.setAcao(String.valueOf(SQLUtil.getValorResultSet(resultSet, ACAO, java.sql.Types.VARCHAR)));
-//				listaGrupoUsuarioTela.add(grupoUsuarioTela);
+				telaAbaTela = new TelaAbaTela();
+				telaAbaTela.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				telaAbaTela.setIdAbaTela((Integer) SQLUtil.getValorResultSet(resultSet, ID_ABA_TELA, java.sql.Types.INTEGER));
+				telaAbaTela.setIdTela((Integer) SQLUtil.getValorResultSet(resultSet, ID_TELA, java.sql.Types.INTEGER));
+				telaAbaTela.setAcao(String.valueOf(SQLUtil.getValorResultSet(resultSet, ACAO, java.sql.Types.VARCHAR)));
+				listaTelaAbaTela.add(telaAbaTela);
 			}
 		}catch (SQLException e) {
 			con.rollback();
@@ -93,9 +93,8 @@ public class TelaAbaTelaDAOImpl implements TelaAbaTelaDAO, Serializable {
 		}catch (Exception e) {		
 			con.rollback();
 			throw e;
-		}	
-		//return listaGrupoUsuarioTela;
-		return null;
+		}
+		return listaTelaAbaTela;
 	}
 
 	@Override

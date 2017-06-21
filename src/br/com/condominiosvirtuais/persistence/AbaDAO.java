@@ -9,5 +9,7 @@ import br.com.condominiosvirtuais.entity.Aba;
 public interface AbaDAO {
 	
 	public abstract List<Aba> buscarPorIdTela(Integer idTela, Connection con) throws SQLException, Exception;
+	
+	public abstract List<Aba> buscarPorIdTela(Integer idTela) throws SQLException, Exception;
 
 }

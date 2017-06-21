@@ -2110,9 +2110,18 @@
  <navigation-rule>                       
   <from-view-id>/pages/formListaGrupoUsuario.xhtml</from-view-id>  
   <navigation-case>                  
-   <from-action>#{grupoUsuarioMB.visualizarGrupoUsuario}</from-action>
+   <from-action>#{grupoUsuarioMB.visualizarTelaGrupoUsuario}</from-action>
    <from-outcome>visualizar</from-outcome>
-   <to-view-id>/pages/formVisualizaGrupoUsuario.xhtml</to-view-id>
+   <to-view-id>/pages/formVisualizaTelaGrupoUsuario.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formVisualizaTelaGrupoUsuario.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{telaMB.visualizarAbaTela}</from-action>
+   <from-outcome>visualizar</from-outcome>
+   <to-view-id>/pages/formVisualizaAbaTela.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
  </navigation-rule>
