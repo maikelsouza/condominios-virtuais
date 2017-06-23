@@ -14,12 +14,20 @@ ALTER TABLE GRUPO_USUARIO ADD CONSTRAINT FK_GRUPO_USUARIO_ID_SINDICO_PROFISSIONA
 
 ALTER TABLE GRUPO_USUARIO ADD CONSTRAINT FK_GRUPO_USUARIO_ID_ESCRITORIO_CONTABILI_ESCRITORIO_CONTABILI_ID FOREIGN KEY (ID_ESCRITORIO_CONTABILIDADE) REFERENCES ESCRITORIO_CONTABILIDADE(ID);
 
+CREATE TABLE IF NOT EXISTS MODULO(
+	ID integer NOT NULL AUTO_INCREMENT,
+	NOME VARCHAR(150) NOT NULL,
+	DESCRICAO VARCHAR(150) NOT NULL,
+	PRIMARY KEY(ID)
+);
 
 CREATE TABLE IF NOT EXISTS TELA(
 	ID integer NOT NULL AUTO_INCREMENT,	 
 	NOME VARCHAR(150) NOT NULL,
 	DESCRICAO VARCHAR(150) NOT NULL,
 	NOME_ARQUIVO VARCHAR(150) NOT NULL,
+	ID_MODULO integer NOT NULL,
+	CONSTRAINT FK_TELA_ID_MODULO_MODULO_ID FOREIGN KEY (ID_MODULO) REFERENCES MODULO(ID),
 	PRIMARY KEY(ID)
 );
 
@@ -28,6 +36,16 @@ CREATE TABLE IF NOT EXISTS ABA(
 	NOME VARCHAR(150) NOT NULL,
 	DESCRICAO VARCHAR(150) NOT NULL,
 	ID_ABA VARCHAR(150) NOT NULL,
+	ID_TELA integer NOT NULL,
+	CONSTRAINT FK_ABA_ID_TELA_TELA_ID FOREIGN KEY (ID_TELA) REFERENCES TELA(ID),
+	PRIMARY KEY(ID)
+);
+
+CREATE TABLE IF NOT EXISTS BOTAO(
+	ID integer NOT NULL AUTO_INCREMENT,
+	NOME VARCHAR(150) NOT NULL,
+	DESCRICAO VARCHAR(150) NOT NULL,
+	ID_BOTAO VARCHAR(150) NOT NULL,
 	ID_TELA integer NOT NULL,
 	CONSTRAINT FK_ABA_ID_TELA_TELA_ID FOREIGN KEY (ID_TELA) REFERENCES TELA(ID),
 	PRIMARY KEY(ID)
@@ -53,14 +71,31 @@ CREATE TABLE IF NOT EXISTS TELA_ABA_TELA(
 	PRIMARY KEY(ID)
 );
 
-INSERT INTO TELA VALUES(DEFAULT,'formAnexaDocumento','formAnexoDocumentoDescricao','formAnexaDocumento.xhtml'),
-(DEFAULT,'formAnexaImagem','formAnexaImagemDescricao','formAnexaImagem.xhtml'),
-(DEFAULT,'formAprovaAgendamento','formAprovaAgendamentoDescricao','formAprovaAgendamento.xhtml'),
-(DEFAULT,'formAprovaReserva','formAprovaReservaDescricao','formAprovaReserva.xhtml'),
+CREATE TABLE IF NOT EXISTS MODULO(
+	ID integer NOT NULL AUTO_INCREMENT,
+	NOME VARCHAR(150) NOT NULL,
+	DESCRICAO VARCHAR(150) NOT NULL,
+	PRIMARY KEY(ID)
+);
+
+
+INSERT INTO MODULO VALUES(DEFAULT,'arquivoDocumentos','arquivoDocumentosDescricao'),
+(DEFAULT,'arquivoImagens','arquivoImagensDescricao'),
+(DEFAULT,'cadastroCondominio','cadastroCondominioDescricao'),
+(DEFAULT,'cadastroBloco','cadastroBlocoDescricao'),
+(DEFAULT,'cadastroAmbiente','cadastroAmbienteDescricao'),
+(DEFAULT,'agendamento','agendamentoDescricao'),
+(DEFAULT,'reserva','reservaDescricao'),
+(DEFAULT,'cadastroAmbiente','cadastroAmbienteDescricao'),
+
+INSERT INTO TELA VALUES(DEFAULT,'formAnexaDocumento','formAnexoDocumentoDescricao','formAnexaDocumento.xhtml',1),
+(DEFAULT,'formAnexaImagem','formAnexaImagemDescricao','formAnexaImagem.xhtml',2),
+(DEFAULT,'formAprovaAgendamento','formAprovaAgendamentoDescricao','formAprovaAgendamento.xhtml',5),
+(DEFAULT,'formAprovaReserva','formAprovaReservaDescricao','formAprovaReserva.xhtml',6),
 (DEFAULT,'formCadastroAgendamento','formCadastroAgendamentoDescricao','formCadastroAgendamento.xhtml'),
 (DEFAULT,'formCadastroAmbienteCondominio','formCadastroAmbienteCondominioDescricao','formCadastroAmbienteCondominio.xhtml'),
 (DEFAULT,'formCadastroBeneficiario','formCadastroBeneficiarioDescricao','formCadastroBeneficiario.xhtml'),
-(DEFAULT,'formCadastroBloco','formCadastroBlocoDescricao','formCadastroBloco.xhtml'),
+(DEFAULT,'formCadastroBloco','formCadastroBlocoDescricao','formCadastroBloco.xhtml',4),
 (DEFAULT,'formCadastroChamado','formCadastroChamadoDescricao','formCadastroChamado.xhtml'),
 (DEFAULT,'formCadastroClassificados','formCadastroClassificadosDescricao','formCadastroClassificados.xhtml'),
 (DEFAULT,'formMeuPainel','formMeuPainelDescricao','formMeuPainel.xhtml');

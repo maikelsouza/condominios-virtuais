@@ -128,7 +128,9 @@ public class TelaDAOImpl implements TelaDAO, Serializable {
 			throw e;
 		}finally{
 			try {
-				preparedStatement.close();
+				if(preparedStatement != null){
+					preparedStatement.close();
+				}
 				con.close();				
 			} catch (SQLException e) {
 				logger.error("erro sqlstate "+e.getSQLState(), e);

@@ -2113,7 +2113,6 @@
    <from-action>#{grupoUsuarioMB.visualizarTelaGrupoUsuario}</from-action>
    <from-outcome>visualizar</from-outcome>
    <to-view-id>/pages/formVisualizaTelaGrupoUsuario.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
  </navigation-rule>
  <navigation-rule>                       
@@ -2124,9 +2123,34 @@
    <to-view-id>/pages/formVisualizaAbaTela.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
+  <navigation-case>                  
+   <from-action>#{telaMB.voltarVisualizarTelaGrupoUsuario}</from-action>
+   <from-outcome>voltar</from-outcome>
+   <to-view-id>/pages/formListaGrupoUsuario.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+   <navigation-case>                  
+   <from-action>#{telaMB.cancelarVisualizarTelaGrupoUsuario}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
  </navigation-rule>
- 
- 
+ <navigation-rule>                       
+  <from-view-id>/pages/formVisualizaAbaTela.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{abaMB.voltarVisualizarAbaTela}</from-action>
+   <from-outcome>voltar</from-outcome>
+   <to-view-id>/pages/formVisualizaTelaGrupoUsuario.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+   <navigation-case>                  
+   <from-action>#{abaMB.cancelarVisualizarAbaTela}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
  
  <application>
   <locale-config>

@@ -16,11 +16,9 @@ import javax.inject.Named;
 import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.GrupoUsuario;
-import br.com.condominiosvirtuais.entity.Tela;
 import br.com.condominiosvirtuais.enumeration.AtributoSessaoEnum;
 import br.com.condominiosvirtuais.enumeration.GrupoUsuarioSituacaoEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
-import br.com.condominiosvirtuais.service.AbaService;
 import br.com.condominiosvirtuais.service.GrupoUsuarioService;
 import br.com.condominiosvirtuais.service.TelaService;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
@@ -34,24 +32,16 @@ public class GrupoUsuarioMB implements Serializable {
 	private static Logger logger = Logger.getLogger(GrupoUsuarioMB.class);
 	
 	@Inject
-	private TelaService telaService;
-	
-	@Inject
-	private AbaService abaService;
-	
+	private TelaService telaService;	
+
 	@Inject
 	private GrupoUsuarioService grupoUsuarioService;
 	
 	@Inject
 	private Instance<CondominioMB> condominioMB = null;
-	
-	@Inject
-	private Instance<TelaMB> telaMB = null;
-	
+		
 	private GrupoUsuario grupoUsuario;
-	
-	private Tela tela;
-	
+		
 	private List<SelectItem> listaSICondominios;
 	
 	private List<SelectItem> listaSISituacao;
@@ -60,15 +50,11 @@ public class GrupoUsuarioMB implements Serializable {
 	
 	private ListDataModel<GrupoUsuario> listaGruposUsuarios = null;
 	
-	private ListDataModel<Tela> listaTelaDataModel = null;
-	
-	
+		
 	@PostConstruct
 	public void inciarGrupoUsuarioMB(){
 		this.grupoUsuario = new GrupoUsuario();
 		this.popularSituacao();
-		
-		
 	}	
 	
 	public void pesquisaGrupoUsuario(){
@@ -78,7 +64,7 @@ public class GrupoUsuarioMB implements Serializable {
 				this.listaGruposUsuarios = new ListDataModel<GrupoUsuario>(this.grupoUsuarioService.buscarPorIdCondominio(this.grupoUsuario.getIdCondominio()));
 			}else{
 				this.listaGruposUsuarios = new ListDataModel<GrupoUsuario>(this.grupoUsuarioService.buscarPorIdCondominioESituacao(this.grupoUsuario.getIdCondominio(),
-						this.situacao == 1 ? GrupoUsuarioSituacaoEnum.ATIVO.getSituacao() : GrupoUsuarioSituacaoEnum.INATIVO.getSituacao()));
+				this.situacao == 1 ? GrupoUsuarioSituacaoEnum.ATIVO.getSituacao() : GrupoUsuarioSituacaoEnum.INATIVO.getSituacao()));
 			}
 			if(this.listaGruposUsuarios.getRowCount() == 0){
 				ManagedBeanUtil.setMensagemInfo("msg.grupoUsuario.semGrupoUsuario");
@@ -100,13 +86,23 @@ public class GrupoUsuarioMB implements Serializable {
 		this.listaGruposUsuarios = new ListDataModel<GrupoUsuario>();
 	}
 	
-	public String visualizarTelaGrupoUsuario() throws SQLException, Exception{		
-		this.grupoUsuario = (GrupoUsuario) this.listaGruposUsuarios.getRowData();
-		this.grupoUsuario.setListaTela(this.telaService.buscarPorIdGrupoUsuario(this.grupoUsuario.getId()));
-		ManagedBeanUtil.getSession(Boolean.TRUE).setAttribute(AtributoSessaoEnum.GRUPO_USUARIO.getAtributo(),this.grupoUsuario);
+	public String visualizarTelaGrupoUsuario() {		
+		try {
+			this.grupoUsuario = (GrupoUsuario) this.listaGruposUsuarios.getRowData();
+			this.grupoUsuario.setListaTela(this.telaService.buscarPorIdGrupoUsuario(this.grupoUsuario.getId()));
+			ManagedBeanUtil.getSession(Boolean.TRUE).setAttribute(AtributoSessaoEnum.GRUPO_USUARIO.getAtributo(),this.grupoUsuario);
+			if(this.grupoUsuario.getListaTela().isEmpty()){
+				ManagedBeanUtil.setMensagemInfo("msg.grupoUsuario.semTelas");
+			}
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (Exception e) {				
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage());	
+		}
 		return "visualizar";
-	}
-	
+	}	
 	
 	public List<SelectItem> getListaSICondominios() {
 		this.listaSICondominios = this.condominioMB.get().buscarListaCondominiosAtivos();

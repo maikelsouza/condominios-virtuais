@@ -3,7 +3,6 @@ package br.com.condominiosvirtuais.controller;
 import java.io.Serializable;
 import java.sql.SQLException;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.model.ListDataModel;
 import javax.inject.Inject;
@@ -39,42 +38,55 @@ public class TelaMB implements Serializable {
 		this.listaTela = new ListDataModel<Tela>(this.grupoUsuario.getListaTela());		
 	}
 	
-	public String visualizarAbaTela() throws SQLException, Exception{		
-		this.tela = (Tela) this.listaTela .getRowData();
-		this.tela.setListaAbas(this.abaService.buscarPorIdTela(this.tela.getId()));
-		ManagedBeanUtil.getSession(Boolean.TRUE).setAttribute(AtributoSessaoEnum.TELA.getAtributo(),this.tela);
+	public String visualizarAbaTela(){		
+		try {
+			this.tela = (Tela) this.listaTela .getRowData();
+			this.tela.setListaAbas(this.abaService.buscarPorIdTela(this.tela.getId()));
+			ManagedBeanUtil.getSession(Boolean.TRUE).setAttribute(AtributoSessaoEnum.TELA.getAtributo(),this.tela);
+			if(this.tela.getListaAbas().isEmpty()){
+				ManagedBeanUtil.setMensagemInfo("msg.tela.semAbas");
+			}
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}
 		return "visualizar";
 	}
-
+	
+	public String voltarVisualizarTelaGrupoUsuario(){
+		return "voltar";
+	}
+	
+	public String cancelarVisualizarTelaGrupoUsuario(){
+		return "cancelar";
+	}
 
 	public Tela getTela() {
 		return tela;
 	}
 
-
 	public void setTela(Tela tela) {
 		this.tela = tela;
 	}
-
 
 	public GrupoUsuario getGrupoUsuario() {
 		return grupoUsuario;
 	}
 
-
 	public void setGrupoUsuario(GrupoUsuario grupoUsuario) {
 		this.grupoUsuario = grupoUsuario;
 	}
-
 
 	public ListDataModel<Tela> getListaTela() {
 		return listaTela;
 	}
 
-
 	public void setListaTela(ListDataModel<Tela> listaTela) {
 		this.listaTela = listaTela;
-	}	
+	}
 	
 
 }

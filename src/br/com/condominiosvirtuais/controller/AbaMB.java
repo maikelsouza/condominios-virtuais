@@ -31,27 +31,29 @@ public class AbaMB implements Serializable {
 		this.listaAba = new ListDataModel<Aba>(this.tela.getListaAbas());		
 	}
 
+	public String voltarVisualizarAbaTela(){
+		return "voltar";
+	}
+	
+	public String cancelarVisualizarAbaTela(){
+		return "cancelar";
+	}
 
 	public Tela getTela() {
 		return tela;
 	}
 
-
 	public void setTela(Tela tela) {
 		this.tela = tela;
 	}
-
 
 	public ListDataModel<Aba> getListaAba() {
 		return listaAba;
 	}
 
-
 	public void setListaAba(ListDataModel<Aba> listaAba) {
 		this.listaAba = listaAba;
 	}
-
-	
 
 
 }

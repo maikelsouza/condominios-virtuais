@@ -1,5 +1,6 @@
 package br.com.condominiosvirtuais.entity;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,8 +13,10 @@ import br.com.condominiosvirtuais.util.AplicacaoUtil;
  * @author Maikel Joel de Souza
  * @since 23/02/2013
  */
-public class GrupoUsuario {
+public class GrupoUsuario implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	private Integer id;
 	
 	private String nome;	
