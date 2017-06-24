@@ -12,7 +12,7 @@
 		<f:metadata>
 			<f:event type="preRenderView" listener="#{telaMB.inicializaTelaMB}" />
 		</f:metadata>
-		<h:form id="idFormVisualizaTelaDoGrupoUsuario" styleClass="content formView">
+		<h:form id="idFormVisualizaGrupoUsuarioTela" styleClass="content formView">
 			<rich:panel>
 				<f:facet name="header">
 					<h:outputText value="#{msg.visualizarGrupoUsuario}" />
@@ -27,7 +27,7 @@
 				</h:panelGrid>
 				<div></div>
 			</rich:panel>
-			<rich:panel header="#{msg['painelTelasDoGruposUsuario']}">
+			<rich:panel header="#{msg['painelGruposUsuarioTela']}">
 				<rich:dataTable id="idListaTelas" var="tela"  value="#{telaMB.listaTela}" rendered="#{telaMB.listaTela.rowCount > 0}">
 					<rich:column>
 						<f:facet name="header">

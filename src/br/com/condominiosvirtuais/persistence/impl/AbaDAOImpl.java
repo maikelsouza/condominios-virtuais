@@ -13,9 +13,9 @@ import javax.inject.Inject;
 import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Aba;
-import br.com.condominiosvirtuais.entity.TelaAbaTela;
+import br.com.condominiosvirtuais.entity.TelaAba;
 import br.com.condominiosvirtuais.persistence.AbaDAO;
-import br.com.condominiosvirtuais.persistence.TelaAbaTelaDAO;
+import br.com.condominiosvirtuais.persistence.TelaAbaDAO;
 import br.com.condominiosvirtuais.util.SQLUtil;
 
 public class AbaDAOImpl implements AbaDAO, Serializable {
@@ -37,31 +37,31 @@ public class AbaDAOImpl implements AbaDAO, Serializable {
 	private static final String ID_ABA = "ID_ABA";
 	
 	@Inject
-	private TelaAbaTelaDAO telaAbaTelaDAO; 
+	private TelaAbaDAO telaAbaDAO; 
 	
 	
 	@Override
 	public List<Aba> buscarPorIdTela(Integer idTela, Connection con) throws SQLException, Exception {
 		// Busca a lista de abas associadas a uma tela
-		List<TelaAbaTela> listaTelaAbaTela = this.telaAbaTelaDAO.buscarPorIdTela(idTela, con);
+		List<TelaAba> listaTelaAba = this.telaAbaDAO.buscarPorIdTela(idTela, con);
 		Integer contador = 1;
 		List<Aba> listaAba = new ArrayList<Aba>();
-		if(!listaTelaAbaTela.isEmpty()){
+		if(!listaTelaAba.isEmpty()){
 			StringBuffer query = new StringBuffer();
 			query.append("SELECT * FROM ");
 			query.append(ABA);
 			query.append(" WHERE ");
 			query.append(ID_TELA);
 			query.append(" IN (");
-			query.append(SQLUtil.popularInterrocacoes(listaTelaAbaTela.size()));
+			query.append(SQLUtil.popularInterrocacoes(listaTelaAba.size()));
 			query.append(");");		
 			PreparedStatement preparedStatement = null;
 			ResultSet resultSet = null;
 			Aba aba = null;
 			try {
 				preparedStatement = con.prepareStatement(query.toString());
-				for (TelaAbaTela telaAbaTela : listaTelaAbaTela) {
-					SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, telaAbaTela.getIdTela(), java.sql.Types.INTEGER);
+				for (TelaAba telaAba : listaTelaAba) {
+					SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, telaAba.getIdTela(), java.sql.Types.INTEGER);
 				}
 				resultSet = preparedStatement.executeQuery();
 				while(resultSet.next()){
@@ -88,25 +88,25 @@ public class AbaDAOImpl implements AbaDAO, Serializable {
 	public List<Aba> buscarPorIdTela(Integer idTela) throws SQLException, Exception {
 		Connection con = Conexao.getConexao();
 		// Busca a lista de abas associadas a uma tela
-		List<TelaAbaTela> listaTelaAbaTela = this.telaAbaTelaDAO.buscarPorIdTela(idTela, con);
+		List<TelaAba> listaTela = this.telaAbaDAO.buscarPorIdTela(idTela, con);
 		Integer contador = 1;
 		List<Aba> listaAba = new ArrayList<Aba>();
-		if(!listaTelaAbaTela.isEmpty()){
+		if(!listaTela.isEmpty()){
 			StringBuffer query = new StringBuffer();
 			query.append("SELECT * FROM ");
 			query.append(ABA);
 			query.append(" WHERE ");
 			query.append(ID_TELA);
 			query.append(" IN (");
-			query.append(SQLUtil.popularInterrocacoes(listaTelaAbaTela.size()));
+			query.append(SQLUtil.popularInterrocacoes(listaTela.size()));
 			query.append(");");		
 			PreparedStatement preparedStatement = null;
 			ResultSet resultSet = null;
 			Aba aba = null;
 			try {
 				preparedStatement = con.prepareStatement(query.toString());
-				for (TelaAbaTela telaAbaTela : listaTelaAbaTela) {
-					SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, telaAbaTela.getIdTela(), java.sql.Types.INTEGER);
+				for (TelaAba telaAba : listaTela) {
+					SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, telaAba.getIdTela(), java.sql.Types.INTEGER);
 				}
 				resultSet = preparedStatement.executeQuery();
 				while(resultSet.next()){

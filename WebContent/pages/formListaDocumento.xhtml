@@ -85,7 +85,7 @@
 					</rich:dataTable>
 				</div>
 			</rich:panel>
-			<h:commandButton value="#{msg.botaoAnexarDocumento}"
+			<h:commandButton id="idBotaoAnexaoDocumento" value="#{msg.botaoAnexarDocumento}"
 				action="#{arquivoMB.abrirTelaAnexarDocumento}" immediate="true"
 				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}" />
 		</h:form>

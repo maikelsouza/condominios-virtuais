@@ -22,6 +22,8 @@ public class Tela implements Comparable<Tela>{
 	private String nomeArquivo;	
 	
 	private List<Aba> listaAbas;
+	
+	private List<Componente> listaComponente;
 
 	public Integer getId() {
 		return id;
@@ -65,8 +67,16 @@ public class Tela implements Comparable<Tela>{
 
 	public void setListaAbas(List<Aba> listaAbas) {
 		this.listaAbas = listaAbas;
-	}
+	}	
 	
+	public List<Componente> getListaComponente() {
+		return listaComponente;
+	}
+
+	public void setListaComponente(List<Componente> listaComponente) {
+		this.listaComponente = listaComponente;
+	}
+
 	public String getNomeI18n(){
 		return AplicacaoUtil.i18n(this.getNome());
 	}

@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.GrupoUsuarioTela;
 import br.com.condominiosvirtuais.persistence.GrupoUsuarioTelaDAO;
-import br.com.condominiosvirtuais.persistence.TelaAbaTelaDAO;
+import br.com.condominiosvirtuais.persistence.TelaAbaDAO;
 import br.com.condominiosvirtuais.util.SQLUtil;
 
 public class GrupoUsuarioTelaDAOImpl implements GrupoUsuarioTelaDAO, Serializable {
@@ -34,7 +34,7 @@ public class GrupoUsuarioTelaDAOImpl implements GrupoUsuarioTelaDAO, Serializabl
 	private static final String ID_TELA = "ID_TELA";
 	
 	@Inject
-	private TelaAbaTelaDAO telaAbaTelaDAO; 
+	private TelaAbaDAO telaAbaDAO; 
 	
 
 	@Override
@@ -96,7 +96,7 @@ public class GrupoUsuarioTelaDAOImpl implements GrupoUsuarioTelaDAO, Serializabl
 		try {
 			List<GrupoUsuarioTela> listaGrupoUsuarioTela = this.buscarPorIdGrupoUsuario(idGrupoUsuario,con);
 			for (GrupoUsuarioTela grupoUsuarioTela : listaGrupoUsuarioTela) {
-				this.telaAbaTelaDAO.excluirPorIdTela(grupoUsuarioTela.getIdTela(), con);
+				this.telaAbaDAO.excluirPorIdTela(grupoUsuarioTela.getIdTela(), con);
 			}
 			query.append("DELETE FROM ");
 			query.append(GRUPO_USUARIO_TELA);

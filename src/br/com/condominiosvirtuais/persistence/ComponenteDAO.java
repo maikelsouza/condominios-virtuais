@@ -1,5 +1,5 @@
 package br.com.condominiosvirtuais.persistence;
 
-public interface BotaoDAO {
+public interface ComponenteDAO {
 
 }

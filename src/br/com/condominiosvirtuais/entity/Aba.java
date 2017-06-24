@@ -1,5 +1,7 @@
 package br.com.condominiosvirtuais.entity;
 
+import java.util.List;
+
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
 
 /**
@@ -20,6 +22,8 @@ public class Aba implements Comparable<Aba>{
 	private String idAba;
 	
 	private Integer idTela;
+	
+	private List<Componente> listaComponente;
 	
 	public Integer getId() {
 		return id;
@@ -67,6 +71,14 @@ public class Aba implements Comparable<Aba>{
 	
 	public String getNomeI18n(){
 		return AplicacaoUtil.i18n(this.getNome());
+	}	
+
+	public List<Componente> getListaComponente() {
+		return listaComponente;
+	}
+
+	public void setListaComponente(List<Componente> listaComponente) {
+		this.listaComponente = listaComponente;
 	}
 
 	@Override
