@@ -28,36 +28,38 @@
 				<div></div>
 			</rich:panel>
 			<rich:panel header="#{msg['painelGruposUsuarioTela']}">
-				<rich:dataTable id="idListaTelas" var="tela"  value="#{telaMB.listaTela}" rendered="#{telaMB.listaTela.rowCount > 0}">
+				<rich:dataTable id="idListaTelas" var="telaVO"  value="#{telaMB.listaTelaVO}" rendered="#{telaMB.listaTelaVO.rowCount > 0}">
+					<rich:column>
+						<f:facet name="header">
+							<h:outputLabel value="#{msg['modulo']}"/>
+						</f:facet>
+						<h:outputText value="#{telaVO.nomeI18nModulo}" /> 
+					</rich:column>
 					<rich:column>
 						<f:facet name="header">
 							<h:outputLabel value="#{msg['tela.nome']}"/>
 						</f:facet>
-						<h:outputText value="#{tela.nomeI18n}" /> 
+						<h:outputText value="#{telaVO.nomeI18nTela}" /> 
 					</rich:column>
 					<rich:column>
 						<f:facet name="header">
 							<h:outputLabel value="#{msg['tela.descricao']}"/>
 						</f:facet>
-						<h:outputText value="#{tela.descricaoI18n}" /> 
+						<h:outputText value="#{telaVO.descricaoI18nTela}" /> 
 					</rich:column>
-					<rich:column>
-						<f:facet name="header">
-							<h:outputLabel value="#{msg['tela.possuiAbas']}"/>
-						</f:facet>
-	        			<h:outputText value="#{tela.listaAbas.isEmpty()  ? msg['nao'] : msg['sim']}" /> 
-			        </rich:column>
 					<rich:column>
 						<f:facet name="header">
 							<h:outputText value="#{msg.rotuloAcao}" />
 						</f:facet>
-						<a4j:commandLink value="#{msg.linkVisualizarAbas}"  action="#{telaMB.visualizarAbaTela}" immediate="true" rendered="#{!tela.listaAbas.isEmpty()}"/>
+						<a4j:commandLink value="#{msg.linkVisualizarAbas}"  action="#{telaMB.visualizarTelaAba}" immediate="true" rendered="#{!telaVO.listaAbasTela.isEmpty()}"/>
+						#{' '}
+						<a4j:commandLink value="#{msg.linkVisualizarComponentes}"  action="#{telaMB.visualizarTelaComponente}" immediate="true" rendered="#{!telaVO.listaComponentesTela.isEmpty()}"/>
 					</rich:column>
 				</rich:dataTable>
 			</rich:panel>
 			<h:panelGrid columns="2">
-				<h:commandButton value="#{msg.botaoVoltar}" action="#{telaMB.voltarVisualizarTelaGrupoUsuario}" immediate="true"/>
-				<h:commandButton value="#{msg.botaoCancelar}" action="#{telaMB.cancelarVisualizarTelaGrupoUsuario}" immediate="true"/>
+				<h:commandButton value="#{msg.botaoVoltar}" action="#{telaMB.voltarVisualizarGrupoUsuarioTela}" immediate="true"/>
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{telaMB.cancelarVisualizarGrupoUsuarioTela}" immediate="true"/>
 			</h:panelGrid>
 		</h:form>
 	</ui:define>

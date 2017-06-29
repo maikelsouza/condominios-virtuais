@@ -11,7 +11,7 @@ import br.com.condominiosvirtuais.util.AplicacaoUtil;
  * @author Maikel Joel de Souza
  * @since 31/05/2017
  */
-public class Aba implements Comparable<Aba>{
+public class Aba implements Comparable<Aba>, Cloneable{
 	
 	private Integer id;
 	
@@ -84,6 +84,10 @@ public class Aba implements Comparable<Aba>{
 	@Override
 	public int compareTo(Aba aba) {
 		return this.getNomeI18n().compareTo(aba.getNomeI18n());
+	}
+	
+	public Aba clone() throws CloneNotSupportedException{
+        return (Aba) super.clone();
 	}
 	
 

@@ -1,5 +1,7 @@
 package br.com.condominiosvirtuais.entity;
 
+import java.util.List;
+
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
 
 /**
@@ -9,13 +11,15 @@ import br.com.condominiosvirtuais.util.AplicacaoUtil;
  * @author Maikel Joel de Souza
  * @since 22/06/2017
  */
-public class Modulo {
+public class Modulo implements Comparable<Modulo>{
 	
 	private Integer id;
 	
 	private String nome;
 	
 	private String descricao;
+	
+	private List<Tela> listaTela;
 
 	public Integer getId() {
 		return id;
@@ -47,6 +51,19 @@ public class Modulo {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}	
+	}
+	
+	public List<Tela> getListaTela() {
+		return listaTela;
+	}
+
+	public void setListaTela(List<Tela> listaTela) {
+		this.listaTela = listaTela;
+	}
+
+	@Override
+	public int compareTo(Modulo modulo) {
+		return this.getNomeI18n().compareTo(modulo.getNomeI18n());
+	}
 
 }

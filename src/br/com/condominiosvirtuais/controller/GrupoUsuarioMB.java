@@ -85,8 +85,8 @@ public class GrupoUsuarioMB implements Serializable {
 		this.situacao = -1;
 		this.listaGruposUsuarios = new ListDataModel<GrupoUsuario>();
 	}
-	
-	public String visualizarTelaGrupoUsuario() {		
+	              
+	public String visualizarGrupoUsuarioTela() {		
 		try {
 			this.grupoUsuario = (GrupoUsuario) this.listaGruposUsuarios.getRowData();
 			this.grupoUsuario.setListaTela(this.telaService.buscarPorIdGrupoUsuario(this.grupoUsuario.getId()));

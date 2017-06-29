@@ -9,10 +9,9 @@ import javax.inject.Named;
 import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Aba;
-import br.com.condominiosvirtuais.entity.GrupoUsuario;
-import br.com.condominiosvirtuais.entity.Tela;
 import br.com.condominiosvirtuais.enumeration.AtributoSessaoEnum;
 import br.com.condominiosvirtuais.util.ManagedBeanUtil;
+import br.com.condominiosvirtuais.vo.TelaVO;
 
 @Named @SessionScoped
 public class AbaMB implements Serializable {
@@ -21,30 +20,30 @@ public class AbaMB implements Serializable {
 	
 	private static Logger logger = Logger.getLogger(AbaMB.class);
 	
-	private Tela tela;
+	private TelaVO telaVO;
 	
 	private ListDataModel<Aba> listaAba;
 	
 	
 	public void inicializaAbaMB(){
-		this.tela = (Tela) ManagedBeanUtil.getSession(Boolean.FALSE).getAttribute(AtributoSessaoEnum.TELA.getAtributo());
-		this.listaAba = new ListDataModel<Aba>(this.tela.getListaAbas());		
+		this.telaVO = (TelaVO) ManagedBeanUtil.getSession(Boolean.FALSE).getAttribute(AtributoSessaoEnum.TELA.getAtributo());
+		this.listaAba = new ListDataModel<Aba>(this.telaVO.getListaAbasTela());		
 	}
 
-	public String voltarVisualizarAbaTela(){
+	public String voltarVisualizarTelaAba(){
 		return "voltar";
 	}
 	
-	public String cancelarVisualizarAbaTela(){
+	public String cancelarVisualizarTelaAba(){
 		return "cancelar";
+	}	
+
+	public TelaVO getTelaVO() {
+		return telaVO;
 	}
 
-	public Tela getTela() {
-		return tela;
-	}
-
-	public void setTela(Tela tela) {
-		this.tela = tela;
+	public void setTelaVO(TelaVO telaVO) {
+		this.telaVO = telaVO;
 	}
 
 	public ListDataModel<Aba> getListaAba() {

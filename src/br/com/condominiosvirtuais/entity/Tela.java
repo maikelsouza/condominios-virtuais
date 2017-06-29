@@ -11,7 +11,7 @@ import br.com.condominiosvirtuais.util.AplicacaoUtil;
  * @author Maikel Joel de Souza 
  * @since 31/05/2017
  */
-public class Tela implements Comparable<Tela>{
+public class Tela implements Comparable<Tela>, Cloneable{
 	
 	private Integer id;
 	
@@ -19,11 +19,13 @@ public class Tela implements Comparable<Tela>{
 	
 	private String descricao;
 	
-	private String nomeArquivo;	
+	private String nomeArquivo;		
 	
 	private List<Aba> listaAbas;
 	
-	private List<Componente> listaComponente;
+	private List<Componente> listaComponentes;
+	
+	private Integer idModulo;
 
 	public Integer getId() {
 		return id;
@@ -69,21 +71,37 @@ public class Tela implements Comparable<Tela>{
 		this.listaAbas = listaAbas;
 	}	
 	
-	public List<Componente> getListaComponente() {
-		return listaComponente;
+	public List<Componente> getListaComponentes() {
+		return listaComponentes;
 	}
 
-	public void setListaComponente(List<Componente> listaComponente) {
-		this.listaComponente = listaComponente;
+	public void setListaComponente(List<Componente> listaComponentes) {
+		this.listaComponentes = listaComponentes;
 	}
 
 	public String getNomeI18n(){
 		return AplicacaoUtil.i18n(this.getNome());
 	}
+	
+	public Integer getIdModulo() {
+		return idModulo;
+	}
+
+	public void setIdModulo(Integer idModulo) {
+		this.idModulo = idModulo;
+	}
+
+	public void setListaComponentes(List<Componente> listaComponentes) {
+		this.listaComponentes = listaComponentes;
+	}
 
 	@Override
 	public int compareTo(Tela tela) {
 		return this.getNomeI18n().compareTo(tela.getNomeI18n());
+	}
+	
+	public Tela clone() throws CloneNotSupportedException{
+        return (Tela) super.clone();
 	}
 	
 

@@ -97,6 +97,9 @@ INSERT INTO MODULO VALUES
 (DEFAULT,'cadastroFuncionario','cadastroFuncionarioDescricao');
 
 
+
+
+
 INSERT INTO TELA VALUES
 (DEFAULT,'formAnexaDocumento','formAnexoDocumentoDescricao','formAnexaDocumento.xhtml',1),
 (DEFAULT,'formListaDocumento','formListaDocumentoDescricao','formListaDocumento.xhtml',1),
@@ -109,8 +112,8 @@ INSERT INTO TELA VALUES
 (DEFAULT,'formCadastroAmbiente','formCadastroAmbienteDescricao','formCadastroAmbienteCondominio.xhtml',7),
 (DEFAULT,'formCadastroFuncionario','formCadastroFuncionarioDescricao','formCadastroFuncionarioCondominio.xhtml',8);
 
---INSERT INTO ABA VALUES(DEFAULT,'formMeuPainel.idTabDadosPessoais','formMeuPainel.idTabDadosPessoais.descricao','idTabDadosPessoais',11),
---(DEFAULT,'formMeuPainel.idTabAlterarImagemCondomino','formMeuPainel.idTabAlterarImagemCondomino.descricao','idTabAlterarImagemCondomino',11);
+INSERT INTO ABA VALUES(DEFAULT,'formMeuPainel.idTabDadosPessoais','formMeuPainel.idTabDadosPessoais.descricao','idTabDadosPessoais',11),
+(DEFAULT,'formMeuPainel.idTabAlterarImagemCondomino','formMeuPainel.idTabAlterarImagemCondomino.descricao','idTabAlterarImagemCondomino',11);
 
 INSERT INTO COMPONENTE VALUES
 (DEFAULT,'formListaDocumento.idBotaoAnexaoDocumento','formListaDocumento.idBotaoAnexaoDocumentoDescricao','idBotaoAnexaoDocumento',2,null,0),

@@ -19,14 +19,14 @@
 				</f:facet>
 				<h:panelGrid columns="2">
 					<h:outputLabel value="#{msg['tela.nome']}: " for="idTelaNome" />
-					<h:outputText id="idTelaNome" value="#{tela.nomeI18n}" />
+					<h:outputText id="idTelaNome" value="#{abaMB.telaVO.nomeI18nTela}" />
 					<h:outputLabel value="#{msg['tela.descricao']}: " for="idTelaDescricao"/>
-					<h:outputText id="idTelaDescricao" value="#{tela.descricaoI18n}"/>
+					<h:outputText id="idTelaDescricao" value="#{abaMB.telaVO.descricaoI18nTela}"/>
 				</h:panelGrid>
 				<div></div>
 			</rich:panel>
 			<rich:panel header="#{msg['painelAbasTela']}">
-				<rich:dataTable id="idListaAbas" var="aba"  value="#{abaMB.listaAba}" rendered="#{abaMB.listaAba.rowCount > 0}">
+				<rich:dataTable id="idListaAbas" var="aba" value="#{abaMB.listaAba}" rendered="#{abaMB.listaAba.rowCount > 0}">
 					<rich:column>
 						<f:facet name="header">
 							<h:outputLabel value="#{msg['aba.nome']}"/>
@@ -47,8 +47,8 @@
 				</rich:dataTable>
 			</rich:panel>
 			<h:panelGrid columns="2">
-				<h:commandButton value="#{msg.botaoVoltar}" action="#{abaMB.voltarVisualizarAbaTela}" immediate="true"/>
-				<h:commandButton value="#{msg.botaoCancelar}" action="#{abaMB.cancelarVisualizarAbaTela}" immediate="true"/>
+				<h:commandButton value="#{msg.botaoVoltar}" action="#{abaMB.voltarVisualizarTelaAba}" immediate="true"/>
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{abaMB.cancelarVisualizarTelaAba}" immediate="true"/>
 			</h:panelGrid>
 		</h:form>
 	</ui:define>

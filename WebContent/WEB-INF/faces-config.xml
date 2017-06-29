@@ -2110,42 +2110,63 @@
  <navigation-rule>                       
   <from-view-id>/pages/formListaGrupoUsuario.xhtml</from-view-id>  
   <navigation-case>                  
-   <from-action>#{grupoUsuarioMB.visualizarTelaGrupoUsuario}</from-action>
+   <from-action>#{grupoUsuarioMB.visualizarGrupoUsuarioTela}</from-action>
    <from-outcome>visualizar</from-outcome>
-   <to-view-id>/pages/formVisualizaTelaGrupoUsuario.xhtml</to-view-id>
+   <to-view-id>/pages/formVisualizaGrupoUsuarioTela.xhtml</to-view-id>
   </navigation-case>
  </navigation-rule>
  <navigation-rule>                       
-  <from-view-id>/pages/formVisualizaTelaGrupoUsuario.xhtml</from-view-id>  
+  <from-view-id>/pages/formVisualizaGrupoUsuarioTela.xhtml</from-view-id>  
   <navigation-case>                  
-   <from-action>#{telaMB.visualizarAbaTela}</from-action>
+   <from-action>#{telaMB.visualizarTelaAba}</from-action>
    <from-outcome>visualizar</from-outcome>
-   <to-view-id>/pages/formVisualizaAbaTela.xhtml</to-view-id>
+   <to-view-id>/pages/formVisualizaTelaAba.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
   <navigation-case>                  
-   <from-action>#{telaMB.voltarVisualizarTelaGrupoUsuario}</from-action>
+   <from-action>#{telaMB.visualizarTelaComponente}</from-action>
+   <from-outcome>visualizar</from-outcome>
+   <to-view-id>/pages/formVisualizaTelaComponente.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>      
+   <from-action>#{telaMB.voltarVisualizarGrupoUsuarioTela}</from-action>
    <from-outcome>voltar</from-outcome>
    <to-view-id>/pages/formListaGrupoUsuario.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
    <navigation-case>                  
-   <from-action>#{telaMB.cancelarVisualizarTelaGrupoUsuario}</from-action>
+   <from-action>#{telaMB.cancelarVisualizarGrupoUsuarioTela}</from-action>
    <from-outcome>cancelar</from-outcome>
    <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
  </navigation-rule>
  <navigation-rule>                       
-  <from-view-id>/pages/formVisualizaAbaTela.xhtml</from-view-id>  
+  <from-view-id>/pages/formVisualizaTelaAba.xhtml</from-view-id>  
   <navigation-case>                  
-   <from-action>#{abaMB.voltarVisualizarAbaTela}</from-action>
+   <from-action>#{abaMB.voltarVisualizarTelaAba}</from-action>
    <from-outcome>voltar</from-outcome>
-   <to-view-id>/pages/formVisualizaTelaGrupoUsuario.xhtml</to-view-id>
+   <to-view-id>/pages/formVisualizaGrupoUsuarioTela.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
    <navigation-case>                  
-   <from-action>#{abaMB.cancelarVisualizarAbaTela}</from-action>
+   <from-action>#{abaMB.cancelarVisualizarTelaAba}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formVisualizaTelaComponente.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{componenteMB.voltarVisualizarTelaComponente}</from-action>
+   <from-outcome>voltar</from-outcome>
+   <to-view-id>/pages/formVisualizaGrupoUsuarioTela.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+   <navigation-case>                  
+   <from-action>#{componenteMB.cancelarVisualizarTelaComponente}</from-action>
    <from-outcome>cancelar</from-outcome>
    <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
    <redirect/>

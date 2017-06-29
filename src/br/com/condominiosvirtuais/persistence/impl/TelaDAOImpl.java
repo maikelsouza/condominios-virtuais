@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -14,9 +13,11 @@ import javax.inject.Inject;
 import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Aba;
+import br.com.condominiosvirtuais.entity.Componente;
 import br.com.condominiosvirtuais.entity.GrupoUsuarioTela;
 import br.com.condominiosvirtuais.entity.Tela;
 import br.com.condominiosvirtuais.persistence.AbaDAO;
+import br.com.condominiosvirtuais.persistence.ComponenteDAO;
 import br.com.condominiosvirtuais.persistence.GrupoUsuarioTelaDAO;
 import br.com.condominiosvirtuais.persistence.TelaDAO;
 import br.com.condominiosvirtuais.util.SQLUtil;
@@ -31,6 +32,9 @@ public class TelaDAOImpl implements TelaDAO, Serializable {
 	private AbaDAO abaDAO;
 	
 	@Inject
+	private ComponenteDAO componenteDAO; 
+	
+	@Inject
 	private GrupoUsuarioTelaDAO grupoUsuarioTelaDAO;
 	
 	private static final String TELA = "TELA";
@@ -42,6 +46,10 @@ public class TelaDAOImpl implements TelaDAO, Serializable {
 	private static final String DESCRICAO = "DESCRICAO";
 	
 	private static final String NOME_ARQUIVO = "NOME_ARQUIVO";
+	
+	private static final String ID_MODULO = "ID_MODULO";
+	
+	
 
 	@Override
 	public Tela buscarPorId(Integer id) throws SQLException, Exception {
@@ -66,6 +74,7 @@ public class TelaDAOImpl implements TelaDAO, Serializable {
 				tela.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
 				tela.setNomeArquivo(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME_ARQUIVO, java.sql.Types.VARCHAR)));
 				tela.setDescricao(String.valueOf(SQLUtil.getValorResultSet(resultSet, DESCRICAO, java.sql.Types.VARCHAR)));
+				tela.setIdModulo((Integer) SQLUtil.getValorResultSet(resultSet, ID_MODULO, java.sql.Types.INTEGER));
 				tela.setListaAbas(this.abaDAO.buscarPorIdTela(tela.getId(), con));
 			}
 		}catch (SQLException e) {
@@ -115,10 +124,10 @@ public class TelaDAOImpl implements TelaDAO, Serializable {
 					tela.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
 					tela.setNomeArquivo(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME_ARQUIVO, java.sql.Types.VARCHAR)));
 					tela.setDescricao(String.valueOf(SQLUtil.getValorResultSet(resultSet, DESCRICAO, java.sql.Types.VARCHAR)));
+					tela.setIdModulo((Integer) SQLUtil.getValorResultSet(resultSet, ID_MODULO, java.sql.Types.INTEGER));
 					listaAbas = this.abaDAO.buscarPorIdTela(tela.getId(), con);
-					// Ordenação realizada no código, pois o dado que é persistido no banco é a chave para o I18N
-					Collections.sort(listaAbas);
 					tela.setListaAbas(listaAbas);
+					tela.setListaComponente(componenteDAO.buscarPorIdTela(tela.getId(),con));
 					listaTela.add(tela);
 				}				
 			}
