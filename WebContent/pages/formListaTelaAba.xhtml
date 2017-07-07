@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<f:metadata>
+			<f:event type="preRenderView" listener="#{telaMB.inicializaTelaAbaMB}" />
+		</f:metadata>
+		<h:form id="idFormListaTelaAba" styleClass="content">
+			<rich:panel>
+				<f:facet name="header" >
+					<h:outputText value="#{msg.dadosTela}" />
+				</f:facet>
+				<h:panelGrid columns="2">
+					<h:outputLabel value="#{msg['tela.nome']}: " for="idTelaNome" />
+					<h:outputText id="idTelaNome" value="#{telaMB.telaVO.nomeI18nTela}" />
+					<h:outputLabel value="#{msg['tela.descricao']}: " for="idTelaDescricao"/>
+					<h:outputText id="idTelaDescricao" value="#{telaMB.telaVO.descricaoI18nTela}"/>
+				</h:panelGrid>
+				
+				<rich:panel header="#{msg.listaAbas}">
+				<div>
+					<rich:dataTable value="#{telaMB.listaAbaVO}" var="abaVO" rowClasses="odd-row, even-row" rows="20"
+						styleClass="stable" id="tableAbaVO" style="width:100%;" rendered="true">
+						<rich:column>
+							<f:facet name="header">
+								 <h:selectManyCheckbox>
+								 	 <f:selectItem itemValue="1" itemLabel="#{msg['todas']}" />
+								 </h:selectManyCheckbox>
+							</f:facet>
+							<h:selectBooleanCheckbox value="#{abaVO.checada}"/>
+						</rich:column>
+						<rich:column sortBy="#{abaVO.nome118n}" sortOrder="#{ordenaGrupoUsuarioMB.descricaoGrupoUsuario}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['aba.nome']}" render="tableAbaVO" action="#{ordenaGrupoUsuarioMB.ordenarPorDescricaoGrupoUsuario}" />
+							</f:facet>
+							<h:outputText value="#{abaVO.nomeI18nAba}" />
+						</rich:column>
+						<rich:column sortBy="#{aba.descricaoI18n}" sortOrder="#{ordenaGrupoUsuarioMB.situacaoGrupoUsuario}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['aba.descricao']}" render="tableAbaVO" action="#{ordenaGrupoUsuarioMB.ordenarPorSituacaoGrupoUsuario}" />
+							</f:facet>
+							<h:outputText value="#{abaVO.descricaoI18nAba}" />
+						</rich:column>
+						<f:facet name="footer">
+              				<rich:dataScroller for="tableAbaVO"  fastControls="hide" renderIfSinglePage="false"  />
+           				</f:facet>	
+					</rich:dataTable>
+				</div>
+			</rich:panel>
+				
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
+				</h:panelGrid>
+			</rich:panel>
+
+			<h:panelGrid columns="2">
+				<h:commandButton value="#{msg.botaoSalvar}" action="#{telaMB.salvarTelaAba}" />				
+				<h:commandButton value="#{msg.botaoVoltar}" action="#{telaMB.voltarListarTelaAba}" immediate="true" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

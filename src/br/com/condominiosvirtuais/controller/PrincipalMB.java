@@ -71,9 +71,6 @@ public class PrincipalMB  implements Serializable{
 	@Inject
 	private ObraMB obraMB;
 	
-	@Inject
-	private GrupoUsuarioMB grupoUsuarioMB;
-	
 	
 	@PostConstruct
 	public void init() {

@@ -7,6 +7,7 @@ import java.util.List;
 import br.com.condominiosvirtuais.enumeration.GrupoUsuarioSituacaoEnum;
 import br.com.condominiosvirtuais.enumeration.TipoGrupoUsuarioEnum;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
+import br.com.condominiosvirtuais.vo.TelaVO;
 
 /**
  * Entidade que representa um grupo de usuário. Exemplo: Administrador, Síndico, Condômino e etc.
@@ -25,7 +26,13 @@ public class GrupoUsuario implements Serializable {
 	
 	private Boolean situacao;
 	
+	// Lista de telas que estão cadastradas na aplicação. Entidade que representa uma tela
+	// TODO: Rever para remover essa lista e usar somente a listaTelaAcesso
 	private List<Tela> listaTela;
+	
+	// Lista de telasVO que estão que um determinado grupo que tema acesso. VO que representa mais que uma tela. Exemplo: A própria tela, o módulo a qual </br>
+	// ela pertence, a permissão que deve ter. 
+	private List<TelaVO> listaTelaAcesso;
 	
 	private Integer idCondominio;
 	
@@ -155,6 +162,14 @@ public class GrupoUsuario implements Serializable {
 
 	public void setIdEscritorioContabilidade(Integer idEscritorioContabilidade) {
 		this.idEscritorioContabilidade = idEscritorioContabilidade;
+	}	
+
+	public List<TelaVO> getListaTelaAcesso() {
+		return listaTelaAcesso;
+	}
+
+	public void setListaTelaAcesso(List<TelaVO> listaTelaAcesso) {
+		this.listaTelaAcesso = listaTelaAcesso;
 	}
 
 	private Boolean contemTela(String tela, List<String> listaTelas){

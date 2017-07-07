@@ -13,10 +13,13 @@ import javax.inject.Inject;
 import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.GrupoUsuario;
+import br.com.condominiosvirtuais.entity.GrupoUsuarioTela;
+import br.com.condominiosvirtuais.entity.Tela;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.persistence.GrupoUsuarioDAO;
 import br.com.condominiosvirtuais.persistence.GrupoUsuarioTelaDAO;
 import br.com.condominiosvirtuais.util.SQLUtil;
+import br.com.condominiosvirtuais.vo.TelaVO;
 
 public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 	
@@ -135,6 +138,7 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 
 	@Override
 	public void salvar(GrupoUsuario grupoUsuario) throws SQLException,BusinessException, Exception {
+		GrupoUsuarioTela grupoUsuarioTela = null;
 		StringBuffer query = new StringBuffer();
 		query.append("INSERT INTO "); 
 		query.append(GRUPO_USUARIO);
@@ -154,8 +158,10 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 		query.append("VALUES(?,?,?,?,?,?)");
 		PreparedStatement statement = null;		
 		Connection con = Conexao.getConexao();
-		try {			
-			statement = con.prepareStatement(query.toString());			
+		con.setAutoCommit(Boolean.FALSE);
+		Integer idGrupoUsuario = 0;
+		try {		
+			statement = con.prepareStatement(query.toString(),PreparedStatement.RETURN_GENERATED_KEYS);			
 			SQLUtil.setValorPpreparedStatement(statement, 1, grupoUsuario.getNome(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement, 2, grupoUsuario.getDescricao(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement, 3, grupoUsuario.getSituacao(), java.sql.Types.BOOLEAN);
@@ -163,6 +169,17 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 			SQLUtil.setValorPpreparedStatement(statement, 5, grupoUsuario.getIdSindicoProfissional(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 6, grupoUsuario.getIdEscritorioContabilidade(), java.sql.Types.INTEGER);
 			statement.executeUpdate();
+			ResultSet rs = statement.getGeneratedKeys();
+			rs.next();
+			idGrupoUsuario = rs.getInt(1);
+			for (TelaVO telaVO : grupoUsuario.getListaTelaAcesso()) {
+				grupoUsuarioTela = new GrupoUsuarioTela();
+				grupoUsuarioTela.setIdGrupoUsuario(idGrupoUsuario);
+				grupoUsuarioTela.setIdTela(telaVO.getIdTela());
+				grupoUsuarioTela.setAcao(telaVO.getAcao());
+				this.grupoUsuarioTelaDAO.salvar(grupoUsuarioTela, con);
+			}
+			con.commit();
 		} catch (SQLException e) {					
 			if (e.getMessage().contains(FK_GRUPO_USUARIO_ID_CONDOMINIO_CONDOMINIO_ID)){
 				throw new BusinessException("msg.grupoUsuario.salvarIdCondominioAssociado");

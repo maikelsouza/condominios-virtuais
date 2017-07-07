@@ -2,14 +2,16 @@ package br.com.condominiosvirtuais.entity;
 
 
 /**
- * Entidade que representa uma associação entre uma tela e uma aba. Usado para verificar quais abras de uma tela um </br> 
+ * Entidade que representa uma associação entre um grupo de usuário uma tela e uma aba. Usado para verificar quais abras de uma tela um </br> 
  * determinado grupo de usuário tem acesso. 
  * @author Maikel Joel de Souza
  * @since 05/06/2017
  */
-public class TelaAba {
+public class GrupoUsuarioTelaAba {
 	
 	private Integer id;
+	
+	private Integer idGrupoUsuario;
 	
 	private Integer idTela;
 	
@@ -19,8 +21,16 @@ public class TelaAba {
 
 	public Integer getId() {
 		return id;
-	}
+	}	
 
+	public Integer getIdGrupoUsuario() {
+		return idGrupoUsuario;
+	}
+	
+	public void setIdGrupoUsuario(Integer idGrupoUsuario) {
+		this.idGrupoUsuario = idGrupoUsuario;
+	}
+	
 	public void setId(Integer id) {
 		this.id = id;
 	}

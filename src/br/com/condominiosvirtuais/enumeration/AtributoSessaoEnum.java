@@ -8,7 +8,9 @@ public enum AtributoSessaoEnum {
 	
 	GRUPO_USUARIO("grupoUsuario"),
 	
-	TELA("tela");
+	TELA("tela"),
+	
+	TELA_VO("telaVO");
 	
 	
 	private String atributo = null;	

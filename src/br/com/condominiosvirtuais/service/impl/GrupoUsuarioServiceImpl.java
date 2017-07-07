@@ -38,6 +38,11 @@ public class GrupoUsuarioServiceImpl implements GrupoUsuarioService, Serializabl
 	@Override
 	public List<GrupoUsuario> buscarPorIdCondominio(Integer idCondominio) throws SQLException, Exception {
 		return this.grupoUsuarioDAO.buscarPorIdCondominio(idCondominio);
+	}
+
+	@Override
+	public void salvar(GrupoUsuario grupoUsuario) throws SQLException, Exception {
+		this.grupoUsuarioDAO.salvar(grupoUsuario);		
 	}	
 
 }

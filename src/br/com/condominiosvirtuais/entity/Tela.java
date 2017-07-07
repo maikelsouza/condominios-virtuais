@@ -1,5 +1,6 @@
 package br.com.condominiosvirtuais.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
@@ -11,8 +12,10 @@ import br.com.condominiosvirtuais.util.AplicacaoUtil;
  * @author Maikel Joel de Souza 
  * @since 31/05/2017
  */
-public class Tela implements Comparable<Tela>, Cloneable{
+public class Tela implements Comparable<Tela>, Cloneable, Serializable{
 	
+	private static final long serialVersionUID = 1L;
+
 	private Integer id;
 	
 	private String nome;

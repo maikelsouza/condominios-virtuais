@@ -13,7 +13,6 @@ import javax.inject.Inject;
 import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Aba;
-import br.com.condominiosvirtuais.entity.Componente;
 import br.com.condominiosvirtuais.entity.GrupoUsuarioTela;
 import br.com.condominiosvirtuais.entity.Tela;
 import br.com.condominiosvirtuais.persistence.AbaDAO;
@@ -53,43 +52,9 @@ public class TelaDAOImpl implements TelaDAO, Serializable {
 
 	@Override
 	public Tela buscarPorId(Integer id) throws SQLException, Exception {
-		StringBuffer query = new StringBuffer();
-		query.append("SELECT * FROM ");
-		query.append(TELA);
-		query.append(" WHERE ");
-		query.append(ID);
-		query.append(" = ?");
-		query.append(";");		
-		Connection con = Conexao.getConexao();
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		Tela tela = null;
-		try {
-			preparedStatement = con.prepareStatement(query.toString());
-			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, id, java.sql.Types.INTEGER);
-			resultSet = preparedStatement.executeQuery();
-			while(resultSet.next()){
-				tela = new Tela();
-				tela.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
-				tela.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
-				tela.setNomeArquivo(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME_ARQUIVO, java.sql.Types.VARCHAR)));
-				tela.setDescricao(String.valueOf(SQLUtil.getValorResultSet(resultSet, DESCRICAO, java.sql.Types.VARCHAR)));
-				tela.setIdModulo((Integer) SQLUtil.getValorResultSet(resultSet, ID_MODULO, java.sql.Types.INTEGER));
-				tela.setListaAbas(this.abaDAO.buscarPorIdTela(tela.getId(), con));
-			}
-		}catch (SQLException e) {
-			throw e;
-		}catch (Exception e) {		
-			throw e;
-		}finally{
-			try {
-				preparedStatement.close();
-				con.close();				
-			} catch (SQLException e) {
-				logger.error("erro sqlstate "+e.getSQLState(), e);
-			}
-		}	
-		return tela;
+		
+	
+		return null;
 	}
 
 	@Override
@@ -125,7 +90,7 @@ public class TelaDAOImpl implements TelaDAO, Serializable {
 					tela.setNomeArquivo(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME_ARQUIVO, java.sql.Types.VARCHAR)));
 					tela.setDescricao(String.valueOf(SQLUtil.getValorResultSet(resultSet, DESCRICAO, java.sql.Types.VARCHAR)));
 					tela.setIdModulo((Integer) SQLUtil.getValorResultSet(resultSet, ID_MODULO, java.sql.Types.INTEGER));
-					listaAbas = this.abaDAO.buscarPorIdTela(tela.getId(), con);
+					listaAbas = this.abaDAO.buscarPoridGrupoUsuarioEIdTela(idGrupoUsuario, tela.getId(), con);
 					tela.setListaAbas(listaAbas);
 					tela.setListaComponente(componenteDAO.buscarPorIdTela(tela.getId(),con));
 					listaTela.add(tela);
@@ -140,6 +105,45 @@ public class TelaDAOImpl implements TelaDAO, Serializable {
 				if(preparedStatement != null){
 					preparedStatement.close();
 				}
+				con.close();				
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);
+			}
+		}	
+		return listaTela;
+	}
+
+	@Override
+	public List<Tela> buscarTodas() throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(TELA);
+		query.append(";");		
+		Connection con = Conexao.getConexao();
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		Tela tela = null;
+		List<Tela> listaTela = new ArrayList<Tela>();
+		try {
+			preparedStatement = con.prepareStatement(query.toString());
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				tela = new Tela();
+				tela.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				tela.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+				tela.setNomeArquivo(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME_ARQUIVO, java.sql.Types.VARCHAR)));
+				tela.setDescricao(String.valueOf(SQLUtil.getValorResultSet(resultSet, DESCRICAO, java.sql.Types.VARCHAR)));
+				tela.setIdModulo((Integer) SQLUtil.getValorResultSet(resultSet, ID_MODULO, java.sql.Types.INTEGER));
+				tela.setListaAbas(this.abaDAO.buscarPorIdTela(tela.getId(), con));
+				listaTela.add(tela);
+			}
+		}catch (SQLException e) {
+			throw e;
+		}catch (Exception e) {		
+			throw e;
+		}finally{
+			try {
+				preparedStatement.close();
 				con.close();				
 			} catch (SQLException e) {
 				logger.error("erro sqlstate "+e.getSQLState(), e);

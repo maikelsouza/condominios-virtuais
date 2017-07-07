@@ -28,6 +28,13 @@ public class TelaServiceImpl implements TelaService, Serializable {
 		Collections.sort(listTela);
 		return listTela;
 	}
+
+	@Override
+	public List<Tela> buscarTodas() throws SQLException, Exception {
+		List<Tela> listTela = this.telaDAO.buscarTodas();
+		Collections.sort(listTela);
+		return listTela;
+	}
 	
 	
 

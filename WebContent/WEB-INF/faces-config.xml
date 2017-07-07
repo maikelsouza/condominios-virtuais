@@ -2114,6 +2114,12 @@
    <from-outcome>visualizar</from-outcome>
    <to-view-id>/pages/formVisualizaGrupoUsuarioTela.xhtml</to-view-id>
   </navigation-case>
+  <navigation-case>                  
+   <from-action>#{grupoUsuarioMB.cadastroGrupoUsuario}</from-action>
+   <from-outcome>cadastrar</from-outcome>
+   <to-view-id>/pages/formCadastroGrupoUsuario.xhtml</to-view-id>
+  	<redirect/>
+  </navigation-case>
  </navigation-rule>
  <navigation-rule>                       
   <from-view-id>/pages/formVisualizaGrupoUsuarioTela.xhtml</from-view-id>  
@@ -2169,6 +2175,24 @@
    <from-action>#{componenteMB.cancelarVisualizarTelaComponente}</from-action>
    <from-outcome>cancelar</from-outcome>
    <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formCadastroGrupoUsuario.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{grupoUsuarioMB.listarGrupoUsuarioTela}</from-action>
+   <from-outcome>listar</from-outcome>
+   <to-view-id>/pages/formListaTelaAba.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formListaTelaAba.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{telaMB.salvarTelaAba}</from-action>
+   <from-outcome>salvar</from-outcome>
+   <to-view-id>/pages/formCadastroGrupoUsuario.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
  </navigation-rule>

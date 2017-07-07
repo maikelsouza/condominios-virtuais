@@ -12,5 +12,7 @@ public interface GrupoUsuarioService {
 	public abstract List<GrupoUsuario> buscarPorIdCondominioESituacao(Integer idCondominio, Boolean situacao) throws SQLException, Exception;
 	
 	public abstract List<GrupoUsuario> buscarPorIdCondominio(Integer idCondominio) throws SQLException, Exception;
+	
+	public abstract void salvar(GrupoUsuario grupoUsuario) throws SQLException, Exception;
 
 }

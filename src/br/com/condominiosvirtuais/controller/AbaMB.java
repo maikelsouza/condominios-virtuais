@@ -26,7 +26,7 @@ public class AbaMB implements Serializable {
 	
 	
 	public void inicializaAbaMB(){
-		this.telaVO = (TelaVO) ManagedBeanUtil.getSession(Boolean.FALSE).getAttribute(AtributoSessaoEnum.TELA.getAtributo());
+		this.telaVO = (TelaVO) ManagedBeanUtil.getSession(Boolean.FALSE).getAttribute(AtributoSessaoEnum.TELA_VO.getAtributo());
 		this.listaAba = new ListDataModel<Aba>(this.telaVO.getListaAbasTela());		
 	}
 

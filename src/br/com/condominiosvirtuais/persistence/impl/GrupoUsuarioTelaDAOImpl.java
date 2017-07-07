@@ -13,8 +13,8 @@ import javax.inject.Inject;
 import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.GrupoUsuarioTela;
+import br.com.condominiosvirtuais.persistence.GrupoUsuarioTelaAbaDAO;
 import br.com.condominiosvirtuais.persistence.GrupoUsuarioTelaDAO;
-import br.com.condominiosvirtuais.persistence.TelaAbaDAO;
 import br.com.condominiosvirtuais.util.SQLUtil;
 
 public class GrupoUsuarioTelaDAOImpl implements GrupoUsuarioTelaDAO, Serializable {
@@ -34,7 +34,7 @@ public class GrupoUsuarioTelaDAOImpl implements GrupoUsuarioTelaDAO, Serializabl
 	private static final String ID_TELA = "ID_TELA";
 	
 	@Inject
-	private TelaAbaDAO telaAbaDAO; 
+	private GrupoUsuarioTelaAbaDAO telaAbaDAO; 
 	
 
 	@Override
@@ -113,6 +113,36 @@ public class GrupoUsuarioTelaDAOImpl implements GrupoUsuarioTelaDAO, Serializabl
 			con.rollback();
 			throw e;
 		}
+	}
+
+	@Override
+	public void salvar(GrupoUsuarioTela grupoUsuarioTela, Connection con) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("INSERT INTO "); 
+		query.append(GRUPO_USUARIO_TELA);
+		query.append("("); 
+		query.append(ID_TELA);
+		query.append(",");
+		query.append(ID_GRUPO_USUARIO);
+		query.append(",");
+		query.append(ACAO);
+		query.append(") ");
+		query.append("VALUES(?,?,?)");
+		PreparedStatement statement = null;
+		try {			
+			statement = con.prepareStatement(query.toString());			
+			SQLUtil.setValorPpreparedStatement(statement, 1, grupoUsuarioTela.getIdTela(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 2, grupoUsuarioTela.getIdGrupoUsuario(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 3, grupoUsuarioTela.getAcao(), java.sql.Types.VARCHAR);
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			con.rollback();
+			throw e;
+		} catch (Exception e) {					
+			con.rollback();
+			throw e;	
+		}		
+		
 	}
 	
 	

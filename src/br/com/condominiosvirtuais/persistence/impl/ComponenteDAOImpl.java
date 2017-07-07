@@ -1,5 +1,6 @@
 package br.com.condominiosvirtuais.persistence.impl;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,8 +18,10 @@ import br.com.condominiosvirtuais.persistence.ComponenteDAO;
 import br.com.condominiosvirtuais.persistence.TelaComponenteDAO;
 import br.com.condominiosvirtuais.util.SQLUtil;
 
-public class ComponenteDAOImpl implements ComponenteDAO {
+public class ComponenteDAOImpl implements ComponenteDAO, Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	private static Logger logger = Logger.getLogger(ComponenteDAOImpl.class);
 	
 	private static final String COMPONENTE = "COMPONENTE";

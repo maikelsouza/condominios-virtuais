@@ -11,4 +11,6 @@ public interface TelaDAO {
 	
 	public abstract List<Tela> buscarPorIdGrupoUsuario(Integer idGrupoUsuario) throws SQLException, Exception;
 	
+	public abstract List<Tela> buscarTodas() throws SQLException, Exception;
+	
 }

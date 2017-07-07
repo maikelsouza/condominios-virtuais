@@ -19,9 +19,8 @@ import br.com.condominiosvirtuais.entity.GrupoUsuario;
 import br.com.condominiosvirtuais.entity.Tela;
 import br.com.condominiosvirtuais.enumeration.AtributoSessaoEnum;
 import br.com.condominiosvirtuais.persistence.ModuloDAO;
-import br.com.condominiosvirtuais.service.AbaService;
-import br.com.condominiosvirtuais.service.ComponenteService;
 import br.com.condominiosvirtuais.util.ManagedBeanUtil;
+import br.com.condominiosvirtuais.vo.AbaVO;
 import br.com.condominiosvirtuais.vo.TelaVO;
 
 @Named @SessionScoped
@@ -39,19 +38,26 @@ public class TelaMB implements Serializable {
 	
 	private ListDataModel<TelaVO> listaTelaVO;
 	
+	private ListDataModel<AbaVO> listaAbaVO;
+	
 	@Inject
 	private ModuloDAO moduloDAO;
 		
 	public void inicializaTelaMB() throws SQLException, Exception{
 		this.grupoUsuario = (GrupoUsuario) ManagedBeanUtil.getSession(Boolean.FALSE).getAttribute(AtributoSessaoEnum.GRUPO_USUARIO.getAtributo());
 		this.populaTelaVO();
-				
+	}
+	
+	public void inicializaTelaAbaMB() throws SQLException, Exception{
+		this.telaVO = (TelaVO) ManagedBeanUtil.getSession(Boolean.FALSE).getAttribute(AtributoSessaoEnum.TELA_VO.getAtributo());
+		this.populaAbaVO();
+		
 	}
 	
 	public String visualizarTelaAba(){		
 		try {
 			this.telaVO = (TelaVO) this.listaTelaVO.getRowData();
-			ManagedBeanUtil.getSession(Boolean.TRUE).setAttribute(AtributoSessaoEnum.TELA.getAtributo(),this.telaVO);
+			ManagedBeanUtil.getSession(Boolean.TRUE).setAttribute(AtributoSessaoEnum.TELA_VO.getAtributo(),this.telaVO);
 			if(this.telaVO.getListaAbasTela().isEmpty()){
 				ManagedBeanUtil.setMensagemInfo("msg.tela.semAbas");
 			}
@@ -65,7 +71,7 @@ public class TelaMB implements Serializable {
 	public String visualizarTelaComponente(){		
 		try {
 			this.telaVO = (TelaVO) this.listaTelaVO.getRowData();
-			ManagedBeanUtil.getSession(Boolean.TRUE).setAttribute(AtributoSessaoEnum.TELA.getAtributo(),this.telaVO);
+			ManagedBeanUtil.getSession(Boolean.TRUE).setAttribute(AtributoSessaoEnum.TELA_VO.getAtributo(),this.telaVO);
 			if(this.telaVO.getListaComponentesTela().isEmpty()){
 				ManagedBeanUtil.setMensagemInfo("msg.tela.semComponentes");
 			}
@@ -76,8 +82,30 @@ public class TelaMB implements Serializable {
 		return "visualizar";
 	}
 	
+	public String salvarTelaAba(){
+		
+		return "salvar";
+	}
+	
+	private void populaAbaVO() throws SQLException, Exception{
+		AbaVO abaVO = null;
+		List<AbaVO> listaAbaVO = new ArrayList<AbaVO>();
+		if (this.listaAbaVO == null){
+			for (Aba aba : this.telaVO.getListaAbasTela()) {
+				abaVO = new AbaVO();
+				abaVO.setIdAba(aba.getId());
+				abaVO.setNomeI18nAba(aba.getNomeI18n());
+				abaVO.setDescricaoI18nAba(aba.getDescricaoI18n());
+				listaAbaVO.add(abaVO);
+			}
+			Collections.sort(listaAbaVO);
+			this.listaAbaVO = new ListDataModel<AbaVO>(listaAbaVO);
+		}
+	}
+	
 	private void populaTelaVO() throws SQLException, Exception{
-		TelaVO telaVO = null;List<TelaVO> listaTelaVO = new ArrayList<TelaVO>();
+		TelaVO telaVO = null;
+		List<TelaVO> listaTelaVO = new ArrayList<TelaVO>();
 		for (Tela tela : this.grupoUsuario.getListaTela()) {
 			telaVO = new TelaVO();
 			telaVO.setIdTela(tela.getId());
@@ -122,7 +150,23 @@ public class TelaMB implements Serializable {
 
 	public void setListaTelaVO(ListDataModel<TelaVO> listaTelaVO) {
 		this.listaTelaVO = listaTelaVO;
-	}	
+	}
+
+	public ListDataModel<AbaVO> getListaAbaVO() {
+		return listaAbaVO;
+	}
+
+	public void setListaAbaVO(ListDataModel<AbaVO> listaAbaVO) {
+		this.listaAbaVO = listaAbaVO;
+	}
+
+	public TelaVO getTelaVO() {
+		return telaVO;
+	}
+
+	public void setTelaVO(TelaVO telaVO) {
+		this.telaVO = telaVO;
+	}		
 	
 
 }

@@ -11,6 +11,8 @@ public interface GrupoUsuarioTelaDAO {
 	public abstract List<GrupoUsuarioTela> buscarPorIdGrupoUsuario(Integer idGrupoUsuario) throws SQLException, Exception;
 	
 	public abstract void salvar(GrupoUsuarioTela grupoUsuarioTela) throws SQLException, Exception;
+
+	public abstract void salvar(GrupoUsuarioTela grupoUsuarioTela,  Connection con) throws SQLException, Exception;
 	
 	public abstract void excluir(Integer idGrupoUsuarioTela) throws SQLException, Exception;
 	

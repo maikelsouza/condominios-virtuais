@@ -13,15 +13,23 @@ public class TelaVO implements Comparable<TelaVO>{
 	
 	private String nomeI18nTela;
 	
+	private String nomeTela;
+	
 	private String nomeI18nModulo;
 	
 	private String descricaoI18nTela;
 	
+	private String descricaoTela;
+	
 	private List<Aba> listaAbasTela;
 	
 	private List<Componente> listaComponentesTela;
+	
+	private Boolean checada;
+	
+	private String acao;
 
-	public Integer getId() {
+	public Integer getId() {		
 		return id;
 	}
 
@@ -76,6 +84,38 @@ public class TelaVO implements Comparable<TelaVO>{
 
 	public void setListaComponentesTela(List<Componente> listaComponentesTela) {
 		this.listaComponentesTela = listaComponentesTela;
+	}	
+
+	public Boolean getChecada() {
+		return checada;
+	}
+
+	public void setChecada(Boolean checada) {
+		this.checada = checada;
+	}	
+
+	public String getNomeTela() {
+		return nomeTela;
+	}
+
+	public void setNomeTela(String nomeTela) {
+		this.nomeTela = nomeTela;
+	}
+
+	public String getDescricaoTela() {
+		return descricaoTela;
+	}
+
+	public void setDescricaoTela(String descricaoTela) {
+		this.descricaoTela = descricaoTela;
+	}	
+
+	public String getAcao() {
+		return acao;
+	}
+
+	public void setAcao(String acao) {
+		this.acao = acao;
 	}
 
 	@Override
