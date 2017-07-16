@@ -8,7 +8,7 @@ import br.com.condominiosvirtuais.entity.GrupoUsuarioTelaAba;
 
 public interface GrupoUsuarioTelaAbaDAO {
 	
-	public abstract void salvar(GrupoUsuarioTelaAba telaAba, Connection con) throws SQLException, Exception;
+	public abstract void salvar(GrupoUsuarioTelaAba grupoUsuarioTelaAba, Connection con) throws SQLException, Exception;
 	
 	public abstract void excluirPorIdTela(Integer idTela, Connection con) throws SQLException, Exception;
 	

@@ -34,7 +34,7 @@ public class GrupoUsuarioTelaDAOImpl implements GrupoUsuarioTelaDAO, Serializabl
 	private static final String ID_TELA = "ID_TELA";
 	
 	@Inject
-	private GrupoUsuarioTelaAbaDAO telaAbaDAO; 
+	private GrupoUsuarioTelaAbaDAO grupoUsuarioTelaAbaDAO; 
 	
 
 	@Override
@@ -96,7 +96,7 @@ public class GrupoUsuarioTelaDAOImpl implements GrupoUsuarioTelaDAO, Serializabl
 		try {
 			List<GrupoUsuarioTela> listaGrupoUsuarioTela = this.buscarPorIdGrupoUsuario(idGrupoUsuario,con);
 			for (GrupoUsuarioTela grupoUsuarioTela : listaGrupoUsuarioTela) {
-				this.telaAbaDAO.excluirPorIdTela(grupoUsuarioTela.getIdTela(), con);
+				this.grupoUsuarioTelaAbaDAO.excluirPorIdTela(grupoUsuarioTela.getIdTela(), con);
 			}
 			query.append("DELETE FROM ");
 			query.append(GRUPO_USUARIO_TELA);

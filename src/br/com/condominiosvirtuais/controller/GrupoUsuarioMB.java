@@ -9,7 +9,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Instance;
-import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
@@ -29,6 +28,7 @@ import br.com.condominiosvirtuais.service.GrupoUsuarioService;
 import br.com.condominiosvirtuais.service.TelaService;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
 import br.com.condominiosvirtuais.util.ManagedBeanUtil;
+import br.com.condominiosvirtuais.vo.AbaVO;
 import br.com.condominiosvirtuais.vo.TelaVO;
 
 @Named @SessionScoped
@@ -64,11 +64,23 @@ public class GrupoUsuarioMB implements Serializable {
 	
 	private Condominio condominio = null; 
 	
+	private TelaVO telaVO = null;
+	
+	private Boolean checadoTodos = null;
+	
+
+	
+	public void iniciarTelaVO (){
+		this.telaVO = (TelaVO) ManagedBeanUtil.getSession(Boolean.FALSE).getAttribute(AtributoSessaoEnum.TELA_VO.getAtributo());
+	}
+	
 		
 	@PostConstruct
 	public void inciarGrupoUsuarioMB(){
 		this.grupoUsuario = new GrupoUsuario();
 		this.condominio = new Condominio();
+		this.listaSICondominios = this.condominioMB.get().buscarListaCondominiosAtivos();
+		this.checadoTodos = Boolean.FALSE;
 		this.popularSituacao();
 	}	
 	
@@ -132,9 +144,9 @@ public class GrupoUsuarioMB implements Serializable {
 		return "visualizar";
 	}
 	
-	public String listarGrupoUsuarioTela() {		
+	public String listarGrupoUsuarioTelaAba() {		
 		try {
-			TelaVO telaVO = (TelaVO) this.listaTelaVO.getRowData();
+			telaVO = (TelaVO) this.listaTelaVO.getRowData();
 			List<Aba> listaAbasTela = abaService.buscarPorIdTela(telaVO.getIdTela());
 			telaVO.setListaAbasTela(listaAbasTela);
 			ManagedBeanUtil.getSession(Boolean.TRUE).setAttribute(AtributoSessaoEnum.TELA_VO.getAtributo(),telaVO);
@@ -148,9 +160,9 @@ public class GrupoUsuarioMB implements Serializable {
 		return "listar";
 	}	
 	
-	public void salvarGrupoUsuario(){
+	public String salvarGrupoUsuario(){
 		try {
-			Iterator<TelaVO> iteratorTelaVO = listaTelaVO.iterator();
+			Iterator<TelaVO> iteratorTelaVO = this.listaTelaVO.iterator();
 			List<TelaVO> listaTelaVO = new ArrayList<TelaVO>();
 			while (iteratorTelaVO.hasNext()) {
 				TelaVO telaVO = iteratorTelaVO.next();
@@ -162,6 +174,9 @@ public class GrupoUsuarioMB implements Serializable {
 			this.grupoUsuario.setListaTelaAcesso(listaTelaVO);
 			this.grupoUsuario.setSituacao(GrupoUsuarioSituacaoEnum.ATIVO.getSituacao());
 			this.grupoUsuarioService.salvar(this.grupoUsuario);
+			this.listaTelaVO = new ListDataModel<TelaVO>();
+			this.grupoUsuario = new GrupoUsuario();
+			ManagedBeanUtil.setMensagemInfo("msg.grupoUsuario.salvoSucesso");
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
@@ -169,6 +184,7 @@ public class GrupoUsuarioMB implements Serializable {
 			logger.error("", e);
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage());	
 		}
+		return "salvar";
 	}
 	
 	
@@ -181,21 +197,36 @@ public class GrupoUsuarioMB implements Serializable {
 			telaVO.setIdTela(tela.getId());
 			telaVO.setDescricaoI18nTela(tela.getDescricaoI18n());
 			telaVO.setNomeI18nTela(tela.getNomeI18n());
-			telaVO.setListaAbasTela(new ArrayList<Aba>(tela.getListaAbas()));
+			telaVO.setListaAbasVOTela(this.popularAbaVO(tela));
 		//	telaVO.setListaComponentesTela(new ArrayList<Componente>(tela.getListaComponentes()));
 			listaTelaVO.add(telaVO);
 		}
 		this.listaTelaVO = new ListDataModel<TelaVO>(listaTelaVO);
 	}
 	
-	
-	
-	public void salvarGrupoUsuario2(ValueChangeEvent A){
-		System.out.println("MAIKEL");
+	private List<AbaVO> popularAbaVO(Tela tela){
+		List<AbaVO> listaAbaVO = new ArrayList<AbaVO>();
+		AbaVO abaVO = null;
+		for (Aba aba : tela.getListaAbas()) {
+			abaVO = new AbaVO();
+			abaVO.setIdAba(aba.getIdTela());
+			abaVO.setNomeI18nAba(aba.getNomeI18n());
+			abaVO.setDescricaoI18nAba(aba.getDescricaoI18n());
+			listaAbaVO.add(abaVO);
+		}
+		return listaAbaVO;
 	}
 	
-	public List<SelectItem> getListaSICondominios() {
-		this.listaSICondominios = this.condominioMB.get().buscarListaCondominiosAtivos();
+	
+	public void checarTodosCheckbox(){
+		Iterator<TelaVO> iteratorTelaVO = listaTelaVO.iterator();
+		while (iteratorTelaVO.hasNext()) {
+			TelaVO telaVO = iteratorTelaVO.next();
+			telaVO.setChecada(this.checadoTodos);
+		}		
+	}
+	
+	public List<SelectItem> getListaSICondominios() {		
 		return listaSICondominios;
 	}
 	
@@ -236,7 +267,7 @@ public class GrupoUsuarioMB implements Serializable {
 	}
 	
 	public List<SelectItem> getListaCondominios() {		
-		this.listaSICondominios = this.condominioMB.get().buscarListaCondominiosAtivos();
+		
 		return this.listaSICondominios;
 	}		
 
@@ -254,7 +285,16 @@ public class GrupoUsuarioMB implements Serializable {
 
 	public void setListaTelaVO(ListDataModel<TelaVO> listaTelaVO) {
 		this.listaTelaVO = listaTelaVO;
+	}	
+
+	public Boolean getChecadoTodos() {
+		return checadoTodos;
 	}
+
+	public void setChecadoTodos(Boolean checadoTodos) {
+		this.checadoTodos = checadoTodos;
+	}
+
 
 	private void popularSituacao(){
 		this.listaSISituacao = new ArrayList<SelectItem>();

@@ -23,6 +23,8 @@ public class TelaVO implements Comparable<TelaVO>{
 	
 	private List<Aba> listaAbasTela;
 	
+	private List<AbaVO> listaAbasVOTela;
+	
 	private List<Componente> listaComponentesTela;
 	
 	private Boolean checada;
@@ -52,7 +54,7 @@ public class TelaVO implements Comparable<TelaVO>{
 	public void setNomeI18nTela(String nomeI18nTela) {
 		this.nomeI18nTela = nomeI18nTela;
 	}
-
+	                 
 	public String getDescricaoI18nTela() {
 		return descricaoI18nTela;
 	}
@@ -116,6 +118,14 @@ public class TelaVO implements Comparable<TelaVO>{
 
 	public void setAcao(String acao) {
 		this.acao = acao;
+	}	
+
+	public List<AbaVO> getListaAbasVOTela() {
+		return listaAbasVOTela;
+	}
+
+	public void setListaAbasVOTela(List<AbaVO> listaAbasVOTela) {
+		this.listaAbasVOTela = listaAbasVOTela;
 	}
 
 	@Override

@@ -28,28 +28,30 @@
 				<div>
 					<rich:dataTable value="#{telaMB.listaAbaVO}" var="abaVO" rowClasses="odd-row, even-row" rows="20"
 						styleClass="stable" id="tableAbaVO" style="width:100%;" rendered="true">
-						<rich:column>
+						<rich:column style="text-align: center;">
 							<f:facet name="header">
-								 <h:selectManyCheckbox>
-								 	 <f:selectItem itemValue="1" itemLabel="#{msg['todas']}" />
-								 </h:selectManyCheckbox>
+							  <h:selectBooleanCheckbox  rendered="true" title="#{msg['todas']}" value="#{telaMB.checadoTodos}" >
+								 <f:ajax render="tableAbaVO"  listener="#{telaMB.checarTodosCheckbox}"/>
+							 </h:selectBooleanCheckbox>
 							</f:facet>
-							<h:selectBooleanCheckbox value="#{abaVO.checada}"/>
+							<h:selectBooleanCheckbox value="#{abaVO.checada}" rendered="true" >
+								 <f:ajax render="@form"  />
+							 </h:selectBooleanCheckbox>
 						</rich:column>
-						<rich:column sortBy="#{abaVO.nome118n}" sortOrder="#{ordenaGrupoUsuarioMB.descricaoGrupoUsuario}">
+						<rich:column sortBy="#{abaVO.nomeI18nAba}" sortOrder="#{ordenaAbaMB.nomeAba}">
 							<f:facet name="header">
-								<a4j:commandLink value="#{msg['aba.nome']}" render="tableAbaVO" action="#{ordenaGrupoUsuarioMB.ordenarPorDescricaoGrupoUsuario}" />
+								<a4j:commandLink value="#{msg['aba.nome']}" render="tableAbaVO" action="#{ordenaAbaMB.ordenarPorNome}" />
 							</f:facet>
 							<h:outputText value="#{abaVO.nomeI18nAba}" />
 						</rich:column>
-						<rich:column sortBy="#{aba.descricaoI18n}" sortOrder="#{ordenaGrupoUsuarioMB.situacaoGrupoUsuario}">
+						<rich:column sortBy="#{abaVO.descricaoI18nAba}" sortOrder="#{ordenaAbaMB.descricaoAba}">
 							<f:facet name="header">
-								<a4j:commandLink value="#{msg['aba.descricao']}" render="tableAbaVO" action="#{ordenaGrupoUsuarioMB.ordenarPorSituacaoGrupoUsuario}" />
+								<a4j:commandLink value="#{msg['aba.descricao']}" render="tableAbaVO" action="#{ordenaAbaMB.ordenarPorDescricao}" />
 							</f:facet>
 							<h:outputText value="#{abaVO.descricaoI18nAba}" />
 						</rich:column>
 						<f:facet name="footer">
-              				<rich:dataScroller for="tableAbaVO"  fastControls="hide" renderIfSinglePage="false"  />
+              				<rich:dataScroller for="tableAbaVO"  fastControls="hide" renderIfSinglePage="false" />
            				</f:facet>	
 					</rich:dataTable>
 				</div>
@@ -62,8 +64,8 @@
 			</rich:panel>
 
 			<h:panelGrid columns="2">
-				<h:commandButton value="#{msg.botaoSalvar}" action="#{telaMB.salvarTelaAba}" />				
-				<h:commandButton value="#{msg.botaoVoltar}" action="#{telaMB.voltarListarTelaAba}" immediate="true" />
+				<h:commandButton value="#{msg.botaoSalvar}" action="#{telaMB.salvarListaTelaAba}" />				
+				<h:commandButton value="#{msg.botaoVoltar}" action="#{telaMB.voltarListaTelaAba}" immediate="true" />
 			</h:panelGrid>
 		</h:form>
 	</ui:define>

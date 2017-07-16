@@ -14,11 +14,13 @@ import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.GrupoUsuario;
 import br.com.condominiosvirtuais.entity.GrupoUsuarioTela;
-import br.com.condominiosvirtuais.entity.Tela;
+import br.com.condominiosvirtuais.entity.GrupoUsuarioTelaAba;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.persistence.GrupoUsuarioDAO;
+import br.com.condominiosvirtuais.persistence.GrupoUsuarioTelaAbaDAO;
 import br.com.condominiosvirtuais.persistence.GrupoUsuarioTelaDAO;
 import br.com.condominiosvirtuais.util.SQLUtil;
+import br.com.condominiosvirtuais.vo.AbaVO;
 import br.com.condominiosvirtuais.vo.TelaVO;
 
 public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
@@ -29,6 +31,9 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 	
 	@Inject
 	private GrupoUsuarioTelaDAO grupoUsuarioTelaDAO;
+	
+	@Inject
+	private GrupoUsuarioTelaAbaDAO grupoUsuarioTelaAbaDAO;
 
 	private static final String  GRUPO_USUARIO = " GRUPO_USUARIO";
 	
@@ -55,8 +60,6 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 	private static final String FK_GRUPO_USUARIO_ID_ESCRITORIO_CONTABILI_ESCRITORIO_CONTABILI_ID = "FK_GRUPO_USUARIO_ID_ESCRITORIO_CONTABILI_ESCRITORIO_CONTABILI_ID";
 	
 
-	
-		
 	public GrupoUsuario buscarPorIdUsuario(Integer idUsuario) throws SQLException , Exception{
 		StringBuffer query = new StringBuffer();
 		query.append("SELECT * FROM ");
@@ -131,14 +134,13 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 			} catch (SQLException e) {
 				logger.error("erro sqlstate "+e.getSQLState(), e);
 			}
-		}	
-		
+		}			
 	}
-
 
 	@Override
 	public void salvar(GrupoUsuario grupoUsuario) throws SQLException,BusinessException, Exception {
 		GrupoUsuarioTela grupoUsuarioTela = null;
+		GrupoUsuarioTelaAba grupoUsuarioTelaAba = null;
 		StringBuffer query = new StringBuffer();
 		query.append("INSERT INTO "); 
 		query.append(GRUPO_USUARIO);
@@ -178,6 +180,14 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 				grupoUsuarioTela.setIdTela(telaVO.getIdTela());
 				grupoUsuarioTela.setAcao(telaVO.getAcao());
 				this.grupoUsuarioTelaDAO.salvar(grupoUsuarioTela, con);
+				for (AbaVO abaVO : telaVO.getListaAbasVOTela()) {
+					grupoUsuarioTelaAba = new GrupoUsuarioTelaAba();
+					grupoUsuarioTelaAba.setIdAba(abaVO.getIdAba());
+					grupoUsuarioTelaAba.setIdGrupoUsuario(idGrupoUsuario);
+					grupoUsuarioTelaAba.setIdTela(telaVO.getIdTela());
+					grupoUsuarioTelaAba.setAcao(abaVO.getAcao());
+					this.grupoUsuarioTelaAbaDAO.salvar(grupoUsuarioTelaAba, con);
+				}
 			}
 			con.commit();
 		} catch (SQLException e) {					

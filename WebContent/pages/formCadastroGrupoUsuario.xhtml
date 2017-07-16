@@ -8,6 +8,9 @@
 	template="/templates/templatePrincipal.xhtml">
 
 	<ui:define name="conteudo">
+		<f:metadata>
+			<f:event type="preRenderView" listener="#{grupoUsuarioMB.iniciarTelaVO}" />
+		</f:metadata>
 		<h:form id="idFormCadastroGrupoUsuario" styleClass="content">
 			<rich:panel>
 				<f:facet name="header" >
@@ -30,40 +33,42 @@
 					<h:inputText id="idNome" value="#{grupoUsuarioMB.grupoUsuario.nome}" required="true" label="#{msg['grupoUsuario.nome.label']}">
 						<f:validateLength minimum="1" maximum="49" />
 					</h:inputText>
-					<h:inputText id="idDescricao" value="#{grupoUsuarioMB.grupoUsuario.descricao}" label="#{msg['grupoUsuario.descricao.label']}">
+					<h:inputText id="idDescricao" value="#{grupoUsuarioMB.grupoUsuario.descricao}" label="#{msg['grupoUsuario.descricao.label']}" size="40">
 						<f:validateLength maximum="149" />
 					</h:inputText>
 				</h:panelGrid>
 				
-				<rich:panel header="#{msg.listaGrupoUsuario}">
+				<rich:panel header="#{msg.listaTelaGrupoUsuario}">
 				<div>
-					<rich:dataTable value="#{grupoUsuarioMB.listaTelaVO}" var="telaVO" rowClasses="odd-row, even-row" rows="20"
-						styleClass="stable" id="tableTelaVO" style="width:100%;" rendered="true">
-						<rich:column>
+					<rich:dataTable value="#{grupoUsuarioMB.listaTelaVO}" var="telaVO" rowClasses="odd-row, even-row" rows="10"
+						styleClass="stable" id="tableTelaVO" style="width:100%" rendered="true">
+						<rich:column style="text-align: center;">
 							<f:facet name="header">
-								 <h:selectManyCheckbox>
-								 	 <f:selectItem itemValue="1" itemLabel="#{msg['todas']}" />
-								 </h:selectManyCheckbox>
+							<h:selectBooleanCheckbox  rendered="true" title="#{msg['todas']}" value="#{grupoUsuarioMB.checadoTodos}" >
+								 <f:ajax render="tableTelaVO"  listener="#{grupoUsuarioMB.checarTodosCheckbox}"/>
+							 </h:selectBooleanCheckbox>
 							</f:facet>
-							<h:selectBooleanCheckbox value="#{telaVO.checada}"/>
+							<h:selectBooleanCheckbox value="#{telaVO.checada}" rendered="true" >
+								 <f:ajax render="@form"  />
+							 </h:selectBooleanCheckbox>
 						</rich:column>
-						<rich:column sortBy="#{grupoUsuario.nome118n}" sortOrder="#{ordenaGrupoUsuarioMB.descricaoGrupoUsuario}">
-							<f:facet name="header">
-								<a4j:commandLink value="#{msg['tela.nome']}" render="tableTelaVO" action="#{ordenaGrupoUsuarioMB.ordenarPorDescricaoGrupoUsuario}" />
+						<rich:column sortBy="#{telaVO.nomeI18nTela}" sortOrder="#{ordenaTelaMB.nomeTela}">
+							<f:facet name="header">                                                                      
+								<a4j:commandLink value="#{msg['tela.nome']}" render="tableTelaVO"  action="#{ordenaTelaMB.ordenarPorNome}" immediate="true"/>
 							</f:facet>
 							<h:outputText value="#{telaVO.nomeI18nTela}" />
 						</rich:column>
-						<rich:column sortBy="#{tela.descricaoI18n}" sortOrder="#{ordenaGrupoUsuarioMB.situacaoGrupoUsuario}">
+						<rich:column sortBy="#{telaVO.descricaoI18nTela}" sortOrder="#{ordenaTelaMB.descricaoTela}">
 							<f:facet name="header">
-								<a4j:commandLink value="#{msg['tela.descricao']}" render="tableTelaVO" action="#{ordenaGrupoUsuarioMB.ordenarPorSituacaoGrupoUsuario}" />
-							</f:facet>
+								<a4j:commandLink value="#{msg['tela.descricao']}" render="tableTelaVO"  action="#{ordenaTelaMB.ordenarPorDescricao}" immediate="true"/>
+							</f:facet>                                                                              
 							<h:outputText value="#{telaVO.descricaoI18nTela}" />
 						</rich:column>						
 						<rich:column style="width:10%;">
 							<f:facet name="header">
 								<h:outputText value="#{msg.rotuloAcao}" />
 							</f:facet>
-							<h:commandLink value="#{msg.linkListarAbas}" action="#{grupoUsuarioMB.listarGrupoUsuarioTela}" immediate="true" rendered="#{!telaVO.listaAbasTela.isEmpty()}"/>
+							<h:commandLink value="#{msg.linkListarAbas}" action="#{grupoUsuarioMB.listarGrupoUsuarioTelaAba}"  rendered="#{!telaVO.listaAbasVOTela.isEmpty()}"/>
 						</rich:column>
 						<f:facet name="footer">
               				<rich:dataScroller for="tableTelaVO"  fastControls="hide" renderIfSinglePage="false"  />

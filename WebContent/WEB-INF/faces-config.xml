@@ -177,6 +177,16 @@
   <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaGrupoUsuarioMB</managed-bean-class>
   <managed-bean-scope>view</managed-bean-scope>
  </managed-bean>
+ <managed-bean>
+  <managed-bean-name>ordenaTelaMB</managed-bean-name>
+  <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaTelaMB</managed-bean-class>
+  <managed-bean-scope>view</managed-bean-scope>
+ </managed-bean>
+ <managed-bean>
+  <managed-bean-name>ordenaAbaMB</managed-bean-name>
+  <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaAbaMB</managed-bean-class>
+  <managed-bean-scope>view</managed-bean-scope>
+ </managed-bean>
  
  
  <navigation-rule>
@@ -2181,7 +2191,7 @@
  <navigation-rule>                       
   <from-view-id>/pages/formCadastroGrupoUsuario.xhtml</from-view-id>  
   <navigation-case>                  
-   <from-action>#{grupoUsuarioMB.listarGrupoUsuarioTela}</from-action>
+   <from-action>#{grupoUsuarioMB.listarGrupoUsuarioTelaAba}</from-action>
    <from-outcome>listar</from-outcome>
    <to-view-id>/pages/formListaTelaAba.xhtml</to-view-id>
    <redirect/>
@@ -2190,10 +2200,24 @@
  <navigation-rule>                       
   <from-view-id>/pages/formListaTelaAba.xhtml</from-view-id>  
   <navigation-case>                  
-   <from-action>#{telaMB.salvarTelaAba}</from-action>
+   <from-action>#{telaMB.salvarListaTelaAba}</from-action>
    <from-outcome>salvar</from-outcome>
    <to-view-id>/pages/formCadastroGrupoUsuario.xhtml</to-view-id>
    <redirect/>
+  </navigation-case>
+  <navigation-case>                  
+   <from-action>#{telaMB.voltarListaTelaAba}</from-action>
+   <from-outcome>voltar</from-outcome>
+   <to-view-id>/pages/formCadastroGrupoUsuario.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formCadastroGrupoUsuario.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{grupoUsuarioMB.salvarGrupoUsuario}</from-action>
+   <from-outcome>salvar</from-outcome>
+   <to-view-id>/pages/formListaGrupoUsuario.xhtml</to-view-id>
   </navigation-case>
  </navigation-rule>
  

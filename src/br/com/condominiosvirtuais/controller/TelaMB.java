@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.enterprise.context.SessionScoped;
@@ -40,18 +41,20 @@ public class TelaMB implements Serializable {
 	
 	private ListDataModel<AbaVO> listaAbaVO;
 	
+	private Boolean checadoTodos =  Boolean.FALSE;
+	
 	@Inject
 	private ModuloDAO moduloDAO;
 		
-	public void inicializaTelaMB() throws SQLException, Exception{
+	
+	public void inicializaVisualizarGrupoUsuarioTelaMB() throws SQLException, Exception{
 		this.grupoUsuario = (GrupoUsuario) ManagedBeanUtil.getSession(Boolean.FALSE).getAttribute(AtributoSessaoEnum.GRUPO_USUARIO.getAtributo());
 		this.populaTelaVO();
 	}
 	
 	public void inicializaTelaAbaMB() throws SQLException, Exception{
 		this.telaVO = (TelaVO) ManagedBeanUtil.getSession(Boolean.FALSE).getAttribute(AtributoSessaoEnum.TELA_VO.getAtributo());
-		this.populaAbaVO();
-		
+		this.populaAbaVO();		
 	}
 	
 	public String visualizarTelaAba(){		
@@ -82,9 +85,31 @@ public class TelaMB implements Serializable {
 		return "visualizar";
 	}
 	
-	public String salvarTelaAba(){
-		
+	public String salvarListaTelaAba(){
+		Iterator<AbaVO> iteratorAbaVO = listaAbaVO.iterator();
+		List<AbaVO> listaAbaVO = new ArrayList<AbaVO>();
+		while (iteratorAbaVO.hasNext()) {
+			AbaVO abaVO = iteratorAbaVO.next();
+			if(abaVO.getChecada() == Boolean.TRUE){
+				abaVO.setAcao("MAIKEL2");
+				listaAbaVO.add(abaVO);
+			}
+		}
+		this.telaVO.setListaAbasVOTela(listaAbaVO);
+		ManagedBeanUtil.getSession(Boolean.TRUE).setAttribute(AtributoSessaoEnum.TELA_VO.getAtributo(),this.telaVO);
 		return "salvar";
+	}
+	
+	public String voltarListaTelaAba(){
+		return "voltar";
+	}
+	
+	public void checarTodosCheckbox(){
+		Iterator<AbaVO> iteratorAbaVO = listaAbaVO.iterator();
+		while (iteratorAbaVO.hasNext()) {
+			AbaVO abaVO = iteratorAbaVO.next();
+			abaVO.setChecada(this.checadoTodos);
+		}		
 	}
 	
 	private void populaAbaVO() throws SQLException, Exception{
@@ -166,7 +191,17 @@ public class TelaMB implements Serializable {
 
 	public void setTelaVO(TelaVO telaVO) {
 		this.telaVO = telaVO;
+	}
+
+	public Boolean getChecadoTodos() {
+		return checadoTodos;
+	}
+
+	public void setChecadoTodos(Boolean checadoTodos) {
+		this.checadoTodos = checadoTodos;
 	}		
+	
+	
 	
 
 }

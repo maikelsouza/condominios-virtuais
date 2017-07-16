@@ -35,7 +35,7 @@ public class GrupoUsuarioTelaAbaDAOImpl implements GrupoUsuarioTelaAbaDAO, Seria
 	
 
 	@Override
-	public void salvar(GrupoUsuarioTelaAba telaAba, Connection con) throws SQLException, Exception {
+	public void salvar(GrupoUsuarioTelaAba grupoUsuarioTelaAba, Connection con) throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
 		query.append("INSERT INTO "); 
 		query.append(GRUPO_USUARIO_TELA_ABA);
@@ -52,10 +52,10 @@ public class GrupoUsuarioTelaAbaDAOImpl implements GrupoUsuarioTelaAbaDAO, Seria
 		PreparedStatement statement = null;
 		try {			
 			statement = con.prepareStatement(query.toString());
-			SQLUtil.setValorPpreparedStatement(statement, 1, telaAba.getIdTela(), java.sql.Types.INTEGER);			
-			SQLUtil.setValorPpreparedStatement(statement, 2, telaAba.getIdAba(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement, 3, telaAba.getIdGrupoUsuario(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement, 4, telaAba.getAcao(), java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 1, grupoUsuarioTelaAba.getIdTela(), java.sql.Types.INTEGER);			
+			SQLUtil.setValorPpreparedStatement(statement, 2, grupoUsuarioTelaAba.getIdAba(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 3, grupoUsuarioTelaAba.getIdGrupoUsuario(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 4, grupoUsuarioTelaAba.getAcao(), java.sql.Types.VARCHAR);
 			statement.executeUpdate();
 		}catch (SQLException e) {
 			con.rollback();
