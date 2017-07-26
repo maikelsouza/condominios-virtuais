@@ -17,12 +17,16 @@ import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.GestorCondominio;
+import br.com.condominiosvirtuais.entity.GrupoUsuario;
 import br.com.condominiosvirtuais.entity.Usuario;
 import br.com.condominiosvirtuais.entity.UsuarioCondominio;
+import br.com.condominiosvirtuais.entity.UsuarioGrupoUsuario;
 import br.com.condominiosvirtuais.enumeration.TipoGestorCondominioEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
+import br.com.condominiosvirtuais.persistence.GrupoUsuarioDAO;
 import br.com.condominiosvirtuais.persistence.UsuarioCondominioDAO;
 import br.com.condominiosvirtuais.persistence.UsuarioDAO;
+import br.com.condominiosvirtuais.persistence.UsuarioGrupoUsuarioDAO;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
 import br.com.condominiosvirtuais.util.SQLUtil;
 
@@ -65,6 +69,12 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 	
 	@Inject
 	private Instance<GestorCondominioDAOImpl> gestorCondominioDAO = null;
+	
+	@Inject
+	private UsuarioGrupoUsuarioDAO usuarioGrupoUsuarioDAO;
+	
+	@Inject
+	private GrupoUsuarioDAO grupoUsuarioDAO;
 	
 	
 	// Constraint referente a integridade entre uma mensagem e um usuário, ou seja, não será possível excluir um usuário
@@ -518,6 +528,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 		Usuario usuario = null;
 		List<UsuarioCondominio> listaUsuarioCondominio = null;
 		List<Condominio> listaCondominio = null;
+		List<GrupoUsuario> listaGrupoUsuario = new ArrayList<GrupoUsuario>();
 		Condominio condominio = null;
 		try {
 			preparedStatement = con.prepareStatement(query.toString());
@@ -539,6 +550,11 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 				for (UsuarioCondominio usuarioCondominio : listaUsuarioCondominio) {
 					condominio = this.condominioDAO.get().buscarCondominioPorId(usuarioCondominio.getIdCondominio());
 				}
+				List<UsuarioGrupoUsuario> listaUsuarioGrupoUsuario = this.usuarioGrupoUsuarioDAO.buscarPorIdUsuario(usuario.getId());
+				for (UsuarioGrupoUsuario usuarioGrupoUsuario : listaUsuarioGrupoUsuario) {
+					listaGrupoUsuario.add(this.grupoUsuarioDAO.buscarPorId(usuarioGrupoUsuario.getIdGrupoUsuario(), con));
+				}
+				usuario.setListaGrupoUsuario(listaGrupoUsuario);
 				listaCondominio.add(condominio);				
 				usuario.setListaCondominio(listaCondominio);				
 			}

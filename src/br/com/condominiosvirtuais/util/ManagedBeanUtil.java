@@ -9,13 +9,17 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.enterprise.context.Conversation;
+import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.NavigationCase;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -342,6 +346,13 @@ public abstract class ManagedBeanUtil {
 	    }
 	    return somenteNumero;  
 	 }
+	
+	
+	public static Map<String,Set<NavigationCase>> getMapNavigationCase(){
+		FacesContext context = FacesContext.getCurrentInstance();
+		ConfigurableNavigationHandler navigationHandler = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
+		return navigationHandler.getNavigationCases();
+	}
 	
 	
 	public static void abreSessao(Conversation conversation){		

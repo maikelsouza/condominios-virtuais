@@ -317,4 +317,42 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 		return listaGrupoUsuario;
 
 	}
+
+
+	@Override
+	public GrupoUsuario buscarPorId(Integer idGrupoUsuario, Connection con) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(GRUPO_USUARIO);
+		query.append(" WHERE ");
+		query.append(ID);
+		query.append(" = ?");
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		GrupoUsuario grupoUsuario = null;		
+		try {
+			statement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(statement, 1,idGrupoUsuario, java.sql.Types.INTEGER);
+			resultSet = statement.executeQuery();
+			while(resultSet.next()){
+				grupoUsuario = new GrupoUsuario();
+				grupoUsuario.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				grupoUsuario.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+				grupoUsuario.setDescricao(String.valueOf(SQLUtil.getValorResultSet(resultSet, DESCRICAO, java.sql.Types.VARCHAR)));
+				grupoUsuario.setSituacao((Boolean) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.BOOLEAN));
+				grupoUsuario.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
+				grupoUsuario.setIdSindicoProfissional((Integer) SQLUtil.getValorResultSet(resultSet, ID_SINDICO_PROFISSIONAL, java.sql.Types.INTEGER));
+				grupoUsuario.setIdEscritorioContabilidade((Integer) SQLUtil.getValorResultSet(resultSet, ID_ESCRITORIO_CONTABILIDADE, java.sql.Types.INTEGER));
+				this.grupoUsuarioTelaDAO.buscarPorIdGrupoUsuario(grupoUsuario.getId(), con);
+				
+			}
+		}catch (SQLException e) {
+			con.rollback();
+			throw e;			
+		}catch (Exception e) {
+			con.rollback();
+			throw e;
+		}			
+		return grupoUsuario;
+	}
 }

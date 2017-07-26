@@ -5,11 +5,19 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.ConfigurableNavigationHandler;
+import javax.faces.application.NavigationCase;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
@@ -18,6 +26,7 @@ import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.Email;
+import br.com.condominiosvirtuais.entity.GrupoUsuario;
 import br.com.condominiosvirtuais.entity.Usuario;
 import br.com.condominiosvirtuais.enumeration.AtributoSessaoEnum;
 import br.com.condominiosvirtuais.enumeration.UsuarioSituacaoEnum;
@@ -130,7 +139,36 @@ public class LoginMB implements Serializable{
 			}			   
 		}		
 		return usuarioLogadoPertenceUmDosGrupos;
-	}    
+	}
+	
+	public Boolean temAcesso(String action){
+		Boolean encontrou = Boolean.FALSE;
+		StringBuffer fromAction = new StringBuffer("#{principalMB.");
+		fromAction.append(action);
+		fromAction.append("}");		
+		Map<String,Set<NavigationCase>> navigationCases = ManagedBeanUtil.getMapNavigationCase();
+		Collection<Set<NavigationCase>> collectionNavigationCase = navigationCases.values();
+		Iterator<Set<NavigationCase>> iteratorCollectionNavigationCase = collectionNavigationCase.iterator();
+		Set<NavigationCase> setNavigationCase = null;
+		Iterator<NavigationCase> iteratorNavigationCase = null;
+		NavigationCase navigationCase = null;
+		List<GrupoUsuario> listaGrupoUsuario = null;
+		while (iteratorCollectionNavigationCase.hasNext() && !encontrou) {
+			setNavigationCase = iteratorCollectionNavigationCase.next();
+			iteratorNavigationCase = setNavigationCase.iterator();
+			while (iteratorNavigationCase.hasNext() && !encontrou) {
+				navigationCase = iteratorNavigationCase.next();
+				if(navigationCase.getFromAction().equals(fromAction.toString())){
+					encontrou = Boolean.TRUE;
+					listaGrupoUsuario = this.usuario.getListaGrupoUsuario();
+					for (GrupoUsuario grupoUsuario : listaGrupoUsuario) {
+						
+					}
+				}
+			}
+		}
+		return encontrou;
+	}
 	
 	/**
 	 * FIXME: Método criado para não exibir o menu financeiro.

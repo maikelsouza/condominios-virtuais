@@ -55,6 +55,8 @@ public class Usuario {
 	
 	private Integer situacao;
 	
+	private List<GrupoUsuario> listaGrupoUsuario;
+	
 	public Usuario(){
 		this.email = new EmailUsuario();
 	}
@@ -226,7 +228,17 @@ public class Usuario {
 
 	public void setCpf(Long cpf) {
 		this.cpf = cpf;
-	}	
+	}
+
+	public List<GrupoUsuario> getListaGrupoUsuario() {
+		return listaGrupoUsuario;
+	}
+
+	public void setListaGrupoUsuario(List<GrupoUsuario> listaGrupoUsuario) {
+		this.listaGrupoUsuario = listaGrupoUsuario;
+	}
+	
+	
 	
 	
 
