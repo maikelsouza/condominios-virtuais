@@ -15,10 +15,12 @@ import org.apache.log4j.Logger;
 import br.com.condominiosvirtuais.entity.GrupoUsuario;
 import br.com.condominiosvirtuais.entity.GrupoUsuarioTela;
 import br.com.condominiosvirtuais.entity.GrupoUsuarioTelaAba;
+import br.com.condominiosvirtuais.entity.Tela;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.persistence.GrupoUsuarioDAO;
 import br.com.condominiosvirtuais.persistence.GrupoUsuarioTelaAbaDAO;
 import br.com.condominiosvirtuais.persistence.GrupoUsuarioTelaDAO;
+import br.com.condominiosvirtuais.persistence.TelaDAO;
 import br.com.condominiosvirtuais.util.SQLUtil;
 import br.com.condominiosvirtuais.vo.AbaVO;
 import br.com.condominiosvirtuais.vo.TelaVO;
@@ -34,6 +36,9 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 	
 	@Inject
 	private GrupoUsuarioTelaAbaDAO grupoUsuarioTelaAbaDAO;
+	
+	@Inject
+	private TelaDAO telaDAO;
 
 	private static final String  GRUPO_USUARIO = " GRUPO_USUARIO";
 	
@@ -329,13 +334,15 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 		query.append(" = ?");
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
-		GrupoUsuario grupoUsuario = null;		
+		GrupoUsuario grupoUsuario = null;
+		List<TelaVO> listaTelaVO = null;
+		Tela tela = null;
 		try {
 			statement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(statement, 1,idGrupoUsuario, java.sql.Types.INTEGER);
 			resultSet = statement.executeQuery();
 			while(resultSet.next()){
-				grupoUsuario = new GrupoUsuario();
+				grupoUsuario = new GrupoUsuario();				
 				grupoUsuario.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
 				grupoUsuario.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
 				grupoUsuario.setDescricao(String.valueOf(SQLUtil.getValorResultSet(resultSet, DESCRICAO, java.sql.Types.VARCHAR)));
@@ -343,7 +350,13 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 				grupoUsuario.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
 				grupoUsuario.setIdSindicoProfissional((Integer) SQLUtil.getValorResultSet(resultSet, ID_SINDICO_PROFISSIONAL, java.sql.Types.INTEGER));
 				grupoUsuario.setIdEscritorioContabilidade((Integer) SQLUtil.getValorResultSet(resultSet, ID_ESCRITORIO_CONTABILIDADE, java.sql.Types.INTEGER));
-				this.grupoUsuarioTelaDAO.buscarPorIdGrupoUsuario(grupoUsuario.getId(), con);
+				List<GrupoUsuarioTela> listaGrupoUsuarioTela = this.grupoUsuarioTelaDAO.buscarPorIdGrupoUsuario(grupoUsuario.getId(), con);
+				listaTelaVO = new ArrayList<TelaVO>();
+				for (GrupoUsuarioTela grupoUsuarioTela : listaGrupoUsuarioTela) {
+					tela = telaDAO.buscarPorId(grupoUsuarioTela.getIdTela(),con);
+					listaTelaVO.add(popularTelaVO(tela));
+				}
+				grupoUsuario.setListaTelaAcesso(listaTelaVO);
 				
 			}
 		}catch (SQLException e) {
@@ -354,5 +367,12 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 			throw e;
 		}			
 		return grupoUsuario;
+	}
+	
+	private TelaVO popularTelaVO(Tela tela){
+		TelaVO telaVO = new TelaVO();
+		telaVO.setIdTela(tela.getId());
+		telaVO.setNomeArquivoTela(tela.getNomeArquivo());		
+		return telaVO;
 	}
 }

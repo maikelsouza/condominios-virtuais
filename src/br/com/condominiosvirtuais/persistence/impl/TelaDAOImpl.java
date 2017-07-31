@@ -51,10 +51,37 @@ public class TelaDAOImpl implements TelaDAO, Serializable {
 	
 
 	@Override
-	public Tela buscarPorId(Integer id) throws SQLException, Exception {
-		
-	
-		return null;
+	public Tela buscarPorId(Integer id, Connection con) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(TELA);
+		query.append(" WHERE ");		
+		query.append(ID);		
+		query.append(" = ?");		
+		query.append(";");
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		Tela tela = null;
+		try {
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, id, java.sql.Types.INTEGER);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				tela = new Tela();
+				tela.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				tela.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+				tela.setNomeArquivo(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME_ARQUIVO, java.sql.Types.VARCHAR)));
+				tela.setDescricao(String.valueOf(SQLUtil.getValorResultSet(resultSet, DESCRICAO, java.sql.Types.VARCHAR)));
+				tela.setIdModulo((Integer) SQLUtil.getValorResultSet(resultSet, ID_MODULO, java.sql.Types.INTEGER));
+				tela.setListaAbas(this.abaDAO.buscarPorIdTela(tela.getId(), con));
+				
+			}
+		}catch (SQLException e) {
+			throw e;
+		}catch (Exception e) {		
+			throw e;
+		}	
+		return tela;	
 	}
 
 	@Override

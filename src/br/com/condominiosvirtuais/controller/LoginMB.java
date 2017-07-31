@@ -14,10 +14,8 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
@@ -141,28 +139,37 @@ public class LoginMB implements Serializable{
 		return usuarioLogadoPertenceUmDosGrupos;
 	}
 	
-	public Boolean temAcesso(String action){
+	public Boolean temAcesso(String... actions){	
 		Boolean encontrou = Boolean.FALSE;
 		StringBuffer fromAction = new StringBuffer("#{principalMB.");
-		fromAction.append(action);
-		fromAction.append("}");		
-		Map<String,Set<NavigationCase>> navigationCases = ManagedBeanUtil.getMapNavigationCase();
-		Collection<Set<NavigationCase>> collectionNavigationCase = navigationCases.values();
-		Iterator<Set<NavigationCase>> iteratorCollectionNavigationCase = collectionNavigationCase.iterator();
-		Set<NavigationCase> setNavigationCase = null;
-		Iterator<NavigationCase> iteratorNavigationCase = null;
-		NavigationCase navigationCase = null;
-		List<GrupoUsuario> listaGrupoUsuario = null;
-		while (iteratorCollectionNavigationCase.hasNext() && !encontrou) {
-			setNavigationCase = iteratorCollectionNavigationCase.next();
-			iteratorNavigationCase = setNavigationCase.iterator();
-			while (iteratorNavigationCase.hasNext() && !encontrou) {
-				navigationCase = iteratorNavigationCase.next();
-				if(navigationCase.getFromAction().equals(fromAction.toString())){
-					encontrou = Boolean.TRUE;
-					listaGrupoUsuario = this.usuario.getListaGrupoUsuario();
-					for (GrupoUsuario grupoUsuario : listaGrupoUsuario) {
-						
+		for (String action : actions) {
+			fromAction.append(action);
+			fromAction.append("}");		
+			Map<String,Set<NavigationCase>> navigationCases = ManagedBeanUtil.getMapNavigationCase();
+			Collection<Set<NavigationCase>> collectionNavigationCase = navigationCases.values();
+			Iterator<Set<NavigationCase>> iteratorCollectionNavigationCase = collectionNavigationCase.iterator();
+			Set<NavigationCase> setNavigationCase = null;
+			Iterator<NavigationCase> iteratorNavigationCase = null;
+			Iterator<GrupoUsuario> iteratorGrupoUsuario = null;
+			NavigationCase navigationCase = null;
+			GrupoUsuario grupoUsuario = null;
+			// Flag criada para garantir que não ir executar o final do primeiro e segundo while caso a view não esteja na lista de telas que os grupos de usuários tem acesso
+			Boolean continuarProcurandoNesseForm = Boolean.TRUE;
+			while (iteratorCollectionNavigationCase.hasNext() && continuarProcurandoNesseForm) {
+				setNavigationCase = iteratorCollectionNavigationCase.next();
+				iteratorNavigationCase = setNavigationCase.iterator();
+				while (iteratorNavigationCase.hasNext() && continuarProcurandoNesseForm) {
+					navigationCase = iteratorNavigationCase.next();
+					if(fromAction.toString().equals(navigationCase.getFromAction())){
+						iteratorGrupoUsuario = this.usuario.getListaGrupoUsuario().iterator();
+						while (iteratorGrupoUsuario.hasNext()) {
+							grupoUsuario = iteratorGrupoUsuario.next();
+							encontrou = grupoUsuario.temAcesso2(navigationCase.getToViewId(FacesContext.getCurrentInstance()));
+							if(encontrou){
+								return encontrou;
+							}
+						}
+						continuarProcurandoNesseForm = Boolean.FALSE;
 					}
 				}
 			}

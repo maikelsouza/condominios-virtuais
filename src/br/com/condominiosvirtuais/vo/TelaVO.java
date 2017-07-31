@@ -15,6 +15,8 @@ public class TelaVO implements Comparable<TelaVO>{
 	
 	private String nomeTela;
 	
+	private String nomeArquivoTela;
+	
 	private String nomeI18nModulo;
 	
 	private String descricaoI18nTela;
@@ -126,6 +128,14 @@ public class TelaVO implements Comparable<TelaVO>{
 
 	public void setListaAbasVOTela(List<AbaVO> listaAbasVOTela) {
 		this.listaAbasVOTela = listaAbasVOTela;
+	}	
+
+	public String getNomeArquivoTela() {
+		return nomeArquivoTela;
+	}
+
+	public void setNomeArquivoTela(String nomeArquivoTela) {
+		this.nomeArquivoTela = nomeArquivoTela;
 	}
 
 	@Override

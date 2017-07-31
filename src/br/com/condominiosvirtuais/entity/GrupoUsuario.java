@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.faces.context.FacesContext;
+
 import br.com.condominiosvirtuais.enumeration.GrupoUsuarioSituacaoEnum;
 import br.com.condominiosvirtuais.enumeration.TipoGrupoUsuarioEnum;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
@@ -170,6 +172,17 @@ public class GrupoUsuario implements Serializable {
 
 	public void setListaTelaAcesso(List<TelaVO> listaTelaAcesso) {
 		this.listaTelaAcesso = listaTelaAcesso;
+	}
+	
+	public Boolean temAcesso2(String caminhoPagina){		
+		String pagina = caminhoPagina.substring(7, caminhoPagina.length());
+		for (TelaVO telaVO : listaTelaAcesso) {
+			if(telaVO.getNomeArquivoTela().equals(pagina)){
+				return Boolean.TRUE;		
+			}
+		}
+		return Boolean.FALSE;
+		
 	}
 
 	private Boolean contemTela(String tela, List<String> listaTelas){
