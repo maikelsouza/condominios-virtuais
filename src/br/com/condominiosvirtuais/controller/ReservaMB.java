@@ -3,13 +3,16 @@ package br.com.condominiosvirtuais.controller;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UISelectOne;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
@@ -140,10 +143,23 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 	}
 	
 	public String salvarReserva(){
-		try{							
+		try{
 			this.reserva.getCondomino().setId(this.condomino.getId());			
 			this.reserva.setSituacao(ReservaSituacaoEnum.PENDENTE.getSituacao());
 			this.condominio = this.condominioService.buscarPorCondomino(this.condomino);
+			// TODO: Condição temporária criada para  
+			if(this.condominio.getId() == 8){
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(new Date());
+				calendar.add(Calendar.DAY_OF_YEAR, 30);
+				if(this.reserva.getData().after(calendar.getTime())){
+					FacesMessage facesMessage = new FacesMessage("O período de reserva não pode ser superior a 30 dias de antecedência");
+					facesMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
+					FacesContext context  = FacesContext.getCurrentInstance();
+					context.addMessage(null, facesMessage);
+					return null;
+				}
+			}
 			this.populaNomeMeusAmbiente();
 			this.reservaService.solicitar(this.reserva,this.condominio.getSindicoGeral().getEmail().getEmail(),this.condominio.getSindicoGeral().getNome() );
 			this.popularListaMinhasReservas();
