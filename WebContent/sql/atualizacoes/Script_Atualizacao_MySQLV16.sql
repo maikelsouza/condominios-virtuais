@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS MODULO(
 	ID integer NOT NULL AUTO_INCREMENT,
 	NOME VARCHAR(150) NOT NULL,
 	DESCRICAO VARCHAR(150) NOT NULL,
+	CONSTRAINT UQ_MODULO_NOME UNIQUE (NOME),
 	PRIMARY KEY(ID)
 );
 
@@ -28,7 +29,7 @@ CREATE TABLE IF NOT EXISTS TELA(
 	DESCRICAO VARCHAR(150) NOT NULL,
 	NOME_ARQUIVO VARCHAR(150) NOT NULL,
 	ID_MODULO integer NOT NULL,
-	CONSTRAINT FK_TELA_ID_MODULO_MODULO_ID FOREIGN KEY (ID_MODULO) REFERENCES MODULO(ID),
+	CONSTRAINT FK_TELA_ID_MODULO_MODULO_ID FOREIGN KEY (ID_MODULO) REFERENCES MODULO(ID),	
 	PRIMARY KEY(ID)
 );
 
@@ -99,17 +100,17 @@ CREATE TABLE IF NOT EXISTS USUARIO_GRUPO_USUARIO(
 
 
 INSERT INTO MODULO VALUES
-(DEFAULT,'arquivoDocumentos','arquivoDocumentosDescricao'),
-(DEFAULT,'arquivoImagens','arquivoImagensDescricao'),
-(DEFAULT,'cadastroCondominio','cadastroCondominioDescricao'),
-(DEFAULT,'cadastroBloco','cadastroBlocoDescricao'),
-(DEFAULT,'cadastroUnidade','cadastroUnidadeDescricao'),
-(DEFAULT,'cadastroCondomino','cadastroCondominoDescricao'),
-(DEFAULT,'cadastroAmbiente','cadastroAmbienteDescricao'),
-(DEFAULT,'cadastroFuncionario','cadastroFuncionarioDescricao'),
-(DEFAULT,'cadastroObra','cadastroObraDescricao'),
-(DEFAULT,'cadastroSindicoProfissional','cadastroSindicoProfissionalDescricao'),
-(DEFAULT,'cadastroEscritorioContabilidade','cadastroEscritorioContabilidadeDescricao'),
+(DEFAULT,'documentos','documentosDescricao'),
+(DEFAULT,'imagens','imagensDescricao'),
+(DEFAULT,'condominio','condominioDescricao'),
+(DEFAULT,'bloco','blocoDescricao'),
+(DEFAULT,'unidade','unidadeDescricao'),
+(DEFAULT,'condomino','condominoDescricao'),
+(DEFAULT,'ambiente','ambienteDescricao'),
+(DEFAULT,'funcionario','funcionarioDescricao'),
+(DEFAULT,'obra','obraDescricao'),
+(DEFAULT,'sindicoProfissional','sindicoProfissionalDescricao'),
+(DEFAULT,'escritorioContabilidade','escritorioContabilidadeDescricao'),
 (DEFAULT,'veiculo','veiculoDescricao'),
 (DEFAULT,'mensagem','mensagemDescricao'),
 (DEFAULT,'enquete','enqueteDescricao'),
@@ -118,6 +119,12 @@ INSERT INTO MODULO VALUES
 (DEFAULT,'receitaDespesa','cadastroReceitaDespesaDescricao'),
 (DEFAULT,'chamado','chamadoDescricao'),
 (DEFAULT,'visitante','visitanteDescricao'),
+(DEFAULT,'reserva','reservaDescricao'),
+(DEFAULT,'agendamento','agendamentoDescricao'),
+(DEFAULT,'garagem','garagemDescricao'),
+(DEFAULT,'grupoUsuario','grupoUsuarioDescricao'),
+(DEFAULT,'meuPainel','meuPainelDescricao');
+
 
 
 
@@ -147,6 +154,7 @@ INSERT INTO TELA VALUES
 (DEFAULT,'formListaAmbiente','formListaAmbienteDescricao','formListaAmbienteCondominio.xhtml',7),
 (DEFAULT,'formEditaAmbiente','formEditaAmbienteDescricao','formEditaAmbienteCondominio.xhtml',7),
 (DEFAULT,'formVisualizaAmbiente','formVisualizaAmbienteDescricao','formVisualizaAmbienteCondominio.xhtml',7),
+(DEFAULT,'formCadastroItemAmbiente','formCadastroItemAmbienteDescricao','formCadastroItemAmbiente.xhtml',7),
 (DEFAULT,'formCadastroFuncionario','formCadastroFuncionarioDescricao','formCadastroFuncionarioCondominio.xhtml',8),
 (DEFAULT,'formListaFuncionario','formListaFuncionarioDescricao','formListaFuncionarioCondominio.xhtml',8),
 (DEFAULT,'formEditaFuncionario','formEditaFuncionarioDescricao','formEditaFuncionarioCondominio.xhtml',8),
@@ -155,6 +163,7 @@ INSERT INTO TELA VALUES
 (DEFAULT,'formVisualizaObra','formVisualizaObraDescricao','formVisualizaObra.xhtml',9),
 (DEFAULT,'formEditaObra','formEditaObraDescricao','formEditaObra.xhtml',9),
 (DEFAULT,'formVisualizaObra','formVisualizaObraDescricao','formVisualizaObra.xhtml',9),
+(DEFAULT,'formListaObra','formListaObraDescricao','formListaObra.xhtml',9),
 (DEFAULT,'formCadastroSindicoProfissional','formCadastroSindicoProfissionalDescricao','formCadastroSindicoProfissional.xhtml',10),
 (DEFAULT,'formListaSindicoProfissional','formListaSindicoProfissionalDescricao','formListaSindicoProfissional.xhtml',10),
 (DEFAULT,'formEditaSindicoProfissional','formEditaSindicoProfissionalDescricao','formEditaSindicoProfissional.xhtml',10),
@@ -167,9 +176,11 @@ INSERT INTO TELA VALUES
 (DEFAULT,'formEscreverMensagem','formEscreverMensagemDescricao','formEscreverMensagem.xhtml',13),
 (DEFAULT,'formFaleComSindico','formFaleComSindicoDescricao','formFaleComSindico.xhtml',13),
 (DEFAULT,'formVerMensagemEnviada','formVerMensagemEnviadaDescricao','formVerMensagemEnviada.xhtml',13),
+(DEFAULT,'formVerMensagemRecebida','formVerMensagemRecebidaDescricao','formVerMensagemRecebida.xhtml',13),
 (DEFAULT,'formListaEnquete','formListaEnqueteDescricao','formListaEnquete.xhtml',14),
 (DEFAULT,'formVisualizaEnquete','formVisualizaEnqueteDescricao','formVisualizaEnquete.xhtml',14),
 (DEFAULT,'formCadastroEnquete','formCadastroEnqueteDescricao','formCadastroEnquete.xhtml',14),
+(DEFAULT,'formVotoEnquete','formVotoEnqueteDescricao','formVotoEnquete.xhtml',14),
 (DEFAULT,'formListaClassificados','formListaClassificadosDescricao','formListaClassificados.xhtml',15),
 (DEFAULT,'formCadastroClassificados','formCadastroClassificadosDescricao','formCadastroClassificados.xhtml',15),
 (DEFAULT,'formEditaClassificados','formEditaClassificadosDescricao','formEditaClassificados.xhtml',15),
@@ -185,9 +196,21 @@ INSERT INTO TELA VALUES
 (DEFAULT,'formListaVisitante','formListaVisitanteDescricao','formListaVisitante.xhtml',19),
 (DEFAULT,'formListaVisita','formListaVisitaDescricao','formListaVisita.xhtml',19),
 (DEFAULT,'formCadastroVisitante','formCadastroVisitanteDescricao','formCadastroVisitante.xhtml',19),
-
-http://app.condominiosvirtuais.com.br/CondominiosVirtuais/pages/formCadastroVisitante.xhtml
-http://app.condominiosvirtuais.com.br/CondominiosVirtuais/pages/formListaVisita.xhtml
+(DEFAULT,'formVisualizaPrestadorServico','formVisualizaPrestadorServicoDescricao','formVisualizaPrestadorServico.xhtml',19),
+(DEFAULT,'formCadastroReserva','formCadastroReservaDescricao','formCadastroReserva.xhtml',20),
+(DEFAULT,'formDarAndamentoChamado','formDarAndamentoChamadoDescricao','formDarAndamentoChamado.xhtml',20),
+(DEFAULT,'formEditaReserva','formEditaReservaDescricao','formEditaReserva.xhtml',20),
+(DEFAULT,'formListaReserva','formListaReservaDescricao','formListaReserva.xhtml',20),
+(DEFAULT,'formAprovaReserva','formAprovaReservaDescricao','formAprovaReserva.xhtml',20),
+(DEFAULT,'formCadastroListaReserva','formCadastroListaReservaDescricao','formCadastroListaReserva.xhtml',20),
+(DEFAULT,'formAprovaAgendamento','formAprovaAgendamentoDescricao','formAprovaAgendamento.xhtml',21),
+(DEFAULT,'formListaAgendamento','formListaAgendamentoDescricao','formListaAgendamento.xhtml',21),
+(DEFAULT,'formCadastroAgendamento','formCadastroAgendamentoDescricao','formCadastroAgendamento.xhtml',21),
+(DEFAULT,'formCadastroGaragem','formCadastroGaragemDescricao','formCadastroGaragem.xhtml',22),
+(DEFAULT,'formListaGaragem','formListaGaragemDescricao','formListaGaragem.xhtml',22),
+(DEFAULT,'formCadastroGrupoUsuario','formCadastroGrupoUsuarioDescricao','formCadastroGrupoUsuario.xhtml',23),
+(DEFAULT,'formListaGrupoUsuario','formListaGrupoUsuarioDescricao','formListaGrupoUsuario.xhtml',23),
+(DEFAULT,'formMeuPainel','formMeuPainelDescricao','formMeuPainel.xhtml',24),
 
 
 
