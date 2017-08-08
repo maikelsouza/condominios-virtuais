@@ -141,8 +141,8 @@ public class LoginMB implements Serializable{
 	
 	public Boolean temAcesso(String... actions){	
 		Boolean encontrou = Boolean.FALSE;
-		StringBuffer fromAction = new StringBuffer("#{principalMB.");
 		for (String action : actions) {
+			StringBuffer fromAction = new StringBuffer("#{principalMB.");
 			fromAction.append(action);
 			fromAction.append("}");		
 			Map<String,Set<NavigationCase>> navigationCases = ManagedBeanUtil.getMapNavigationCase();
@@ -159,7 +159,7 @@ public class LoginMB implements Serializable{
 				setNavigationCase = iteratorCollectionNavigationCase.next();
 				iteratorNavigationCase = setNavigationCase.iterator();
 				while (iteratorNavigationCase.hasNext() && continuarProcurandoNesseForm) {
-					navigationCase = iteratorNavigationCase.next();
+					navigationCase = iteratorNavigationCase.next();					
 					if(fromAction.toString().equals(navigationCase.getFromAction())){
 						iteratorGrupoUsuario = this.usuario.getListaGrupoUsuario().iterator();
 						while (iteratorGrupoUsuario.hasNext()) {

@@ -16,8 +16,6 @@ public class GrupoUsuarioTelaAba {
 	private Integer idTela;
 	
 	private Integer idAba;
-	
-	private String  acao;
 
 	public Integer getId() {
 		return id;
@@ -49,16 +47,6 @@ public class GrupoUsuarioTelaAba {
 
 	public void setIdAba(Integer idAba) {
 		this.idAba = idAba;
-	}
-
-	public String getAcao() {
-		return acao;
-	}
-
-	public void setAcao(String acao) {
-		this.acao = acao;
-	}
-	
-	
+	}	
 
 }

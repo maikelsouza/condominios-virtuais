@@ -540,13 +540,13 @@
   </navigation-case> 
   <navigation-case>
    <from-action>#{principalMB.listaPreCadastroBoleto}</from-action>
-   <from-outcome>listaPreCadastroBoleto</from-outcome>
+   <from-outcome>listarPreCadastroBoleto</from-outcome>
    <to-view-id>/pages/formListaPreCadastroBoleto.xhtml</to-view-id>
     <redirect/>
   </navigation-case> 
   <navigation-case>
    <from-action>#{principalMB.listarGrupoUsuario}</from-action>
-   <from-outcome>listaGrupoUsuario</from-outcome>
+   <from-outcome>listarGrupoUsuario</from-outcome>
    <to-view-id>/pages/formListaGrupoUsuario.xhtml</to-view-id>
     <redirect/>
   </navigation-case> 

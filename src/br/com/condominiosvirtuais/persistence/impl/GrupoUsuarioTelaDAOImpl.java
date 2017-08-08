@@ -27,8 +27,6 @@ public class GrupoUsuarioTelaDAOImpl implements GrupoUsuarioTelaDAO, Serializabl
 	
 	private static final String ID = "ID";
 	
-	private static final String ACAO = "ACAO";
-	
 	private static final String ID_GRUPO_USUARIO = "ID_GRUPO_USUARIO";
 	
 	private static final String ID_TELA = "ID_TELA";
@@ -63,8 +61,7 @@ public class GrupoUsuarioTelaDAOImpl implements GrupoUsuarioTelaDAO, Serializabl
 				grupoUsuarioTela = new GrupoUsuarioTela();
 				grupoUsuarioTela.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
 				grupoUsuarioTela.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
-				grupoUsuarioTela.setIdTela((Integer) SQLUtil.getValorResultSet(resultSet, ID_TELA, java.sql.Types.INTEGER));
-				grupoUsuarioTela.setAcao(String.valueOf(SQLUtil.getValorResultSet(resultSet, ACAO, java.sql.Types.VARCHAR)));
+				grupoUsuarioTela.setIdTela((Integer) SQLUtil.getValorResultSet(resultSet, ID_TELA, java.sql.Types.INTEGER));				
 				listaGrupoUsuarioTela.add(grupoUsuarioTela);
 			}
 		}catch (SQLException e) {
@@ -123,17 +120,14 @@ public class GrupoUsuarioTelaDAOImpl implements GrupoUsuarioTelaDAO, Serializabl
 		query.append("("); 
 		query.append(ID_TELA);
 		query.append(",");
-		query.append(ID_GRUPO_USUARIO);
-		query.append(",");
-		query.append(ACAO);
+		query.append(ID_GRUPO_USUARIO);		
 		query.append(") ");
-		query.append("VALUES(?,?,?)");
+		query.append("VALUES(?,?)");
 		PreparedStatement statement = null;
 		try {			
 			statement = con.prepareStatement(query.toString());			
 			SQLUtil.setValorPpreparedStatement(statement, 1, grupoUsuarioTela.getIdTela(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement, 2, grupoUsuarioTela.getIdGrupoUsuario(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement, 3, grupoUsuarioTela.getAcao(), java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 2, grupoUsuarioTela.getIdGrupoUsuario(), java.sql.Types.INTEGER);			
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			con.rollback();

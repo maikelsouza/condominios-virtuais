@@ -52,7 +52,7 @@
 			<rich:menuItem label="#{msg['arquivo.imagem']}" action="#{principalMB.listarImagem}" rendered="#{loginMB.temAcesso('listarImagem')}" />
 			<rich:menuItem label="#{msg['arquivo.imagem.anexar']}" action="#{principalMB.anexarImagem}" rendered="#{loginMB.temAcesso('anexarImagem')}" />
 		</rich:dropDownMenu>
-		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.temAcesso('listarCondominio','listarBloco','listarUnidade','listarCondomino','listarAmbienteCondominio','listarFuncionarioCondominio','listarObra','cadastrarObra','listarObra') || loginMB.exibeMenuListaReservaQuintaDoHorto()}">
+		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.temAcesso('listarCondominio','listarBloco','listarUnidade','listarCondomino','listarAmbienteCondominio','listarFuncionarioCondominio','listarObra','cadastrarObra','listarGrupoUsuario')}">
 			<f:facet name="label">
 				<h:panelGroup>
 					<h:outputText value="#{msg.cadastro}" />

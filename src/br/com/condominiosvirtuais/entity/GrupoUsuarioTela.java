@@ -14,8 +14,6 @@ public class GrupoUsuarioTela {
 	private Integer idGrupoUsuario;
 	
 	private Integer idTela;
-	
-	private String acao;
 
 	public Integer getId() {
 		return id;
@@ -31,16 +29,8 @@ public class GrupoUsuarioTela {
 
 	public void setIdGrupoUsuario(Integer idGrupoUsuario) {
 		this.idGrupoUsuario = idGrupoUsuario;
-	}	
-
-	public String getAcao() {
-		return acao;
 	}
-
-	public void setAcao(String acao) {
-		this.acao = acao;
-	}
-
+	
 	public Integer getIdTela() {
 		return idTela;
 	}

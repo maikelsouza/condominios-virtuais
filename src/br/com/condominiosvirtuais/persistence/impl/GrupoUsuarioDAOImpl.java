@@ -182,15 +182,13 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 			for (TelaVO telaVO : grupoUsuario.getListaTelaAcesso()) {
 				grupoUsuarioTela = new GrupoUsuarioTela();
 				grupoUsuarioTela.setIdGrupoUsuario(idGrupoUsuario);
-				grupoUsuarioTela.setIdTela(telaVO.getIdTela());
-				grupoUsuarioTela.setAcao(telaVO.getAcao());
+				grupoUsuarioTela.setIdTela(telaVO.getIdTela());				
 				this.grupoUsuarioTelaDAO.salvar(grupoUsuarioTela, con);
 				for (AbaVO abaVO : telaVO.getListaAbasVOTela()) {
 					grupoUsuarioTelaAba = new GrupoUsuarioTelaAba();
 					grupoUsuarioTelaAba.setIdAba(abaVO.getIdAba());
 					grupoUsuarioTelaAba.setIdGrupoUsuario(idGrupoUsuario);
-					grupoUsuarioTelaAba.setIdTela(telaVO.getIdTela());
-					grupoUsuarioTelaAba.setAcao(abaVO.getAcao());
+					grupoUsuarioTelaAba.setIdTela(telaVO.getIdTela());					
 					this.grupoUsuarioTelaAbaDAO.salvar(grupoUsuarioTelaAba, con);
 				}
 			}

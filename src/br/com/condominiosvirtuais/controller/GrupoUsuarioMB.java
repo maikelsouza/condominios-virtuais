@@ -163,12 +163,20 @@ public class GrupoUsuarioMB implements Serializable {
 	public String salvarGrupoUsuario(){
 		try {
 			Iterator<TelaVO> iteratorTelaVO = this.listaTelaVO.iterator();
+			Iterator<AbaVO> iteratorAbaVO = null;
+			AbaVO abaVO = null;
 			List<TelaVO> listaTelaVO = new ArrayList<TelaVO>();
 			while (iteratorTelaVO.hasNext()) {
 				TelaVO telaVO = iteratorTelaVO.next();
 				if(telaVO.getChecada()){
-					telaVO.setAcao("MAIKEL");
 					listaTelaVO.add(telaVO);
+					iteratorAbaVO = telaVO.getListaAbasVOTela().iterator();
+					while (iteratorAbaVO.hasNext()) {
+						abaVO = (AbaVO) iteratorAbaVO.next();
+						if(!abaVO.getChecada()){
+							telaVO.getListaAbasVOTela().remove(abaVO);
+						}
+					}
 				}
 			}
 			this.grupoUsuario.setListaTelaAcesso(listaTelaVO);
@@ -209,7 +217,7 @@ public class GrupoUsuarioMB implements Serializable {
 		AbaVO abaVO = null;
 		for (Aba aba : tela.getListaAbas()) {
 			abaVO = new AbaVO();
-			abaVO.setIdAba(aba.getIdTela());
+			abaVO.setIdAba(aba.getId());
 			abaVO.setNomeI18nAba(aba.getNomeI18n());
 			abaVO.setDescricaoI18nAba(aba.getDescricaoI18n());
 			listaAbaVO.add(abaVO);
@@ -220,9 +228,17 @@ public class GrupoUsuarioMB implements Serializable {
 	
 	public void checarTodosCheckbox(){
 		Iterator<TelaVO> iteratorTelaVO = listaTelaVO.iterator();
+		Iterator<AbaVO> iteratorAbaVO = null;
+		TelaVO telaVO = null;
+		AbaVO abaVO = null;
 		while (iteratorTelaVO.hasNext()) {
-			TelaVO telaVO = iteratorTelaVO.next();
+			telaVO = iteratorTelaVO.next();
 			telaVO.setChecada(this.checadoTodos);
+			iteratorAbaVO = telaVO.getListaAbasVOTela().iterator();
+			while (iteratorAbaVO.hasNext()) {
+				abaVO = iteratorAbaVO.next();
+				abaVO.setChecada(this.checadoTodos);
+			}
 		}		
 	}
 	

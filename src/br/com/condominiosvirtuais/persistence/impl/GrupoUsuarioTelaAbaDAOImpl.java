@@ -30,7 +30,6 @@ public class GrupoUsuarioTelaAbaDAOImpl implements GrupoUsuarioTelaAbaDAO, Seria
 	
 	private static final String ID_ABA = "ID_ABA";
 	
-	private static final String ACAO = "ACAO";
 	
 	
 
@@ -44,18 +43,15 @@ public class GrupoUsuarioTelaAbaDAOImpl implements GrupoUsuarioTelaAbaDAO, Seria
 		query.append(",");		
 		query.append(ID_ABA); 	
 		query.append(",");
-		query.append(ID_GRUPO_USUARIO); 
-		query.append(",");
-		query.append(ACAO); 
+		query.append(ID_GRUPO_USUARIO);
 		query.append(") ");
-		query.append("VALUES(?,?,?,?)");
+		query.append("VALUES(?,?,?)");
 		PreparedStatement statement = null;
 		try {			
 			statement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(statement, 1, grupoUsuarioTelaAba.getIdTela(), java.sql.Types.INTEGER);			
 			SQLUtil.setValorPpreparedStatement(statement, 2, grupoUsuarioTelaAba.getIdAba(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement, 3, grupoUsuarioTelaAba.getIdGrupoUsuario(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement, 4, grupoUsuarioTelaAba.getAcao(), java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 3, grupoUsuarioTelaAba.getIdGrupoUsuario(), java.sql.Types.INTEGER);			
 			statement.executeUpdate();
 		}catch (SQLException e) {
 			con.rollback();
@@ -92,8 +88,7 @@ public class GrupoUsuarioTelaAbaDAOImpl implements GrupoUsuarioTelaAbaDAO, Seria
 				telaAba.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
 				telaAba.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
 				telaAba.setIdAba((Integer) SQLUtil.getValorResultSet(resultSet, ID_ABA, java.sql.Types.INTEGER));
-				telaAba.setIdTela((Integer) SQLUtil.getValorResultSet(resultSet, ID_TELA, java.sql.Types.INTEGER));
-				telaAba.setAcao(String.valueOf(SQLUtil.getValorResultSet(resultSet, ACAO, java.sql.Types.VARCHAR)));
+				telaAba.setIdTela((Integer) SQLUtil.getValorResultSet(resultSet, ID_TELA, java.sql.Types.INTEGER));				
 				listaTelaAba.add(telaAba);
 			}
 		}catch (SQLException e) {
@@ -127,8 +122,7 @@ public class GrupoUsuarioTelaAbaDAOImpl implements GrupoUsuarioTelaAbaDAO, Seria
 				telaAba.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
 				telaAba.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
 				telaAba.setIdAba((Integer) SQLUtil.getValorResultSet(resultSet, ID_ABA, java.sql.Types.INTEGER));
-				telaAba.setIdTela((Integer) SQLUtil.getValorResultSet(resultSet, ID_TELA, java.sql.Types.INTEGER));
-				telaAba.setAcao(String.valueOf(SQLUtil.getValorResultSet(resultSet, ACAO, java.sql.Types.VARCHAR)));
+				telaAba.setIdTela((Integer) SQLUtil.getValorResultSet(resultSet, ID_TELA, java.sql.Types.INTEGER));				
 				listaTelaAba.add(telaAba);
 			}
 		}catch (SQLException e) {
