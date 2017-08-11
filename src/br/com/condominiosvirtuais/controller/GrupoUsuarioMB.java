@@ -49,6 +49,9 @@ public class GrupoUsuarioMB implements Serializable {
 	
 	@Inject
 	private Instance<CondominioMB> condominioMB = null;
+	
+	@Inject
+	private TelaMB telaMB;
 		
 	private GrupoUsuario grupoUsuario;
 		
@@ -150,6 +153,7 @@ public class GrupoUsuarioMB implements Serializable {
 			List<Aba> listaAbasTela = abaService.buscarPorIdTela(telaVO.getIdTela());
 			telaVO.setListaAbasTela(listaAbasTela);
 			ManagedBeanUtil.getSession(Boolean.TRUE).setAttribute(AtributoSessaoEnum.TELA_VO.getAtributo(),telaVO);
+			this.telaMB.populaAbaVOTemporaria();
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
@@ -226,7 +230,7 @@ public class GrupoUsuarioMB implements Serializable {
 	}
 	
 	
-	public void checarTodosCheckbox(){
+	public void checarTodosCheckbox() throws SQLException, Exception{
 		Iterator<TelaVO> iteratorTelaVO = listaTelaVO.iterator();
 		Iterator<AbaVO> iteratorAbaVO = null;
 		TelaVO telaVO = null;
@@ -235,6 +239,10 @@ public class GrupoUsuarioMB implements Serializable {
 			telaVO = iteratorTelaVO.next();
 			telaVO.setChecada(this.checadoTodos);
 			iteratorAbaVO = telaVO.getListaAbasVOTela().iterator();
+			if(!telaVO.getListaAbasVOTela().isEmpty()){
+				ManagedBeanUtil.getSession(Boolean.TRUE).setAttribute(AtributoSessaoEnum.TELA_VO.getAtributo(),telaVO);
+				
+			}	
 			while (iteratorAbaVO.hasNext()) {
 				abaVO = iteratorAbaVO.next();
 				abaVO.setChecada(this.checadoTodos);

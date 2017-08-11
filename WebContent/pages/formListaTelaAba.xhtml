@@ -8,10 +8,7 @@
 	xmlns:rich="http://richfaces.org/rich"
 	template="/templates/templatePrincipal.xhtml">
 
-	<ui:define name="conteudo">
-		<f:metadata>
-			<f:event type="preRenderView" listener="#{telaMB.inicializaTelaAbaMB}" />
-		</f:metadata>
+	<ui:define name="conteudo">		
 		<h:form id="idFormListaTelaAba" styleClass="content">
 			<rich:panel>
 				<f:facet name="header" >
@@ -35,7 +32,7 @@
 							 </h:selectBooleanCheckbox>
 							</f:facet>
 							<h:selectBooleanCheckbox value="#{abaVO.checada}" rendered="true" >
-								 <f:ajax render="@form"  />
+								 <f:ajax render="tableAbaVO"  listener="#{telaMB.ab}"/>
 							 </h:selectBooleanCheckbox>
 						</rich:column>
 						<rich:column sortBy="#{abaVO.nomeI18nAba}" sortOrder="#{ordenaAbaMB.nomeAba}">
