@@ -22,6 +22,7 @@ import br.com.condominiosvirtuais.enumeration.AtributoSessaoEnum;
 import br.com.condominiosvirtuais.persistence.ModuloDAO;
 import br.com.condominiosvirtuais.util.ManagedBeanUtil;
 import br.com.condominiosvirtuais.vo.AbaVO;
+import br.com.condominiosvirtuais.vo.ComponenteVO;
 import br.com.condominiosvirtuais.vo.TelaVO;
 
 @Named @SessionScoped
@@ -40,6 +41,8 @@ public class TelaMB implements Serializable {
 	private ListDataModel<TelaVO> listaTelaVO;
 	
 	private ListDataModel<AbaVO> listaAbaVO;
+	
+	private ListDataModel<ComponenteVO> listaComponenteVO;
 	
 	private List<AbaVO> listaTemporariaAbaVO;
 	
@@ -140,11 +143,11 @@ public class TelaMB implements Serializable {
 				}
 			}
 		}
-		this.ab();
+		this.checarAba();
 		return "voltar";
 	}
 	
-	public void ab(){
+	public void checarAba(){
 		Iterator<AbaVO> iteratorAbaVO = listaAbaVO.iterator();
 		Integer contarChecadas = 0;
 		while (iteratorAbaVO.hasNext()) {
@@ -160,13 +163,21 @@ public class TelaMB implements Serializable {
 		}
 	}
 	
-	public void checarTodosCheckbox2(){
+	public void checarTodosCheckbox2() throws SQLException, Exception{		
+		checadoTodos = (Boolean) ManagedBeanUtil.getSession(Boolean.FALSE).getAttribute(AtributoSessaoEnum.CHECADO.getAtributo());
 		this.telaVO = (TelaVO) ManagedBeanUtil.getSession(Boolean.FALSE).getAttribute(AtributoSessaoEnum.TELA_VO.getAtributo());
-		Iterator<AbaVO> iteratorAbaVO = this.telaVO.getListaAbasVOTela().iterator();
-		while (iteratorAbaVO.hasNext()) {
-			AbaVO abaVO = iteratorAbaVO.next();
-			abaVO.setChecada(this.checadoTodos);
-		}		
+		List<AbaVO> listaAbaVO = new ArrayList<AbaVO>();	
+		for (AbaVO abaVO : this.telaVO.getListaAbasVOTela()) {
+			listaAbaVO.add(abaVO);
+		}
+		this.listaAbaVO = new ListDataModel<AbaVO>(listaAbaVO);	
+		this.checarTodosCheckbox();
+//		this.telaVO = (TelaVO) ManagedBeanUtil.getSession(Boolean.FALSE).getAttribute(AtributoSessaoEnum.TELA_VO.getAtributo());
+//		Iterator<AbaVO> iteratorAbaVO = this.telaVO.getListaAbasVOTela().iterator();
+//		while (iteratorAbaVO.hasNext()) {
+//			AbaVO abaVO = iteratorAbaVO.next();
+//			abaVO.setChecada(checado);
+//		}		
 	}
 	
 	public void checarTodosCheckbox(){
@@ -277,8 +288,15 @@ public class TelaMB implements Serializable {
 
 	public void setChecadoTodos(Boolean checadoTodos) {
 		this.checadoTodos = checadoTodos;
-	}		
-	
+	}
+
+	public ListDataModel<ComponenteVO> getListaComponenteVO() {
+		return listaComponenteVO;
+	}
+
+	public void setListaComponenteVO(ListDataModel<ComponenteVO> listaComponenteVO) {
+		this.listaComponenteVO = listaComponenteVO;
+	}	
 	
 	
 

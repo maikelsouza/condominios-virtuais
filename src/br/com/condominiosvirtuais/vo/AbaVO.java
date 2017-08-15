@@ -10,8 +10,6 @@ public class AbaVO implements Comparable<AbaVO>{
 	
 	private String descricaoI18nAba;
 	
-	private String acao;
-	
 	private Boolean checada;
 
 	public Integer getId() {
@@ -54,13 +52,6 @@ public class AbaVO implements Comparable<AbaVO>{
 		this.checada = checada;
 	}	
 	
-	public String getAcao() {
-		return acao;
-	}
-
-	public void setAcao(String acao) {
-		this.acao = acao;
-	}
 
 	@Override
 	public int compareTo(AbaVO abaVO) {

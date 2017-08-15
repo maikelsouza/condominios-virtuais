@@ -32,7 +32,7 @@
 							 </h:selectBooleanCheckbox>
 							</f:facet>
 							<h:selectBooleanCheckbox value="#{abaVO.checada}" rendered="true" >
-								 <f:ajax render="tableAbaVO"  listener="#{telaMB.ab}"/>
+								 <f:ajax render="tableAbaVO"  listener="#{telaMB.checarAba}"/>
 							 </h:selectBooleanCheckbox>
 						</rich:column>
 						<rich:column sortBy="#{abaVO.nomeI18nAba}" sortOrder="#{ordenaAbaMB.nomeAba}">

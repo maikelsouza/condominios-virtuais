@@ -13,7 +13,6 @@ import javax.inject.Inject;
 import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Componente;
-import br.com.condominiosvirtuais.entity.TelaComponente;
 import br.com.condominiosvirtuais.persistence.ComponenteDAO;
 import br.com.condominiosvirtuais.persistence.TelaComponenteDAO;
 import br.com.condominiosvirtuais.util.SQLUtil;
@@ -47,27 +46,20 @@ public class ComponenteDAOImpl implements ComponenteDAO, Serializable {
 	@Override
 	public List<Componente> buscarPorIdTela(Integer idTela) throws SQLException, Exception {
 		Connection con = Conexao.getConexao();
-		// Busca a lista de componentes associadas a uma tela
-		List<TelaComponente> listaTelaComponente = this.telaComponenteDAO.buscarPorIdTela(idTela, con);
-		Integer contador = 1;
 		List<Componente> listaComponente = new ArrayList<Componente>();
-		if(!listaTelaComponente.isEmpty()){
 			StringBuffer query = new StringBuffer();
 			query.append("SELECT * FROM ");
 			query.append(COMPONENTE);
 			query.append(" WHERE ");
 			query.append(ID_TELA);
-			query.append(" IN (");
-			query.append(SQLUtil.popularInterrocacoes(listaTelaComponente.size()));
-			query.append(");");		
+			query.append(" = ? ");
+			query.append(";");		
 			PreparedStatement preparedStatement = null;
 			ResultSet resultSet = null;
 			Componente componente = null;
 			try {
 				preparedStatement = con.prepareStatement(query.toString());
-				for (TelaComponente telaComponente : listaTelaComponente) {
-					SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, telaComponente.getIdTela(), java.sql.Types.INTEGER);
-				}
+				SQLUtil.setValorPpreparedStatement(preparedStatement, 1, idTela, java.sql.Types.INTEGER);
 				resultSet = preparedStatement.executeQuery();
 				while(resultSet.next()){
 					componente = new Componente();
@@ -91,62 +83,47 @@ public class ComponenteDAOImpl implements ComponenteDAO, Serializable {
 				} catch (SQLException e) {
 					logger.error("erro sqlstate "+e.getSQLState(), e);
 				}
-			}	
-		}
+			}
 		return listaComponente;
 	}
 	
 	@Override
 	public List<Componente> buscarPorIdTela(Integer idTela, Connection con) throws SQLException, Exception {
-		// Busca a lista de componentes associadas a uma tela
-		List<TelaComponente> listaTelaComponente = this.telaComponenteDAO.buscarPorIdTela(idTela, con);
-		Integer contador = 1;
 		List<Componente> listaComponente = new ArrayList<Componente>();
-		if(!listaTelaComponente.isEmpty()){
-			StringBuffer query = new StringBuffer();
-			query.append("SELECT * FROM ");
-			query.append(COMPONENTE);
-			query.append(" WHERE ");
-			query.append(ID_TELA);
-			query.append(" IN (");
-			query.append(SQLUtil.popularInterrocacoes(listaTelaComponente.size()));
-			query.append(");");		
-			PreparedStatement preparedStatement = null;
-			ResultSet resultSet = null;
-			Componente componente = null;
-			try {
-				preparedStatement = con.prepareStatement(query.toString());
-				for (TelaComponente telaComponente : listaTelaComponente) {
-					SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, telaComponente.getIdTela(), java.sql.Types.INTEGER);
-				}
-				resultSet = preparedStatement.executeQuery();
-				while(resultSet.next()){
-					componente = new Componente();
-					componente.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
-					componente.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
-					componente.setIdTela((Integer) SQLUtil.getValorResultSet(resultSet, ID_TELA, java.sql.Types.INTEGER));
-					componente.setIdAba((Integer)SQLUtil.getValorResultSet(resultSet, ID_ABA, java.sql.Types.INTEGER));
-					componente.setTipo((Integer)SQLUtil.getValorResultSet(resultSet, TIPO, java.sql.Types.INTEGER));
-					componente.setDescricao(String.valueOf(SQLUtil.getValorResultSet(resultSet, DESCRICAO, java.sql.Types.VARCHAR)));
-					componente.setIdComponente(String.valueOf(SQLUtil.getValorResultSet(resultSet, ID_COMPONENTE, java.sql.Types.VARCHAR)));
-					listaComponente.add(componente);
-				}
-			}catch (SQLException e) {
-				con.rollback();
-				throw e;
-			}catch (Exception e) {
-				con.rollback();
-				throw e;			
-			}	
-		}
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(COMPONENTE);
+		query.append(" WHERE ");
+		query.append(ID_TELA);
+		query.append(" = ? ");
+		query.append(";");		
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		Componente componente = null;
+		try {
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, idTela, java.sql.Types.INTEGER);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				componente = new Componente();
+				componente.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				componente.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+				componente.setIdTela((Integer) SQLUtil.getValorResultSet(resultSet, ID_TELA, java.sql.Types.INTEGER));
+				componente.setIdAba((Integer)SQLUtil.getValorResultSet(resultSet, ID_ABA, java.sql.Types.INTEGER));
+				componente.setTipo((Integer)SQLUtil.getValorResultSet(resultSet, TIPO, java.sql.Types.INTEGER));
+				componente.setDescricao(String.valueOf(SQLUtil.getValorResultSet(resultSet, DESCRICAO, java.sql.Types.VARCHAR)));
+				componente.setIdComponente(String.valueOf(SQLUtil.getValorResultSet(resultSet, ID_COMPONENTE, java.sql.Types.VARCHAR)));
+				listaComponente.add(componente);
+			}
+		}catch (SQLException e) {
+			con.rollback();
+			throw e;
+		}catch (Exception e) {
+			con.rollback();
+			throw e;			
+		}	
 		return listaComponente;
 	}
-	
-	
-	
-	
-	
-	
 	
 
 }

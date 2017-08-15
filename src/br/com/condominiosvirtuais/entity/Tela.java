@@ -78,10 +78,6 @@ public class Tela implements Comparable<Tela>, Cloneable, Serializable{
 		return listaComponentes;
 	}
 
-	public void setListaComponente(List<Componente> listaComponentes) {
-		this.listaComponentes = listaComponentes;
-	}
-
 	public String getNomeI18n(){
 		return AplicacaoUtil.i18n(this.getNome());
 	}

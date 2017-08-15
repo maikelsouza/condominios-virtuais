@@ -10,7 +10,9 @@ public enum AtributoSessaoEnum {
 	
 	TELA("tela"),
 	
-	TELA_VO("telaVO");
+	TELA_VO("telaVO"),
+	
+	CHECADO("checado");
 	
 	
 	private String atributo = null;	

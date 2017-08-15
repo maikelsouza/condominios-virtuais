@@ -29,6 +29,8 @@ public class TelaVO implements Comparable<TelaVO>{
 	
 	private List<Componente> listaComponentesTela;
 	
+	private List<ComponenteVO> listaComponentesVOTela;
+	
 	private Boolean checada;
 	
 	private String acao;
@@ -128,7 +130,15 @@ public class TelaVO implements Comparable<TelaVO>{
 
 	public void setListaAbasVOTela(List<AbaVO> listaAbasVOTela) {
 		this.listaAbasVOTela = listaAbasVOTela;
-	}	
+	}		
+
+	public List<ComponenteVO> getListaComponentesVOTela() {
+		return listaComponentesVOTela;
+	}
+
+	public void setListaComponentesVOTela(List<ComponenteVO> listaComponentesVOTela) {
+		this.listaComponentesVOTela = listaComponentesVOTela;
+	}
 
 	public String getNomeArquivoTela() {
 		return nomeArquivoTela;

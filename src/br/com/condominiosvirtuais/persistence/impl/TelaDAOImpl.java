@@ -74,7 +74,7 @@ public class TelaDAOImpl implements TelaDAO, Serializable {
 				tela.setDescricao(String.valueOf(SQLUtil.getValorResultSet(resultSet, DESCRICAO, java.sql.Types.VARCHAR)));
 				tela.setIdModulo((Integer) SQLUtil.getValorResultSet(resultSet, ID_MODULO, java.sql.Types.INTEGER));
 				tela.setListaAbas(this.abaDAO.buscarPorIdTela(tela.getId(), con));
-				
+				tela.setListaComponentes(this.componenteDAO.buscarPorIdTela(tela.getId(), con));
 			}
 		}catch (SQLException e) {
 			throw e;
@@ -119,7 +119,7 @@ public class TelaDAOImpl implements TelaDAO, Serializable {
 					tela.setIdModulo((Integer) SQLUtil.getValorResultSet(resultSet, ID_MODULO, java.sql.Types.INTEGER));
 					listaAbas = this.abaDAO.buscarPoridGrupoUsuarioEIdTela(idGrupoUsuario, tela.getId(), con);
 					tela.setListaAbas(listaAbas);
-					tela.setListaComponente(componenteDAO.buscarPorIdTela(tela.getId(),con));
+					tela.setListaComponentes(this.componenteDAO.buscarPorIdTela(tela.getId(), con));
 					listaTela.add(tela);
 				}				
 			}
@@ -162,6 +162,7 @@ public class TelaDAOImpl implements TelaDAO, Serializable {
 				tela.setDescricao(String.valueOf(SQLUtil.getValorResultSet(resultSet, DESCRICAO, java.sql.Types.VARCHAR)));
 				tela.setIdModulo((Integer) SQLUtil.getValorResultSet(resultSet, ID_MODULO, java.sql.Types.INTEGER));
 				tela.setListaAbas(this.abaDAO.buscarPorIdTela(tela.getId(), con));
+				tela.setListaComponentes(this.componenteDAO.buscarPorIdTela(tela.getId(), con));
 				listaTela.add(tela);
 			}
 		}catch (SQLException e) {

@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSession;
 
 import br.com.condominiosvirtuais.entity.Usuario;
 import br.com.condominiosvirtuais.enumeration.PathTelasAplicacaoEnum;
-import br.com.condominiosvirtuais.util.ManagedBeanUtil;
 
              
 public class AutorizacaoListener implements PhaseListener {
@@ -21,10 +20,6 @@ public class AutorizacaoListener implements PhaseListener {
 
 	
 	public void afterPhase(PhaseEvent event) {
-		ManagedBeanUtil.getSession(true).getId();
-		//System.out.println(FacesContext.getCurrentInstance().getViewRoot().getViewId());
-		
-		System.out.println("Sessão: " + ManagedBeanUtil.getSession(true).getId() +" paginaAnterior "+ paginaAnterior);
 		String loginPage = "loginPage";
 		String paginaSemAcesso = "paginaSemAcesso";
 		String esqueciMinhaSenhaPage = "esqueciMinhaSenha";

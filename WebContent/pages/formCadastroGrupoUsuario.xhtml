@@ -40,7 +40,7 @@
 				
 				<rich:panel header="#{msg.listaTelaGrupoUsuario}">
 				<div>
-					<rich:dataTable value="#{grupoUsuarioMB.listaTelaVO}" var="telaVO" rowClasses="odd-row, even-row" rows="10"
+					<rich:dataTable value="#{grupoUsuarioMB.listaTelaVO}" var="telaVO" rowClasses="odd-row, even-row" rows="20"
 						styleClass="stable" id="tableTelaVO" style="width:100%" rendered="true">
 						<rich:column style="text-align: center;">
 							<f:facet name="header">
@@ -64,11 +64,13 @@
 							</f:facet>                                                                              
 							<h:outputText value="#{telaVO.descricaoI18nTela}" />
 						</rich:column>						
-						<rich:column style="width:10%;">
+						<rich:column style="width:20%;">
 							<f:facet name="header">
 								<h:outputText value="#{msg.rotuloAcao}" />
 							</f:facet>
 							<h:commandLink value="#{msg.linkListarAbas}" action="#{grupoUsuarioMB.listarGrupoUsuarioTelaAba}"  rendered="#{!telaVO.listaAbasVOTela.isEmpty()}"/>
+								#{' '}
+							<h:commandLink value="#{msg.linkListarComponentes}" action="#{grupoUsuarioMB.listarGrupoUsuarioTelaComponente}"  rendered="#{!telaVO.listaComponentesVOTela.isEmpty()}"/>
 						</rich:column>
 						<f:facet name="footer">
               				<rich:dataScroller for="tableTelaVO"  fastControls="hide" renderIfSinglePage="false"  />

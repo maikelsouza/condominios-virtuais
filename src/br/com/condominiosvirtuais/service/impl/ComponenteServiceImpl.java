@@ -2,6 +2,7 @@ package br.com.condominiosvirtuais.service.impl;
 
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -18,8 +19,11 @@ public class ComponenteServiceImpl implements ComponenteService, Serializable{
 	private ComponenteDAO componenteDAO;
 
 	@Override
-	public List<Componente> buscarPorIdTela(Integer idTela) throws SQLException, Exception {		
-		return this.componenteDAO.buscarPorIdTela(idTela);
+	public List<Componente> buscarPorIdTela(Integer idTela) throws SQLException, Exception {	
+		// Ordenação realizada no código, pois o dado que é persistido no banco é a chave para o I18N
+		List<Componente> listComponente = this.componenteDAO.buscarPorIdTela(idTela);
+		Collections.sort(listComponente);
+		return listComponente;
 	}
 
 }

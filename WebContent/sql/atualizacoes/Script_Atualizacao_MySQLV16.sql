@@ -77,12 +77,14 @@ CREATE TABLE IF NOT EXISTS GRUPO_USUARIO_TELA_ABA(
 	PRIMARY KEY(ID)
 );
 
-CREATE TABLE IF NOT EXISTS TELA_COMPONENTE(
+CREATE TABLE IF NOT EXISTS GRUPO_USUARIO_TELA_COMPONENTE(
 	ID integer NOT NULL AUTO_INCREMENT,
 	ID_TELA integer NOT NULL,
 	ID_COMPONENTE integer NOT NULL,	
-	CONSTRAINT FK_TELA_COMPONENTE_ID_TELA_TELA_ID FOREIGN KEY (ID_TELA) REFERENCES TELA(ID),
-	CONSTRAINT FK_TELA_COMPONENTE_ID_COMPONENTE_ID_COMPONENTE FOREIGN KEY (ID_COMPONENTE) REFERENCES COMPONENTE(ID),
+	ID_GRUPO_USUARIO integer NOT NULL,
+	CONSTRAINT FK_GRUPO_USUARIO_TELA_COMPONENTE_ID_TELA_TELA_ID FOREIGN KEY (ID_TELA) REFERENCES TELA(ID),
+	CONSTRAINT FK_GRUPO_USUARIO_TELA_COMPONENTE_ID_COMPONENTE_ID_COMPONENTE FOREIGN KEY (ID_COMPONENTE) REFERENCES COMPONENTE(ID),
+	CONSTRAINT FK_GRUPO_USUARIO_TELA_COMPONENTE_ID_GRUPO_USUARIO_ID_GRUPO_USUARIOFOREIGN KEY (ID_GRUPO_USUARIO) REFERENCES GRUPO_USUARIO(ID),
 	PRIMARY KEY(ID)
 );
 
@@ -208,6 +210,7 @@ INSERT INTO TELA VALUES
 (DEFAULT,'formCadastroGrupoUsuario','formCadastroGrupoUsuarioDescricao','formCadastroGrupoUsuario.xhtml',23),
 (DEFAULT,'formListaGrupoUsuario','formListaGrupoUsuarioDescricao','formListaGrupoUsuario.xhtml',23),
 (DEFAULT,'formListaTelaAba','formListaTelaAbaDescricao','formListaTelaAba.xhtml',23),
+(DEFAULT,'formListaTelaComponente','formListaTelaComponenteDescricao','formListaTelaComponente.xhtml',23),
 (DEFAULT,'formVisualizaTelaAba','formVisualizaTelaAbaDescricao','formVisualizaTelaAba.xhtml',23),
 (DEFAULT,'formVisualizaTelaComponente','formVisualizaTelaComponenteDescricao','formVisualizaTelaComponente.xhtml',23),
 (DEFAULT,'formVisualizaGrupoUsuarioTela','formVisualizaGrupoUsuarioDescricao','formVisualizaGrupoUsuarioTela.xhtml',23),
@@ -226,7 +229,7 @@ INSERT INTO ABA VALUES(DEFAULT,'formMeuPainel.idTabDadosPessoais','formMeuPainel
 
 
 INSERT INTO COMPONENTE VALUES
-(DEFAULT,'formListaDocumento.idBotaoAnexaoDocumento','formListaDocumento.idBotaoAnexaoDocumentoDescricao','idBotaoAnexaoDocumento',2,null,0),
+(DEFAULT,'formListaDocumento.idBotaoAnexaDocumento','formListaDocumento.idBotaoAnexaDocumentoDescricao','idBotaoAnexaDocumento',2,null,0),
 (DEFAULT,'formListaCondominio.idBotaoCadastroCondominio','formListaCondominio.idBotaoCadastroCondominioDescricao','idBotaoCadastroCondominio',5,null,0);
 
 

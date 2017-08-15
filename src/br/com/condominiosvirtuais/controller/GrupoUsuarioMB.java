@@ -17,6 +17,7 @@ import javax.inject.Named;
 import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Aba;
+import br.com.condominiosvirtuais.entity.Componente;
 import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.GrupoUsuario;
 import br.com.condominiosvirtuais.entity.Tela;
@@ -24,11 +25,13 @@ import br.com.condominiosvirtuais.enumeration.AtributoSessaoEnum;
 import br.com.condominiosvirtuais.enumeration.GrupoUsuarioSituacaoEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.service.AbaService;
+import br.com.condominiosvirtuais.service.ComponenteService;
 import br.com.condominiosvirtuais.service.GrupoUsuarioService;
 import br.com.condominiosvirtuais.service.TelaService;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
 import br.com.condominiosvirtuais.util.ManagedBeanUtil;
 import br.com.condominiosvirtuais.vo.AbaVO;
+import br.com.condominiosvirtuais.vo.ComponenteVO;
 import br.com.condominiosvirtuais.vo.TelaVO;
 
 @Named @SessionScoped
@@ -42,7 +45,10 @@ public class GrupoUsuarioMB implements Serializable {
 	private TelaService telaService;
 	
 	@Inject
-	private AbaService abaService;	
+	private AbaService abaService;
+	
+	@Inject
+	private ComponenteService componenteService;	
 
 	@Inject
 	private GrupoUsuarioService grupoUsuarioService;
@@ -162,6 +168,23 @@ public class GrupoUsuarioMB implements Serializable {
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage());	
 		}
 		return "listar";
+	}
+	
+	public String listarGrupoUsuarioTelaComponente() {		
+		try {
+			telaVO = (TelaVO) this.listaTelaVO.getRowData();			
+			List<Componente> listaComponentesTela = componenteService.buscarPorIdTela(telaVO.getIdTela());
+			telaVO.setListaComponentesTela(listaComponentesTela);
+			ManagedBeanUtil.getSession(Boolean.TRUE).setAttribute(AtributoSessaoEnum.TELA_VO.getAtributo(),telaVO);
+			//this.telaMB.populaAbaVOTemporaria();
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (Exception e) {				
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage());	
+		}
+		return "listar";
 	}	
 	
 	public String salvarGrupoUsuario(){
@@ -210,7 +233,7 @@ public class GrupoUsuarioMB implements Serializable {
 			telaVO.setDescricaoI18nTela(tela.getDescricaoI18n());
 			telaVO.setNomeI18nTela(tela.getNomeI18n());
 			telaVO.setListaAbasVOTela(this.popularAbaVO(tela));
-		//	telaVO.setListaComponentesTela(new ArrayList<Componente>(tela.getListaComponentes()));
+			telaVO.setListaComponentesVOTela(this.popularComponenteVO(tela));
 			listaTelaVO.add(telaVO);
 		}
 		this.listaTelaVO = new ListDataModel<TelaVO>(listaTelaVO);
@@ -229,26 +252,41 @@ public class GrupoUsuarioMB implements Serializable {
 		return listaAbaVO;
 	}
 	
+	private List<ComponenteVO> popularComponenteVO(Tela tela){
+		List<ComponenteVO> listaComponenteVO = new ArrayList<ComponenteVO>();
+		ComponenteVO componenteVO = null;
+		for (Componente componente : tela.getListaComponentes()) {
+			componenteVO = new ComponenteVO();
+			componenteVO.setIdComponente(componente.getId());
+			componenteVO.setNomeI18nComponente(componente.getNomeI18n());
+			componenteVO.setDescricaoI18nComponente(componente.getDescricaoI18n());
+			listaComponenteVO.add(componenteVO);
+		}
+		return listaComponenteVO;
+	}
+	
 	
 	public void checarTodosCheckbox() throws SQLException, Exception{
 		Iterator<TelaVO> iteratorTelaVO = listaTelaVO.iterator();
 		Iterator<AbaVO> iteratorAbaVO = null;
 		TelaVO telaVO = null;
-		AbaVO abaVO = null;
+		AbaVO abaVO = null; 
 		while (iteratorTelaVO.hasNext()) {
 			telaVO = iteratorTelaVO.next();
 			telaVO.setChecada(this.checadoTodos);
 			iteratorAbaVO = telaVO.getListaAbasVOTela().iterator();
-			if(!telaVO.getListaAbasVOTela().isEmpty()){
-				ManagedBeanUtil.getSession(Boolean.TRUE).setAttribute(AtributoSessaoEnum.TELA_VO.getAtributo(),telaVO);
-				
-			}	
 			while (iteratorAbaVO.hasNext()) {
 				abaVO = iteratorAbaVO.next();
 				abaVO.setChecada(this.checadoTodos);
 			}
+			if(!telaVO.getListaAbasVOTela().isEmpty()){
+				ManagedBeanUtil.getSession(Boolean.FALSE).setAttribute(AtributoSessaoEnum.TELA_VO.getAtributo(),telaVO);
+				ManagedBeanUtil.getSession(Boolean.FALSE).setAttribute(AtributoSessaoEnum.CHECADO.getAtributo(),this.checadoTodos);
+				this.telaMB.checarTodosCheckbox2();
+			}	
 		}		
 	}
+	
 	
 	public List<SelectItem> getListaSICondominios() {		
 		return listaSICondominios;
