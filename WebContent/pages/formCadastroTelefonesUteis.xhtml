@@ -114,14 +114,9 @@
 				</h:panelGrid>
 			</rich:panel>
 			<h:panelGrid columns="3">
-				<h:commandButton value="#{msg.botaoSalvar}"
-					action="#{telefonesUteisMB.salvarTelefonesUteis}" />
-				<h:commandButton value="#{msg.botaoLimpar}"
-					actionListener="#{telefonesUteisMB.limparFiltroTelefonesUteis}"
-					immediate="true" />
-				<h:commandButton value="#{msg.botaoCancelar}"
-					action="#{telefonesUteisMB.cancelarCadastroTelefonesUteis}"
-					immediate="true" />
+				<h:commandButton value="#{msg.botaoSalvar}" action="#{telefonesUteisMB.salvarTelefonesUteis}" />
+				<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{telefonesUteisMB.limparFiltroTelefonesUteis}" immediate="true" />
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{telefonesUteisMB.cancelarCadastroTelefonesUteis}" immediate="true" />
 			</h:panelGrid>
 		</h:form>
 	</ui:define>

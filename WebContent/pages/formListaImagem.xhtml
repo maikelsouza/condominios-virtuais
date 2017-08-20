@@ -74,9 +74,8 @@
 				</rich:dataGrid>
 
 			</rich:panel>
-			<h:commandButton value="#{msg.botaoAnexarImagem}"
-				action="#{arquivoMB.abrirTelaAnexarImagem}" immediate="true"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}" />
+			<h:commandButton value="#{msg.botaoAnexarImagem}" action="#{arquivoMB.abrirTelaAnexarImagem}" immediate="true"
+				rendered="#{loginMB.temAcesso('#{arquivoMB.abrirTelaAnexarImagem}')}" />
 		</h:form>
 	</ui:define>
 

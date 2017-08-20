@@ -79,8 +79,8 @@
 							
 				</div>
 			</rich:panel>
-			<h:commandButton value="#{msg.botaoCriarNovo}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,7')}" action="#{preCadastroBoletoMB.cadastroPreCadastroBoleto}" 
-				immediate="true" />
+			<h:commandButton value="#{msg.botaoCriarNovo}" action="#{preCadastroBoletoMB.cadastroPreCadastroBoleto}" 
+				immediate="true" rendered="#{loginMB.temAcesso('#{preCadastroBoletoMB.cadastroPreCadastroBoleto}')}" />
 		</h:form>
 
 		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />

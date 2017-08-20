@@ -152,14 +152,12 @@
 
 			</rich:panel>
 			<h:panelGrid columns="3">
-				<h:commandButton value="#{msg.botaoAtualizar}"
-					action="#{condominoMB.atualizarCondomino}" />
-				<h:commandButton value="#{msg.botaoExcluir}" immediate="true">
+				<h:commandButton value="#{msg.botaoAtualizar}" action="#{condominoMB.atualizarCondomino}" />
+				<h:commandButton value="#{msg.botaoExcluir}" immediate="true" id="idBotaoExcluirCondomino" rendered="#{loginMB.temAcessoComponente('formEditaCondomino.idBotaoExcluirCondomino')}">
 					<rich:componentControl target="confirmaExcluirCondomino"
 						operation="show" />
 				</h:commandButton>
-				<h:commandButton value="#{msg.botaoCancelar}"
-					action="#{condominoMB.cancelarCadastroCondomino}" immediate="true" />
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{condominoMB.cancelarCadastroCondomino}" immediate="true" />
 			</h:panelGrid>
 		</h:form>
 	</ui:define>

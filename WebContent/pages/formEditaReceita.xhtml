@@ -113,7 +113,7 @@
 			</rich:panel>
 			<h:panelGrid columns="3">
 				<h:commandButton value="#{msg.botaoAtualizar}" action="#{receitaDespesaMB.atualizarReceita}" />
-				<h:commandButton value="#{msg.botaoExcluir}"  immediate="false" >
+				<h:commandButton value="#{msg.botaoExcluir}" immediate="false" id="idBotaoExcluirReceita" rendered="#{loginMB.temAcessoComponente('formEditaReceita.idBotaoExcluirReceita')}" >
 					<rich:componentControl target="confirmaExcluirReceita" operation="show" />
 				</h:commandButton>
 				<h:commandButton value="#{msg.botaoVoltar}" action="#{receitaDespesaMB.voltarListaReceitaDespesa}" immediate="true" />

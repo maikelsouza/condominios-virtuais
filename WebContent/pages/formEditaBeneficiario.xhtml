@@ -149,7 +149,7 @@
 			
 			<h:panelGrid columns="3">                                 
 				<h:commandButton value="#{msg.botaoAtualizar}" action="#{beneficiarioMB.atualizarBeneficiario}" />
-				<h:commandButton value="#{msg.botaoExcluir}">
+				<h:commandButton value="#{msg.botaoExcluir}"  >
 					<rich:componentControl target="confirmaExcluirBeneficiario" operation="show"/>
 				</h:commandButton>		
 				<h:commandButton value="#{msg.botaoCancelar}" action="#{beneficiarioMB.cancelarBeneficiario}" immediate="true" />

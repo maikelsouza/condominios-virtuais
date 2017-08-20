@@ -67,7 +67,7 @@ public class ComponenteDAOImpl implements ComponenteDAO, Serializable {
 					componente.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
 					componente.setIdTela((Integer) SQLUtil.getValorResultSet(resultSet, ID_TELA, java.sql.Types.INTEGER));
 					componente.setIdAba((Integer)SQLUtil.getValorResultSet(resultSet, ID_ABA, java.sql.Types.INTEGER));
-					componente.setTipo((Integer)SQLUtil.getValorResultSet(resultSet, TIPO, java.sql.Types.INTEGER));
+					componente.setTipo(String.valueOf(SQLUtil.getValorResultSet(resultSet, TIPO, java.sql.Types.VARCHAR)));
 					componente.setDescricao(String.valueOf(SQLUtil.getValorResultSet(resultSet, DESCRICAO, java.sql.Types.VARCHAR)));
 					componente.setIdComponente(String.valueOf(SQLUtil.getValorResultSet(resultSet, ID_COMPONENTE, java.sql.Types.VARCHAR)));
 					listaComponente.add(componente);
@@ -110,7 +110,7 @@ public class ComponenteDAOImpl implements ComponenteDAO, Serializable {
 				componente.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
 				componente.setIdTela((Integer) SQLUtil.getValorResultSet(resultSet, ID_TELA, java.sql.Types.INTEGER));
 				componente.setIdAba((Integer)SQLUtil.getValorResultSet(resultSet, ID_ABA, java.sql.Types.INTEGER));
-				componente.setTipo((Integer)SQLUtil.getValorResultSet(resultSet, TIPO, java.sql.Types.INTEGER));
+				componente.setTipo(String.valueOf(SQLUtil.getValorResultSet(resultSet, TIPO, java.sql.Types.VARCHAR)));
 				componente.setDescricao(String.valueOf(SQLUtil.getValorResultSet(resultSet, DESCRICAO, java.sql.Types.VARCHAR)));
 				componente.setIdComponente(String.valueOf(SQLUtil.getValorResultSet(resultSet, ID_COMPONENTE, java.sql.Types.VARCHAR)));
 				listaComponente.add(componente);

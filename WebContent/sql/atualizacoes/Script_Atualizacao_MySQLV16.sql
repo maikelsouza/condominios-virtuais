@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS TELA(
 	DESCRICAO VARCHAR(150) NOT NULL,
 	NOME_ARQUIVO VARCHAR(150) NOT NULL,
 	ID_MODULO integer NOT NULL,
+	CONSTRAINT UQ_TELA_NOME UNIQUE (NOME),
 	CONSTRAINT FK_TELA_ID_MODULO_MODULO_ID FOREIGN KEY (ID_MODULO) REFERENCES MODULO(ID),	
 	PRIMARY KEY(ID)
 );
@@ -45,12 +46,13 @@ CREATE TABLE IF NOT EXISTS ABA(
 
 CREATE TABLE IF NOT EXISTS COMPONENTE(
 	ID integer NOT NULL AUTO_INCREMENT,
-	NOME VARCHAR(150) NOT NULL,
+	NOME VARCHAR(200) NOT NULL,
 	DESCRICAO VARCHAR(150) NOT NULL,
 	ID_COMPONENTE VARCHAR(150) NOT NULL,
 	ID_TELA integer,
 	ID_ABA integer,
-	TIPO integer NOT NULL,
+	TIPO VARCHAR(150) NOT NULL,
+	CONSTRAINT UQ_COMPONENTE_NOME UNIQUE (NOME),
 	CONSTRAINT FK_COMPONENTE_ID_TELA_TELA_ID FOREIGN KEY (ID_TELA) REFERENCES TELA(ID),
 	CONSTRAINT FK_COMPONENTE_ID_ABA_ABA_ID FOREIGN KEY (ID_ABA) REFERENCES TELA(ID),
 	PRIMARY KEY(ID)
@@ -229,9 +231,27 @@ INSERT INTO ABA VALUES(DEFAULT,'formMeuPainel.idTabDadosPessoais','formMeuPainel
 
 
 INSERT INTO COMPONENTE VALUES
-(DEFAULT,'formListaDocumento.idBotaoAnexaDocumento','formListaDocumento.idBotaoAnexaDocumentoDescricao','idBotaoAnexaDocumento',2,null,0),
-(DEFAULT,'formListaCondominio.idBotaoCadastroCondominio','formListaCondominio.idBotaoCadastroCondominioDescricao','idBotaoCadastroCondominio',5,null,0);
+--(DEFAULT,'formListaDocumento.idBotaoAnexaDocumento','formListaDocumento.idBotaoAnexaDocumentoDescricao','idBotaoAnexaDocumento',2,null,'componente.tipo.0'),
+--(DEFAULT,'formListaCondominio.idBotaoCadastroCondominio','formListaCondominio.idBotaoCadastroCondominioDescricao','idBotaoCadastroCondominio',5,null,'componente.tipo.0'),
+--(DEFAULT,'formListaBloco.idBotaoCadastroBloco','formListaBloco.idBotaoCadastroBlocoDescricao','idBotaoCadastroBloco',10,null,'componente.tipo.0'),
+--(DEFAULT,'formListaBloco.idLinkEditaBloco','formListaBloco.idLinkEditaBlocoDescricao','idLinkEditaBloco',11,null,'componente.tipo.1'),
+--(DEFAULT,'formListaAmbienteCondominio.idBotaoCadastroAmbienteCondominio','formListaAmbienteCondominio.idBotaoCadastroAmbienteCondominioDescricao','idBotaoCadastroAmbiente',21,null,'componente.tipo.0'),
+--(DEFAULT,'formListaAmbienteCondominio.idLinkEditaAmbienteCondominio','formListaAmbienteCondominio.idLinkEditaAmbienteCondominioDescricao','idLinkEditaAmbiente',22,null,'componente.tipo.1'),
 
+(DEFAULT,'formCadastroListaReserva.idLinkExcluirReserva','formCadastroListaReserva.idLinkExcluirReservaDescricao','idLinkExcluirReserva',74,null,'componente.tipo.1'),
+(DEFAULT,'formEditaAmbienteCondominio.idBotaoExcluirCondominio','formEditaAmbienteCondominio.idBotaoExcluirCondominioDescricao','idBotaoExcluirCondominio',23,null,'componente.tipo.0'),
+(DEFAULT,'formEditaBloco.idBotaoExcluirBloco','formEditaBloco.idBotaoExcluirBlocoDescricao','idBotaoExcluirBloco',11,null,'componente.tipo.0'),
+(DEFAULT,'formEditaClassificados.idBotaoExcluirClassificados','formEditaClassificados.idBotaoExcluirClassificadosDescricao','idBotaoExcluirClassificados',55,null,'componente.tipo.0'),
+(DEFAULT,'formEditaCondomino.idBotaoExcluirCondomino','formEditaCondomino.idBotaoExcluirCondominoDescricao','idBotaoExcluirCondomino',19,null,'componente.tipo.0'),
+(DEFAULT,'formEditaDespesa.idBotaoExcluirDespesa','formEditaDespesa.idBotaoExcluirDespesaDescricao','idBotaoExcluirDespesa',61,null,'componente.tipo.0'),
+(DEFAULT,'formEditaFuncionarioCondominio.idBotaoExcluirFuncionarioCondominio','formEditaFuncionarioCondominioidBotaoExcluirFuncionarioCondominioDescricao','idBotaoExcluirFuncionarioCondominio',29,null,'componente.tipo.0'),
+(DEFAULT,'formEditaGaragem.idBotaoExcluirGaragem','formEditaGaragem.idBotaoExcluirGaragemDescricao','idBotaoExcluirGaragem',80,null,'componente.tipo.0'),
+(DEFAULT,'formEditaItemAmbiente.idBotaoExcluirItemAmbiente','formEditaItemAmbiente.idBotaoExcluirItemAmbienteDescricao','idBotaoExcluirItemAmbiente',26,null,'componente.tipo.0'),
+(DEFAULT,'formEditaObra.idBotaoExcluirObra','formEditaObra.idBotaoExcluirObraDescricao','idBotaoExcluirObra',33,null,'componente.tipo.0'),
+(DEFAULT,'formEditaReceita.idBotaoExcluirReceita','formEditaReceita.idBotaoExcluirReceitaDescricao','idBotaoExcluirReceita',60,null,'componente.tipo.0'),
+(DEFAULT,'formEditaTelefonesUteis.idExcluirTelefonesUteis','formEditaTelefonesUteis.idExcluirTelefonesUteisDescricao','idExcluirTelefonesUteis',58,null,'componente.tipo.0'),
+(DEFAULT,'formEditaUnidade.idExcluirUnidade','formEditaUnidade.idExcluirUnidadeDescricao','idExcluirUnidade',14,null,'componente.tipo.0'),
+          
 
 
 

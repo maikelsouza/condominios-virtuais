@@ -83,7 +83,7 @@
 						<f:facet name="header">
 							<h:outputText value="#{msg.rotuloAcao}" />
 						</f:facet>
-						<a4j:commandLink value="#{msg.linkEditar}"  action="#{contadorMB.editarContador}"  immediate="true" />
+						<a4j:commandLink value="#{msg.linkEditar}"  action="#{contadorMB.editarContador}" rendered="loginMB.temAcesso('#{contadorMB.editarContador}')"  immediate="true" />
 					</rich:column>		
 					<f:facet name="footer">
              			<rich:dataScroller for="tableContador"  fastControls="hide" renderIfSinglePage="false" />

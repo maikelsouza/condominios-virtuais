@@ -142,9 +142,9 @@ public class LoginMB implements Serializable{
 	public Boolean temAcesso(String... actions){	
 		Boolean encontrou = Boolean.FALSE;
 		for (String action : actions) {
-			StringBuffer fromAction = new StringBuffer("#{principalMB.");
-			fromAction.append(action);
-			fromAction.append("}");		
+	//		StringBuffer fromAction = new StringBuffer("#{principalMB.");
+		//	fromAction.append(action);
+		//	fromAction.append("}");		
 			Map<String,Set<NavigationCase>> navigationCases = ManagedBeanUtil.getMapNavigationCase();
 			Collection<Set<NavigationCase>> collectionNavigationCase = navigationCases.values();
 			Iterator<Set<NavigationCase>> iteratorCollectionNavigationCase = collectionNavigationCase.iterator();
@@ -160,7 +160,7 @@ public class LoginMB implements Serializable{
 				iteratorNavigationCase = setNavigationCase.iterator();
 				while (iteratorNavigationCase.hasNext() && continuarProcurandoNesseForm) {
 					navigationCase = iteratorNavigationCase.next();					
-					if(fromAction.toString().equals(navigationCase.getFromAction())){
+					if(action.toString().equals(navigationCase.getFromAction())){
 						iteratorGrupoUsuario = this.usuario.getListaGrupoUsuario().iterator();
 						while (iteratorGrupoUsuario.hasNext()) {
 							grupoUsuario = iteratorGrupoUsuario.next();
@@ -176,6 +176,41 @@ public class LoginMB implements Serializable{
 		}
 		return encontrou;
 	}
+	
+//	public Boolean temAcessoComponente(String... actions){	
+//		Boolean encontrou = Boolean.FALSE;
+//		for (String action : actions) {		
+//			Map<String,Set<NavigationCase>> navigationCases = ManagedBeanUtil.getMapNavigationCase();
+//			Collection<Set<NavigationCase>> collectionNavigationCase = navigationCases.values();
+//			Iterator<Set<NavigationCase>> iteratorCollectionNavigationCase = collectionNavigationCase.iterator();
+//			Set<NavigationCase> setNavigationCase = null;
+//			Iterator<NavigationCase> iteratorNavigationCase = null;
+//			Iterator<GrupoUsuario> iteratorGrupoUsuario = null;
+//			NavigationCase navigationCase = null;
+//			GrupoUsuario grupoUsuario = null;
+//			// Flag criada para garantir que não ir executar o final do primeiro e segundo while caso a view não esteja na lista de telas que os grupos de usuários tem acesso
+//			Boolean continuarProcurandoNesseForm = Boolean.TRUE;
+//			while (iteratorCollectionNavigationCase.hasNext() && continuarProcurandoNesseForm) {
+//				setNavigationCase = iteratorCollectionNavigationCase.next();
+//				iteratorNavigationCase = setNavigationCase.iterator();
+//				while (iteratorNavigationCase.hasNext() && continuarProcurandoNesseForm) {
+//					navigationCase = iteratorNavigationCase.next();					
+//					if(action.toString().equals(navigationCase.getFromAction())){
+//						iteratorGrupoUsuario = this.usuario.getListaGrupoUsuario().iterator();
+//						while (iteratorGrupoUsuario.hasNext()) {
+//							grupoUsuario = iteratorGrupoUsuario.next();
+//							encontrou = grupoUsuario.temAcesso2(navigationCase.getToViewId(FacesContext.getCurrentInstance()));
+//							if(encontrou){
+//								return encontrou;
+//							}
+//						}
+//						continuarProcurandoNesseForm = Boolean.FALSE;
+//					}
+//				}
+//			}
+//		}
+//		return encontrou;
+//	}
 	
 	/**
 	 * FIXME: Método criado para não exibir o menu financeiro.

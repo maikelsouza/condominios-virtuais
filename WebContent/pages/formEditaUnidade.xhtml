@@ -70,7 +70,8 @@
 				<rich:popupPanel id="confirmaExcluirUnidade" autosized="true">
   					#{msg['msg.unidade.confirmacaoExcluir']}
   					<h:panelGrid columns="2">    	 	
-						<h:commandButton value="#{msg.botaoExcluir}" action="#{unidadeMB.excluirUnidade}" onclick=" #{rich:component('confirmaExcluirUnidade')}.hide();  return true;" />
+						<h:commandButton value="#{msg.botaoExcluir}" action="#{unidadeMB.excluirUnidade}" onclick=" #{rich:component('confirmaExcluirUnidade')}.hide();  return true;" 
+						id="idExcluirUnidade" rendered="#{loginMB.temAcessoComponente('formEditaUnidade.idExcluirUnidade')}" />
 						<h:commandButton value="#{msg.botaoCancelar}" onclick="#{rich:component('confirmaExcluirUnidade')}.hide(); return false;" />	
 					</h:panelGrid>	
 				</rich:popupPanel>

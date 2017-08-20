@@ -224,7 +224,7 @@
 				<h:commandButton value="#{msg.botaoGerarExcel}" action="#{receitaDespesaMB.gerarExcel}" immediate="true" 
 					rendered="#{receitaDespesaMB.exibeBotaoExcel and loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7') and loginMB.exibeMenuFinanceiro()}" />
 				<h:commandButton value="#{msg.botaoCadastrarReceitaDespesa}" action="#{receitaDespesaMB.cadastroReceitaDespesa}" immediate="true" 
-					rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7') and loginMB.exibeMenuFinanceiro()}" />	
+					rendered="#{loginMB.temAcesso('#{receitaDespesaMB.cadastroReceitaDespesa}') and loginMB.exibeMenuFinanceiro()}"/>	
 			</h:panelGrid>	
 			
 		</h:form>

@@ -115,9 +115,8 @@
 			</rich:panel>
 
 			<h:panelGrid columns="3">
-				<h:commandButton value="#{msg.botaoAtualizar}"
-					action="#{blocoMB.atualizarBloco}" />
-				<h:commandButton value="#{msg.botaoExcluir}" immediate="true">
+				<h:commandButton value="#{msg.botaoAtualizar}" action="#{blocoMB.atualizarBloco}" />
+				<h:commandButton id="idBotaoExcluirBloco" value="#{msg.botaoExcluir}" immediate="true" rendered="#{loginMB.temAcessoComponente('formEditaBloco.idBotaoExcluirBloco')}">
 					<rich:componentControl target="confirmaExcluirBloco"
 						operation="show" />
 				</h:commandButton>

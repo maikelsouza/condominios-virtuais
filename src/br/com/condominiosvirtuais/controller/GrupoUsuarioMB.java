@@ -176,7 +176,7 @@ public class GrupoUsuarioMB implements Serializable {
 			List<Componente> listaComponentesTela = componenteService.buscarPorIdTela(telaVO.getIdTela());
 			telaVO.setListaComponentesTela(listaComponentesTela);
 			ManagedBeanUtil.getSession(Boolean.TRUE).setAttribute(AtributoSessaoEnum.TELA_VO.getAtributo(),telaVO);
-			//this.telaMB.populaAbaVOTemporaria();
+			this.telaMB.populaComponenteVOTemporaria();
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");

@@ -135,8 +135,7 @@
 					</rich:dataTable>
 				</div>
 			</rich:panel>
-			<h:commandButton value="#{msg.botaoCriarNovo}"
-				action="#{unidadeMB.cadastroUnidade}" immediate="true"></h:commandButton>
+			<h:commandButton value="#{msg.botaoCriarNovo}" action="#{unidadeMB.cadastroUnidade}" rendered="#{loginMB.temAcesso('#{unidadeMB.cadastroUnidade}')}" immediate="true"/>
 		</h:form>
 		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
 		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />

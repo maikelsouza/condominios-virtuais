@@ -117,9 +117,8 @@
 								action="#{condominoMB.visualizarCondomino}" immediate="true" />	
 				 			#{' '}                                                                           
  							<a4j:commandLink value="#{msg.linkEditar}"
-								render="tableCondomino" action="#{condominoMB.editarCondomino}"
-								immediate="true"
-								rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1')}" />
+								render="tableCondomino" action="#{condominoMB.editarCondomino}" immediate="true"
+								rendered="#{loginMB.temAcesso('#{condominioMB.editarCondominio}')" />
 						</rich:column>
 						<f:facet name="footer">
               				<rich:dataScroller for="tableCondomino"  fastControls="hide" renderIfSinglePage="false" />
@@ -127,7 +126,7 @@
 					</rich:dataTable>
 				</div>
 			</rich:panel>
-			<h:commandButton value="#{msg.botaoCriarNovo}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,4,7')}"
+			<h:commandButton value="#{msg.botaoCriarNovo}" rendered="#{loginMB.temAcesso('#{condominioMB.editarCondominio}')"
 				action="#{condominoMB.cadastroCondomino}" immediate="true"></h:commandButton>
 		</h:form>
 

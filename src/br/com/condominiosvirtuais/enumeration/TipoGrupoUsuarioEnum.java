@@ -148,6 +148,7 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_COMPONENTE_TELA.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_GRUPO_USUARIO.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_TELA_ABA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_TELA_COMPONENTE.getPathTelas());
 			
 			
 			

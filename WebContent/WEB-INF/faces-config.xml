@@ -2210,6 +2210,7 @@
    <from-action>#{grupoUsuarioMB.listarGrupoUsuarioTelaComponente}</from-action>
    <from-outcome>listar</from-outcome>
    <to-view-id>/pages/formListaTelaComponente.xhtml</to-view-id>
+   <redirect/>
   </navigation-case>
  </navigation-rule>
  <navigation-rule>                       

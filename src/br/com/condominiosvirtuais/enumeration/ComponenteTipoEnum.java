@@ -2,17 +2,17 @@ package br.com.condominiosvirtuais.enumeration;
 
 public enum ComponenteTipoEnum {
 	
-    BOTAO(0),
+    BOTAO("componente.tipo.0"),
 	
-	LINK(1);	
+	LINK("componente.tipo.1");	
 	
-	private Integer tipo = null;	
+	private String tipo = null;	
 	
-	ComponenteTipoEnum(Integer tipo){
+	ComponenteTipoEnum(String tipo){
 		this.tipo = tipo;
 	}
 
-	public Integer getTipo() {
+	public String getTipo() {
 		return tipo;
 	}
 

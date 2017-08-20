@@ -24,7 +24,7 @@ public class Componente implements Comparable<Componente>{
 	
 	private Integer idAba;
 	
-	private Integer tipo;
+	private String tipo;
 
 	public Integer getId() {
 		return id;
@@ -82,11 +82,15 @@ public class Componente implements Comparable<Componente>{
 		this.idAba = idAba;
 	}
 
-	public Integer getTipo() {
+	public String getTipoI18n() {
+		return AplicacaoUtil.i18n(this.getTipo());
+	}
+	
+	public String getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(Integer tipo) {
+	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
 	

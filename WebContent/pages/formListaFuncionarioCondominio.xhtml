@@ -83,10 +83,10 @@
 								<h:outputText value="#{msg.rotuloAcao}" />
 							</f:facet>
 							<a4j:commandLink value="#{msg.linkVisualizar}"
-								render="tableFuncionario" action="#{funcionarioMB.visualizarFuncionarioCondominio}" immediate="true" />
+								render="tableFuncionario" action="#{funcionarioMB.visualizarFuncionarioCondominio}" immediate="true" rendered="#{loginMB.temAcesso('#{funcionarioMB.visualizarFuncionarioCondominio}')}" />
 							 #{' '}
- 							<a4j:commandLink value="#{msg.linkEditar}"
-								render="tableFuncionario" action="#{funcionarioMB.editarFuncionarioCondominio}" immediate="true" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1')}" />
+ 							<a4j:commandLink value="#{msg.linkEditar}" render="tableFuncionario" action="#{funcionarioMB.editarFuncionarioCondominio}" immediate="true" 
+ 								rendered="#{loginMB.temAcesso('#{funcionarioMB.editarFuncionarioCondominio}')}" />
 						</rich:column>
 						<f:facet name="footer">
               				<rich:dataScroller for="tableFuncionario"  fastControls="hide" renderIfSinglePage="false" />
@@ -94,9 +94,8 @@
 					</rich:dataTable>
 				</div>
 			</rich:panel>
-			<h:commandButton value="#{msg.botaoCriarNovo}"
-				action="#{funcionarioMB.cadastroFuncionarioCondominio}"
-				immediate="true" />
+			<h:commandButton value="#{msg.botaoCriarNovo}" action="#{funcionarioMB.cadastroFuncionarioCondominio}"
+				immediate="true" rendered="#{loginMB.temAcesso('#{funcionarioMB.cadastroFuncionarioCondominio}')}" />
 		</h:form>
 
 		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />

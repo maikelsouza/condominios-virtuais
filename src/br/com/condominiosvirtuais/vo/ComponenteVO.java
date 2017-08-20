@@ -12,7 +12,7 @@ public class ComponenteVO implements Comparable<ComponenteVO>{
 	
 	private Boolean checada;
 	
-	private Integer tipo;
+	private String tipoI18nComponente;
 
 	public Integer getId() {
 		return id;
@@ -38,7 +38,7 @@ public class ComponenteVO implements Comparable<ComponenteVO>{
 		this.nomeI18nComponente = nomeI18nComponente;
 	}
 
-	public String getDescricaoI18nAba() {
+	public String getDescricaoI18nComponente() {
 		return descricaoI18nComponente;
 	}
 
@@ -54,12 +54,12 @@ public class ComponenteVO implements Comparable<ComponenteVO>{
 		this.checada = checada;
 	}		
 
-	public Integer getTipo() {
-		return tipo;
-	}
+	public String getTipoI18nComponente() {
+		return tipoI18nComponente;
+	}	
 
-	public void setTipo(Integer tipo) {
-		this.tipo = tipo;
+	public void setTipoI18nComponente(String tipoI18nComponente) {
+		this.tipoI18nComponente = tipoI18nComponente;
 	}
 
 	@Override

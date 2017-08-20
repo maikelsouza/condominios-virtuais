@@ -126,10 +126,10 @@
 							<f:facet name="header">
 								<h:outputText value="#{msg.rotuloAcao}" />
 							</f:facet>
-							<a4j:commandLink value="#{msg.linkEditar}" render="tableReserva" rendered="#{reserva.situacao == 'reserva.situacao.2'}"
+							<a4j:commandLink value="#{msg.linkEditar}" render="tableReserva" rendered="#{reserva.situacao == 'reserva.situacao.2' and loginMB.temAcesso('#{reservaMB.editarReserva}')}"
 								action="#{reservaMB.editarReserva}" immediate="true" />								
 							#{' '}								
-							<a4j:commandLink value="#{msg.linkExcluir}" render="tableReserva" immediate="true" >
+							<a4j:commandLink id="idLinkExcluirReserva" value="#{msg.linkExcluir}" render="tableReserva" immediate="true" rendered="#{loginMB.temAcessoComponente('formCadastroListaReserva.idLinkExcluirReserva')}">
 								<rich:componentControl target="confirmaExcluirReserva" operation="show" />
 							</a4j:commandLink>
 							<rich:popupPanel id="confirmaExcluirReserva" autosized="true">

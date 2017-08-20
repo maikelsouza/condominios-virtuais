@@ -56,7 +56,7 @@
 							<h:outputText value="#{documento.nome}" />
 						</rich:column>
 						<rich:column
-							style="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7') == false ? 'width:5%;' : 'width:10%;'}">
+							style="#{loginMB.temAcesso('#{arquivoMB.excluirDocumento}') == false ? 'width:5%;' : 'width:10%;'}">
 							<f:facet name="header">
 								<h:outputText value="#{msg.rotuloAcao}" />
 							</f:facet>
@@ -64,7 +64,7 @@
 								actionListener="#{arquivoMB.downloadDocumento}" immediate="true" />
 							#{' '}					 
  							<h:commandLink value="#{msg.linkExcluir}" 
-								rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}">
+								rendered="#{loginMB.temAcesso('#{arquivoMB.excluirDocumento}')}">
 								<rich:componentControl target="confirmaExcluirDocumento"
 									operation="show" />
 							</h:commandLink>
@@ -87,7 +87,7 @@
 			</rich:panel>
 			<h:commandButton id="idBotaoAnexaoDocumento" value="#{msg.botaoAnexarDocumento}"
 				action="#{arquivoMB.abrirTelaAnexarDocumento}" immediate="true"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}" />
+				rendered="#{loginMB.temAcesso('#{arquivoMB.abrirTelaAnexarDocumento}')}" />
 		</h:form>
 
 		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />

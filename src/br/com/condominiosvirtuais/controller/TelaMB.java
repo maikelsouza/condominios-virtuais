@@ -46,6 +46,8 @@ public class TelaMB implements Serializable {
 	
 	private List<AbaVO> listaTemporariaAbaVO;
 	
+	private List<ComponenteVO> listaTemporariaComponenteVO;
+	
 	private Boolean checadoTodos =  Boolean.FALSE;
 	
 	@Inject
@@ -172,12 +174,6 @@ public class TelaMB implements Serializable {
 		}
 		this.listaAbaVO = new ListDataModel<AbaVO>(listaAbaVO);	
 		this.checarTodosCheckbox();
-//		this.telaVO = (TelaVO) ManagedBeanUtil.getSession(Boolean.FALSE).getAttribute(AtributoSessaoEnum.TELA_VO.getAtributo());
-//		Iterator<AbaVO> iteratorAbaVO = this.telaVO.getListaAbasVOTela().iterator();
-//		while (iteratorAbaVO.hasNext()) {
-//			AbaVO abaVO = iteratorAbaVO.next();
-//			abaVO.setChecada(checado);
-//		}		
 	}
 	
 	public void checarTodosCheckbox(){
@@ -204,6 +200,23 @@ public class TelaMB implements Serializable {
 		}
 	}
 	
+	private void populaComponenteVO() throws SQLException, Exception{
+		ComponenteVO componenteVO = null;
+		List<ComponenteVO> listaComponenteVO = new ArrayList<ComponenteVO>();		
+		if (this.listaComponenteVO == null){
+			for (Componente componente : this.telaVO.getListaComponentesTela()) {
+				componenteVO = new ComponenteVO();
+				componenteVO.setIdComponente(componente.getId());
+				componenteVO.setNomeI18nComponente(componente.getNomeI18n());
+				componenteVO.setDescricaoI18nComponente(componente.getDescricaoI18n());
+				componenteVO.setTipoI18nComponente(componente.getTipoI18n());
+				listaComponenteVO.add(componenteVO);
+			}
+			Collections.sort(listaComponenteVO);
+			this.listaComponenteVO = new ListDataModel<ComponenteVO>(listaComponenteVO);
+		}
+	}
+	
 	public void populaAbaVOTemporaria() throws SQLException, Exception{
 		this.telaVO = (TelaVO) ManagedBeanUtil.getSession(Boolean.FALSE).getAttribute(AtributoSessaoEnum.TELA_VO.getAtributo());		
 		this.populaAbaVO();	
@@ -214,6 +227,19 @@ public class TelaMB implements Serializable {
 			abaVOTemporaria.setIdAba(abaVO.getIdAba());
 			abaVOTemporaria.setChecada(abaVO.getChecada());
 			listaTemporariaAbaVO.add(abaVOTemporaria);
+		}	
+	}
+	
+	public void populaComponenteVOTemporaria() throws SQLException, Exception{
+		this.telaVO = (TelaVO) ManagedBeanUtil.getSession(Boolean.FALSE).getAttribute(AtributoSessaoEnum.TELA_VO.getAtributo());		
+		this.populaComponenteVO();	
+		this.listaTemporariaComponenteVO = new ArrayList<>();
+		ComponenteVO componenteVOTemporaria = null;
+		for (ComponenteVO componenteVO : this.telaVO.getListaComponentesVOTela()) {
+			componenteVOTemporaria = new ComponenteVO();
+			componenteVOTemporaria.setIdComponente(componenteVO.getIdComponente());
+			componenteVOTemporaria.setChecada(componenteVO.getChecada());
+			listaTemporariaComponenteVO.add(componenteVOTemporaria);
 		}	
 	}
 	

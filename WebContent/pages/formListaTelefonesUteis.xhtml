@@ -127,10 +127,8 @@
 					</rich:dataTable>
 				</div>
 			</rich:panel>
-			<h:commandButton value="#{msg.botaoCriarNovo}"
-				action="#{telefonesUteisMB.cadastrarTelefonesUteis}"
-				immediate="true"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}" />
+			<h:commandButton value="#{msg.botaoCriarNovo}" action="#{telefonesUteisMB.cadastrarTelefonesUteis}"
+				immediate="true" rendered="#{loginMB.temAcesso('#{telefonesUteisMB.cadastrarTelefonesUteis}')}"/>
 		</h:form>
 
 		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
