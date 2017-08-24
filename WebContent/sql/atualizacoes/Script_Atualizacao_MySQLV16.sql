@@ -219,38 +219,37 @@ INSERT INTO TELA VALUES
 (DEFAULT,'formMeuPainel','formMeuPainelDescricao','formMeuPainel.xhtml',24);
 
 
-
-
-INSERT INTO ABA VALUES(DEFAULT,'formMeuPainel.idTabDadosPessoais','formMeuPainel.idTabDadosPessoais.descricao','idTabDadosPessoais',11),
-(DEFAULT,'formMeuPainel.idTabAlterarImagemCondomino','formMeuPainel.idTabAlterarImagemCondomino.descricao','idTabAlterarImagemCondomino',11),
-(DEFAULT,'formEscreverMensagem.idTabMensagemCondominios','formEscreverMensagem.idTabMensagemCondominios.descricao','idTabMensagemCondominios',45),
+INSERT INTO ABA VALUES
+(DEFAULT,'formMeuPainel.idTabPanelDadosPessoaisCondomino','formMeuPainel.idTabPanelDadosPessoaisCondomino.descricao','idTabPanelDadosPessoaisCondomino',87),
+(DEFAULT,'formMeuPainel.idTabPanelDadosPessoaisFuncionario','formMeuPainel.idTabPanelDadosPessoaisFuncionario.descricao','idTabPanelDadosPessoaisFuncionario',87),
+(DEFAULT,'formMeuPainel.idTabPanelDadosPessoaisSindicoProfissional','formMeuPainel.idTabPanelDadosPessoaisSindicoProfissional.descricao','idTabPanelDadosPessoaisSindicoProfissional',87),
+(DEFAULT,'formMeuPainel.idTabPanelDadosPessoaisContador','formMeuPainel.idTabPanelDadosPessoaisContador.descricao','idTabPanelDadosPessoaisContador',87),
+(DEFAULT,'formMeuPainel.idTabAlterarImagemCondomino','formMeuPainel.idTabAlterarImagemCondomino.descricao','idTabAlterarImagemCondomino',87),
 (DEFAULT,'formEscreverMensagem.idTabMensagemFuncionarios','formEscreverMensagem.idTabMensagemFuncionarios.descricao','idTabMensagemFuncionarios',45),
+(DEFAULT,'formEscreverMensagem.idTabMensagemCondominios','formEscreverMensagem.idTabMensagemCondominios.descricao','idTabMensagemCondominios',45),
 (DEFAULT,'formCadastroClassificados.idTabDadosAnuncio','formCadastroClassificados.idTabDadosAnuncio.descricao','idTabDadosAnuncio',54),
 (DEFAULT,'formCadastroClassificados.idTabImagemAnuncio','formCadastroClassificados.idTabImagemAnuncio.descricao','idTabImagemAnuncio',54);
 
 
-
 INSERT INTO COMPONENTE VALUES
---(DEFAULT,'formListaDocumento.idBotaoAnexaDocumento','formListaDocumento.idBotaoAnexaDocumentoDescricao','idBotaoAnexaDocumento',2,null,'componente.tipo.0'),
---(DEFAULT,'formListaCondominio.idBotaoCadastroCondominio','formListaCondominio.idBotaoCadastroCondominioDescricao','idBotaoCadastroCondominio',5,null,'componente.tipo.0'),
---(DEFAULT,'formListaBloco.idBotaoCadastroBloco','formListaBloco.idBotaoCadastroBlocoDescricao','idBotaoCadastroBloco',10,null,'componente.tipo.0'),
---(DEFAULT,'formListaBloco.idLinkEditaBloco','formListaBloco.idLinkEditaBlocoDescricao','idLinkEditaBloco',11,null,'componente.tipo.1'),
---(DEFAULT,'formListaAmbienteCondominio.idBotaoCadastroAmbienteCondominio','formListaAmbienteCondominio.idBotaoCadastroAmbienteCondominioDescricao','idBotaoCadastroAmbiente',21,null,'componente.tipo.0'),
---(DEFAULT,'formListaAmbienteCondominio.idLinkEditaAmbienteCondominio','formListaAmbienteCondominio.idLinkEditaAmbienteCondominioDescricao','idLinkEditaAmbiente',22,null,'componente.tipo.1'),
-
 (DEFAULT,'formCadastroListaReserva.idLinkExcluirReserva','formCadastroListaReserva.idLinkExcluirReservaDescricao','idLinkExcluirReserva',74,null,'componente.tipo.1'),
 (DEFAULT,'formEditaAmbienteCondominio.idBotaoExcluirCondominio','formEditaAmbienteCondominio.idBotaoExcluirCondominioDescricao','idBotaoExcluirCondominio',23,null,'componente.tipo.0'),
 (DEFAULT,'formEditaBloco.idBotaoExcluirBloco','formEditaBloco.idBotaoExcluirBlocoDescricao','idBotaoExcluirBloco',11,null,'componente.tipo.0'),
 (DEFAULT,'formEditaClassificados.idBotaoExcluirClassificados','formEditaClassificados.idBotaoExcluirClassificadosDescricao','idBotaoExcluirClassificados',55,null,'componente.tipo.0'),
 (DEFAULT,'formEditaCondomino.idBotaoExcluirCondomino','formEditaCondomino.idBotaoExcluirCondominoDescricao','idBotaoExcluirCondomino',19,null,'componente.tipo.0'),
 (DEFAULT,'formEditaDespesa.idBotaoExcluirDespesa','formEditaDespesa.idBotaoExcluirDespesaDescricao','idBotaoExcluirDespesa',61,null,'componente.tipo.0'),
-(DEFAULT,'formEditaFuncionarioCondominio.idBotaoExcluirFuncionarioCondominio','formEditaFuncionarioCondominioidBotaoExcluirFuncionarioCondominioDescricao','idBotaoExcluirFuncionarioCondominio',29,null,'componente.tipo.0'),
+(DEFAULT,'formEditaFuncionarioCondominio.idBotaoExcluirFuncionarioCondominio','formEditaFuncionarioCondominio.idBotaoExcluirFuncionarioCondominioDescricao','idBotaoExcluirFuncionarioCondominio',29,null,'componente.tipo.0'),
 (DEFAULT,'formEditaGaragem.idBotaoExcluirGaragem','formEditaGaragem.idBotaoExcluirGaragemDescricao','idBotaoExcluirGaragem',80,null,'componente.tipo.0'),
 (DEFAULT,'formEditaItemAmbiente.idBotaoExcluirItemAmbiente','formEditaItemAmbiente.idBotaoExcluirItemAmbienteDescricao','idBotaoExcluirItemAmbiente',26,null,'componente.tipo.0'),
 (DEFAULT,'formEditaObra.idBotaoExcluirObra','formEditaObra.idBotaoExcluirObraDescricao','idBotaoExcluirObra',33,null,'componente.tipo.0'),
 (DEFAULT,'formEditaReceita.idBotaoExcluirReceita','formEditaReceita.idBotaoExcluirReceitaDescricao','idBotaoExcluirReceita',60,null,'componente.tipo.0'),
 (DEFAULT,'formEditaTelefonesUteis.idExcluirTelefonesUteis','formEditaTelefonesUteis.idExcluirTelefonesUteisDescricao','idExcluirTelefonesUteis',58,null,'componente.tipo.0'),
 (DEFAULT,'formEditaUnidade.idExcluirUnidade','formEditaUnidade.idExcluirUnidadeDescricao','idExcluirUnidade',14,null,'componente.tipo.0'),
+(DEFAULT,'formListaDocumento.idLinkExcluirDocumento','formListaDocumento.idLinkExcluirDocumentoDescricao','idLinkExcluirDocumento',2,null,'componente.tipo.1'),
+(DEFAULT,'formListaEnquete.idLinkExcluirEnquete','formListaEnquete.idLinkExcluirEnqueteDescricao','idLinkExcluirEnquete',49,null,'componente.tipo.1'),
+(DEFAULT,'formListaImagem.idLinkExcluirImagem','formListaImagem.idLinkExcluirImagemDescricao','idLinkExcluirImagem',4,null,'componente.tipo.1'),
+(DEFAULT,'formListaReceitaDespesa.idBotaoGerarExcel','formListaReceitaDespesa.idBotaoGerarExcelDescricao','idBotaoGerarExcel',59,null,'componente.tipo.0');
+
           
 
 

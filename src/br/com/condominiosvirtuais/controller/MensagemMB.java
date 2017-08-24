@@ -696,15 +696,16 @@ public class MensagemMB implements Serializable {
 		}		
 		return quantidadeErros == 0 ? Boolean.TRUE : Boolean.FALSE;
 	}
-	
-	public Boolean ehSindicoOuAdmin(){
-		Boolean ehSindicoOuAdmin = Boolean.FALSE;
-		Usuario usuario = AplicacaoUtil.getUsuarioAutenticado();
-		if(usuario.getId().equals(1) || usuario.getId().equals(236) || usuario.getId().equals(295)){
-			ehSindicoOuAdmin = Boolean.TRUE;
-		}		
-		return ehSindicoOuAdmin;
-	}
+
+// TODO: Código comentado em 21/08/2017. Apagar em 180 dias	
+//	public Boolean ehSindicoOuAdmin(){
+//		Boolean ehSindicoOuAdmin = Boolean.FALSE;
+//		Usuario usuario = AplicacaoUtil.getUsuarioAutenticado();
+//		if(usuario.getId().equals(1) || usuario.getId().equals(236) || usuario.getId().equals(295)){
+//			ehSindicoOuAdmin = Boolean.TRUE;
+//		}		
+//		return ehSindicoOuAdmin;
+//	}
 	
 
 	public List<BlocoVO> getListaBlocoVO() {

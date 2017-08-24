@@ -111,8 +111,8 @@
 							<f:facet name="header">
 								<h:outputText value="#{msg.rotuloAcao}" />
 							</f:facet>
-							<a4j:commandLink value="#{msg.linkEditar}" render="tableGaragem"
-								action="#{garagemMB.editarGaragem}" immediate="true" />
+							<a4j:commandLink value="#{msg.linkEditar}" render="tableGaragem" action="#{garagemMB.editarGaragem}" 
+							immediate="true" rendered="#{loginMB.temAcesso('#{garagemMB.editarGaragem}')}" />
 						</rich:column>
 						<f:facet name="footer">
               				<rich:dataScroller for="tableGaragem"  fastControls="hide" renderIfSinglePage="false" />

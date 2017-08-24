@@ -85,14 +85,14 @@
 							</f:facet>
 							<h:outputText value="#{contaBancaria.situacao == true ? msg['contaBancaria.situacao.1'] : msg['contaBancaria.situacao.0']}" />
 						</rich:column>
-						<rich:column style="#{loginMB.temAcesso('#{contaBancariaMB.editaContaBancaria}') == false ? 'width:5%;' : 'width:10%;'}">
+						<rich:column style="width:10%;">
 							<f:facet name="header">
 								<h:outputText value="#{msg.rotuloAcao}" />
 							</f:facet>
 							<a4j:commandLink value="#{msg.linkVisualizar}" render="tableContaBancaria" action="#{contaBancariaMB.visualizarContaBancaria}" immediate="true" />					
 				 			#{' '}                                                                           
  							<a4j:commandLink value="#{msg.linkEditar}" render="tableContaBancaria" action="#{contaBancariaMB.editaContaBancaria}" immediate="true" 
- 							rendered="#{loginMB.temAcesso('#{contaBancariaMB.editaContaBancaria}')}" />
+ 								rendered="#{loginMB.temAcesso('#{contaBancariaMB.editaContaBancaria}')}" />
 						</rich:column>
 					</rich:dataTable>					
 				</div>

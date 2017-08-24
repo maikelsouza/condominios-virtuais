@@ -78,12 +78,12 @@
 								value="#{funcionario.telefoneCelular != 0 ? funcionario.telefoneCelular : ''}" />
 						</rich:column>
 						<rich:column
-							style="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1') == false ? 'width:5%;' : 'width:10%;'}">
+							style="width:10%;">
 							<f:facet name="header">
 								<h:outputText value="#{msg.rotuloAcao}" />
 							</f:facet>
 							<a4j:commandLink value="#{msg.linkVisualizar}"
-								render="tableFuncionario" action="#{funcionarioMB.visualizarFuncionarioCondominio}" immediate="true" rendered="#{loginMB.temAcesso('#{funcionarioMB.visualizarFuncionarioCondominio}')}" />
+								render="tableFuncionario" action="#{funcionarioMB.visualizarFuncionarioCondominio}" immediate="true" />
 							 #{' '}
  							<a4j:commandLink value="#{msg.linkEditar}" render="tableFuncionario" action="#{funcionarioMB.editarFuncionarioCondominio}" immediate="true" 
  								rendered="#{loginMB.temAcesso('#{funcionarioMB.editarFuncionarioCondominio}')}" />

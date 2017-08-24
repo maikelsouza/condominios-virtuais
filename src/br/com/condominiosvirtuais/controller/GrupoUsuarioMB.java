@@ -260,6 +260,7 @@ public class GrupoUsuarioMB implements Serializable {
 			componenteVO.setIdComponente(componente.getId());
 			componenteVO.setNomeI18nComponente(componente.getNomeI18n());
 			componenteVO.setDescricaoI18nComponente(componente.getDescricaoI18n());
+			componenteVO.setTipoI18nComponente(componente.getTipoI18n());
 			listaComponenteVO.add(componenteVO);
 		}
 		return listaComponenteVO;
@@ -269,8 +270,10 @@ public class GrupoUsuarioMB implements Serializable {
 	public void checarTodosCheckbox() throws SQLException, Exception{
 		Iterator<TelaVO> iteratorTelaVO = listaTelaVO.iterator();
 		Iterator<AbaVO> iteratorAbaVO = null;
+		Iterator<ComponenteVO> iteratorComponenteVO = null;
 		TelaVO telaVO = null;
 		AbaVO abaVO = null; 
+		ComponenteVO componenteVO = null; 
 		while (iteratorTelaVO.hasNext()) {
 			telaVO = iteratorTelaVO.next();
 			telaVO.setChecada(this.checadoTodos);
@@ -279,10 +282,15 @@ public class GrupoUsuarioMB implements Serializable {
 				abaVO = iteratorAbaVO.next();
 				abaVO.setChecada(this.checadoTodos);
 			}
-			if(!telaVO.getListaAbasVOTela().isEmpty()){
+			iteratorComponenteVO = telaVO.getListaComponentesVOTela().iterator();
+			while (iteratorComponenteVO.hasNext()) {
+				componenteVO = iteratorComponenteVO.next();
+				componenteVO.setChecada(this.checadoTodos);
+			}
+			if(!telaVO.getListaAbasVOTela().isEmpty() && !telaVO.getListaComponentesVOTela().isEmpty()){
 				ManagedBeanUtil.getSession(Boolean.FALSE).setAttribute(AtributoSessaoEnum.TELA_VO.getAtributo(),telaVO);
 				ManagedBeanUtil.getSession(Boolean.FALSE).setAttribute(AtributoSessaoEnum.CHECADO.getAtributo(),this.checadoTodos);
-				this.telaMB.checarTodosCheckbox2();
+				this.telaMB.checarTodosCheckbox();
 			}	
 		}		
 	}

@@ -221,8 +221,8 @@
 			</div>
 			</rich:panel>
 			<h:panelGrid columns="2">
-				<h:commandButton value="#{msg.botaoGerarExcel}" action="#{receitaDespesaMB.gerarExcel}" immediate="true" 
-					rendered="#{receitaDespesaMB.exibeBotaoExcel and loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7') and loginMB.exibeMenuFinanceiro()}" />
+				<h:commandButton id="idBotaoGerarExcel" value="#{msg.botaoGerarExcel}" action="#{receitaDespesaMB.gerarExcel}" immediate="true" 
+					rendered="#{receitaDespesaMB.exibeBotaoExcel and loginMB.temAcessoComponente('formListaReceitaDespesa.idBotaoGerarExcel') and loginMB.exibeMenuFinanceiro()}" />
 				<h:commandButton value="#{msg.botaoCadastrarReceitaDespesa}" action="#{receitaDespesaMB.cadastroReceitaDespesa}" immediate="true" 
 					rendered="#{loginMB.temAcesso('#{receitaDespesaMB.cadastroReceitaDespesa}') and loginMB.exibeMenuFinanceiro()}"/>	
 			</h:panelGrid>	

@@ -87,8 +87,7 @@
 							style="height: 150px; width:170px;" />
 					</h:panelGrid>
 					<a4j:commandLink value="#{msg.linkEditar}"
-						render="gridClassificados"
-						action="#{classificadosMB.editarClassificados}" immediate="true"
+						render="gridClassificados" action="#{classificadosMB.editarClassificados}" immediate="true"
 						rendered="#{classificadosMB.classificadosPertenceAoUsuarioLogado()}" />
 					<f:facet name="footer">
               			<rich:dataScroller for="gridClassificados"  fastControls="hide" renderIfSinglePage="false" />

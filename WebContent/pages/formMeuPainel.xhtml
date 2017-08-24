@@ -17,9 +17,8 @@
 				onclick="#{rich:component('validaMimeType')}.hide(); return false;" />
 		</rich:popupPanel>
 		<br />
-		<rich:tabPanel styleClass="content"  
-			rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('4,5')}"
-			switchType="client" activeItem="#{meuPainelMB.tabSelecionada}">
+		<rich:tabPanel styleClass="content" rendered="#{loginMB.temAcessoAba('formMeuPainel.idTabPanelDadosPessoaisCondomino')}"
+			switchType="client" activeItem="#{meuPainelMB.tabSelecionada}" id="idTabPanelDadosPessoaisCondomino">
 			<rich:tab header="#{msg['meuPainel.condomino.dadosPessoais']}"
 				id="idTabDadosPessoais">
 				<h:form id="idFormDadosPessoais">
@@ -502,8 +501,8 @@
 			</rich:tab>
 
 		</rich:tabPanel>
-		<rich:tabPanel
-			rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('6')}"
+		<rich:tabPanel id="idTabPanelDadosPessoaisFuncionario"
+			rendered="#{loginMB.temAcessoAba('formMeuPainel.idTabPanelDadosPessoaisFuncionario')}"
 			switchType="client" activeItem="#{meuPainelMB.tabSelecionada}">
 			<rich:tab header="#{msg['meuPainel.funcionario.dadosPessoais']}"
 				id="idTabDadosPessoaisFuncionario">
@@ -654,7 +653,7 @@
 				</h:form>
 			</rich:tab>
 		</rich:tabPanel>
-		<rich:tabPanel styleClass="content" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('3')}" switchType="client" activeItem="#{meuPainelMB.tabSelecionada}" > 
+		<rich:tabPanel styleClass="content" rendered="#{loginMB.temAcessoAba('formMeuPainel.idTabPanelDadosPessoaisSindicoProfissional')}" id="idTabPanelDadosPessoaisSindicoProfissional" switchType="client" activeItem="#{meuPainelMB.tabSelecionada}" > 
 		
 		  <rich:tab header="#{msg['meuPainel.sindicoProfissional.dadosPessoais']}" id="idTabDadosPessoaisSindicoProfissional">
 			<h:form id="idFormDadosPessoaisSindicoProfissional">
@@ -772,7 +771,7 @@
 		</rich:tabPanel>
 		
 		
-		<rich:tabPanel styleClass="content" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('7')}" switchType="client" activeItem="#{meuPainelMB.tabSelecionada}" > 
+		<rich:tabPanel styleClass="content" rendered="#{loginMB.temAcessoAba('formMeuPainel.idTabPanelDadosPessoaisContador')}" switchType="client" activeItem="#{meuPainelMB.tabSelecionada}" id="idTabPanelDadosPessoaisContador"> 
 		
 		  <rich:tab header="#{msg['meuPainel.contador.dadosPessoais']}" id="idTabDadosPessoaisContador">
 			<h:form id="idFormDadosPessoaisContador">

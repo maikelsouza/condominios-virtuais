@@ -49,22 +49,19 @@
 						<rich:column sortBy="#{documento.nome}"
 							sortOrder="#{ordenaArquivoMB.nomeArquivo}">
 							<f:facet name="header">
-								<a4j:commandLink value="#{msg['arquivo.documento.nome']}"
-									render="tableDocumento" 
+								<a4j:commandLink value="#{msg['arquivo.documento.nome']}" render="tableDocumento" 
 									action="#{ordenaArquivoMB.ordenarPorNome}" />
 							</f:facet>
 							<h:outputText value="#{documento.nome}" />
 						</rich:column>
 						<rich:column
-							style="#{loginMB.temAcesso('#{arquivoMB.excluirDocumento}') == false ? 'width:5%;' : 'width:10%;'}">
+							style="width:10%;">
 							<f:facet name="header">
 								<h:outputText value="#{msg.rotuloAcao}" />
 							</f:facet>
-							<h:commandLink value="#{msg.linkDownload}"
-								actionListener="#{arquivoMB.downloadDocumento}" immediate="true" />
+							<h:commandLink  value="#{msg.linkDownload}" actionListener="#{arquivoMB.downloadDocumento}" immediate="true" />
 							#{' '}					 
- 							<h:commandLink value="#{msg.linkExcluir}" 
-								rendered="#{loginMB.temAcesso('#{arquivoMB.excluirDocumento}')}">
+ 							<h:commandLink id="idLinkExcluirDocumento" value="#{msg.linkExcluir}"  rendered="#{loginMB.temAcessoComponente('formListaDocumento.idLinkExcluirDocumento')}">
 								<rich:componentControl target="confirmaExcluirDocumento"
 									operation="show" />
 							</h:commandLink>

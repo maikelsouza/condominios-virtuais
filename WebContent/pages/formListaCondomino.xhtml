@@ -71,10 +71,8 @@
 					<h:outputText value="#{msg.listaCondominos}" />
 				</f:facet>
 				<div>
-					<rich:dataTable value="#{condominoMB.listaCondominosVO}"
-						var="condominoVO" rowClasses="odd-row, even-row" rows="10"
-						styleClass="stable" id="tableCondomino" style="width:100%;"
-						rendered="#{condominoMB.listaCondominosVO.rowCount > 0}">
+					<rich:dataTable value="#{condominoMB.listaCondominosVO}" var="condominoVO" rowClasses="odd-row, even-row" rows="10"
+						styleClass="stable" id="tableCondomino" style="width:100%;" rendered="#{condominoMB.listaCondominosVO.rowCount > 0}">
 						<rich:column>
 							<f:facet name="header">
 								<h:outputLabel value="#{msg['condominio']}" />
@@ -107,17 +105,14 @@
 							</f:facet>
 							<h:outputText value="#{condominoVO.nomeCondomino}" />
 						</rich:column>
-						<rich:column
-							style="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1') == false ? 'width:5%;' : 'width:10%;'}">
+						<rich:column style="width:10%;">
 							<f:facet name="header">
 								<h:outputText value="#{msg.rotuloAcao}" />
 							</f:facet>
 							<a4j:commandLink value="#{msg.linkVisualizar}"
-								render="tableCondomino"
-								action="#{condominoMB.visualizarCondomino}" immediate="true" />	
+								render="tableCondomino" action="#{condominoMB.visualizarCondomino}" immediate="true" />	
 				 			#{' '}                                                                           
- 							<a4j:commandLink value="#{msg.linkEditar}"
-								render="tableCondomino" action="#{condominoMB.editarCondomino}" immediate="true"
+ 							<a4j:commandLink value="#{msg.linkEditar}" render="tableCondomino" action="#{condominoMB.editarCondomino}" immediate="true"
 								rendered="#{loginMB.temAcesso('#{condominioMB.editarCondominio}')" />
 						</rich:column>
 						<f:facet name="footer">

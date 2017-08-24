@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.faces.context.FacesContext;
-
 import br.com.condominiosvirtuais.enumeration.GrupoUsuarioSituacaoEnum;
 import br.com.condominiosvirtuais.enumeration.TipoGrupoUsuarioEnum;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
@@ -174,7 +172,7 @@ public class GrupoUsuario implements Serializable {
 		this.listaTelaAcesso = listaTelaAcesso;
 	}
 	
-	public Boolean temAcesso2(String caminhoPagina){		
+	public Boolean existeTela(String caminhoPagina){		
 		String pagina = caminhoPagina.substring(7, caminhoPagina.length());
 		for (TelaVO telaVO : listaTelaAcesso) {
 			if(telaVO.getNomeArquivoTela().equals(pagina)){
@@ -182,7 +180,28 @@ public class GrupoUsuario implements Serializable {
 			}
 		}
 		return Boolean.FALSE;
-		
+	}
+	
+	public Boolean existeComponente(String nomeComponente){
+		for (TelaVO telaVO : listaTelaAcesso) {
+			for (Componente componente : telaVO.getListaComponentesTela()) {
+				if (componente.getNome().equals(nomeComponente)){
+					return Boolean.TRUE;
+				}
+			}
+		}
+		return Boolean.FALSE;
+	}
+	
+	public Boolean existeAba(String nomeAba){
+		for (TelaVO telaVO : listaTelaAcesso) {
+			for (Aba aba : telaVO.getListaAbasTela()) {
+				if (aba.getNome().equals(nomeAba)){
+					return Boolean.TRUE;
+				}
+			}
+		}
+		return Boolean.FALSE;
 	}
 
 	private Boolean contemTela(String tela, List<String> listaTelas){

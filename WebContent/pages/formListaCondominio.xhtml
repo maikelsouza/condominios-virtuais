@@ -94,9 +94,7 @@
 							<f:facet name="header">
 								<h:outputText value="#{msg.rotuloAcao}" />
 							</f:facet>
-							<h:commandLink value="#{msg.linkVisualizar}"
-								action="#{condominioMB.visualizarCondominio}" immediate="true">
-							</h:commandLink>
+							<h:commandLink value="#{msg.linkVisualizar}" action="#{condominioMB.visualizarCondominio}" immediate="true" />
 				 			#{' '}
  							<h:commandLink value="#{msg.linkEditar}" render="tableCondominio" rendered="#{loginMB.temAcesso('#{condominioMB.editarCondominio}')"
 								action="#{condominioMB.editarCondominio}" immediate="true" />

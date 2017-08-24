@@ -50,13 +50,11 @@ public class AbaVO implements Comparable<AbaVO>{
 
 	public void setChecada(Boolean checada) {
 		this.checada = checada;
-	}	
-	
+	}		
 
 	@Override
 	public int compareTo(AbaVO abaVO) {
 		return this.getNomeI18nAba().compareTo(abaVO.getNomeI18nAba());
-	}
-	
+	}	
 
 }

@@ -126,8 +126,8 @@
 									value="#{javax.enterprise.context.conversation.id}" />
 							</h:commandLink>
 				 			#{' '}
- 							<a4j:commandLink value="#{msg.linkEditar}" render="tableUnidade"
-								action="#{unidadeMB.editarUnidade}" immediate="true" />
+ 							<a4j:commandLink value="#{msg.linkEditar}" render="tableUnidade" action="#{unidadeMB.editarUnidade}" 
+ 								immediate="true" rendered="#{loginMB.temAcesso('#{unidadeMB.editarUnidade}')}" />
 						</rich:column>
 						 <f:facet name="footer">
               				  <rich:dataScroller for="tableUnidade"  fastControls="hide" renderIfSinglePage="false"  />

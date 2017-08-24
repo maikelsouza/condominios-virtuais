@@ -125,7 +125,7 @@
 				 			#{' '}                                                                           
 							<h:commandLink value="#{msg.linkEmAberto}" render="tableBoleto" action="#{boletoMB.deixarEmAberto}" immediate="false" title="#{msg['titl.boleto.linkEmAberto']}" rendered="#{boleto.pago == true}" />					
 				 			#{' '}                                                                           
- 							<h:commandLink value="#{msg.linkExcluir}" render="tableBoleto"  rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1')}" >
+ 							<h:commandLink value="#{msg.linkExcluir}" render="tableBoleto"  rendered="#{loginMB.temAcesso('#{boletoMB.excluir}')}" >
  								<rich:componentControl target="confirmaExcluirBoleto"
 									operation="show" />
 							</h:commandLink>
@@ -137,8 +137,7 @@
  							<rich:popupPanel id="confirmaExcluirBoleto" autosized="true">
 	    						#{msg['msg.boleto.confirmacaoExcluir']}
 						<h:panelGrid columns="2">   					         
-							<h:commandButton value="#{msg.botaoExcluir}" onclick="#{rich:component('confirmaExcluirBoleto')}.hide(); return true;"
-								actionListener="#{boletoMB.excluir}" />
+							<h:commandButton value="#{msg.botaoExcluir}" onclick="#{rich:component('confirmaExcluirBoleto')}.hide(); return true;" actionListener="#{boletoMB.excluir}" />
 							<h:commandButton value="#{msg.botaoCancelar}" onclick="#{rich:component('confirmaExcluirBoleto')}.hide(); return false;" />
 						</h:panelGrid>	
 					</rich:popupPanel>	
@@ -149,7 +148,7 @@
 							
 				</div>
 			</rich:panel>
-			<h:commandButton value="#{msg.botaoGerarBoleto}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,7')}" action="#{boletoMB.geraBoleto}" 
+			<h:commandButton value="#{msg.botaoGerarBoleto}" rendered="#{loginMB.temAcesso('#{boletoMB.geraBoleto}')}" action="#{boletoMB.geraBoleto}" 
 				immediate="true" />
 		</h:form>
 

@@ -2228,6 +2228,21 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formListaTelaComponente.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{telaMB.salvarListaTelaComponente}</from-action>
+   <from-outcome>salvar</from-outcome>
+   <to-view-id>/pages/formCadastroGrupoUsuario.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>                  
+   <from-action>#{telaMB.voltarListaTelaComponente}</from-action>
+   <from-outcome>voltar</from-outcome>
+   <to-view-id>/pages/formCadastroGrupoUsuario.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
  
  <application>
   <locale-config>

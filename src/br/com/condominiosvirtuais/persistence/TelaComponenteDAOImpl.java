@@ -1,5 +1,6 @@
 package br.com.condominiosvirtuais.persistence;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,8 +13,10 @@ import org.apache.log4j.Logger;
 import br.com.condominiosvirtuais.entity.TelaComponente;
 import br.com.condominiosvirtuais.util.SQLUtil;
 
-public class TelaComponenteDAOImpl implements TelaComponenteDAO {
+public class TelaComponenteDAOImpl implements TelaComponenteDAO, Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	private static Logger logger = Logger.getLogger(TelaComponenteDAOImpl.class);
 	
 	private static final String TELA_COMPONENTE = "TELA_COMPONENTE";

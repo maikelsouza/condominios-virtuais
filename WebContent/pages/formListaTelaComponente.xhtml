@@ -27,7 +27,7 @@
 						styleClass="stable" id="tableComponenteVO" style="width:100%;" rendered="true">
 						<rich:column style="text-align: center;">
 							<f:facet name="header">
-							  <h:selectBooleanCheckbox  rendered="true" title="#{msg['todas']}" value="#{telaMB.checadoTodos}" >
+							  <h:selectBooleanCheckbox  rendered="true" title="#{msg['todas']}" value="#{telaMB.checadoTodosComponentes}" >
 								 <f:ajax render="tableComponenteVO"  listener="#{telaMB.checarTodosComponentesCheckbox}"/>
 							 </h:selectBooleanCheckbox>
 							</f:facet>

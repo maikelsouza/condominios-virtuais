@@ -27,8 +27,8 @@
 						styleClass="stable" id="tableAbaVO" style="width:100%;" rendered="true">
 						<rich:column style="text-align: center;">
 							<f:facet name="header">
-							  <h:selectBooleanCheckbox  rendered="true" title="#{msg['todas']}" value="#{telaMB.checadoTodos}" >
-								 <f:ajax render="tableAbaVO"  listener="#{telaMB.checarTodosCheckbox}"/>
+							  <h:selectBooleanCheckbox  rendered="true" title="#{msg['todas']}" value="#{telaMB.checadoTodasAbas}" >
+								 <f:ajax render="tableAbaVO"  listener="#{telaMB.checarTodasAbasCheckbox}"/>
 							 </h:selectBooleanCheckbox>
 							</f:facet>
 							<h:selectBooleanCheckbox value="#{abaVO.checada}" rendered="true" >

@@ -48,7 +48,9 @@ public class TelaMB implements Serializable {
 	
 	private List<ComponenteVO> listaTemporariaComponenteVO;
 	
-	private Boolean checadoTodos =  Boolean.FALSE;
+	private Boolean checadoTodasAbas =  Boolean.FALSE;
+	
+	private Boolean checadoTodosComponentes =  Boolean.FALSE;
 	
 	@Inject
 	private ModuloDAO moduloDAO;
@@ -59,6 +61,7 @@ public class TelaMB implements Serializable {
 		this.populaTelaVO();
 	}
 	
+// TODO: Código comentado em 22/08/2017. Apagar em 90 dias	
 //	public void inicializaTelaAbaMB() throws SQLException, Exception{
 //		
 //		this.telaVO = (TelaVO) ManagedBeanUtil.getSession(Boolean.FALSE).getAttribute(AtributoSessaoEnum.TELA_VO.getAtributo());		
@@ -103,27 +106,24 @@ public class TelaMB implements Serializable {
 				this.telaVO.setChecada(Boolean.TRUE);
 			}
 			listaAbaVO.add(abaVO);
-		//}
-	}
-//	if(!listaAbaVO.isEmpty()){
-//		
-//	}
-		
-		
-//		Iterator<AbaVO> iteratorAbaVO = listaAbaVO.iterator();
-//		Iterator<AbaVO> iteratorAbaVOTemporaria = listaTemporariaAbaVO.iterator();
-//		List<AbaVO> listaAbaVO = new ArrayList<AbaVO>();
-//		while (iteratorAbaVOTemporaria.hasNext()) {
-//			AbaVO abaVO = iteratorAbaVOTemporaria.next();
-//			if(abaVO.getChecada() != null && abaVO.getChecada()){				
-//				listaAbaVO.add(abaVO);
-//			}
-//		}
-//		if(!listaAbaVO.isEmpty()){
-//			this.telaVO.setListaAbasVOTela(listaAbaVO);
-//		}
-		
+	    }
 		this.telaVO.setListaAbasVOTela(listaAbaVO);
+		ManagedBeanUtil.getSession(Boolean.FALSE).setAttribute(AtributoSessaoEnum.TELA_VO.getAtributo(),this.telaVO);
+		return "salvar";
+	}
+	
+	public String salvarListaTelaComponente(){
+		this.telaVO.setChecada(Boolean.FALSE);
+		Iterator<ComponenteVO> iteratorComponenteVO = listaComponenteVO.iterator();
+		List<ComponenteVO> listaComponenteVO = new ArrayList<ComponenteVO>();
+		while (iteratorComponenteVO.hasNext()) {
+			ComponenteVO componenteVO = iteratorComponenteVO.next();
+			if(componenteVO.getChecada() != null && componenteVO.getChecada()){
+				this.telaVO.setChecada(Boolean.TRUE);
+			}
+			listaComponenteVO.add(componenteVO);
+		}
+		this.telaVO.setListaComponentesVOTela(listaComponenteVO);
 		ManagedBeanUtil.getSession(Boolean.FALSE).setAttribute(AtributoSessaoEnum.TELA_VO.getAtributo(),this.telaVO);
 		return "salvar";
 	}
@@ -149,6 +149,27 @@ public class TelaMB implements Serializable {
 		return "voltar";
 	}
 	
+	public String voltarListaTelaComponente(){
+		// While necessário para retornar ao estado anterior os checks dos componentes.
+		Iterator<ComponenteVO> iteratorComponenteVOTemporaria = listaTemporariaComponenteVO.iterator();
+		Iterator<ComponenteVO> iteratorComponenteVO = null;
+		Boolean encontrou = null;
+		while (iteratorComponenteVOTemporaria.hasNext()) {
+			ComponenteVO componenteVOTemporaria = iteratorComponenteVOTemporaria.next();
+			encontrou = Boolean.FALSE;
+			iteratorComponenteVO = listaComponenteVO.iterator();
+			while (iteratorComponenteVO.hasNext() && !encontrou) {
+				ComponenteVO componenteVO = iteratorComponenteVO.next();
+				if(componenteVOTemporaria.getIdComponente().equals(componenteVO.getIdComponente())){
+					componenteVO.setChecada(componenteVOTemporaria.getChecada());
+					encontrou = Boolean.TRUE;	
+				}
+			}
+		}
+		this.checarComponente();
+		return "voltar";
+	}
+	
 	public void checarAba(){
 		Iterator<AbaVO> iteratorAbaVO = listaAbaVO.iterator();
 		Integer contarChecadas = 0;
@@ -159,62 +180,69 @@ public class TelaMB implements Serializable {
 			}
 		}
 		if(contarChecadas == listaAbaVO.getRowCount()){
-			this.checadoTodos = Boolean.TRUE;
+			this.checadoTodasAbas = Boolean.TRUE;
 		}else{
-			this.checadoTodos = Boolean.FALSE;			
+			this.checadoTodasAbas = Boolean.FALSE;			
 		}
 	}
 	
-	public void checarTodosCheckbox2() throws SQLException, Exception{		
-		checadoTodos = (Boolean) ManagedBeanUtil.getSession(Boolean.FALSE).getAttribute(AtributoSessaoEnum.CHECADO.getAtributo());
+		
+	public void checarComponente(){
+		Iterator<ComponenteVO> iteratorComponenteVO = listaComponenteVO.iterator();
+		Integer contarChecadas = 0;
+		while (iteratorComponenteVO.hasNext()) {
+			ComponenteVO componenteVO = iteratorComponenteVO.next();
+			if(componenteVO.getChecada() != null && componenteVO.getChecada()){
+				contarChecadas++;
+			}
+		}
+		if(contarChecadas == listaComponenteVO.getRowCount()){
+			this.checadoTodosComponentes = Boolean.TRUE;
+		}else{
+			this.checadoTodosComponentes = Boolean.FALSE;			
+		}
+	}
+	
+	public void checarTodosCheckbox() throws SQLException, Exception{		
+		checadoTodasAbas = (Boolean) ManagedBeanUtil.getSession(Boolean.FALSE).getAttribute(AtributoSessaoEnum.CHECADO.getAtributo());
+		checadoTodosComponentes = (Boolean) ManagedBeanUtil.getSession(Boolean.FALSE).getAttribute(AtributoSessaoEnum.CHECADO.getAtributo());
 		this.telaVO = (TelaVO) ManagedBeanUtil.getSession(Boolean.FALSE).getAttribute(AtributoSessaoEnum.TELA_VO.getAtributo());
 		List<AbaVO> listaAbaVO = new ArrayList<AbaVO>();	
+		List<ComponenteVO> listaComponenteVO = new ArrayList<ComponenteVO>();	
 		for (AbaVO abaVO : this.telaVO.getListaAbasVOTela()) {
 			listaAbaVO.add(abaVO);
 		}
-		this.listaAbaVO = new ListDataModel<AbaVO>(listaAbaVO);	
-		this.checarTodosCheckbox();
+		this.listaAbaVO = new ListDataModel<AbaVO>(listaAbaVO);
+		for (ComponenteVO componenteVO : this.telaVO.getListaComponentesVOTela()) {
+			listaComponenteVO.add(componenteVO);
+		}
+		this.listaComponenteVO = new ListDataModel<ComponenteVO>(listaComponenteVO);		
 	}
 	
-	public void checarTodosCheckbox(){
+	public void checarTodasAbasCheckbox(){
 		Iterator<AbaVO> iteratorAbaVO = listaAbaVO.iterator();
 		while (iteratorAbaVO.hasNext()) {
 			AbaVO abaVO = iteratorAbaVO.next();
-			abaVO.setChecada(this.checadoTodos);
+			abaVO.setChecada(this.checadoTodasAbas);
+		}
+	}
+	            
+	public void checarTodosComponentesCheckbox(){
+		Iterator<ComponenteVO> iteratorComponenteVO = listaComponenteVO.iterator();
+		while (iteratorComponenteVO.hasNext()) {
+			ComponenteVO componenteVO = iteratorComponenteVO.next();
+			componenteVO.setChecada(this.checadoTodosComponentes);
 		}		
 	}
-	
+		
 	private void populaAbaVO() throws SQLException, Exception{
-		AbaVO abaVO = null;
-		List<AbaVO> listaAbaVO = new ArrayList<AbaVO>();		
-		if (this.listaAbaVO == null){
-			for (Aba aba : this.telaVO.getListaAbasTela()) {
-				abaVO = new AbaVO();
-				abaVO.setIdAba(aba.getId());
-				abaVO.setNomeI18nAba(aba.getNomeI18n());
-				abaVO.setDescricaoI18nAba(aba.getDescricaoI18n());
-				listaAbaVO.add(abaVO);
-			}
-			Collections.sort(listaAbaVO);
-			this.listaAbaVO = new ListDataModel<AbaVO>(listaAbaVO);
-		}
+		this.listaAbaVO = new ListDataModel<AbaVO>(this.telaVO.getListaAbasVOTela());
+		this.checarAba();
 	}
 	
 	private void populaComponenteVO() throws SQLException, Exception{
-		ComponenteVO componenteVO = null;
-		List<ComponenteVO> listaComponenteVO = new ArrayList<ComponenteVO>();		
-		if (this.listaComponenteVO == null){
-			for (Componente componente : this.telaVO.getListaComponentesTela()) {
-				componenteVO = new ComponenteVO();
-				componenteVO.setIdComponente(componente.getId());
-				componenteVO.setNomeI18nComponente(componente.getNomeI18n());
-				componenteVO.setDescricaoI18nComponente(componente.getDescricaoI18n());
-				componenteVO.setTipoI18nComponente(componente.getTipoI18n());
-				listaComponenteVO.add(componenteVO);
-			}
-			Collections.sort(listaComponenteVO);
-			this.listaComponenteVO = new ListDataModel<ComponenteVO>(listaComponenteVO);
-		}
+		this.listaComponenteVO = new ListDataModel<ComponenteVO>(this.telaVO.getListaComponentesVOTela());
+		this.checarComponente();
 	}
 	
 	public void populaAbaVOTemporaria() throws SQLException, Exception{
@@ -308,12 +336,12 @@ public class TelaMB implements Serializable {
 		this.telaVO = telaVO;
 	}
 
-	public Boolean getChecadoTodos() {
-		return checadoTodos;
+	public Boolean getChecadoTodasAbas() {
+		return checadoTodasAbas;
 	}
 
-	public void setChecadoTodos(Boolean checadoTodos) {
-		this.checadoTodos = checadoTodos;
+	public void setChecadoTodasAbas(Boolean checadoTodasAbas) {
+		this.checadoTodasAbas = checadoTodasAbas;
 	}
 
 	public ListDataModel<ComponenteVO> getListaComponenteVO() {
@@ -322,8 +350,14 @@ public class TelaMB implements Serializable {
 
 	public void setListaComponenteVO(ListDataModel<ComponenteVO> listaComponenteVO) {
 		this.listaComponenteVO = listaComponenteVO;
-	}	
-	
-	
+	}
+
+	public Boolean getChecadoTodosComponentes() {
+		return checadoTodosComponentes;
+	}
+
+	public void setChecadoTodosComponentes(Boolean checadoTodosComponentes) {
+		this.checadoTodosComponentes = checadoTodosComponentes;
+	}		
 
 }
