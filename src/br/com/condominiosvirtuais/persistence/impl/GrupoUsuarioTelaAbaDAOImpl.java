@@ -136,17 +136,17 @@ public class GrupoUsuarioTelaAbaDAOImpl implements GrupoUsuarioTelaAbaDAO, Seria
 	}
 
 	@Override
-	public void excluirPorIdTela(Integer idTela, Connection con) throws SQLException, Exception {
+	public void excluirPorIdGrupoUsuario(Integer idGrupoUsuario, Connection con) throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
 		PreparedStatement statement = null;
 		try {
 			query.append("DELETE FROM ");
 			query.append(GRUPO_USUARIO_TELA_ABA);
 			query.append(" WHERE ");		
-			query.append(ID_TELA);
+			query.append(ID_GRUPO_USUARIO);
 			query.append(" = ?");
 			statement = con.prepareStatement(query.toString());
-			SQLUtil.setValorPpreparedStatement(statement, 1, idTela, java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 1, idGrupoUsuario, java.sql.Types.INTEGER);
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			con.rollback();

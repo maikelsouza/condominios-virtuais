@@ -1,12 +1,16 @@
 package br.com.condominiosvirtuais.entity;
 
+import java.io.Serializable;
+
 /**
  * Entidade utilizada para representar o endereço. Nesse caso o endereço do condomínio. 
  * @author Maikel Joel de Souza
  * @since 21/02/2013
  */
-public class Endereco {
+public class Endereco implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+
 	private Integer id;
 
 	private String endereco;

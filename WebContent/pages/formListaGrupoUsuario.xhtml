@@ -63,11 +63,23 @@
 							</f:facet>
 							<h:outputText value="#{grupoUsuario.situacaoI18n}" />
 						</rich:column>						
-						<rich:column style="width:10%;">
+						<rich:column style="width:20%;">
 							<f:facet name="header">
 								<h:outputText value="#{msg.rotuloAcao}" />
 							</f:facet>
 							<h:commandLink value="#{msg.linkVisualizarTelas}" action="#{grupoUsuarioMB.visualizarGrupoUsuarioTela}" immediate="true"/>
+							#{' '}
+							<h:commandLink value="#{msg.linkExcluir}"  immediate="true">
+								<rich:componentControl target="confirmaExcluirGrupoUsuario" operation="show" />
+							</h:commandLink>
+							<rich:popupPanel id="confirmaExcluirGrupoUsuario" autosized="true">
+         						#{msg['msg.grupoUsuario.confirmacaoExcluir']}
+         						<h:panelGrid columns="2">               		
+									<a4j:commandButton value="#{msg.botaoExcluir}" onclick="#{rich:component('confirmaExcluirGrupoUsuario')}.hide(); return true;"
+										actionListener="#{grupoUsuarioMB.excluirGrupoUsuario}" render="IdMessages idFormListaGrupoUsuario" />
+									<a4j:commandButton value="#{msg.botaoCancelar}" onclick="#{rich:component('confirmaExcluirGrupoUsuario')}.hide(); return false;" />	
+								</h:panelGrid>	
+							</rich:popupPanel>
 						</rich:column>
 						<f:facet name="footer">
               				<rich:dataScroller for="tableGrupoUsuario"  fastControls="hide" renderIfSinglePage="false" />

@@ -7,6 +7,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import br.com.condominiosvirtuais.entity.GrupoUsuario;
+import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.persistence.GrupoUsuarioDAO;
 import br.com.condominiosvirtuais.service.GrupoUsuarioService;
 
@@ -43,6 +44,11 @@ public class GrupoUsuarioServiceImpl implements GrupoUsuarioService, Serializabl
 	@Override
 	public void salvar(GrupoUsuario grupoUsuario) throws SQLException, Exception {
 		this.grupoUsuarioDAO.salvar(grupoUsuario);		
+	}
+
+	@Override
+	public void excluir(Integer idGrupoUsuario) throws SQLException, BusinessException, Exception {
+		this.grupoUsuarioDAO.excluir(idGrupoUsuario);		
 	}	
 
 }

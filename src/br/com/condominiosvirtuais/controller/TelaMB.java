@@ -85,7 +85,7 @@ public class TelaMB implements Serializable {
 	public String visualizarTelaComponente(){		
 		try {
 			this.telaVO = (TelaVO) this.listaTelaVO.getRowData();
-			ManagedBeanUtil.getSession(Boolean.TRUE).setAttribute(AtributoSessaoEnum.TELA_VO.getAtributo(),this.telaVO);
+			ManagedBeanUtil.getSession(Boolean.FALSE).setAttribute(AtributoSessaoEnum.TELA_VO.getAtributo(),this.telaVO);
 			if(this.telaVO.getListaComponentesTela().isEmpty()){
 				ManagedBeanUtil.setMensagemInfo("msg.tela.semComponentes");
 			}

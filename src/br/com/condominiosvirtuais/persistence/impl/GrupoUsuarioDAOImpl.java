@@ -19,8 +19,10 @@ import br.com.condominiosvirtuais.entity.Tela;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.persistence.GrupoUsuarioDAO;
 import br.com.condominiosvirtuais.persistence.GrupoUsuarioTelaAbaDAO;
+import br.com.condominiosvirtuais.persistence.GrupoUsuarioTelaComponenteDAO;
 import br.com.condominiosvirtuais.persistence.GrupoUsuarioTelaDAO;
 import br.com.condominiosvirtuais.persistence.TelaDAO;
+import br.com.condominiosvirtuais.persistence.UsuarioGrupoUsuarioDAO;
 import br.com.condominiosvirtuais.util.SQLUtil;
 import br.com.condominiosvirtuais.vo.AbaVO;
 import br.com.condominiosvirtuais.vo.TelaVO;
@@ -36,6 +38,13 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 	
 	@Inject
 	private GrupoUsuarioTelaAbaDAO grupoUsuarioTelaAbaDAO;
+	
+	@Inject
+	private GrupoUsuarioTelaComponenteDAO grupoUsuarioTelaComponenteDAO;
+	
+	@Inject
+	private UsuarioGrupoUsuarioDAO usuarioGrupoUsuarioDAO;
+	
 	
 	@Inject
 	private TelaDAO telaDAO;
@@ -113,7 +122,10 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 		con.setAutoCommit(Boolean.FALSE);
 		PreparedStatement statement = null;
 		try {			
+			this.grupoUsuarioTelaComponenteDAO.excluirPorIdGrupoUsuario(idGrupoUsuario, con);
+			this.grupoUsuarioTelaAbaDAO.excluirPorIdGrupoUsuario(idGrupoUsuario, con);
 			this.grupoUsuarioTelaDAO.excluirPorIdGrupoUsuario(idGrupoUsuario, con);
+			this.usuarioGrupoUsuarioDAO.excluirPorIdGrupoUsuario(idGrupoUsuario, con);
 			query.append("DELETE FROM ");
 			query.append(GRUPO_USUARIO);
 			query.append(" WHERE ");		
@@ -211,9 +223,7 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 			}catch (SQLException e) {
 				logger.error("erro sqlstate "+e.getSQLState(), e);
 			}				
-		}			
-
-		
+		}		
 	}
 
 

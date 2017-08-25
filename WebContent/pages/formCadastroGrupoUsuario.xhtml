@@ -87,8 +87,8 @@
 
 			<h:panelGrid columns="3">
 				<h:commandButton value="#{msg.botaoSalvar}" action="#{grupoUsuarioMB.salvarGrupoUsuario}" />
-				<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{blocoMB.limparFiltroBloco}" immediate="true" />
-				<h:commandButton value="#{msg.botaoCancelar}" action="#{blocoMB.cancelarCadastroBloco}" immediate="true" />
+				<h:commandButton value="#{msg.botaoLimpar}" action="#{grupoUsuarioMB.limparFiltroPesquisaGrupoUsuario}" />
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{grupoUsuarioMB.cancelarCadastroGrupoUsuario}" immediate="true" />
 			</h:panelGrid>
 		</h:form>
 	</ui:define>

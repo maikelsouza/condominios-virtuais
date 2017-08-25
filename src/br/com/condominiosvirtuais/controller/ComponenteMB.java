@@ -8,7 +8,6 @@ import javax.inject.Named;
 
 import org.apache.log4j.Logger;
 
-import br.com.condominiosvirtuais.entity.Aba;
 import br.com.condominiosvirtuais.entity.Componente;
 import br.com.condominiosvirtuais.enumeration.AtributoSessaoEnum;
 import br.com.condominiosvirtuais.util.ManagedBeanUtil;
@@ -27,7 +26,7 @@ public class ComponenteMB implements Serializable {
 	
 	
 	public void inicializaComponenteMB(){
-		this.telaVO = (TelaVO) ManagedBeanUtil.getSession(Boolean.FALSE).getAttribute(AtributoSessaoEnum.TELA.getAtributo());
+		this.telaVO = (TelaVO) ManagedBeanUtil.getSession(Boolean.FALSE).getAttribute(AtributoSessaoEnum.TELA_VO.getAtributo());
 		this.listaComponente = new ListDataModel<Componente>(this.telaVO.getListaComponentesTela());		
 	}
 	

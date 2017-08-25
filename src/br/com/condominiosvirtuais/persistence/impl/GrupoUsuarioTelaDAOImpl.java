@@ -93,7 +93,7 @@ public class GrupoUsuarioTelaDAOImpl implements GrupoUsuarioTelaDAO, Serializabl
 		try {
 			List<GrupoUsuarioTela> listaGrupoUsuarioTela = this.buscarPorIdGrupoUsuario(idGrupoUsuario,con);
 			for (GrupoUsuarioTela grupoUsuarioTela : listaGrupoUsuarioTela) {
-				this.grupoUsuarioTelaAbaDAO.excluirPorIdTela(grupoUsuarioTela.getIdTela(), con);
+				this.grupoUsuarioTelaAbaDAO.excluirPorIdGrupoUsuario(grupoUsuarioTela.getId(), con);
 			}
 			query.append("DELETE FROM ");
 			query.append(GRUPO_USUARIO_TELA);

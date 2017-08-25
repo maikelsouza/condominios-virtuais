@@ -130,9 +130,19 @@ public class GrupoUsuarioMB implements Serializable {
 	}
 	
 	public void limparFiltroPesquisaGrupoUsuario(){
-		this.grupoUsuario = new GrupoUsuario();
-		this.situacao = -1;
-		this.listaGruposUsuarios = new ListDataModel<GrupoUsuario>();
+		try {
+			this.grupoUsuario = new GrupoUsuario();
+			this.situacao = -1;
+			this.checadoTodos = Boolean.FALSE;
+			this.listaGruposUsuarios = new ListDataModel<GrupoUsuario>();
+			this.checarTodosCheckbox();
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (Exception e) {				
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage());	
+		}
 	}
 	              
 	public String visualizarGrupoUsuarioTela() {		
@@ -177,13 +187,16 @@ public class GrupoUsuarioMB implements Serializable {
 			telaVO.setListaComponentesTela(listaComponentesTela);
 			ManagedBeanUtil.getSession(Boolean.TRUE).setAttribute(AtributoSessaoEnum.TELA_VO.getAtributo(),telaVO);
 			this.telaMB.populaComponenteVOTemporaria();
-		} catch (SQLException e) {
-			logger.error("erro sqlstate "+e.getSQLState(), e);
-			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
-		} catch (Exception e) {				
+		 } catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);	
+				ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}catch (BusinessException e) {				
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage());
+			return null;
+		}catch (Exception e) {
 			logger.error("", e);
-			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage());	
-		}
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}		
 		return "listar";
 	}	
 	
@@ -222,6 +235,26 @@ public class GrupoUsuarioMB implements Serializable {
 		return "salvar";
 	}
 	
+	public String cancelarCadastroGrupoUsuario(){
+		return "cancelar";
+	}
+	
+	public void excluirGrupoUsuario(){
+		this.grupoUsuario = (GrupoUsuario) this.listaGruposUsuarios.getRowData();
+		try {
+			this.grupoUsuarioService.excluir(this.grupoUsuario.getId());
+			this.pesquisaGrupoUsuario();
+			ManagedBeanUtil.setMensagemInfo("msg.grupoUsuario.excluidoSucesso");
+		 } catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		 } catch (BusinessException e) {				
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage());
+		 } catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}
+	}
 	
 	private void populaTelaVO() throws SQLException, Exception{
 		TelaVO telaVO = null;

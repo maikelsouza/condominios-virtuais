@@ -67,6 +67,29 @@ public class UsuarioGrupoUsuarioDAOImpl implements UsuarioGrupoUsuarioDAO, Seria
 		}				
 		return listaUsuarioGrupoUsuarios;
 	}
+
+	@Override
+	public void excluirPorIdGrupoUsuario(Integer idGrupoUsuario, Connection con) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		PreparedStatement statement = null;
+		try {
+			query.append("DELETE FROM ");
+			query.append(USUARIO_GRUPO_USUARIO);
+			query.append(" WHERE ");		
+			query.append(ID_GRUPO_USUARIO);
+			query.append(" = ?");
+			statement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(statement, 1, idGrupoUsuario, java.sql.Types.INTEGER);
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			con.rollback();
+			throw e;
+		}catch (Exception e) {
+			con.rollback();
+			throw e;
+		}
+		
+	}
 	
 	
 

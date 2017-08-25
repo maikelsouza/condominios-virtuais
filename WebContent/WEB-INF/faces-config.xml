@@ -2128,6 +2128,7 @@
    <from-action>#{grupoUsuarioMB.visualizarGrupoUsuarioTela}</from-action>
    <from-outcome>visualizar</from-outcome>
    <to-view-id>/pages/formVisualizaGrupoUsuarioTela.xhtml</to-view-id>
+   <redirect/>
   </navigation-case>
   <navigation-case>                  
    <from-action>#{grupoUsuarioMB.cadastroGrupoUsuario}</from-action>
@@ -2210,6 +2211,12 @@
    <from-action>#{grupoUsuarioMB.listarGrupoUsuarioTelaComponente}</from-action>
    <from-outcome>listar</from-outcome>
    <to-view-id>/pages/formListaTelaComponente.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+   <navigation-case>                  
+   <from-action>#{grupoUsuarioMB.cancelarCadastroGrupoUsuario}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
  </navigation-rule>
