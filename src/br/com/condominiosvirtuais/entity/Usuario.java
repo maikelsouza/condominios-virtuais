@@ -1,5 +1,6 @@
 package br.com.condominiosvirtuais.entity;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -10,8 +11,10 @@ import java.util.List;
  * @author Maikel Joel de Souza
  * @since 20/02/2013
  */
-public class Usuario {
+public class Usuario implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+
 	private Integer id;
 	
 	private String nome;

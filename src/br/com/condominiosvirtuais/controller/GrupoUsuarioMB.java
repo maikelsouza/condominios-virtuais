@@ -127,6 +127,76 @@ public class GrupoUsuarioMB implements Serializable {
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
 		}
 		return "cadastrar";
+
+	}
+	
+	public String atualizarGrupoUsuario(){
+		try {
+			Iterator<TelaVO> iteratorTelaVO = this.listaTelaVO.iterator();
+			Iterator<AbaVO> iteratorAbaVO = null;
+			List<AbaVO> listaAbaVORemover = null;
+			List<ComponenteVO> listaComponenteVORemover = null;
+			Iterator<ComponenteVO> iteratorComponenteVO = null;
+			AbaVO abaVO = null;
+			ComponenteVO componenteVO = null;
+			List<TelaVO> listaTelaVO = new ArrayList<TelaVO>();
+			while (iteratorTelaVO.hasNext()) {
+				TelaVO telaVO = iteratorTelaVO.next();
+				if(telaVO.getChecada() != null && telaVO.getChecada()){
+					listaTelaVO.add(telaVO);
+					iteratorAbaVO = telaVO.getListaAbasVOTela().iterator();
+					listaAbaVORemover = new ArrayList<AbaVO>();
+					while (iteratorAbaVO.hasNext()) {
+						abaVO = (AbaVO) iteratorAbaVO.next();
+						if(abaVO != null && abaVO.getChecada() != null && !abaVO.getChecada()){
+							listaAbaVORemover.add(abaVO);
+						}						
+					}
+					for (AbaVO abaVORemover : listaAbaVORemover) {
+						telaVO.getListaAbasVOTela().remove(abaVORemover);
+					}
+					iteratorComponenteVO = telaVO.getListaComponentesVOTela().iterator();
+					listaComponenteVORemover = new ArrayList<ComponenteVO>();
+					while (iteratorComponenteVO.hasNext()) {
+						componenteVO = (ComponenteVO) iteratorComponenteVO.next();
+						if(componenteVO != null && componenteVO.getChecada() != null && !componenteVO.getChecada()){
+							listaComponenteVORemover.add(componenteVO);							
+						}
+						for (ComponenteVO componenteVORemover : listaComponenteVORemover) {
+							telaVO.getListaComponentesVOTela().remove(componenteVORemover);
+						}
+					}
+				}
+			}
+			this.grupoUsuario.setListaTelaAcesso(listaTelaVO);
+			this.grupoUsuario.setSituacao(this.situacao == 1 ? Boolean.TRUE : Boolean.FALSE);
+			this.grupoUsuarioService.atualizar(this.grupoUsuario);
+			this.pesquisaGrupoUsuario();
+			ManagedBeanUtil.setMensagemInfo("msg.grupoUsuario.atualizadoSucesso");
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}
+		return "atualizar";
+	}
+	
+	public String editarGrupoUsuario(){
+		try {
+			this.grupoUsuario = (GrupoUsuario) this.listaGruposUsuarios.getRowData();
+			this.situacao = this.grupoUsuario.getSituacao() ? 1 : 0;
+			this.grupoUsuario.setListaTela(this.telaService.buscarPorIdGrupoUsuario(this.grupoUsuario.getId()));
+			this.populaTelaVOEditar();
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}
+		return "editar";
 	}
 	
 	public void limparFiltroPesquisaGrupoUsuario(){
@@ -149,7 +219,7 @@ public class GrupoUsuarioMB implements Serializable {
 		try {
 			this.grupoUsuario = (GrupoUsuario) this.listaGruposUsuarios.getRowData();
 			this.grupoUsuario.setListaTela(this.telaService.buscarPorIdGrupoUsuario(this.grupoUsuario.getId()));
-			ManagedBeanUtil.getSession(Boolean.TRUE).setAttribute(AtributoSessaoEnum.GRUPO_USUARIO.getAtributo(),this.grupoUsuario);
+			ManagedBeanUtil.getSession(Boolean.TRUE).setAttribute(AtributoSessaoEnum.GRUPO_USUARIO.getAtributo(),this.grupoUsuario);			
 			if(this.grupoUsuario.getListaTela().isEmpty()){
 				ManagedBeanUtil.setMensagemInfo("msg.grupoUsuario.semTelas");
 			}
@@ -166,7 +236,7 @@ public class GrupoUsuarioMB implements Serializable {
 	public String listarGrupoUsuarioTelaAba() {		
 		try {
 			telaVO = (TelaVO) this.listaTelaVO.getRowData();
-			List<Aba> listaAbasTela = abaService.buscarPorIdTela(telaVO.getIdTela());
+			List<Aba> listaAbasTela = this.abaService.buscarPorIdTela(telaVO.getIdTela());
 			telaVO.setListaAbasTela(listaAbasTela);
 			ManagedBeanUtil.getSession(Boolean.TRUE).setAttribute(AtributoSessaoEnum.TELA_VO.getAtributo(),telaVO);
 			this.telaMB.populaAbaVOTemporaria();
@@ -200,21 +270,66 @@ public class GrupoUsuarioMB implements Serializable {
 		return "listar";
 	}	
 	
+	public String editarGrupoUsuarioTelaAba(){
+		try {
+			this.telaVO = (TelaVO) this.listaTelaVO.getRowData();
+			ManagedBeanUtil.getSession(Boolean.FALSE).setAttribute(AtributoSessaoEnum.TELA_VO.getAtributo(),telaVO);
+			this.telaMB.populaAbaVOTemporaria();
+		 } catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);	
+				ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}catch (BusinessException e) {				
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage());
+			return null;
+		}catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}		
+		return "editar";
+	}
+	
+	public String editarGrupoUsuarioTelaComponente(){
+		try {
+			this.telaVO = (TelaVO) this.listaTelaVO.getRowData();
+			ManagedBeanUtil.getSession(Boolean.FALSE).setAttribute(AtributoSessaoEnum.TELA_VO.getAtributo(),telaVO);
+			this.telaMB.populaComponenteVOTemporaria();
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}catch (BusinessException e) {				
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage());
+			return null;
+		}catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}			
+		return "editar";
+	}
+	
 	public String salvarGrupoUsuario(){
 		try {
 			Iterator<TelaVO> iteratorTelaVO = this.listaTelaVO.iterator();
 			Iterator<AbaVO> iteratorAbaVO = null;
+			Iterator<ComponenteVO> iteratorComponenteVO = null;
 			AbaVO abaVO = null;
+			ComponenteVO componenteVO = null;
 			List<TelaVO> listaTelaVO = new ArrayList<TelaVO>();
 			while (iteratorTelaVO.hasNext()) {
 				TelaVO telaVO = iteratorTelaVO.next();
-				if(telaVO.getChecada()){
+				if(telaVO.getChecada() != null && telaVO.getChecada()){
 					listaTelaVO.add(telaVO);
 					iteratorAbaVO = telaVO.getListaAbasVOTela().iterator();
 					while (iteratorAbaVO.hasNext()) {
 						abaVO = (AbaVO) iteratorAbaVO.next();
-						if(!abaVO.getChecada()){
+						if(abaVO != null && !abaVO.getChecada()){
 							telaVO.getListaAbasVOTela().remove(abaVO);
+						}
+					}
+					iteratorComponenteVO = telaVO.getListaComponentesVOTela().iterator();
+					while (iteratorComponenteVO.hasNext()) {
+						componenteVO = (ComponenteVO) iteratorComponenteVO.next();
+						if(componenteVO != null && !componenteVO.getChecada()){
+							telaVO.getListaComponentesVOTela().remove(componenteVO);
 						}
 					}
 				}
@@ -222,8 +337,8 @@ public class GrupoUsuarioMB implements Serializable {
 			this.grupoUsuario.setListaTelaAcesso(listaTelaVO);
 			this.grupoUsuario.setSituacao(GrupoUsuarioSituacaoEnum.ATIVO.getSituacao());
 			this.grupoUsuarioService.salvar(this.grupoUsuario);
-			this.listaTelaVO = new ListDataModel<TelaVO>();
-			this.grupoUsuario = new GrupoUsuario();
+			this.listaTelaVO = new ListDataModel<TelaVO>();			
+			this.pesquisaGrupoUsuario();
 			ManagedBeanUtil.setMensagemInfo("msg.grupoUsuario.salvoSucesso");
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);
@@ -241,6 +356,7 @@ public class GrupoUsuarioMB implements Serializable {
 	
 	public void excluirGrupoUsuario(){
 		this.grupoUsuario = (GrupoUsuario) this.listaGruposUsuarios.getRowData();
+		
 		try {
 			this.grupoUsuarioService.excluir(this.grupoUsuario.getId());
 			this.pesquisaGrupoUsuario();
@@ -254,6 +370,70 @@ public class GrupoUsuarioMB implements Serializable {
 			logger.error("", e);
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
 		}
+	}
+	
+	private void populaTelaVOEditar() throws SQLException, Exception{		
+		TelaVO telaVO = null;
+		List<TelaVO> listaTelaVO = new ArrayList<TelaVO>();		
+		List<Tela> listaTelas = this.telaService.buscarTodas();
+		for (Tela tela : listaTelas) {
+			telaVO = new TelaVO();
+			telaVO.setIdTela(tela.getId());
+			telaVO.setDescricaoI18nTela(tela.getDescricaoI18n());
+			telaVO.setNomeI18nTela(tela.getNomeI18n());
+			telaVO.setListaAbasVOTela(this.popularAbaVOEditar(tela));
+			telaVO.setListaAbasTela(this.abaService.buscarPorIdTela(telaVO.getIdTela()));
+			telaVO.setListaComponentesVOTela(this.popularComponenteVOEditar(tela));	
+			telaVO.setListaComponentesTela(this.componenteService.buscarPorIdTela(telaVO.getIdTela()));
+			telaVO.setChecada(this.essaTelaEstaChecada(tela));
+			listaTelaVO.add(telaVO);
+		}
+		this.listaTelaVO = new ListDataModel<TelaVO>(listaTelaVO);
+	}
+	
+	private Boolean essaTelaEstaChecada(Tela tela){		
+		Iterator<Tela> iteratorTela = this.grupoUsuario.getListaTela().iterator();		
+		while (iteratorTela.hasNext()) {
+			Tela telaChecada = (Tela) iteratorTela.next();
+			if(tela.getId() == telaChecada.getId()){
+				return Boolean.TRUE;
+			}			
+		}
+		return Boolean.FALSE;
+	}	
+	
+	private Boolean essaAbaEstaChecada(AbaVO abaVO){		
+		Iterator<Tela> iteratorTela = this.grupoUsuario.getListaTela().iterator();
+		Iterator<Aba> iteratorAba = null;
+		Aba abaChecada = null;
+		while (iteratorTela.hasNext()) {
+			Tela telaChecada = (Tela) iteratorTela.next();
+			iteratorAba = telaChecada.getListaAbas().iterator();
+			while (iteratorAba.hasNext()) {
+				abaChecada = iteratorAba.next(); 
+				if(abaVO.getIdAba() == abaChecada.getId()){
+					return Boolean.TRUE;
+				}
+			}
+		}
+		return Boolean.FALSE;
+	}
+	
+	private Boolean esseComponenteEstaChecado(ComponenteVO componenteVO){		
+		Iterator<Tela> iteratorTela = this.grupoUsuario.getListaTela().iterator();
+		Iterator<Componente> iteratorComponente = null;
+		Componente componenteChecado = null;
+		while (iteratorTela.hasNext()) {
+			Tela telaChecada = (Tela) iteratorTela.next();
+			iteratorComponente = telaChecada.getListaComponentes().iterator();
+			while (iteratorComponente.hasNext()) {
+				componenteChecado = iteratorComponente.next(); 
+				if(componenteVO.getIdComponente() == componenteChecado.getId()){
+					return Boolean.TRUE;
+				}
+			}
+		}
+		return Boolean.FALSE;
 	}
 	
 	private void populaTelaVO() throws SQLException, Exception{
@@ -272,6 +452,22 @@ public class GrupoUsuarioMB implements Serializable {
 		this.listaTelaVO = new ListDataModel<TelaVO>(listaTelaVO);
 	}
 	
+//	private void populaEditarTelaVO() throws SQLException, Exception{
+//		TelaVO telaVO = null;
+//		List<TelaVO> listaTelaVO = new ArrayList<TelaVO>();
+//		List<Tela> listaTelas = this.telaService.buscarTodas();
+//		for (Tela tela : listaTelas) {
+//			telaVO = new TelaVO();
+//			telaVO.setIdTela(tela.getId());
+//			telaVO.setDescricaoI18nTela(tela.getDescricaoI18n());
+//			telaVO.setNomeI18nTela(tela.getNomeI18n());
+//			telaVO.setListaAbasVOTela(this.popularAbaVOEditar(tela));
+//			telaVO.setListaComponentesVOTela(this.popularComponenteVO(tela));
+//			listaTelaVO.add(telaVO);
+//		}
+//		this.listaTelaVO = new ListDataModel<TelaVO>(listaTelaVO);
+//	}
+	
 	private List<AbaVO> popularAbaVO(Tela tela){
 		List<AbaVO> listaAbaVO = new ArrayList<AbaVO>();
 		AbaVO abaVO = null;
@@ -279,7 +475,21 @@ public class GrupoUsuarioMB implements Serializable {
 			abaVO = new AbaVO();
 			abaVO.setIdAba(aba.getId());
 			abaVO.setNomeI18nAba(aba.getNomeI18n());
+			abaVO.setDescricaoI18nAba(aba.getDescricaoI18n());			
+			listaAbaVO.add(abaVO);
+		}
+		return listaAbaVO;
+	}
+	
+	private List<AbaVO> popularAbaVOEditar(Tela tela){
+		List<AbaVO> listaAbaVO = new ArrayList<AbaVO>();
+		AbaVO abaVO = null;
+		for (Aba aba : tela.getListaAbas()) {
+			abaVO = new AbaVO();
+			abaVO.setIdAba(aba.getId());
+			abaVO.setNomeI18nAba(aba.getNomeI18n());
 			abaVO.setDescricaoI18nAba(aba.getDescricaoI18n());
+			abaVO.setChecada(this.essaAbaEstaChecada(abaVO));
 			listaAbaVO.add(abaVO);
 		}
 		return listaAbaVO;
@@ -290,10 +500,27 @@ public class GrupoUsuarioMB implements Serializable {
 		ComponenteVO componenteVO = null;
 		for (Componente componente : tela.getListaComponentes()) {
 			componenteVO = new ComponenteVO();
+			componenteVO.setIdTela(componente.getIdTela());
+			componenteVO.setIdComponente(componente.getId());
+			componenteVO.setNomeI18nComponente(componente.getNomeI18n());
+			componenteVO.setDescricaoI18nComponente(componente.getDescricaoI18n());
+			componenteVO.setTipoI18nComponente(componente.getTipoI18n());			
+			listaComponenteVO.add(componenteVO);
+		}
+		return listaComponenteVO;
+	}
+	
+	private List<ComponenteVO> popularComponenteVOEditar(Tela tela){
+		List<ComponenteVO> listaComponenteVO = new ArrayList<ComponenteVO>();
+		ComponenteVO componenteVO = null;
+		for (Componente componente : tela.getListaComponentes()) {
+			componenteVO = new ComponenteVO();
+			componenteVO.setIdTela(componente.getIdTela());
 			componenteVO.setIdComponente(componente.getId());
 			componenteVO.setNomeI18nComponente(componente.getNomeI18n());
 			componenteVO.setDescricaoI18nComponente(componente.getDescricaoI18n());
 			componenteVO.setTipoI18nComponente(componente.getTipoI18n());
+			componenteVO.setChecada(this.esseComponenteEstaChecado(componenteVO));
 			listaComponenteVO.add(componenteVO);
 		}
 		return listaComponenteVO;

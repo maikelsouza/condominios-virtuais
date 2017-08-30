@@ -17,5 +17,7 @@ public interface GrupoUsuarioService {
 	public abstract void salvar(GrupoUsuario grupoUsuario) throws SQLException, Exception;
 	
 	public abstract void excluir(Integer idGrupoUsuario) throws SQLException, BusinessException, Exception;
+	
+	public abstract void atualizar(GrupoUsuario grupoUsuario) throws SQLException, Exception;
 
 }

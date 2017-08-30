@@ -9,9 +9,6 @@
 	template="/templates/templatePrincipal.xhtml">
 
 	<ui:define name="conteudo">
-		<f:metadata>
-			<f:event type="preRenderView" listener="#{componenteMB.inicializaComponenteMB}" />
-		</f:metadata>
 		<h:form id="idFormVisualizaTelaComponente" styleClass="content formView">
 			<rich:panel>
 				<f:facet name="header">
@@ -19,14 +16,14 @@
 				</f:facet>
 				<h:panelGrid columns="2">
 					<h:outputLabel value="#{msg['tela.nome']}: " for="idTelaNome" />
-					<h:outputText id="idTelaNome" value="#{componenteMB.telaVO.nomeI18nTela}" />
+					<h:outputText id="idTelaNome" value="#{telaMB.telaVO.nomeI18nTela}" />
 					<h:outputLabel value="#{msg['tela.descricao']}: " for="idTelaDescricao"/>
-					<h:outputText id="idTelaDescricao" value="#{componenteMB.telaVO.descricaoI18nTela}"/>
+					<h:outputText id="idTelaDescricao" value="#{telaMB.telaVO.descricaoI18nTela}"/>
 				</h:panelGrid>
 				<div></div>
 			</rich:panel>
 			<rich:panel header="#{msg['painelTelaComponente']}">
-				<rich:dataTable id="idListaComponente" var="componente"  value="#{componenteMB.listaComponente}" rendered="#{componenteMB.listaComponente.rowCount > 0}">
+				<rich:dataTable id="idListaComponente" var="componente"  value="#{telaMB.listaComponente}" rendered="#{telaMB.listaComponente.rowCount > 0}">
 					<rich:column>
 						<f:facet name="header">
 							<h:outputLabel value="#{msg['componente.nome']}"/>
@@ -42,8 +39,8 @@
 				</rich:dataTable>
 			</rich:panel>
 			<h:panelGrid columns="2">
-				<h:commandButton value="#{msg.botaoVoltar}" action="#{componenteMB.voltarVisualizarTelaComponente}" immediate="true"/>
-				<h:commandButton value="#{msg.botaoCancelar}" action="#{componenteMB.cancelarVisualizarTelaComponente}" immediate="true"/>
+				<h:commandButton value="#{msg.botaoVoltar}" action="#{telaMB.voltarVisualizarTelaComponente}" immediate="true"/>
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{telaMB.cancelarVisualizarTelaComponente}" immediate="true"/>
 			</h:panelGrid>
 		</h:form>
 	</ui:define>

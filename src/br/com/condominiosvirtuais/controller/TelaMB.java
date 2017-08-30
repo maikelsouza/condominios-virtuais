@@ -38,6 +38,10 @@ public class TelaMB implements Serializable {
 	
 	private GrupoUsuario grupoUsuario;
 	
+	private ListDataModel<Aba> listaAba;
+	
+	private ListDataModel<Componente> listaComponente;
+	
 	private ListDataModel<TelaVO> listaTelaVO;
 	
 	private ListDataModel<AbaVO> listaAbaVO;
@@ -61,6 +65,8 @@ public class TelaMB implements Serializable {
 		this.populaTelaVO();
 	}
 	
+	
+	
 // TODO: Código comentado em 22/08/2017. Apagar em 90 dias	
 //	public void inicializaTelaAbaMB() throws SQLException, Exception{
 //		
@@ -71,7 +77,7 @@ public class TelaMB implements Serializable {
 	public String visualizarTelaAba(){		
 		try {
 			this.telaVO = (TelaVO) this.listaTelaVO.getRowData();
-			ManagedBeanUtil.getSession(Boolean.TRUE).setAttribute(AtributoSessaoEnum.TELA_VO.getAtributo(),this.telaVO);
+			this.listaAba = new ListDataModel<Aba>(this.telaVO.getListaAbasTela());	
 			if(this.telaVO.getListaAbasTela().isEmpty()){
 				ManagedBeanUtil.setMensagemInfo("msg.tela.semAbas");
 			}
@@ -85,7 +91,7 @@ public class TelaMB implements Serializable {
 	public String visualizarTelaComponente(){		
 		try {
 			this.telaVO = (TelaVO) this.listaTelaVO.getRowData();
-			ManagedBeanUtil.getSession(Boolean.FALSE).setAttribute(AtributoSessaoEnum.TELA_VO.getAtributo(),this.telaVO);
+			this.listaComponente = new ListDataModel<Componente>(this.telaVO.getListaComponentesTela());
 			if(this.telaVO.getListaComponentesTela().isEmpty()){
 				ManagedBeanUtil.setMensagemInfo("msg.tela.semComponentes");
 			}
@@ -112,7 +118,39 @@ public class TelaMB implements Serializable {
 		return "salvar";
 	}
 	
+	public String salvarEditaTelaAba(){
+		this.telaVO.setChecada(Boolean.FALSE);
+		Iterator<AbaVO> iteratorAbaVO = listaAbaVO.iterator();
+		List<AbaVO> listaAbaVO = new ArrayList<AbaVO>();
+		while (iteratorAbaVO.hasNext()) {
+			AbaVO abaVO = iteratorAbaVO.next();
+			if(abaVO.getChecada() != null && abaVO.getChecada()){
+				this.telaVO.setChecada(Boolean.TRUE);
+			}
+			listaAbaVO.add(abaVO);
+		}
+		this.telaVO.setListaAbasVOTela(listaAbaVO);
+		ManagedBeanUtil.getSession(Boolean.FALSE).setAttribute(AtributoSessaoEnum.TELA_VO.getAtributo(),this.telaVO);
+		return "salvar";
+	}
+	
 	public String salvarListaTelaComponente(){
+		this.telaVO.setChecada(Boolean.FALSE);
+		Iterator<ComponenteVO> iteratorComponenteVO = listaComponenteVO.iterator();
+		List<ComponenteVO> listaComponenteVO = new ArrayList<ComponenteVO>();
+		while (iteratorComponenteVO.hasNext()) {
+			ComponenteVO componenteVO = iteratorComponenteVO.next();
+			if(componenteVO.getChecada() != null && componenteVO.getChecada()){
+				this.telaVO.setChecada(Boolean.TRUE);
+			}
+			listaComponenteVO.add(componenteVO);
+		}
+		this.telaVO.setListaComponentesVOTela(listaComponenteVO);
+		ManagedBeanUtil.getSession(Boolean.FALSE).setAttribute(AtributoSessaoEnum.TELA_VO.getAtributo(),this.telaVO);
+		return "salvar";
+	}
+	
+	public String salvarEditaTelaComponente(){
 		this.telaVO.setChecada(Boolean.FALSE);
 		Iterator<ComponenteVO> iteratorComponenteVO = listaComponenteVO.iterator();
 		List<ComponenteVO> listaComponenteVO = new ArrayList<ComponenteVO>();
@@ -149,7 +187,49 @@ public class TelaMB implements Serializable {
 		return "voltar";
 	}
 	
+	public String voltarEditaTelaAba(){
+		// While necessário para retornar ao estado anterior os checks das abas.
+		Iterator<AbaVO> iteratorAbaVOTemporaria = listaTemporariaAbaVO.iterator();
+		Iterator<AbaVO> iteratorAbaVO = null;
+		Boolean encontrou = null;
+		while (iteratorAbaVOTemporaria.hasNext()) {
+			AbaVO abaVOTemporaria = iteratorAbaVOTemporaria.next();
+			encontrou = Boolean.FALSE;
+			iteratorAbaVO = listaAbaVO.iterator();
+			while (iteratorAbaVO.hasNext() && !encontrou) {
+				AbaVO abaVO = iteratorAbaVO.next();
+				if(abaVOTemporaria.getIdAba().equals(abaVO.getIdAba())){
+					abaVO.setChecada(abaVOTemporaria.getChecada());
+					encontrou = Boolean.TRUE;	
+				}
+			}
+		}
+		this.checarAba();
+		return "voltar";
+	}
+	
 	public String voltarListaTelaComponente(){
+		// While necessário para retornar ao estado anterior os checks dos componentes.
+		Iterator<ComponenteVO> iteratorComponenteVOTemporaria = listaTemporariaComponenteVO.iterator();
+		Iterator<ComponenteVO> iteratorComponenteVO = null;
+		Boolean encontrou = null;
+		while (iteratorComponenteVOTemporaria.hasNext()) {
+			ComponenteVO componenteVOTemporaria = iteratorComponenteVOTemporaria.next();
+			encontrou = Boolean.FALSE;
+			iteratorComponenteVO = listaComponenteVO.iterator();
+			while (iteratorComponenteVO.hasNext() && !encontrou) {
+				ComponenteVO componenteVO = iteratorComponenteVO.next();
+				if(componenteVOTemporaria.getIdComponente().equals(componenteVO.getIdComponente())){
+					componenteVO.setChecada(componenteVOTemporaria.getChecada());
+					encontrou = Boolean.TRUE;	
+				}
+			}
+		}
+		this.checarComponente();
+		return "voltar";
+	}
+	
+	public String voltarEditaTelaComponente(){
 		// While necessário para retornar ao estado anterior os checks dos componentes.
 		Iterator<ComponenteVO> iteratorComponenteVOTemporaria = listaTemporariaComponenteVO.iterator();
 		Iterator<ComponenteVO> iteratorComponenteVO = null;
@@ -271,6 +351,22 @@ public class TelaMB implements Serializable {
 		}	
 	}
 	
+	public String voltarVisualizarTelaAba(){
+		return "voltar";
+	}
+	
+	public String cancelarVisualizarTelaAba(){
+		return "cancelar";
+	}
+	
+	public String voltarVisualizarTelaComponente(){
+		return "voltar";
+	}
+	
+	public String cancelarVisualizarTelaComponente(){
+		return "cancelar";
+	}
+	
 	private void populaTelaVO() throws SQLException, Exception{
 		TelaVO telaVO = null;
 		List<TelaVO> listaTelaVO = new ArrayList<TelaVO>();
@@ -358,6 +454,23 @@ public class TelaMB implements Serializable {
 
 	public void setChecadoTodosComponentes(Boolean checadoTodosComponentes) {
 		this.checadoTodosComponentes = checadoTodosComponentes;
-	}		
+	}
+
+	public ListDataModel<Aba> getListaAba() {
+		return listaAba;
+	}
+
+	public void setListaAba(ListDataModel<Aba> listaAba) {
+		this.listaAba = listaAba;
+	}
+
+	public ListDataModel<Componente> getListaComponente() {
+		return listaComponente;
+	}
+
+	public void setListaComponente(ListDataModel<Componente> listaComponente) {
+		this.listaComponente = listaComponente;
+	}	
+	
 
 }

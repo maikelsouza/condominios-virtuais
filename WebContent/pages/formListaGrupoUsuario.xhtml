@@ -69,6 +69,8 @@
 							</f:facet>
 							<h:commandLink value="#{msg.linkVisualizarTelas}" action="#{grupoUsuarioMB.visualizarGrupoUsuarioTela}" immediate="true"/>
 							#{' '}
+							<h:commandLink value="#{msg.linkEditar}" action="#{grupoUsuarioMB.editarGrupoUsuario}" immediate="true"/>
+							#{' '}
 							<h:commandLink value="#{msg.linkExcluir}"  immediate="true">
 								<rich:componentControl target="confirmaExcluirGrupoUsuario" operation="show" />
 							</h:commandLink>

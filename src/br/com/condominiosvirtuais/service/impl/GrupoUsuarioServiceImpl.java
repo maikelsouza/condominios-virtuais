@@ -49,6 +49,11 @@ public class GrupoUsuarioServiceImpl implements GrupoUsuarioService, Serializabl
 	@Override
 	public void excluir(Integer idGrupoUsuario) throws SQLException, BusinessException, Exception {
 		this.grupoUsuarioDAO.excluir(idGrupoUsuario);		
+	}
+
+	@Override
+	public void atualizar(GrupoUsuario grupoUsuario) throws SQLException, Exception {
+		this.grupoUsuarioDAO.atualizar(grupoUsuario);		
 	}	
 
 }

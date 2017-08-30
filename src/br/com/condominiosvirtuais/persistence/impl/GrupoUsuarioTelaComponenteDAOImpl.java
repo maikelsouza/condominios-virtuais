@@ -26,7 +26,7 @@ public class GrupoUsuarioTelaComponenteDAOImpl implements GrupoUsuarioTelaCompon
 	
 	private static final String ID_TELA = "ID_TELA";
 	
-	private static final String ID_ABA = "ID_COMPONENTE";
+	private static final String ID_COMPONENTE = "ID_COMPONENTE";
 	
 
 	@Override
@@ -54,7 +54,31 @@ public class GrupoUsuarioTelaComponenteDAOImpl implements GrupoUsuarioTelaCompon
 	@Override
 	public void salvar(GrupoUsuarioTelaComponente grupoUsuarioTelaComponente, Connection con)
 			throws SQLException, Exception {
-		// TODO Auto-generated method stub
+		StringBuffer query = new StringBuffer();
+		query.append("INSERT INTO "); 
+		query.append(GRUPO_USUARIO_TELA_COMPONENTE);
+		query.append("("); 
+		query.append(ID_TELA); 
+		query.append(",");		
+		query.append(ID_COMPONENTE); 	
+		query.append(",");
+		query.append(ID_GRUPO_USUARIO);
+		query.append(") ");
+		query.append("VALUES(?,?,?)");
+		PreparedStatement statement = null;
+		try {			
+			statement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(statement, 1, grupoUsuarioTelaComponente.getIdTela(), java.sql.Types.INTEGER);			
+			SQLUtil.setValorPpreparedStatement(statement, 2, grupoUsuarioTelaComponente.getIdComponente(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 3, grupoUsuarioTelaComponente.getIdGrupoUsuario(), java.sql.Types.INTEGER);			
+			statement.executeUpdate();
+		}catch (SQLException e) {
+			con.rollback();
+			throw e;
+		} catch (Exception e) {
+			con.rollback();
+			throw e; 
+		}		
 
 	}
 

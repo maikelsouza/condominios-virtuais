@@ -216,6 +216,9 @@ INSERT INTO TELA VALUES
 (DEFAULT,'formVisualizaTelaAba','formVisualizaTelaAbaDescricao','formVisualizaTelaAba.xhtml',23),
 (DEFAULT,'formVisualizaTelaComponente','formVisualizaTelaComponenteDescricao','formVisualizaTelaComponente.xhtml',23),
 (DEFAULT,'formVisualizaGrupoUsuarioTela','formVisualizaGrupoUsuarioDescricao','formVisualizaGrupoUsuarioTela.xhtml',23),
+(DEFAULT,'formEditaGrupoUsuario','formEditaGrupoUsuarioDescricao','formEditaGrupoUsuario.xhtml',23),
+(DEFAULT,'formEditaTelaAba','formEditaTelaAbaDescricao','formEditaTelaAba.xhtml',23),
+(DEFAULT,'formEditaTelaComponente','formEditaTelaComponenteDescricao','formEditaTelaComponente.xhtml',23),
 (DEFAULT,'formMeuPainel','formMeuPainelDescricao','formMeuPainel.xhtml',24);
 
 

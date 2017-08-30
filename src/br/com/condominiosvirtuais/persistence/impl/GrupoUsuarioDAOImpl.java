@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import br.com.condominiosvirtuais.entity.GrupoUsuario;
 import br.com.condominiosvirtuais.entity.GrupoUsuarioTela;
 import br.com.condominiosvirtuais.entity.GrupoUsuarioTelaAba;
+import br.com.condominiosvirtuais.entity.GrupoUsuarioTelaComponente;
 import br.com.condominiosvirtuais.entity.Tela;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.persistence.GrupoUsuarioDAO;
@@ -25,6 +26,7 @@ import br.com.condominiosvirtuais.persistence.TelaDAO;
 import br.com.condominiosvirtuais.persistence.UsuarioGrupoUsuarioDAO;
 import br.com.condominiosvirtuais.util.SQLUtil;
 import br.com.condominiosvirtuais.vo.AbaVO;
+import br.com.condominiosvirtuais.vo.ComponenteVO;
 import br.com.condominiosvirtuais.vo.TelaVO;
 
 public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
@@ -157,6 +159,7 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 	public void salvar(GrupoUsuario grupoUsuario) throws SQLException,BusinessException, Exception {
 		GrupoUsuarioTela grupoUsuarioTela = null;
 		GrupoUsuarioTelaAba grupoUsuarioTelaAba = null;
+		GrupoUsuarioTelaComponente grupoUsuarioTelaComponente = null; 
 		StringBuffer query = new StringBuffer();
 		query.append("INSERT INTO "); 
 		query.append(GRUPO_USUARIO);
@@ -190,19 +193,7 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 			ResultSet rs = statement.getGeneratedKeys();
 			rs.next();
 			idGrupoUsuario = rs.getInt(1);
-			for (TelaVO telaVO : grupoUsuario.getListaTelaAcesso()) {
-				grupoUsuarioTela = new GrupoUsuarioTela();
-				grupoUsuarioTela.setIdGrupoUsuario(idGrupoUsuario);
-				grupoUsuarioTela.setIdTela(telaVO.getIdTela());				
-				this.grupoUsuarioTelaDAO.salvar(grupoUsuarioTela, con);
-				for (AbaVO abaVO : telaVO.getListaAbasVOTela()) {
-					grupoUsuarioTelaAba = new GrupoUsuarioTelaAba();
-					grupoUsuarioTelaAba.setIdAba(abaVO.getIdAba());
-					grupoUsuarioTelaAba.setIdGrupoUsuario(idGrupoUsuario);
-					grupoUsuarioTelaAba.setIdTela(telaVO.getIdTela());					
-					this.grupoUsuarioTelaAbaDAO.salvar(grupoUsuarioTelaAba, con);
-				}
-			}
+			persistirTelaAbaEComponente(grupoUsuario, con, idGrupoUsuario);
 			con.commit();
 		} catch (SQLException e) {					
 			if (e.getMessage().contains(FK_GRUPO_USUARIO_ID_CONDOMINIO_CONDOMINIO_ID)){
@@ -227,10 +218,59 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 	}
 
 
+
 	@Override
-	public void atualizar(GrupoUsuario grupoUsuario) throws SQLException, Exception {
-		// TODO Auto-generated method stub
-		
+	public void atualizar(GrupoUsuario grupoUsuario) throws SQLException, Exception {	
+		StringBuffer query = new StringBuffer();
+		query.append("UPDATE ");
+		query.append(GRUPO_USUARIO);
+		query.append(" SET ");
+		query.append(NOME);
+		query.append("= ?, ");
+		query.append(DESCRICAO);
+		query.append("= ?, ");
+		query.append(SITUACAO);
+		query.append("= ?, ");		
+		query.append(ID_CONDOMINIO);	
+		query.append("= ?, ");
+		query.append(ID_SINDICO_PROFISSIONAL);	
+		query.append("= ?, ");
+		query.append(ID_ESCRITORIO_CONTABILIDADE);	
+		query.append("= ? ");		
+		query.append(" WHERE ");
+		query.append(ID);
+		query.append(" = ?");
+		Connection con = Conexao.getConexao();
+		con.setAutoCommit(Boolean.FALSE);
+		PreparedStatement statement = null;
+		try {
+			statement = con.prepareStatement(query.toString());			
+			SQLUtil.setValorPpreparedStatement(statement, 1, grupoUsuario.getNome(), java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 2, grupoUsuario.getDescricao(), java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 3, grupoUsuario.getSituacao(), java.sql.Types.BOOLEAN);
+			SQLUtil.setValorPpreparedStatement(statement, 4, grupoUsuario.getIdCondominio(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 5, grupoUsuario.getIdSindicoProfissional(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 6, grupoUsuario.getIdEscritorioContabilidade(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 7, grupoUsuario.getId(), java.sql.Types.INTEGER);			
+			statement.executeUpdate();
+			this.grupoUsuarioTelaDAO.excluirPorIdGrupoUsuario(grupoUsuario.getId(), con);
+			this.grupoUsuarioTelaAbaDAO.excluirPorIdGrupoUsuario(grupoUsuario.getId(), con);
+			this.grupoUsuarioTelaComponenteDAO.excluirPorIdGrupoUsuario(grupoUsuario.getId(), con);
+			this.persistirTelaAbaEComponente(grupoUsuario, con, grupoUsuario.getId());
+			con.commit();
+		}catch (SQLException e) {
+			throw e;
+		}catch (Exception e) {		
+			throw e;
+		}finally{
+			try {
+				statement.close();
+				con.close();				
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);
+			}
+		}	
+				
 	}
 
 
@@ -381,5 +421,32 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 		telaVO.setIdTela(tela.getId());
 		telaVO.setNomeArquivoTela(tela.getNomeArquivo());		
 		return telaVO;
+	}
+	
+	private void persistirTelaAbaEComponente(GrupoUsuario grupoUsuario, Connection con, Integer idGrupoUsuario)
+			throws SQLException, Exception {
+		GrupoUsuarioTela grupoUsuarioTela;
+		GrupoUsuarioTelaAba grupoUsuarioTelaAba;
+		GrupoUsuarioTelaComponente grupoUsuarioTelaComponente;
+		for (TelaVO telaVO : grupoUsuario.getListaTelaAcesso()) {
+			grupoUsuarioTela = new GrupoUsuarioTela();
+			grupoUsuarioTela.setIdGrupoUsuario(idGrupoUsuario);
+			grupoUsuarioTela.setIdTela(telaVO.getIdTela());				
+			this.grupoUsuarioTelaDAO.salvar(grupoUsuarioTela, con);
+			for (AbaVO abaVO : telaVO.getListaAbasVOTela()) {
+				grupoUsuarioTelaAba = new GrupoUsuarioTelaAba();
+				grupoUsuarioTelaAba.setIdAba(abaVO.getIdAba());
+				grupoUsuarioTelaAba.setIdGrupoUsuario(idGrupoUsuario);
+				grupoUsuarioTelaAba.setIdTela(telaVO.getIdTela());					
+				this.grupoUsuarioTelaAbaDAO.salvar(grupoUsuarioTelaAba, con);
+			}
+			for (ComponenteVO componenteVO : telaVO.getListaComponentesVOTela()) {
+				grupoUsuarioTelaComponente = new GrupoUsuarioTelaComponente();
+				grupoUsuarioTelaComponente.setIdComponente(componenteVO.getIdComponente());
+				grupoUsuarioTelaComponente.setIdGrupoUsuario(idGrupoUsuario);
+				grupoUsuarioTelaComponente.setIdTela(componenteVO.getIdTela());					
+				this.grupoUsuarioTelaComponenteDAO.salvar(grupoUsuarioTelaComponente, con);
+			}
+		}
 	}
 }

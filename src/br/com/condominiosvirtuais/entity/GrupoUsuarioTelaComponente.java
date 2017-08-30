@@ -15,7 +15,7 @@ public class GrupoUsuarioTelaComponente {
 	
 	private Integer idTela;
 	
-	private Integer idComponete;
+	private Integer idComponente;
 
 	public Integer getId() {
 		return id;
@@ -41,12 +41,12 @@ public class GrupoUsuarioTelaComponente {
 		this.idTela = idTela;
 	}
 
-	public Integer getIdComponete() {
-		return idComponete;
+	public Integer getIdComponente() {
+		return idComponente;
 	}
 
-	public void setIdComponete(Integer idComponete) {
-		this.idComponete = idComponete;
+	public void setIdComponente(Integer idComponente) {
+		this.idComponente = idComponente;
 	}
 	
 
