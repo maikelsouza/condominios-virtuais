@@ -49,7 +49,7 @@
 							 </h:selectBooleanCheckbox>
 							</f:facet>
 							<h:selectBooleanCheckbox value="#{telaVO.checada}" rendered="true" >
-								 <f:ajax render="@form"  />
+								 <f:ajax render="tableTelaVO" listener="#{grupoUsuarioMB.checarAbaVOComponenteVO}"  />
 							 </h:selectBooleanCheckbox>
 						</rich:column>
 						<rich:column sortBy="#{telaVO.nomeI18nTela}" sortOrder="#{ordenaTelaMB.nomeTela}">

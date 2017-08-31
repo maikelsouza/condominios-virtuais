@@ -306,6 +306,18 @@ public class GrupoUsuarioMB implements Serializable {
 		return "editar";
 	}
 	
+	public void checarAbaVOComponenteVO(){
+		this.telaVO = (TelaVO) this.listaTelaVO.getRowData();
+		Boolean checada = this.telaVO.getChecada();
+		for (AbaVO abaVO : this.telaVO.getListaAbasVOTela()) {
+			abaVO.setChecada(checada);
+		}
+		for (ComponenteVO componenteVO : this.telaVO.getListaComponentesVOTela()) {
+			componenteVO.setChecada(checada);
+		}
+		
+	}
+	
 	public String salvarGrupoUsuario(){
 		try {
 			Iterator<TelaVO> iteratorTelaVO = this.listaTelaVO.iterator();
@@ -351,6 +363,10 @@ public class GrupoUsuarioMB implements Serializable {
 	}
 	
 	public String cancelarCadastroGrupoUsuario(){
+		return "cancelar";
+	}
+	
+	public String cancelarEditaGrupoUsuario(){
 		return "cancelar";
 	}
 	

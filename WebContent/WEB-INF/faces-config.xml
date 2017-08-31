@@ -2275,6 +2275,12 @@
    <from-outcome>atualizar</from-outcome>
    <to-view-id>/pages/formListaGrupoUsuario.xhtml</to-view-id>
   </navigation-case>
+  <navigation-case>                  
+   <from-action>#{grupoUsuarioMB.cancelarEditaGrupoUsuario}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
  </navigation-rule>
  <navigation-rule>                       
   <from-view-id>/pages/formEditaTelaAba.xhtml</from-view-id>  

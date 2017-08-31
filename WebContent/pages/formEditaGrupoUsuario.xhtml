@@ -59,7 +59,7 @@
 							 </h:selectBooleanCheckbox>
 							</f:facet>
 							<h:selectBooleanCheckbox value="#{telaVO.checada}" rendered="true" >
-								 <f:ajax render="@form"  />
+								 <f:ajax render="tableTelaVO" listener="#{grupoUsuarioMB.checarAbaVOComponenteVO}" />
 							 </h:selectBooleanCheckbox>
 						</rich:column>
 						<rich:column sortBy="#{telaVO.nomeI18nTela}" sortOrder="#{ordenaTelaMB.nomeTela}">
@@ -98,7 +98,7 @@
 			<h:panelGrid columns="3">
 				<h:commandButton value="#{msg.botaoAtualizar}" action="#{grupoUsuarioMB.atualizarGrupoUsuario}" />
 				<h:commandButton value="#{msg.botaoLimpar}" action="#{grupoUsuarioMB.limparFiltroPesquisaGrupoUsuario}" />
-				<h:commandButton value="#{msg.botaoCancelar}" action="#{grupoUsuarioMB.cancelarCadastroGrupoUsuario}" immediate="true" />
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{grupoUsuarioMB.cancelarEditaGrupoUsuario}" immediate="true" />
 			</h:panelGrid>
 		</h:form>
 	</ui:define>
