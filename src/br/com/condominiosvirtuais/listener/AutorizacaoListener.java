@@ -1,5 +1,7 @@
 package br.com.condominiosvirtuais.listener;
         
+import java.util.Iterator;
+
 import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
@@ -7,6 +9,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.servlet.http.HttpSession;
 
+import br.com.condominiosvirtuais.entity.GrupoUsuario;
 import br.com.condominiosvirtuais.entity.Usuario;
 import br.com.condominiosvirtuais.enumeration.PathTelasAplicacaoEnum;
 
@@ -14,9 +17,7 @@ import br.com.condominiosvirtuais.enumeration.PathTelasAplicacaoEnum;
 public class AutorizacaoListener implements PhaseListener {
 
 	
-	private static final long serialVersionUID = 1L;
-	
-	private String paginaAnterior;
+	private static final long serialVersionUID = 1L;	
 
 	
 	public void afterPhase(PhaseEvent event) {
@@ -25,10 +26,12 @@ public class AutorizacaoListener implements PhaseListener {
 		String esqueciMinhaSenhaPage = "esqueciMinhaSenha";
 		String pesquisaCondominioPage = "pesquisaCondominio";
 		String cadastroCondominoPrimeiraVezPage = "cadastroCondominoPrimeiraVez";
+		Iterator<GrupoUsuario> iteratorGrupoUsuario = null;
+		Boolean existeTela = Boolean.FALSE;
+		GrupoUsuario grupoUsuario = null;
 		FacesContext facesContext = event.getFacesContext();
 		String paginaCorrente = facesContext.getViewRoot().getViewId();	
-		paginaAnterior = paginaCorrente;
-		HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
+		HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(Boolean.TRUE);
 		NavigationHandler nh = facesContext.getApplication().getNavigationHandler();
 		if(paginaCorrente.equals(PathTelasAplicacaoEnum.FORM_ESQUECI_MINHA_SENHA.getPathTelas())){
 			nh.handleNavigation(facesContext, null, esqueciMinhaSenhaPage);	
@@ -40,16 +43,34 @@ public class AutorizacaoListener implements PhaseListener {
 			Usuario usuario = (Usuario) session.getAttribute("autenticado");
 			// Situação onde o usuário não está autenticado.		
 			if(usuario == null){			
-				nh.handleNavigation(facesContext, null, loginPage);			
-			// Situação onde o usuário não tem acesso a página que selecionada	
-			}else if(!usuario.getGrupoUsuario().temAcesso(paginaCorrente)){ 
-				nh.handleNavigation(facesContext, null, paginaSemAcesso);	
+				nh.handleNavigation(facesContext, null, loginPage);
+			}else{
+				iteratorGrupoUsuario = usuario.getListaGrupoUsuario().iterator();
+				while (iteratorGrupoUsuario.hasNext() && !existeTela) {
+					grupoUsuario = iteratorGrupoUsuario.next();
+					existeTela = grupoUsuario.existeTela(paginaCorrente);
+				}
+				// Situação onde o usuário não tem acesso a página que selecionada
+				if(!existeTela){ 
+					nh.handleNavigation(facesContext, null, paginaSemAcesso);	
+				}
 			}
-		}
+		}	
 	}
+	
 
 	@Override
-	public void beforePhase(PhaseEvent arg0){} 
+	public void beforePhase(PhaseEvent arg0){
+	
+		if (arg0 != null && arg0.getFacesContext() != null && arg0.getFacesContext().getViewRoot() != null){
+			FacesContext facesContext = arg0.getFacesContext();
+			
+			String paginaCorrente = facesContext.getViewRoot().getViewId();
+			System.out.println("before " +paginaCorrente);
+			
+		}
+
+	} 
 
 	
 	public PhaseId getPhaseId() {		

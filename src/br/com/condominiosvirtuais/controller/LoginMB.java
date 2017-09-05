@@ -128,16 +128,16 @@ public class LoginMB implements Serializable{
 	 * @param idGrupo = Recebe uma lista de id's de grupos usuários, separados por vírgula.
 	 * @return Boolean = Informa se o usuário logado pertence a um dos grupos informados
 	 */
-	public Boolean usuarioLogadoPertenceUmDosGrupos(String idGrupoUsuario){
-		Boolean usuarioLogadoPertenceUmDosGrupos = Boolean.FALSE;
-		StringTokenizer tokenizer = new StringTokenizer(idGrupoUsuario, ",");
-		while (tokenizer.hasMoreTokens() && !usuarioLogadoPertenceUmDosGrupos){
-			if(this.usuario.getGrupoUsuario().getId() == Integer.parseInt(tokenizer.nextToken())){
-				usuarioLogadoPertenceUmDosGrupos = Boolean.TRUE;
-			}			   
-		}		
-		return usuarioLogadoPertenceUmDosGrupos;
-	}
+//	public Boolean usuarioLogadoPertenceUmDosGrupos(String idGrupoUsuario){
+//		Boolean usuarioLogadoPertenceUmDosGrupos = Boolean.FALSE;
+//		StringTokenizer tokenizer = new StringTokenizer(idGrupoUsuario, ",");
+//		while (tokenizer.hasMoreTokens() && !usuarioLogadoPertenceUmDosGrupos){
+//			if(this.usuario.getGrupoUsuario().getId() == Integer.parseInt(tokenizer.nextToken())){
+//				usuarioLogadoPertenceUmDosGrupos = Boolean.TRUE;
+//			}			   
+//		}		
+//		return usuarioLogadoPertenceUmDosGrupos;
+//	}
 	
 	public Boolean temAcesso(String... actions){	
 		Boolean encontrou = Boolean.FALSE;

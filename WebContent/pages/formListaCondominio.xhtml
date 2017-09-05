@@ -96,7 +96,7 @@
 							</f:facet>
 							<h:commandLink value="#{msg.linkVisualizar}" action="#{condominioMB.visualizarCondominio}" immediate="true" />
 				 			#{' '}
- 							<h:commandLink value="#{msg.linkEditar}" render="tableCondominio" rendered="#{loginMB.temAcesso('#{condominioMB.editarCondominio}')"
+ 							<h:commandLink value="#{msg.linkEditar}" render="tableCondominio" rendered="#{loginMB.temAcesso('#{condominioMB.editarCondominio}')}"
 								action="#{condominioMB.editarCondominio}" immediate="true" />
 						</rich:column>
 						<f:facet name="footer">
@@ -107,7 +107,7 @@
 			</rich:panel>
 			<h:commandButton id="idBotaoCadastroCondominio" value="#{msg.botaoCriarNovo}"
 				action="#{condominioMB.cadastroCondominio}" immediate="true"
-				rendered="#{loginMB.temAcesso('#{condominioMB.cadastroCondominio}')" />
+				rendered="#{loginMB.temAcesso('#{condominioMB.cadastroCondominio}')}" />
 		</h:form>
 
 		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />

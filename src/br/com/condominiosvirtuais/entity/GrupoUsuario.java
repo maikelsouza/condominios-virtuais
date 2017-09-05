@@ -172,7 +172,11 @@ public class GrupoUsuario implements Serializable {
 		this.listaTelaAcesso = listaTelaAcesso;
 	}
 	
-	public Boolean existeTela(String caminhoPagina){		
+	public Boolean existeTela(String caminhoPagina){
+		// Todos os usuários que conseguiram se autenticar tem acesso a tela principal
+		if (caminhoPagina.equals("/pages/formPrincipal.xhtml")){
+			return Boolean.TRUE;
+		}
 		String pagina = caminhoPagina.substring(7, caminhoPagina.length());
 		for (TelaVO telaVO : listaTelaAcesso) {
 			if(telaVO.getNomeArquivoTela().equals(pagina)){
