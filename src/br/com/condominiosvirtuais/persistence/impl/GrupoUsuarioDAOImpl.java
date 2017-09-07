@@ -420,6 +420,9 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 		TelaVO telaVO = new TelaVO();
 		telaVO.setIdTela(tela.getId());
 		telaVO.setNomeArquivoTela(tela.getNomeArquivo());		
+		telaVO.setListaAbasTela(tela.getListaAbas());
+		telaVO.setListaComponentesTela(tela.getListaComponentes());
+		
 		return telaVO;
 	}
 	

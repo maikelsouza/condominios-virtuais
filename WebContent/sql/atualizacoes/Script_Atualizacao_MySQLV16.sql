@@ -63,6 +63,7 @@ CREATE TABLE IF NOT EXISTS GRUPO_USUARIO_TELA(
 	ID integer NOT NULL AUTO_INCREMENT,
 	ID_GRUPO_USUARIO integer NOT NULL, 
 	ID_TELA integer NOT NULL,	
+	CONSTRAINT UQ_GRUPO_USUARIO_TELA_ID_GRUPO_USUARIO_ID_TELA UNIQUE (ID_GRUPO_USUARIO,ID_TELA),
 	CONSTRAINT FK_GRUPO_USUARIO_TELA_ID_GRUPO_USUARIO_GRUPO_USUARIO_ID FOREIGN KEY (ID_GRUPO_USUARIO) REFERENCES GRUPO_USUARIO(ID),
 	CONSTRAINT FK_GRUPO_USUARIO_TELA_ID_TELA_TELA_ID FOREIGN KEY (ID_TELA) REFERENCES TELA(ID),	           
 	PRIMARY KEY(ID)
@@ -211,6 +212,8 @@ INSERT INTO TELA VALUES
 (DEFAULT,'formEditaGaragem','formEditaGaragemDescricao','formEditaGaragem.xhtml',22),
 (DEFAULT,'formCadastroGrupoUsuario','formCadastroGrupoUsuarioDescricao','formCadastroGrupoUsuario.xhtml',23),
 (DEFAULT,'formListaGrupoUsuario','formListaGrupoUsuarioDescricao','formListaGrupoUsuario.xhtml',23),
+(DEFAULT,'formAssociarGrupoUsuario','formAssociarGrupoUsuarioDescricao','formAssociarGrupoUsuario.xhtml',23),
+(DEFAULT,'formAssociarGrupoUsuarioCondominio','formAssociarGrupoUsuarioCondominioDescricao','formAssociarGrupoUsuarioCondominio.xhtml',23),
 (DEFAULT,'formListaTelaAba','formListaTelaAbaDescricao','formListaTelaAba.xhtml',23),
 (DEFAULT,'formListaTelaComponente','formListaTelaComponenteDescricao','formListaTelaComponente.xhtml',23),
 (DEFAULT,'formVisualizaTelaAba','formVisualizaTelaAbaDescricao','formVisualizaTelaAba.xhtml',23),
@@ -232,6 +235,7 @@ INSERT INTO ABA VALUES
 (DEFAULT,'formEscreverMensagem.idTabMensagemCondominios','formEscreverMensagem.idTabMensagemCondominios.descricao','idTabMensagemCondominios',45),
 (DEFAULT,'formCadastroClassificados.idTabDadosAnuncio','formCadastroClassificados.idTabDadosAnuncio.descricao','idTabDadosAnuncio',54),
 (DEFAULT,'formCadastroClassificados.idTabImagemAnuncio','formCadastroClassificados.idTabImagemAnuncio.descricao','idTabImagemAnuncio',54);
+(DEFAULT,'formAssociarGrupoUsuario.idTabGrupoUsuarioCondominios','formAssociarGrupoUsuario.idTabGrupoUsuarioCondominios.descricao','idTabGrupoUsuarioCondominios',82);
 
 
 INSERT INTO COMPONENTE VALUES

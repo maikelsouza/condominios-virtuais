@@ -50,7 +50,7 @@
 			<rich:menuItem label="#{msg['arquivo.imagem.anexar']}" action="#{principalMB.anexarImagem}" rendered="#{loginMB.temAcesso('#{principalMB.anexarImagem}')}" />
 		</rich:dropDownMenu>
 		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.temAcesso('#{principalMB.listarCondominio}','#{principalMB.listarBloco}','#{principalMB.listarUnidade}','#{principalMB.listarCondomino}','#{principalMB.listarAmbienteCondominio}',
-				'#{principalMB.listarFuncionarioCondominio}','#{principalMB.listarObra}','#{principalMB.cadastrarObra}','#{principalMB.listarGrupoUsuario}')}">
+				'#{principalMB.listarFuncionarioCondominio}','#{principalMB.listarObra}','#{principalMB.cadastrarObra}','#{principalMB.listarGrupoUsuario}','#{principalMB.associarGrupoUsuario}')}">
 			<f:facet name="label">
 				<h:panelGroup>
 					<h:outputText value="#{msg.cadastro}" />
@@ -76,6 +76,7 @@
 			</rich:menuGroup>									
 			<rich:menuGroup label="#{msg['cadastro.grupoUsuario']}" rendered="#{loginMB.temAcesso('#{principalMB.listarGrupoUsuario}')}">
 				<rich:menuItem label="#{msg['cadastro.grupoUsuario.listar']}" action="#{principalMB.listarGrupoUsuario}" rendered="#{loginMB.temAcesso('#{principalMB.listarGrupoUsuario}')}"/>
+				<rich:menuItem label="#{msg['cadastro.grupoUsuario.associar']}" action="#{principalMB.associarGrupoUsuario}" rendered="#{loginMB.temAcesso('#{principalMB.associarGrupoUsuario}')}"/>
 			</rich:menuGroup>									
 		</rich:dropDownMenu>
 		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.temAcesso('#{principalMB.listarVeiculo}') and loginMB.sindicoGeralAssociado()}">

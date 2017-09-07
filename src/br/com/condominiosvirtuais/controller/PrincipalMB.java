@@ -314,6 +314,10 @@ public class PrincipalMB  implements Serializable{
 		return "listarGrupoUsuario";
 	}
 	
+	public String associarGrupoUsuario(){
+		return "associarGrupoUsuario";
+	}
+	
 	
 
 	private void iniciaThreads(){				

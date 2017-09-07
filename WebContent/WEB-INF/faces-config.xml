@@ -22,6 +22,10 @@
   <converter-id>meioPagamentoConversor</converter-id>
   <converter-class>br.com.condominiosvirtuais.converter.MeioPagamentoConversor</converter-class>
  </converter>
+ <converter>
+  <converter-id>usuarioConversor</converter-id>
+  <converter-class>br.com.condominiosvirtuais.converter.UsuarioConversor</converter-class>
+ </converter>
  <managed-bean>
   <managed-bean-name>ordenaCondominioMB</managed-bean-name>
   <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaCondominioMB</managed-bean-class>
@@ -553,6 +557,12 @@
    <from-action>#{principalMB.listarGrupoUsuario}</from-action>
    <from-outcome>listarGrupoUsuario</from-outcome>
    <to-view-id>/pages/formListaGrupoUsuario.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case> 
+  <navigation-case>
+   <from-action>#{principalMB.associarGrupoUsuario}</from-action>
+   <from-outcome>associarGrupoUsuario</from-outcome>
+   <to-view-id>/pages/formAssociarGrupoUsuario.xhtml</to-view-id>
     <redirect/>
   </navigation-case> 
  </navigation-rule>
@@ -2309,6 +2319,15 @@
    <from-action>#{telaMB.voltarEditaTelaComponente}</from-action>
    <from-outcome>voltar</from-outcome>
    <to-view-id>/pages/formEditaGrupoUsuario.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formAssociarGrupoUsuario.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{usuarioMB.salvarEditaTelaComponente}</from-action>
+   <from-outcome>associarUsuario</from-outcome>
+   <to-view-id>/pages/formAssociarGrupoUsuarioCondominio.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
  </navigation-rule>

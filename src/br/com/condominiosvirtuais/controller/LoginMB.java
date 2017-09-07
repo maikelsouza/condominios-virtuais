@@ -196,7 +196,7 @@ public class LoginMB implements Serializable{
 			iteratorGrupoUsuario = this.usuario.getListaGrupoUsuario().iterator();
 			while (iteratorGrupoUsuario.hasNext()) {
 				grupoUsuario = iteratorGrupoUsuario.next();
-				if(grupoUsuario.existeComponente(action)){
+				if(grupoUsuario.existeAba(action)){
 					return Boolean.TRUE;	
 				}
 			}

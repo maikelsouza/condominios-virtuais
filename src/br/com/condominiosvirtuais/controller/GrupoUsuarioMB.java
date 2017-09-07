@@ -77,6 +77,8 @@ public class GrupoUsuarioMB implements Serializable {
 	
 	private Boolean checadoTodos = null;
 	
+	private String tabSelecionada;
+	
 
 	
 	public void iniciarTelaVO (){
@@ -639,6 +641,14 @@ public class GrupoUsuarioMB implements Serializable {
 
 	public void setChecadoTodos(Boolean checadoTodos) {
 		this.checadoTodos = checadoTodos;
+	}
+
+	public String getTabSelecionada() {
+		return tabSelecionada;
+	}
+
+	public void setTabSelecionada(String tabSelecionada) {
+		this.tabSelecionada = tabSelecionada;
 	}
 
 
