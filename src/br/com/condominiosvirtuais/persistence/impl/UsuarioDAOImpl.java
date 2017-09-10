@@ -752,6 +752,104 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 			}			
 		}		
 		return usuario;
+	}
+
+	@Override
+	public List<Usuario> buscarPorIdsESituacaoSemImagem(List<Integer> listaIdUsuario, Integer situacao)
+			throws SQLException, Exception {
+		SQLUtil.popularInterrocacoes(listaIdUsuario.size());
+		List<Usuario> listaUsuario = new ArrayList<Usuario>();
+		if(!listaIdUsuario.isEmpty()){
+			StringBuffer query = new StringBuffer();
+			query.append("SELECT * FROM ");
+			query.append(USUARIO);
+			query.append(" WHERE ");
+			query.append(ID);
+			query.append(" IN ( ");
+			query.append(SQLUtil.popularInterrocacoes(listaIdUsuario.size()));
+			query.append(" )");
+			query.append(" AND ");
+			query.append(SITUACAO);
+			query.append(" = ?");
+			query.append(" ORDER BY ");
+			query.append(NOME);
+			query.append(";");		
+			Connection con = Conexao.getConexao();
+			PreparedStatement preparedStatement = null;
+			ResultSet resultSet = null;
+			Usuario usuario = null;
+			Integer contador = 1;
+			try {
+				preparedStatement = con.prepareStatement(query.toString());
+				for (Integer idUsuario: listaIdUsuario) {
+					SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, idUsuario, java.sql.Types.INTEGER);
+				}
+				SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, situacao, java.sql.Types.INTEGER);
+				
+				
+				resultSet = preparedStatement.executeQuery();
+				while(resultSet.next()){
+					usuario = new Usuario();
+					usuario.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+					usuario.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+					usuario.setSexo((Integer) SQLUtil.getValorResultSet(resultSet, SEXO, java.sql.Types.INTEGER));
+					usuario.setDataNascimento((Date) SQLUtil.getValorResultSet(resultSet, DATA_NASCIMENTO, java.sql.Types.DATE));
+					usuario.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
+					usuario.setCpf((Long) SQLUtil.getValorResultSet(resultSet, CPF, java.sql.Types.BIGINT));
+					listaUsuario.add(usuario);
+				}
+			}catch (SQLException e) {			
+				throw e;
+			} catch (Exception e) {					
+				throw e;	
+			}finally{
+				try{				
+					SQLUtil.closeStatement(preparedStatement);
+					SQLUtil.closeConnection(con);
+				}catch (SQLException e) {
+					logger.error("erro sqlstate "+e.getSQLState(), e);
+				}
+			}			
+			
+		}
+		return listaUsuario;
+	}
+	
+	@Override
+	public Boolean buscarPorEPopularPeloIdESituacaoSemImagem(Usuario usuario, Integer situacao, Connection con) throws SQLException, Exception {
+		Boolean encontrou = Boolean.FALSE;
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(USUARIO);
+		query.append(" WHERE ");
+		query.append(ID);
+		query.append(" = ? ");
+		query.append(" AND ");
+		query.append(SITUACAO);
+		query.append(" = ? ");			
+		query.append(";");
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;			
+		try {
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, usuario.getId(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 2, situacao, java.sql.Types.INTEGER);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				encontrou = Boolean.TRUE;
+				usuario.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				usuario.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+				usuario.setSexo((Integer) SQLUtil.getValorResultSet(resultSet, SEXO, java.sql.Types.INTEGER));
+				usuario.setDataNascimento((Date) SQLUtil.getValorResultSet(resultSet, DATA_NASCIMENTO, java.sql.Types.DATE));
+				usuario.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
+				usuario.setCpf((Long) SQLUtil.getValorResultSet(resultSet, CPF, java.sql.Types.BIGINT));
+			}
+		}catch (SQLException e) {			
+			throw e;
+		} catch (Exception e) {					
+			throw e;	
+		}
+		return encontrou;
 	}	
 	
 }

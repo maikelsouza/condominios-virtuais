@@ -703,6 +703,54 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 		
 	}
 	
+	@Override
+	public List<Condomino>buscarPorIdUnidadeESituacaoSemImagem(Integer idUnidade,  Integer situacao) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(CONDOMINO);
+		query.append(" WHERE ");
+		query.append(ID_UNIDADE);		
+		query.append(" = ? ");
+		query.append(";");
+		PreparedStatement preparedStatement = null;
+		List<Condomino> listaCondominos = new ArrayList<Condomino>();
+		ResultSet resultSet = null;		
+		Condomino condomino = null;
+		Connection con = Conexao.getConexao();
+		try {
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1,idUnidade, java.sql.Types.INTEGER);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				condomino = new Condomino();				
+				condomino.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				condomino.setProprietario((Boolean) SQLUtil.getValorResultSet(resultSet, PROPRIETARIO, java.sql.Types.BOOLEAN));
+				condomino.setTelefoneCelular((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_CELULAR, java.sql.Types.BIGINT));
+				condomino.setTelefoneComercial((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_COMERCIAL, java.sql.Types.BIGINT));
+				condomino.setTelefoneResidencial((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_RESIDENCIAL, java.sql.Types.BIGINT));
+				condomino.setIdUnidade((Integer) SQLUtil.getValorResultSet(resultSet, ID_UNIDADE, java.sql.Types.INTEGER));
+				condomino.setPagador((Integer) SQLUtil.getValorResultSet(resultSet, PAGADOR, java.sql.Types.INTEGER));
+				// Caso não tenha econtrado, ou seja, o usuário está inativo, então não add na lista. 
+				if(this.usuarioDAO.buscarPorEPopularPeloIdESituacaoSemImagem(condomino, situacao, con)){
+					listaCondominos.add(condomino);
+				}
+			}
+		}catch (SQLException e) {			
+			throw e;
+		}catch (Exception e) {		
+			throw e;			
+		}finally{
+			try {
+				preparedStatement.close();
+				con.close();
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);	
+			}
+		}								
+		return listaCondominos;		
+		
+	}
+	
 	public UsuarioDAOImpl getUsuarioDAO() {
 		return usuarioDAO;
 	}

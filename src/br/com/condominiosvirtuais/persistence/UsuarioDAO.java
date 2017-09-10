@@ -3,6 +3,7 @@ package br.com.condominiosvirtuais.persistence;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.Usuario;
@@ -30,5 +31,9 @@ public interface UsuarioDAO {
 	public abstract void atualizarUsuario(Usuario usuario, Connection con) throws SQLException, Exception;
 	
 	public abstract Boolean buscarEPopularUsuarioPeloId(Usuario usuario, Integer situacao, Connection con ) throws SQLException, Exception;
+	
+	public abstract List<Usuario> buscarPorIdsESituacaoSemImagem(List<Integer> listaIdUsuario, Integer situacao) throws SQLException, Exception; 
+	
+	public abstract Boolean buscarPorEPopularPeloIdESituacaoSemImagem(Usuario usuario, Integer situacao, Connection con) throws SQLException, Exception;
 
 }

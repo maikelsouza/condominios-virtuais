@@ -15,7 +15,8 @@
 				<f:facet name="header">
 					<h:outputText value="#{msg.solicitacaoAgendamentoMudança}" />
 				</f:facet>
-				<h:outputLabel value="Horário para mudanças: de segunda a sexta-feira das 08h às 12h e das 13h às 17h, ou aos sábados das 09h às 13h." style="color: red !important;" rendered="#{agendamentoMB.condominio.id == 8 ? true: false}"/>
+				<h:outputLabel value="Horário para mudanças: de segunda a sexta-feira das 08h às 12h e das 13h às 17h, ou aos sábados das 09h às 13h." style="color: red !important;" rendered="#{agendamentoMB.condominio.id == 8 ? true: true}"/> <br></br>
+				<h:outputLabel value="A taxa de mudança é de R$ 93,70." style="color: red !important;" rendered="#{agendamentoMB.condominio.id == 8 ? true: true}"/>				
 				<h:panelGrid columns="3">
 				
 					<h:panelGroup>

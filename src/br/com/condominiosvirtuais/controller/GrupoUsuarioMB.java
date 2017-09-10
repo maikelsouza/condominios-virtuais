@@ -316,8 +316,12 @@ public class GrupoUsuarioMB implements Serializable {
 		}
 		for (ComponenteVO componenteVO : this.telaVO.getListaComponentesVOTela()) {
 			componenteVO.setChecada(checada);
-		}
-		
+		}		
+	}
+	
+	public String associarUsuarioCondominioGrupoUsuario(){
+		this.grupoUsuario = (GrupoUsuario) this.listaGruposUsuarios.getRowData();
+		return "associarUsuarioCondominio";		
 	}
 	
 	public String salvarGrupoUsuario(){

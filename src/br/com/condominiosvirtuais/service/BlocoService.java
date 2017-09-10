@@ -24,5 +24,7 @@ public interface BlocoService {
 	public abstract Bloco buscarPorId(Integer idBloco) throws SQLException, Exception;	
 	
 	public abstract void popularBloco(Bloco bloco) throws SQLException, Exception; 
+	
+	public abstract List<Integer> buscarListaIdsBlocosPorIdCondominio(Integer idCondominio) throws SQLException, Exception;
 		
 }

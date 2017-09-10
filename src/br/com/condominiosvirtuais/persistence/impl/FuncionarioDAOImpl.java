@@ -573,7 +573,7 @@ public class FuncionarioDAOImpl implements FuncionarioDAO, Serializable {
 	}
 	
 	@Override
-	public List<Funcionario> buscarPorCondominioSemImagem(Integer idCondominio, Integer situacao) throws SQLException, Exception {
+	public List<Funcionario> buscarPorCondominioESituacaoSemImagem(Integer idCondominio, Integer situacao) throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
 		query.append("SELECT * FROM ");
 		query.append(FUNCIONARIO);
@@ -639,9 +639,7 @@ public class FuncionarioDAOImpl implements FuncionarioDAO, Serializable {
 	@Override
 	public void atualizarSenha(Funcionario funcionario) throws SQLException, Exception {
 		this.usuarioDAO.atualizarSenha(funcionario);
-	}
-
-	
+	}	
 
 
 }

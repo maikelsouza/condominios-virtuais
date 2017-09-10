@@ -20,6 +20,7 @@ import br.com.condominiosvirtuais.service.BlocoService;
 import br.com.condominiosvirtuais.service.CondominioService;
 import br.com.condominiosvirtuais.service.CondominoService;
 import br.com.condominiosvirtuais.service.EmailService;
+import br.com.condominiosvirtuais.service.UnidadeService;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
 import br.com.condominiosvirtuais.util.MensagensEmailUtil;
 import br.com.condominiosvirtuais.vo.CondominoVO;
@@ -36,6 +37,9 @@ public class CondominoServiceImpl implements CondominoService, Serializable{
 	
 	@Inject
 	private BlocoService blocoService = null;
+	
+	@Inject
+	private UnidadeService unidadeService;
 	
 	@Inject
 	private CondominoDAOImpl condominoDAO;
@@ -236,7 +240,7 @@ public class CondominoServiceImpl implements CondominoService, Serializable{
 	
 	public Condomino buscarPorId(Integer id) throws SQLException, Exception {
 		return this.condominoDAO.buscarCondominoPorId(id);
-	}
+	}	
 	
 	public CondominioService getCondominioService() {
 		return condominioService;
@@ -245,6 +249,7 @@ public class CondominoServiceImpl implements CondominoService, Serializable{
 	public void setCondominioService(CondominioService condominioService) {
 		this.condominioService = condominioService;
 	}
+	
 
 	private void popularCondominoVO(Condominio condominioLocal,
 			CondominoVO condominoVO, Bloco blocoLocal, Unidade unidadeLocal,
@@ -271,6 +276,22 @@ public class CondominoServiceImpl implements CondominoService, Serializable{
 		condominoVO.setSituacaoCondomino(condomino.getSituacao());
 		condominoVO.setIdGrupoUsuario(condomino.getIdGrupoUsuario());		
 	}
+
+
+	@Override
+	public List<Condomino> buscarPorIdsESituacaoSemImagem(Integer idCondominio, Integer situacao) throws SQLException, Exception {
+		List<Integer> listaIdUnidade = new ArrayList<Integer>();
+		List<Condomino> listaCondomino = new ArrayList<Condomino>();
+		List<Integer> listaIdBloco = this.blocoService.buscarListaIdsBlocosPorIdCondominio(idCondominio);
+		for (Integer idBloco : listaIdBloco) {
+			listaIdUnidade.addAll(this.unidadeService.buscarListaIdsUnidadesPorIdBloco(idBloco));			
+		}
+		for (Integer idUnidade : listaIdUnidade) {
+			listaCondomino.addAll(this.condominoDAO.buscarPorIdUnidadeESituacaoSemImagem(idUnidade, situacao));
+		}	
+
+		return listaCondomino;
+	}	
 	
 	
 }

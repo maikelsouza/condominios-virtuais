@@ -296,7 +296,7 @@ public class MensagemMB implements Serializable {
 				
 				// Condição que contempla o caso onde envia para todos
 				if(this.funcionario.getId().equals(0)){
-					listaFuncionarios = this.funcionarioService.buscarPorCondominioSemImagem(this.condominioFuncionario.getId(), UsuarioSituacaoEnum.ATIVO.getSituacao());
+					listaFuncionarios = this.funcionarioService.buscarPorCondominioESituacaoSemImagem(this.condominioFuncionario.getId(), UsuarioSituacaoEnum.ATIVO.getSituacao());
 				}else{
 					listaFuncionarios.add(this.funcionarioService.buscarPorId(this.funcionario.getId()));
 				}
@@ -581,7 +581,7 @@ public class MensagemMB implements Serializable {
 		this.listaSIFuncionarios = new ArrayList<SelectItem>();
 		
 		try {
-			listaFuncionarios = this.funcionarioService.buscarPorCondominioSemImagem(this.condominioFuncionario.getId(),situacaoAtivo);
+			listaFuncionarios = this.funcionarioService.buscarPorCondominioESituacaoSemImagem(this.condominioFuncionario.getId(),situacaoAtivo);
 			if(!listaFuncionarios.isEmpty()){
 				listaSIFuncionarios.add(0,new SelectItem(0, AplicacaoUtil.i18n("todos")));
 			}

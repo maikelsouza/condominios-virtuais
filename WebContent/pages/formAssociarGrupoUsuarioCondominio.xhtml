@@ -9,45 +9,26 @@
 	template="/templates/templatePrincipal.xhtml">
 
 	<ui:define name="conteudo">
-				<h:form id="idFormAssociarUsuario" styleClass="content">                           
-					<rich:panel header="#{msg.filtroCondominiosGrupoUsuario}">
-						<h:panelGrid columns="2">
-							<h:panelGroup>
-								<h:outputLabel value="#{msg['condominio']}:" for="idNome" />
-								<span class="asterisco">*</span>
-							</h:panelGroup>
-							<h:panelGroup>
-								<h:outputLabel value="#{msg['grupoUsuario.situacao']}:" for="idSituacao" />
-								<span class="asterisco">*</span>
-							</h:panelGroup>
-							<h:selectOneMenu id="idNome" value="#{grupoUsuarioMB.grupoUsuario.idCondominio}" required="true" label="#{msg['condominio.label']}">
-								<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="true" />
-								<f:selectItems value="#{grupoUsuarioMB.listaSICondominios}" />
-							</h:selectOneMenu>
-							<h:selectOneMenu id="idSituacao" value="#{grupoUsuarioMB.situacao}" required="true" label="#{msg['grupoUsuario.situacao.label']}">
-								<f:selectItems value="#{grupoUsuarioMB.listaSISituacao}" />
-							</h:selectOneMenu>
-						</h:panelGrid>
-	
-						<h:panelGrid columns="2" styleClass="msgAsterisco"> 
-							<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
-							<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
-						</h:panelGrid>
-					</rich:panel>
-				<div>
-					<h:panelGrid columns="2">
-						<h:commandButton value="#{msg.botaoPesquisar}" actionListener="#{grupoUsuarioMB.pesquisaGrupoUsuario}" />
-						<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{grupoUsuarioMB.limparFiltroPesquisaGrupoUsuario}" />
-					</h:panelGrid>
-				</div>
-				<rich:panel header="#{msg['usuario.associarUsuariosGrupoUsuario']}">				
+		<h:form id="idFormAssociarUsuarioCondominio" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg['grupoUsuario.associarUsuarioCondominio']}" />
+				</f:facet>
+				<h:panelGrid columns="2">
+					<h:outputLabel value="#{msg['grupoUsuario.nome']}:" for="idNomeGrupoUsuario" />
+					<h:outputText id="idNomeGrupoUsuario" value="#{grupoUsuarioMB.grupoUsuario.nome}" />
+					<h:outputLabel value="#{msg['grupoUsuario.descricao']}:" for="idDescricaoGrupoUsuario" />
+					<h:outputText id="idDescricaoGrupoUsuario" value="#{grupoUsuarioMB.grupoUsuario.descricao}" />
+				</h:panelGrid>
+			</rich:panel>
+			<rich:panel header="#{msg['usuario.associarUsuariosGrupoUsuario']}">				
 				<rich:pickList addAllText="#{msg.adicionarTodos}" listWidth="350px" targetCaption="#{msg['usuario.usuariosAssociados']}" sourceCaption="#{msg['usuariosNaoAssociados']}"
-						addText="#{msg.adicionar}" var="usuario" id="idUsuario"  removeAllText="#{msg.removerTodos}" removeText="#{msg.remover}" required="true"
-						rendered="true" converter="usuarioConversor" value="#{usuarioMB.listaUsuariosAssociados}" label="#{msg['usuario.associarUsuario.label']}">
+					addText="#{msg.adicionar}" var="usuario" id="idUsuario" removeAllText="#{msg.removerTodos}" removeText="#{msg.remover}" required="true"
+					rendered="true" converter="usuarioConversor" value="#{usuarioMB.listaUsuariosAssociados}" label="#{msg['usuario.associarUsuario.label']}">
 					<f:selectItems value="#{usuarioMB.listaUsuariosNaoAssociados}" var="usuario" itemValue="#{usuario}"  itemLabel="#{usuario.nome}" />
 				</rich:pickList>	
 			</rich:panel>			
-			</h:form>
+		</h:form>
 	</ui:define>
 
 </ui:composition>

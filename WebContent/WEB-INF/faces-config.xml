@@ -2323,10 +2323,10 @@
   </navigation-case>
  </navigation-rule>
  <navigation-rule>                       
-  <from-view-id>/pages/formAssociarGrupoUsuario.xhtml</from-view-id>  
+  <from-view-id>/pages/formAssociarGrupoUsuario.xhtml</from-view-id>
   <navigation-case>                  
-   <from-action>#{usuarioMB.salvarEditaTelaComponente}</from-action>
-   <from-outcome>associarUsuario</from-outcome>
+   <from-action>#{grupoUsuarioMB.associarUsuarioCondominioGrupoUsuario}</from-action>
+   <from-outcome>associarUsuarioCondominio</from-outcome>
    <to-view-id>/pages/formAssociarGrupoUsuarioCondominio.xhtml</to-view-id>
    <redirect/>
   </navigation-case>

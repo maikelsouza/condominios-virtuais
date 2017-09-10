@@ -25,4 +25,6 @@ public interface UnidadeService {
 	
 	public abstract Unidade buscarPorId(Integer idUnidade) throws SQLException, Exception;
 	
+	public abstract List<Integer> buscarListaIdsUnidadesPorIdBloco(Integer idBloco) throws SQLException, Exception;
+	
 }

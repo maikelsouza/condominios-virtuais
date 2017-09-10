@@ -115,4 +115,9 @@ public class UnidadeServiceImpl implements UnidadeService, Serializable {
 		this.blocoBusiness = blocoBusiness;
 	}
 
+	@Override
+	public List<Integer> buscarListaIdsUnidadesPorIdBloco(Integer idBloco) throws SQLException, Exception {		
+		return this.unidadeDAO.buscarListaIdsUnidadesPorIdBloco(idBloco);
+	}
+
 }
