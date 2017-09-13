@@ -10,34 +10,35 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 
-import br.com.condominiosvirtuais.entity.Usuario;
 
-public class UsuarioConversor implements Converter{
+import br.com.condominiosvirtuais.vo.UsuarioVO;
+
+public class UsuarioVOConversor implements Converter{
 	
-	private Usuario usuario = null;
+	private UsuarioVO usuarioVO = null;
 	
 	private Field atritutos[] = null;
 		
 
-	public UsuarioConversor() {
-		this.usuario = new Usuario();
-		this.atritutos = this.usuario.getClass().getDeclaredFields();
+	public UsuarioVOConversor() {
+		this.usuarioVO = new UsuarioVO();
+		this.atritutos = this.usuarioVO.getClass().getDeclaredFields();
 		
 	}
 
 	@Override
-	public Object getAsObject(FacesContext arg0, UIComponent arg1, String conteudoAtributosUsuario) {
+	public Object getAsObject(FacesContext arg0, UIComponent arg1, String conteudoAtributosUsuarioVO) {
 		try{
-			this.usuario = new Usuario();
+			this.usuarioVO = new UsuarioVO();
 			BeanConversor beanConversor = null;
 			List<BeanConversor> listaBeanConversor = new ArrayList<BeanConversor>();
 			String valores[] = new String[this.atritutos.length];
 			for (int i = 0; i < valores.length; i++) {
-				if(conteudoAtributosUsuario.contains(this.atritutos[i].getName()+"=")){
+				if(conteudoAtributosUsuarioVO.contains(this.atritutos[i].getName()+"=")){
 					beanConversor = new BeanConversor();
-					beanConversor.setPosicaoInicial(conteudoAtributosUsuario.indexOf(this.atritutos[i].getName()+"="));
+					beanConversor.setPosicaoInicial(conteudoAtributosUsuarioVO.indexOf(this.atritutos[i].getName()+"="));
 					beanConversor.setPosicaoFinal(beanConversor.getPosicaoInicial()+this.atritutos[i].getName().length()+1);
-					beanConversor.setAtributo(conteudoAtributosUsuario.substring(beanConversor.getPosicaoInicial(),beanConversor.getPosicaoFinal()-1));
+					beanConversor.setAtributo(conteudoAtributosUsuarioVO.substring(beanConversor.getPosicaoInicial(),beanConversor.getPosicaoFinal()-1));
 					listaBeanConversor.add(beanConversor);
 				}			
 					
@@ -48,9 +49,9 @@ public class UsuarioConversor implements Converter{
 			for (int j = 0; j < listaBeanConversor.size(); j++) {
 				beanConversor = listaBeanConversor.get(j);
 				if(j+1 < listaBeanConversor.size()){
-					beanConversor.setConteudo((conteudoAtributosUsuario.substring(beanConversor.getPosicaoFinal(),listaBeanConversor.get(j+1).getPosicaoInicial())));					
+					beanConversor.setConteudo((conteudoAtributosUsuarioVO.substring(beanConversor.getPosicaoFinal(),listaBeanConversor.get(j+1).getPosicaoInicial())));					
 				}else{
-					beanConversor.setConteudo((conteudoAtributosUsuario.substring(beanConversor.getPosicaoFinal(),conteudoAtributosUsuario.length())));	
+					beanConversor.setConteudo((conteudoAtributosUsuarioVO.substring(beanConversor.getPosicaoFinal(),conteudoAtributosUsuarioVO.length())));	
 				}
 			}
 			
@@ -61,13 +62,13 @@ public class UsuarioConversor implements Converter{
 					beanConversor = listaBeanConversor.get(j);
 					if(nomeAtributo.equalsIgnoreCase(beanConversor.getAtributo())){
 						String stringMetodo = "set"+ nomeAtributo.substring(0,1).toUpperCase() + nomeAtributo.substring(1);
-						Method metodo = this.usuario.getClass().getMethod(stringMetodo,  this.atritutos[i].getType());		
+						Method metodo = this.usuarioVO.getClass().getMethod(stringMetodo,  this.atritutos[i].getType());		
 						if(this.atritutos[i].getType().getName().equals("java.lang.Integer")){
-							metodo.invoke(this.usuario,   Integer.parseInt((String) beanConversor.getConteudo()));							
+							metodo.invoke(this.usuarioVO,   Integer.parseInt((String) beanConversor.getConteudo()));							
 						}else if (this.atritutos[i].getType().getName().equals("java.lang.String")){							
-							metodo.invoke(this.usuario,  beanConversor.getConteudo());
+							metodo.invoke(this.usuarioVO,  beanConversor.getConteudo());
 						}else if (this.atritutos[i].getType().getName().equals("java.lang.Long")){							
-							metodo.invoke(this.usuario, Long.parseLong((String) beanConversor.getConteudo()));
+							metodo.invoke(this.usuarioVO, Long.parseLong((String) beanConversor.getConteudo()));
 						}
 						
 					}
@@ -77,32 +78,32 @@ public class UsuarioConversor implements Converter{
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return usuario;
+		return usuarioVO;
 	}
 
 	@Override
-	public String getAsString(FacesContext arg0, UIComponent arg1, Object usuarioObject) {		
-		String conteudoAtributosUsuario = null;
+	public String getAsString(FacesContext arg0, UIComponent arg1, Object usuarioVOObject) {		
+		String conteudoAtributosUsuarioVO = null;
 		Field atritutos[] = null;
 		String nomeAtributo = null;
 		Object conteudoMetodo = null;
 		
 		try{
-			Usuario usuario = (Usuario) usuarioObject;
-			atritutos = usuario.getClass().getDeclaredFields();
-			conteudoAtributosUsuario = "";
+			UsuarioVO usuarioVO = (UsuarioVO) usuarioVOObject;
+			atritutos = usuarioVO.getClass().getDeclaredFields();
+			conteudoAtributosUsuarioVO = "";
 			for (int i = 0; i < atritutos.length; i++) {
 				nomeAtributo = atritutos[i].getName();				
 				String stringMetodo = "get"+ nomeAtributo.substring(0,1).toUpperCase() + nomeAtributo.substring(1);
-				Method metodo = usuario.getClass().getMethod(stringMetodo);
-				conteudoMetodo = metodo.invoke(usuario);
+				Method metodo = usuarioVO.getClass().getMethod(stringMetodo);
+				conteudoMetodo = metodo.invoke(usuarioVO);
 				if(conteudoMetodo != null){
-					conteudoAtributosUsuario+=nomeAtributo+"="+conteudoMetodo;					
+					conteudoAtributosUsuarioVO+=nomeAtributo+"="+conteudoMetodo;					
 				}
 			}
 		}catch(Exception e){
 			e.printStackTrace();	
 		}		
-		return conteudoAtributosUsuario;
+		return conteudoAtributosUsuarioVO;
 	}
 }

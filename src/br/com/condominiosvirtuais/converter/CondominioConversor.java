@@ -26,18 +26,18 @@ public class CondominioConversor implements Converter{
 	}
 
 	@Override
-	public Object getAsObject(FacesContext arg0, UIComponent arg1, String conteudoAtributosBloco) {
+	public Object getAsObject(FacesContext arg0, UIComponent arg1, String conteudoAtributosCondominio) {
 		try{
 			this.condominio = new Condominio();
 			BeanConversor beanConversor = null;
 			List<BeanConversor> listaBeanConversor = new ArrayList<BeanConversor>();
 			String valores[] = new String[this.atritutos.length];
 			for (int i = 0; i < valores.length; i++) {
-				if(conteudoAtributosBloco.contains(this.atritutos[i].getName()+"=")){
+				if(conteudoAtributosCondominio.contains(this.atritutos[i].getName()+"=")){
 					beanConversor = new BeanConversor();
-					beanConversor.setPosicaoInicial(conteudoAtributosBloco.indexOf(this.atritutos[i].getName()+"="));
+					beanConversor.setPosicaoInicial(conteudoAtributosCondominio.indexOf(this.atritutos[i].getName()+"="));
 					beanConversor.setPosicaoFinal(beanConversor.getPosicaoInicial()+this.atritutos[i].getName().length()+1);
-					beanConversor.setAtributo(conteudoAtributosBloco.substring(beanConversor.getPosicaoInicial(),beanConversor.getPosicaoFinal()-1));
+					beanConversor.setAtributo(conteudoAtributosCondominio.substring(beanConversor.getPosicaoInicial(),beanConversor.getPosicaoFinal()-1));
 					listaBeanConversor.add(beanConversor);
 				}			
 					
@@ -48,9 +48,9 @@ public class CondominioConversor implements Converter{
 			for (int j = 0; j < listaBeanConversor.size(); j++) {
 				beanConversor = listaBeanConversor.get(j);
 				if(j+1 < listaBeanConversor.size()){
-					beanConversor.setConteudo((conteudoAtributosBloco.substring(beanConversor.getPosicaoFinal(),listaBeanConversor.get(j+1).getPosicaoInicial())));					
+					beanConversor.setConteudo((conteudoAtributosCondominio.substring(beanConversor.getPosicaoFinal(),listaBeanConversor.get(j+1).getPosicaoInicial())));					
 				}else{
-					beanConversor.setConteudo((conteudoAtributosBloco.substring(beanConversor.getPosicaoFinal(),conteudoAtributosBloco.length())));	
+					beanConversor.setConteudo((conteudoAtributosCondominio.substring(beanConversor.getPosicaoFinal(),conteudoAtributosCondominio.length())));	
 				}
 			}
 			

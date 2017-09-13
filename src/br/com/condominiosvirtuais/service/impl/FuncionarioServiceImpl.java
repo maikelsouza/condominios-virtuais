@@ -89,5 +89,11 @@ public class FuncionarioServiceImpl implements FuncionarioService, Serializable 
 		return this.funcionarioDAO.buscarPorCondominioESituacaoSemImagem(idCondominio, situacao);
 	}
 
+	@Override
+	public List<Funcionario> buscarPorIdCondominioEIdGrupoUsuarioESituacaoSemImagem(Integer idCondominio, Integer idGrupoUsuario,
+			Integer situacao) throws SQLException, Exception {
+		return this.funcionarioDAO.buscarPorIdCondominioEidGrupoUsuarioESituacaoSemImagem(idCondominio, idGrupoUsuario, situacao);
+	}
+
 	
 }

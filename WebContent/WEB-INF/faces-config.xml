@@ -23,8 +23,8 @@
   <converter-class>br.com.condominiosvirtuais.converter.MeioPagamentoConversor</converter-class>
  </converter>
  <converter>
-  <converter-id>usuarioConversor</converter-id>
-  <converter-class>br.com.condominiosvirtuais.converter.UsuarioConversor</converter-class>
+  <converter-id>usuarioVOConversor</converter-id>
+  <converter-class>br.com.condominiosvirtuais.converter.UsuarioVOConversor</converter-class>
  </converter>
  <managed-bean>
   <managed-bean-name>ordenaCondominioMB</managed-bean-name>

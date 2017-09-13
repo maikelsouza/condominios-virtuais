@@ -850,6 +850,56 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 			throw e;	
 		}
 		return encontrou;
-	}	
+	}
+	
+	@Override
+	public Boolean buscarPorEPopularPeloIdEGrupoUsuarioESituacaoSemImagem(Usuario usuario, Integer idGrupoUsuario, Integer situacao, Connection con) throws SQLException, Exception {
+		Boolean encontrou = Boolean.FALSE;
+		List<UsuarioGrupoUsuario> listaUsuarioGrupoUsuario = this.usuarioGrupoUsuarioDAO.buscarPorIdGrupoUsuario(idGrupoUsuario,usuario.getId(), con);
+		List<Usuario> listaUsuario = new ArrayList<Usuario>();
+		if(!listaUsuarioGrupoUsuario.isEmpty()){
+			StringBuffer query = new StringBuffer();
+			query.append("SELECT * FROM ");
+			query.append(USUARIO);
+			query.append(" WHERE ");
+			query.append(ID);
+			query.append(" IN ( ");
+			query.append(SQLUtil.popularInterrocacoes(listaUsuarioGrupoUsuario.size()));
+			query.append(" )");
+			query.append(" AND ");
+			query.append(SITUACAO);
+			query.append(" = ?");
+			query.append(" ORDER BY ");
+			query.append(NOME);
+			query.append(";");		
+			
+			PreparedStatement preparedStatement = null;
+			ResultSet resultSet = null;
+			Integer contador = 1;
+			try {
+				preparedStatement = con.prepareStatement(query.toString());
+				for (UsuarioGrupoUsuario usuarioGrupoUsuario: listaUsuarioGrupoUsuario) {
+					SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, usuarioGrupoUsuario.getIdUsuario(), java.sql.Types.INTEGER);
+				}
+				SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, situacao, java.sql.Types.INTEGER);
+				resultSet = preparedStatement.executeQuery();
+				while(resultSet.next()){
+					encontrou = Boolean.TRUE;
+					usuario.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+					usuario.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+					usuario.setSexo((Integer) SQLUtil.getValorResultSet(resultSet, SEXO, java.sql.Types.INTEGER));
+					usuario.setDataNascimento((Date) SQLUtil.getValorResultSet(resultSet, DATA_NASCIMENTO, java.sql.Types.DATE));
+					usuario.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
+					usuario.setCpf((Long) SQLUtil.getValorResultSet(resultSet, CPF, java.sql.Types.BIGINT));
+					listaUsuario.add(usuario);
+				}
+			}catch (SQLException e) {			
+				throw e;
+			} catch (Exception e) {					
+				throw e;	
+			}
+		}
+		return encontrou;
+	}
 	
 }
