@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -14,11 +13,15 @@ import javax.inject.Named;
 import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Funcionario;
+import br.com.condominiosvirtuais.entity.GrupoUsuario;
 import br.com.condominiosvirtuais.entity.Usuario;
+import br.com.condominiosvirtuais.enumeration.AtributoSessaoEnum;
 import br.com.condominiosvirtuais.enumeration.UsuarioSituacaoEnum;
 import br.com.condominiosvirtuais.enumeration.UsuarioVOTipoUsuarioEnum;
 import br.com.condominiosvirtuais.service.CondominoService;
 import br.com.condominiosvirtuais.service.FuncionarioService;
+import br.com.condominiosvirtuais.service.UsuarioService;
+import br.com.condominiosvirtuais.util.ManagedBeanUtil;
 import br.com.condominiosvirtuais.vo.CondominoVO;
 import br.com.condominiosvirtuais.vo.UsuarioVO;
 
@@ -31,42 +34,63 @@ public class UsuarioMB implements Serializable {
 	
 	private Usuario usuario;
 	
+	private GrupoUsuario grupoUsuario;
+	
 	@Inject
 	private CondominoService condominoService;
 	
 	@Inject
 	private FuncionarioService funcionarioService;	
 	
+	@Inject
+	private UsuarioService usuarioService;
+	
 	private List<UsuarioVO> listaUsuariosAssociados;
 	
 	private List<UsuarioVO> listaUsuariosNaoAssociados;
 
 	
-	@PostConstruct
-	public void iniciarUsuarioMB() throws SQLException, Exception{
+	
+	
+	public void buscarUsuariosAssociadosOuNao(){
 		listaUsuariosAssociados = new ArrayList<UsuarioVO>();
 		listaUsuariosNaoAssociados = new ArrayList<UsuarioVO>();
+		this.grupoUsuario = (GrupoUsuario) ManagedBeanUtil.getSession(Boolean.FALSE).getAttribute(AtributoSessaoEnum.GRUPO_USUARIO.getAtributo());
 		
-		for (CondominoVO condominoVO : this.condominoService.buscarPorIdsEidGrupoUsuarioESituacaoSemImagem(19, 1, 1)) {
-			listaUsuariosAssociados.add(this.popularUsuarioVO(condominoVO));
-		}		
-		for (CondominoVO condominoVO : this.condominoService.buscarPorIdsESituacaoSemImagem(19, 1)) {
-			listaUsuariosNaoAssociados.add(this.popularUsuarioVO(condominoVO));
-		}		
-		for (Funcionario funcionario : this.funcionarioService.buscarPorCondominioESituacaoSemImagem(19,1)) {
-			listaUsuariosNaoAssociados.add(this.popularUsuarioVO(funcionario));	
-		}		
-		for (Funcionario funcionario : this.funcionarioService.buscarPorIdCondominioEIdGrupoUsuarioESituacaoSemImagem(19,1,1)) {
-			listaUsuariosAssociados.add(this.popularUsuarioVO(funcionario));	
+		try{
+			for (CondominoVO condominoVO : this.condominoService.buscarPorIdsEidGrupoUsuarioESituacaoSemImagem(grupoUsuario.getIdCondominio(), 
+					grupoUsuario.getId(), UsuarioSituacaoEnum.ATIVO.getSituacao())) {
+				listaUsuariosAssociados.add(this.popularUsuarioVO(condominoVO));
+			}		
+			for (CondominoVO condominoVO : this.condominoService.buscarPorIdsESituacaoSemImagem(grupoUsuario.getIdCondominio(), 
+					UsuarioSituacaoEnum.ATIVO.getSituacao())) {
+				listaUsuariosNaoAssociados.add(this.popularUsuarioVO(condominoVO));
+			}		
+			for (Funcionario funcionario : this.funcionarioService.buscarPorCondominioESituacaoSemImagem(grupoUsuario.getIdCondominio(),
+					UsuarioSituacaoEnum.ATIVO.getSituacao())) {
+				listaUsuariosNaoAssociados.add(this.popularUsuarioVO(funcionario));	
+			}		
+			for (Funcionario funcionario : this.funcionarioService.buscarPorIdCondominioEIdGrupoUsuarioESituacaoSemImagem(grupoUsuario.getIdCondominio(), 
+					grupoUsuario.getId(),UsuarioSituacaoEnum.ATIVO.getSituacao())) {
+				listaUsuariosAssociados.add(this.popularUsuarioVO(funcionario));	
+			}
+			
+			Collections.sort(this.listaUsuariosAssociados);
+			Collections.sort(this.listaUsuariosNaoAssociados);
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");				
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
 		}
 		
-		Collections.sort(this.listaUsuariosAssociados);
-		Collections.sort(this.listaUsuariosNaoAssociados);
+		
 	}
 	
 	private UsuarioVO popularUsuarioVO(CondominoVO condominoVO){
 		UsuarioVO usuarioVO = new UsuarioVO();
-		usuarioVO.setIdUsuario(condominoVO.getId());
+		usuarioVO.setIdUsuario(condominoVO.getIdCondomino());
 		usuarioVO.setNomeUsuario(condominoVO.getNomeCondomino().substring(0, condominoVO.getNomeCondomino().length() > 20 ? 20 : condominoVO.getNomeCondomino().length()));
 		usuarioVO.setNumeroUnidade(condominoVO.getNumeroUnidade());
 		usuarioVO.setNomeBloco(condominoVO.getNomeBloco());
@@ -80,6 +104,34 @@ public class UsuarioMB implements Serializable {
 		usuarioVO.setNomeUsuario(funcionario.getNome().substring(0, funcionario.getNome().length() > 20 ? 20 : funcionario.getNome().length()));
 		usuarioVO.setTipoUsuario(UsuarioVOTipoUsuarioEnum.FUNCIONARIO.getTipoUsuario());
 		return usuarioVO;
+	}
+	
+	public String associarUsuario(){	
+		try {
+			List<Usuario> listaUsuarios = new ArrayList<Usuario>();
+			for (UsuarioVO usuarioVO : this.listaUsuariosAssociados) {
+				listaUsuarios.add(this.popularUsuario(usuarioVO));
+			}		
+			this.usuarioService.associar(listaUsuarios, this.grupoUsuario.getId());
+			ManagedBeanUtil.setMensagemInfo("msg.usuario.associadoSucesso");
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");				
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}
+		return "associar";
+	}
+	
+	private Usuario popularUsuario(UsuarioVO usuarioVO){
+		Usuario usuario = new Usuario();
+		usuario.setId(usuarioVO.getIdUsuario());
+		return usuario;
+	}
+	
+	public String cancelarAssociarUsuario(){
+		return "cancelar";
 	}
 	
 	public Usuario getUsuario() {

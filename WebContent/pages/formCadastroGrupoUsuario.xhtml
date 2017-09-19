@@ -36,6 +36,21 @@
 					<h:inputText id="idDescricao" value="#{grupoUsuarioMB.grupoUsuario.descricao}" label="#{msg['grupoUsuario.descricao.label']}" size="40">
 						<f:validateLength maximum="149" />
 					</h:inputText>
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['grupoUsuario.padrao']}:" for="idPadrao" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>	
+					<h:outputLabel value="#{msg['grupoUsuario.tipoUsuario']}:" for="idTipoUsuairo" />
+					<h:outputLabel value="" />
+					<h:selectOneMenu id="idPadrao" value="#{grupoUsuarioMB.grupoUsuario.padrao}" required="true"
+						defaultLabel="#{msg['grupoUsuario.padrao.DefaultLabel']}" label="#{msg['grupoUsuario.padrao.label']}">
+						<f:selectItems value="#{grupoUsuarioMB.listaSIPadrao}" />
+					</h:selectOneMenu>
+					<h:selectOneMenu id="idTipoUsuairo" value="#{grupoUsuarioMB.grupoUsuario.tipoUsuario}"
+						defaultLabel="#{msg['grupoUsuario.tipoUsuario.DefaultLabel']}" label="#{msg['grupoUsuario.tipoUsuario.label']}">
+						<f:selectItems value="#{grupoUsuarioMB.listaSITipoUsuario}" />
+					</h:selectOneMenu>
+					
 				</h:panelGrid>
 				
 				<rich:panel header="#{msg.listaTelaGrupoUsuario}">

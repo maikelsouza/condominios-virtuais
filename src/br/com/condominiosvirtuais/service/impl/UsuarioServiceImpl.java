@@ -131,4 +131,10 @@ public class UsuarioServiceImpl implements UsuarioService, Serializable {
 		return this.usuarioDAO.buscarSindicoGeralPorCondominio(condominio);
 	}
 
+	@Override
+	public void associar(List<Usuario> listaDeUsuarios, Integer idGrupoUsuario) throws SQLException, Exception {
+		this.usuarioDAO.associarUsuariosGrupoUsuario(listaDeUsuarios, idGrupoUsuario);
+		
+	}
+
 }

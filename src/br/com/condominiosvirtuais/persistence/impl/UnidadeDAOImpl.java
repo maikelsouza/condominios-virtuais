@@ -119,6 +119,7 @@ public class UnidadeDAOImpl implements UnidadeDAO, Serializable{
 				unidade.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
 				unidade.setTipo((Integer) SQLUtil.getValorResultSet(resultSet, TIPO, java.sql.Types.INTEGER));
 				unidade.setNumero((Integer) SQLUtil.getValorResultSet(resultSet, NUMERO, java.sql.Types.INTEGER));
+				unidade.setIdBloco((Integer) SQLUtil.getValorResultSet(resultSet, ID_BLOCO, java.sql.Types.INTEGER));
 				listaUnidade.add(unidade);
 			}
 		} catch (SQLException e) {

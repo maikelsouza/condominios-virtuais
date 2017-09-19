@@ -269,9 +269,10 @@ public class CondominoServiceImpl implements CondominoService, Serializable{
 		
 		for (Condomino condomino : listaCondomino) {
 			condominoVO = new CondominoVO();
+			condominoVO.setIdCondomino(condomino.getId());
 			condominoVO.setIdUnidade(condomino.getIdUnidade());
 			condominoVO.setNomeCondomino(condomino.getNome());
-			unidadeLocal = this.buscarUnidadePeloId(condomino.getIdUnidade(), listaUnidade);
+			unidadeLocal = this.buscarUnidadePeloId(condomino.getIdUnidade(), listaUnidade);			
 			condominoVO.setNumeroUnidade(unidadeLocal.getNumero());
 			condominoVO.setNomeBloco(this.buscarBlocoPeloId(unidadeLocal.getIdBloco(), listaBloco).getNome());
 			listaCondominoVO.add(condominoVO);
@@ -297,6 +298,7 @@ public class CondominoServiceImpl implements CondominoService, Serializable{
 		
 		for (Condomino condomino : listaCondomino) {
 			condominoVO = new CondominoVO();
+			condominoVO.setIdCondomino(condomino.getId());
 			condominoVO.setIdUnidade(condomino.getIdUnidade());
 			condominoVO.setNomeCondomino(condomino.getNome());
 			unidadeLocal = this.buscarUnidadePeloId(condomino.getIdUnidade(), listaUnidade);
@@ -313,7 +315,7 @@ public class CondominoServiceImpl implements CondominoService, Serializable{
 		Iterator<Unidade> iteratorUnidade = listaUnidade.iterator();
 		while (iteratorUnidade.hasNext() && !encontrou) {
 			unidade =  iteratorUnidade.next();
-			if(idUnidade == unidade.getId()){
+			if(idUnidade.intValue() == unidade.getId().intValue()){
 				encontrou = Boolean.TRUE; 
 			}
 		}
@@ -326,7 +328,7 @@ public class CondominoServiceImpl implements CondominoService, Serializable{
 		Iterator<Bloco> iteratorBloco = listaBloco.iterator();
 		while (iteratorBloco.hasNext() && !encontrou) {
 			bloco =  iteratorBloco.next();
-			if(idBloco == bloco.getId()){
+			if(idBloco.intValue() == bloco.getId().intValue()){
 				encontrou = Boolean.TRUE; 
 			}
 		}

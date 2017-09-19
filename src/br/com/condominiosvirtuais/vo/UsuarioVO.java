@@ -1,5 +1,7 @@
 package br.com.condominiosvirtuais.vo;
 
+import br.com.condominiosvirtuais.enumeration.UsuarioVOTipoUsuarioEnum;
+
 public class UsuarioVO implements Comparable<UsuarioVO> {
 
 	private Integer id;
@@ -121,11 +123,19 @@ public class UsuarioVO implements Comparable<UsuarioVO> {
 
 		
 	@Override
-	public int compareTo(UsuarioVO usuarioVO) {
+	public int compareTo(UsuarioVO usuarioVO) {		
 		int resultado = this.getTipoUsuario().compareTo(usuarioVO.getTipoUsuario());
-	    if (resultado == 0) {
-	        resultado = this.getNomeUsuario().compareTo(usuarioVO.getNomeUsuario());
-	    }
+		if (this.getTipoUsuario() == UsuarioVOTipoUsuarioEnum.CONDOMINO.getTipoUsuario()){
+			if(resultado == 0){
+				resultado = this.getNomeBloco().compareTo(usuarioVO.getNomeBloco());
+			}
+			if(resultado == 0){
+				resultado = this.getNumeroUnidade().compareTo(usuarioVO.getNumeroUnidade());
+			}
+		}
+		if(resultado == 0){
+			resultado = this.getNomeUsuario().compareTo(usuarioVO.getNomeUsuario());
+		}
 		return resultado;
 	}
 

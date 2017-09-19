@@ -14,5 +14,7 @@ public interface UsuarioGrupoUsuarioDAO {
 	public abstract void excluirPorIdGrupoUsuario(Integer idGrupoUsuario, Connection con) throws SQLException, Exception;
 	
 	public abstract List<UsuarioGrupoUsuario> buscarPorIdGrupoUsuario(Integer idGrupoUsuario, Integer idUsuario, Connection con) throws SQLException, Exception;
+	
+	public abstract void associar(List<UsuarioGrupoUsuario> listaUsuarioGrupoUsuario) throws SQLException, Exception;
 
 }

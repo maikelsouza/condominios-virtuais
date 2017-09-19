@@ -901,5 +901,19 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 		}
 		return encontrou;
 	}
+
+	@Override
+	public void associarUsuariosGrupoUsuario(List<Usuario> listaDeUsuarios, Integer idGrupoUsuario)
+			throws SQLException, Exception {
+		UsuarioGrupoUsuario usuarioGrupoUsuario = null;
+		List<UsuarioGrupoUsuario> listaUsuarioGrupoUsuario = new ArrayList<UsuarioGrupoUsuario>();
+		for (Usuario usuario : listaDeUsuarios) {
+			usuarioGrupoUsuario = new UsuarioGrupoUsuario();
+			usuarioGrupoUsuario.setIdUsuario(usuario.getId());
+			usuarioGrupoUsuario.setIdGrupoUsuario(idGrupoUsuario);
+			listaUsuarioGrupoUsuario.add(usuarioGrupoUsuario);			
+		}
+		this.usuarioGrupoUsuarioDAO.associar(listaUsuarioGrupoUsuario);
+	}
 	
 }

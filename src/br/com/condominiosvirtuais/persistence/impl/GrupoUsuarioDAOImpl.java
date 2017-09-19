@@ -45,8 +45,7 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 	private GrupoUsuarioTelaComponenteDAO grupoUsuarioTelaComponenteDAO;
 	
 	@Inject
-	private UsuarioGrupoUsuarioDAO usuarioGrupoUsuarioDAO;
-	
+	private UsuarioGrupoUsuarioDAO usuarioGrupoUsuarioDAO;	
 	
 	@Inject
 	private TelaDAO telaDAO;
@@ -60,6 +59,10 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 	private static final String DESCRICAO = "DESCRICAO";
 	
 	private static final String SITUACAO = "SITUACAO";
+	
+	private static final String PADRAO = "PADRAO";
+	
+	private static final String TIPO_USUARIO = "TIPO_USUARIO";
 	
 	private static final String ID_CONDOMINIO = "ID_CONDOMINIO";
 	
@@ -97,6 +100,8 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 				grupoUsuario.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
 				grupoUsuario.setDescricao(String.valueOf(SQLUtil.getValorResultSet(resultSet, DESCRICAO, java.sql.Types.VARCHAR)));
 				grupoUsuario.setSituacao((Boolean) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.BOOLEAN));
+				grupoUsuario.setPadrao((Boolean) SQLUtil.getValorResultSet(resultSet, PADRAO, java.sql.Types.BOOLEAN));
+				grupoUsuario.setTipoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, TIPO_USUARIO, java.sql.Types.INTEGER));
 				grupoUsuario.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
 				grupoUsuario.setIdSindicoProfissional((Integer) SQLUtil.getValorResultSet(resultSet, ID_SINDICO_PROFISSIONAL, java.sql.Types.INTEGER));
 				grupoUsuario.setIdEscritorioContabilidade((Integer) SQLUtil.getValorResultSet(resultSet, ID_ESCRITORIO_CONTABILIDADE, java.sql.Types.INTEGER));
@@ -157,9 +162,6 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 
 	@Override
 	public void salvar(GrupoUsuario grupoUsuario) throws SQLException,BusinessException, Exception {
-		GrupoUsuarioTela grupoUsuarioTela = null;
-		GrupoUsuarioTelaAba grupoUsuarioTelaAba = null;
-		GrupoUsuarioTelaComponente grupoUsuarioTelaComponente = null; 
 		StringBuffer query = new StringBuffer();
 		query.append("INSERT INTO "); 
 		query.append(GRUPO_USUARIO);
@@ -175,8 +177,12 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 		query.append(ID_SINDICO_PROFISSIONAL);
 		query.append(",");
 		query.append(ID_ESCRITORIO_CONTABILIDADE);
+		query.append(",");
+		query.append(PADRAO);
+		query.append(",");
+		query.append(TIPO_USUARIO);
 		query.append(") ");
-		query.append("VALUES(?,?,?,?,?,?)");
+		query.append("VALUES(?,?,?,?,?,?,?,?)");
 		PreparedStatement statement = null;		
 		Connection con = Conexao.getConexao();
 		con.setAutoCommit(Boolean.FALSE);
@@ -189,6 +195,8 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 			SQLUtil.setValorPpreparedStatement(statement, 4, grupoUsuario.getIdCondominio(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 5, grupoUsuario.getIdSindicoProfissional(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 6, grupoUsuario.getIdEscritorioContabilidade(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 7, grupoUsuario.getPadrao(), java.sql.Types.BOOLEAN);
+			SQLUtil.setValorPpreparedStatement(statement, 8, grupoUsuario.getTipoUsuario(), java.sql.Types.INTEGER);
 			statement.executeUpdate();
 			ResultSet rs = statement.getGeneratedKeys();
 			rs.next();
@@ -236,6 +244,10 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 		query.append(ID_SINDICO_PROFISSIONAL);	
 		query.append("= ?, ");
 		query.append(ID_ESCRITORIO_CONTABILIDADE);	
+		query.append("= ?, ");		
+		query.append(PADRAO);	
+		query.append("= ?, ");		
+		query.append(TIPO_USUARIO);	
 		query.append("= ? ");		
 		query.append(" WHERE ");
 		query.append(ID);
@@ -251,7 +263,9 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 			SQLUtil.setValorPpreparedStatement(statement, 4, grupoUsuario.getIdCondominio(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 5, grupoUsuario.getIdSindicoProfissional(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 6, grupoUsuario.getIdEscritorioContabilidade(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement, 7, grupoUsuario.getId(), java.sql.Types.INTEGER);			
+			SQLUtil.setValorPpreparedStatement(statement, 7, grupoUsuario.getPadrao(), java.sql.Types.BOOLEAN);			
+			SQLUtil.setValorPpreparedStatement(statement, 8, grupoUsuario.getTipoUsuario(), java.sql.Types.INTEGER);			
+			SQLUtil.setValorPpreparedStatement(statement, 9, grupoUsuario.getId(), java.sql.Types.INTEGER);			
 			statement.executeUpdate();
 			this.grupoUsuarioTelaDAO.excluirPorIdGrupoUsuario(grupoUsuario.getId(), con);
 			this.grupoUsuarioTelaAbaDAO.excluirPorIdGrupoUsuario(grupoUsuario.getId(), con);
@@ -306,6 +320,8 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 				grupoUsuario.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
 				grupoUsuario.setIdSindicoProfissional((Integer) SQLUtil.getValorResultSet(resultSet, ID_SINDICO_PROFISSIONAL, java.sql.Types.INTEGER));
 				grupoUsuario.setIdEscritorioContabilidade((Integer) SQLUtil.getValorResultSet(resultSet, ID_ESCRITORIO_CONTABILIDADE, java.sql.Types.INTEGER));
+				grupoUsuario.setPadrao((Boolean) SQLUtil.getValorResultSet(resultSet, PADRAO, java.sql.Types.BOOLEAN));
+				grupoUsuario.setTipoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, TIPO_USUARIO, java.sql.Types.INTEGER));
 				listaGrupoUsuario.add(grupoUsuario);
 			}
 		}catch (SQLException e) {
@@ -352,6 +368,8 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 				grupoUsuario.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
 				grupoUsuario.setIdSindicoProfissional((Integer) SQLUtil.getValorResultSet(resultSet, ID_SINDICO_PROFISSIONAL, java.sql.Types.INTEGER));
 				grupoUsuario.setIdEscritorioContabilidade((Integer) SQLUtil.getValorResultSet(resultSet, ID_ESCRITORIO_CONTABILIDADE, java.sql.Types.INTEGER));
+				grupoUsuario.setPadrao((Boolean) SQLUtil.getValorResultSet(resultSet, PADRAO, java.sql.Types.BOOLEAN));
+				grupoUsuario.setTipoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, TIPO_USUARIO, java.sql.Types.INTEGER));
 				listaGrupoUsuario.add(grupoUsuario);
 			}
 		}catch (SQLException e) {
@@ -397,6 +415,8 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 				grupoUsuario.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
 				grupoUsuario.setIdSindicoProfissional((Integer) SQLUtil.getValorResultSet(resultSet, ID_SINDICO_PROFISSIONAL, java.sql.Types.INTEGER));
 				grupoUsuario.setIdEscritorioContabilidade((Integer) SQLUtil.getValorResultSet(resultSet, ID_ESCRITORIO_CONTABILIDADE, java.sql.Types.INTEGER));
+				grupoUsuario.setPadrao((Boolean) SQLUtil.getValorResultSet(resultSet, PADRAO, java.sql.Types.BOOLEAN));
+				grupoUsuario.setTipoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, TIPO_USUARIO, java.sql.Types.INTEGER));
 				List<GrupoUsuarioTela> listaGrupoUsuarioTela = this.grupoUsuarioTelaDAO.buscarPorIdGrupoUsuario(grupoUsuario.getId(), con);
 				listaTelaVO = new ArrayList<TelaVO>();
 				for (GrupoUsuarioTela grupoUsuarioTela : listaGrupoUsuarioTela) {

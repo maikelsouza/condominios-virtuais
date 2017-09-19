@@ -43,7 +43,11 @@
 			        		#{usuarioVO.nomeUsuario}
 			        	</rich:column>
 				</rich:pickList>	
-			</rich:panel>			
+			</rich:panel>
+			<h:panelGrid columns="2">
+				<h:commandButton value="#{msg.botaoAssociar}" action="#{usuarioMB.associarUsuario}" />
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{usuarioMB.cancelarAssociarUsuario}" immediate="true" />
+			</h:panelGrid>			
 		</h:form>
 	</ui:define>
 

@@ -26,6 +26,10 @@ public class GrupoUsuario implements Serializable {
 	
 	private Boolean situacao;
 	
+	private Boolean padrao;
+	
+	private Integer tipoUsuario;
+	
 	// Lista de telas que estão cadastradas na aplicação. Entidade que representa uma tela
 	// TODO: Rever para remover essa lista e usar somente a listaTelaAcesso
 	private List<Tela> listaTela;
@@ -60,13 +64,14 @@ public class GrupoUsuario implements Serializable {
 		this.nome = nome;
 	}
 
-	public TipoGrupoUsuarioEnum getTipoGrupoUsuario() {
-		return tipoGrupoUsuario;
-	}
-
-	public void setTipoGrupoUsuario(TipoGrupoUsuarioEnum tipoGrupoUsuario) {
-		this.tipoGrupoUsuario = tipoGrupoUsuario;
-	}
+// TODO: Código comentado em 18/09/2017. Apagar em 180 dias
+//	public TipoGrupoUsuarioEnum getTipoGrupoUsuario() {
+//		return tipoGrupoUsuario;
+//	}
+//
+//	public void setTipoGrupoUsuario(TipoGrupoUsuarioEnum tipoGrupoUsuario) {
+//		this.tipoGrupoUsuario = tipoGrupoUsuario;
+//	}
 	
 	public Boolean temAcesso(String pagina){
 		List<String> listaTelas = null;
@@ -170,8 +175,24 @@ public class GrupoUsuario implements Serializable {
 
 	public void setListaTelaAcesso(List<TelaVO> listaTelaAcesso) {
 		this.listaTelaAcesso = listaTelaAcesso;
-	}
+	}	
 	
+	public Boolean getPadrao() {
+		return padrao;
+	}
+
+	public void setPadrao(Boolean padrao) {
+		this.padrao = padrao;
+	}
+
+	public Integer getTipoUsuario() {
+		return tipoUsuario;
+	}
+
+	public void setTipoUsuario(Integer tipoUsuario) {
+		this.tipoUsuario = tipoUsuario;
+	}
+
 	public Boolean existeTela(String caminhoPagina){
 		// Todos os usuários que conseguiram se autenticar tem acesso a tela principal
 		if (caminhoPagina.equals("/pages/formPrincipal.xhtml")){

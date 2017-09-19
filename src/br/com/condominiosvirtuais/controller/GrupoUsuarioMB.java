@@ -58,6 +58,9 @@ public class GrupoUsuarioMB implements Serializable {
 	
 	@Inject
 	private TelaMB telaMB;
+	
+	@Inject
+	private UsuarioMB usuarioMB;
 		
 	private GrupoUsuario grupoUsuario;
 		
@@ -79,6 +82,10 @@ public class GrupoUsuarioMB implements Serializable {
 	
 	private String tabSelecionada;
 	
+	private List<SelectItem> listaSIPadrao;
+	
+	private List<SelectItem> listaSITipoUsuario;
+	
 
 	
 	public void iniciarTelaVO (){
@@ -93,6 +100,8 @@ public class GrupoUsuarioMB implements Serializable {
 		this.listaSICondominios = this.condominioMB.get().buscarListaCondominiosAtivos();
 		this.checadoTodos = Boolean.FALSE;
 		this.popularSituacao();
+		this.popularPadrao();
+		this.popularTipoUsuario();
 	}	
 	
 	public void pesquisaGrupoUsuario(){
@@ -321,6 +330,8 @@ public class GrupoUsuarioMB implements Serializable {
 	
 	public String associarUsuarioCondominioGrupoUsuario(){
 		this.grupoUsuario = (GrupoUsuario) this.listaGruposUsuarios.getRowData();
+		ManagedBeanUtil.getSession(Boolean.FALSE).setAttribute(AtributoSessaoEnum.GRUPO_USUARIO.getAtributo(),this.grupoUsuario);
+		this.usuarioMB.buscarUsuariosAssociadosOuNao();
 		return "associarUsuarioCondominio";		
 	}
 	
@@ -653,14 +664,42 @@ public class GrupoUsuarioMB implements Serializable {
 
 	public void setTabSelecionada(String tabSelecionada) {
 		this.tabSelecionada = tabSelecionada;
+	}	
+
+	public List<SelectItem> getListaSIPadrao() {
+		return listaSIPadrao;
+	}
+	
+	public void setListaSIPadrao(List<SelectItem> listaSIPadrao) {
+		this.listaSIPadrao = listaSIPadrao;
 	}
 
+	public List<SelectItem> getListaSITipoUsuario() {
+		return listaSITipoUsuario;
+	}
+
+	public void setListaSITipoUsuario(List<SelectItem> listaSITipoUsuario) {
+		this.listaSITipoUsuario = listaSITipoUsuario;
+	}
 
 	private void popularSituacao(){
 		this.listaSISituacao = new ArrayList<SelectItem>();
 		this.listaSISituacao.add(new SelectItem(-1, AplicacaoUtil.i18n("grupoUsuario.situacao.todos")));
 		this.listaSISituacao.add(new SelectItem(1, AplicacaoUtil.i18n("grupoUsuario.situacao.1")));
 		this.listaSISituacao.add(new SelectItem(0, AplicacaoUtil.i18n("grupoUsuario.situacao.0")));
+	}
+	
+	private void popularPadrao(){
+		this.listaSIPadrao = new ArrayList<SelectItem>();
+		this.listaSIPadrao.add(new SelectItem(0, AplicacaoUtil.i18n("grupoUsuario.padrao.0")));
+		this.listaSIPadrao.add(new SelectItem(1, AplicacaoUtil.i18n("grupoUsuario.padrao.1")));
+	}
+	
+	private void popularTipoUsuario(){
+		this.listaSITipoUsuario = new ArrayList<SelectItem>();
+		this.listaSITipoUsuario.add(new SelectItem(-1, AplicacaoUtil.i18n("grupoUsuario.tipoUsuario.DefaultLabel")));
+		this.listaSITipoUsuario.add(new SelectItem(1, AplicacaoUtil.i18n("grupoUsuario.tipoUsuario.1")));
+		this.listaSITipoUsuario.add(new SelectItem(2, AplicacaoUtil.i18n("grupoUsuario.tipoUsuario.2")));
 	}
 
 }
