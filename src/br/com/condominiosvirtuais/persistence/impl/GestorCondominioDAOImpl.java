@@ -15,10 +15,14 @@ import org.apache.log4j.Logger;
 import br.com.condominiosvirtuais.entity.Bloco;
 import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.GestorCondominio;
+import br.com.condominiosvirtuais.entity.GrupoUsuario;
 import br.com.condominiosvirtuais.entity.Usuario;
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioPadraoEnum;
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioSituacaoEnum;
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioTipoUsuarioEnum;
 import br.com.condominiosvirtuais.enumeration.TipoGestorCondominioEnum;
-import br.com.condominiosvirtuais.enumeration.TipoGrupoUsuarioEnum;
 import br.com.condominiosvirtuais.persistence.GestorCondominioDAO;
+import br.com.condominiosvirtuais.service.GrupoUsuarioService;
 import br.com.condominiosvirtuais.util.SQLUtil;
 
 public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializable{
@@ -41,6 +45,9 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 	
 	@Inject
 	private UsuarioDAOImpl usuarioDAO = null;	
+	
+	@Inject
+	private GrupoUsuarioService grupoUsuarioService = null;
 	
 	
 	public List<GestorCondominio> buscarListaGestoresCondominioPorCondominio(Condominio condominio) throws SQLException, Exception{		
@@ -119,15 +126,92 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 		return listaGestorCondominio;
 	}
 	
+	private void removeSindicoProfissionalEAdicionaCondomino(Integer idCondominio, Usuario usuario) throws SQLException, Exception{
+		List<GrupoUsuario> listaGrupoUsuarioRemover = new ArrayList<>();
+		List<GrupoUsuario> listaGrupoUsuario = new ArrayList<GrupoUsuario>();
+		// Recupera os grupos que são do tipo usuário síndico profissional (para remover) e os grupos do tipo condômino (esses serão removidos, 
+		// pois serão adicionados posteriormente - Para garantir que não duplique)
+		for (GrupoUsuario grupoUsuario : usuario.getListaGrupoUsuario()) {
+			if (grupoUsuario.getTipoUsuario().intValue() == GrupoUsuarioTipoUsuarioEnum.SINDICO_PROFISSIONAL.getTipoUsuario().intValue()
+					|| grupoUsuario.getTipoUsuario().intValue() == GrupoUsuarioTipoUsuarioEnum.CONDOMINO.getTipoUsuario().intValue()){
+				listaGrupoUsuarioRemover.add(grupoUsuario);
+			}
+		}
+		usuario.getListaGrupoUsuario().removeAll(listaGrupoUsuarioRemover);
+		// Verifica se tem grupos que são ativos, padrão de um condômino 
+		listaGrupoUsuario.addAll(this.grupoUsuarioService.buscarPorIdCondominioEPadraoETipoUsuarioESituacao(idCondominio,
+				GrupoUsuarioPadraoEnum.SIM.getPadrao(), GrupoUsuarioTipoUsuarioEnum.CONDOMINO.getTipoUsuario(),GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));
+		if(listaGrupoUsuario.isEmpty()){
+			listaGrupoUsuario.add(this.grupoUsuarioService.buscarPorPadraoETipoUsuarioESituacao(GrupoUsuarioPadraoEnum.SIM.getPadrao(), GrupoUsuarioTipoUsuarioEnum.CONDOMINO.getTipoUsuario(),
+					GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));			
+		}
+		usuario.getListaGrupoUsuario().addAll(listaGrupoUsuario);		
+	}
+	
+	private void removeSindicoEAdicionaCondomino(Integer idCondominio, Usuario usuario) throws SQLException, Exception{
+		List<GrupoUsuario> listaGrupoUsuarioRemover = new ArrayList<>();
+		List<GrupoUsuario> listaGrupoUsuario = new ArrayList<GrupoUsuario>();
+		// Recupera os grupos que são do tipo usuário síndico (para remover) e os grupos do tipo condômino (esses serão removidos, 
+		// pois serão adicionados posteriormente - Para garantir que não duplique)
+		for (GrupoUsuario grupoUsuario : usuario.getListaGrupoUsuario()) {
+			if (grupoUsuario.getTipoUsuario().intValue() == GrupoUsuarioTipoUsuarioEnum.SINDICO.getTipoUsuario().intValue()
+					|| grupoUsuario.getTipoUsuario().intValue() == GrupoUsuarioTipoUsuarioEnum.CONDOMINO.getTipoUsuario().intValue()){
+				listaGrupoUsuarioRemover.add(grupoUsuario);
+			}
+		}
+		usuario.getListaGrupoUsuario().removeAll(listaGrupoUsuarioRemover);
+		// Verifica se tem grupos que são ativos, padrão de um condômino 
+		listaGrupoUsuario.addAll(this.grupoUsuarioService.buscarPorIdCondominioEPadraoETipoUsuarioESituacao(idCondominio,
+				GrupoUsuarioPadraoEnum.SIM.getPadrao(), GrupoUsuarioTipoUsuarioEnum.CONDOMINO.getTipoUsuario(),GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));
+		if(listaGrupoUsuario.isEmpty()){
+			listaGrupoUsuario.add(this.grupoUsuarioService.buscarPorPadraoETipoUsuarioESituacao(GrupoUsuarioPadraoEnum.SIM.getPadrao(), GrupoUsuarioTipoUsuarioEnum.CONDOMINO.getTipoUsuario(),
+					GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));			
+		}
+		usuario.getListaGrupoUsuario().addAll(listaGrupoUsuario);		
+	}
+	
+	private void removeCondominoEAdicionaSindico(Integer idCondominio, Usuario usuario) throws SQLException, Exception{
+		List<GrupoUsuario> listaGrupoUsuarioRemover = new ArrayList<>();
+		List<GrupoUsuario> listaGrupoUsuario = new ArrayList<GrupoUsuario>();
+		// Recupera os grupos que são do tipo usuário síndico (para remover) e os grupos do tipo condômino (esses serão removidos, 
+		// pois serão adicionados posteriormente - Para garantir que não duplique)
+		for (GrupoUsuario grupoUsuario : usuario.getListaGrupoUsuario()) {
+			if (grupoUsuario.getTipoUsuario().intValue() == GrupoUsuarioTipoUsuarioEnum.SINDICO.getTipoUsuario().intValue()
+					|| grupoUsuario.getTipoUsuario().intValue() == GrupoUsuarioTipoUsuarioEnum.CONDOMINO.getTipoUsuario().intValue()){
+				listaGrupoUsuarioRemover.add(grupoUsuario);
+			}
+		}
+		usuario.getListaGrupoUsuario().removeAll(listaGrupoUsuarioRemover);
+		// Verifica se tem grupos que são ativos, padrão de um condômino 
+		listaGrupoUsuario.addAll(this.grupoUsuarioService.buscarPorIdCondominioEPadraoETipoUsuarioESituacao(idCondominio,
+				GrupoUsuarioPadraoEnum.SIM.getPadrao(), GrupoUsuarioTipoUsuarioEnum.SINDICO.getTipoUsuario(),GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));
+		if(listaGrupoUsuario.isEmpty()){
+			listaGrupoUsuario.add(this.grupoUsuarioService.buscarPorPadraoETipoUsuarioESituacao(GrupoUsuarioPadraoEnum.SIM.getPadrao(), GrupoUsuarioTipoUsuarioEnum.SINDICO.getTipoUsuario(),
+					GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));			
+		}
+		usuario.getListaGrupoUsuario().addAll(listaGrupoUsuario);
+		
+	}
+	
+	private Boolean existeTipoUsuarioGrupoUsuario(Usuario usuario, Integer tipoUsuario) throws SQLException, Exception{
+		for (GrupoUsuario grupoUsuario : usuario.getListaGrupoUsuario()) {
+			if (grupoUsuario.getTipoUsuario().intValue() == tipoUsuario.intValue()){
+				return Boolean.TRUE;
+			}
+		}		
+		return Boolean.FALSE;		
+	}
+	
 	public void salvarGestorCondominio(GestorCondominio gestorCondominio, Connection con) throws SQLException, Exception{
-		 		
 		Usuario usuario = this.usuarioDAO.buscarPorId(gestorCondominio.getIdUsuario());
-		// Código que atualiza o grupo de usuários do usuário que virou um gestor do condomínio. Ou ele é condômino ou síndico. O Síndico Profissional não modifica o seu grupo
+		// Código que atualiza o grupo de usuários do usuário que virou um gestor do condomínio. Ou ele é condômino ou síndico. 
+		//O Síndico Profissional não modifica o seu grupo
 		if(gestorCondominio.getTipoCondomino() != TipoGestorCondominioEnum.SINDICO_GERAL.getGestorCondominio()){
-			usuario.setIdGrupoUsuario(TipoGrupoUsuarioEnum.CONDOMINO.getGrupoUsuario());
+			this.removeSindicoEAdicionaCondomino(gestorCondominio.getIdCondominio(), usuario);
+			// Remove o grupo que é do tipo síndico e add um grupo que seja condômino (caso não tenha)
 		}else if (gestorCondominio.getTipoCondomino() == TipoGestorCondominioEnum.SINDICO_GERAL.getGestorCondominio() && 
-				usuario.getIdGrupoUsuario() != TipoGrupoUsuarioEnum.SINDICO_PROFISSIONAL.getGrupoUsuario()){
-			usuario.setIdGrupoUsuario(TipoGrupoUsuarioEnum.SINDICO.getGrupoUsuario());
+				!this.existeTipoUsuarioGrupoUsuario(usuario, GrupoUsuarioTipoUsuarioEnum.SINDICO_PROFISSIONAL.getTipoUsuario())){
+			this.removeCondominoEAdicionaSindico(gestorCondominio.getIdCondominio(), usuario);
 		}
 		this.usuarioDAO.atualizarUsuario(usuario, con);
 		StringBuffer query = new StringBuffer();
@@ -230,8 +314,9 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 		condominio.setId(gestorCondominio.getIdCondominio());
 		Usuario sindicoGeral = this.usuarioDAO.buscarSindicoGeralPorCondominio(condominio, con);
 		// Modifica o grupo do usuário para condômino somente se esse não é um Síndico Profissional. Caso seja ele somente deve deixar de ser gestor do condomínio
-		if(sindicoGeral.getIdGrupoUsuario() != TipoGrupoUsuarioEnum.SINDICO_PROFISSIONAL.getGrupoUsuario()){
-			sindicoGeral.setIdGrupoUsuario(TipoGrupoUsuarioEnum.CONDOMINO.getGrupoUsuario());
+		if(!this.existeTipoUsuarioGrupoUsuario(sindicoGeral, GrupoUsuarioTipoUsuarioEnum.SINDICO_PROFISSIONAL.getTipoUsuario())){
+			// Remove o grupo que é do tipo síndico profissional e add um grupo que seja condômino (caso não tenha)
+			this.removeSindicoProfissionalEAdicionaCondomino(gestorCondominio.getIdCondominio(), sindicoGeral);
 			this.usuarioDAO.atualizarUsuario(sindicoGeral,con);
 		}
 		StringBuffer query = new StringBuffer();
@@ -273,8 +358,8 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 		for (GestorCondominio gestorCondominio : listaGestores) {
 			usuario = this.usuarioDAO.buscarPorId(gestorCondominio.getIdUsuario());
 			// Caso o usuário seja um síndico profissional ele não muda o grupo, apenas saí da gestão do condomínio.
-			if(usuario.getIdGrupoUsuario() != TipoGrupoUsuarioEnum.SINDICO_PROFISSIONAL.getGrupoUsuario()){
-				usuario.setIdGrupoUsuario(TipoGrupoUsuarioEnum.CONDOMINO.getGrupoUsuario());
+			if(!this.existeTipoUsuarioGrupoUsuario(usuario, GrupoUsuarioTipoUsuarioEnum.SINDICO_PROFISSIONAL.getTipoUsuario())){
+				this.removeSindicoProfissionalEAdicionaCondomino(gestorCondominio.getIdCondominio(), usuario);
 			}
 			this.usuarioDAO.atualizarUsuario(usuario, con);		
 		}

@@ -54,6 +54,32 @@ public class GrupoUsuarioServiceImpl implements GrupoUsuarioService, Serializabl
 	@Override
 	public void atualizar(GrupoUsuario grupoUsuario) throws SQLException, Exception {
 		this.grupoUsuarioDAO.atualizar(grupoUsuario);		
-	}	
+	}
+
+	@Override
+	public List<GrupoUsuario> buscarPorIdCondominioEPadraoETipoUsuarioESituacao(Integer idCondominio, Boolean padrao,
+			Integer tipoUsuario, Boolean situacao) throws SQLException, Exception {
+		return this.grupoUsuarioDAO.buscarPorIdCondominioEPadraoETipoUsuarioESituacao(idCondominio, padrao, tipoUsuario, situacao);
+	}
+
+	@Override
+	public GrupoUsuario buscarPorPadraoETipoUsuarioESituacao(Boolean padrao, Integer tipoUsuario, Boolean situacao)
+			throws SQLException, Exception {
+		return this.grupoUsuarioDAO.buscarPorPadraoETipoUsuarioESituacao(padrao, tipoUsuario, situacao);
+	}
+
+	@Override
+	public List<GrupoUsuario> buscarPorIdEscritorioDeContabilidadeEPadraoETipoUsuarioESituacao(
+			Integer idEscritorioDeContabilidade, Boolean padrao, Integer tipoUsuario, Boolean situacao)
+			throws SQLException, Exception {
+		return this.grupoUsuarioDAO.buscarPorIdEscritorioDeContabilidadeEPadraoETipoUsuarioESituacao(idEscritorioDeContabilidade, padrao, tipoUsuario, situacao);
+	}
+
+// TODO: Código comentado em 27/09/2017. Apagar em 180 dias	
+//	@Override
+//	public List<GrupoUsuario> buscarPorIdUsuarioESituacao(Integer idUsuario, Boolean situacao)
+//			throws SQLException, Exception {
+//		return this.grupoUsuarioDAO.buscarPorIdUsuarioESituacao(idUsuario, situacao);
+//	}	
 
 }

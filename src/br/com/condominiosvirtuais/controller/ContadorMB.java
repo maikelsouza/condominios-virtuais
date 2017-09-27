@@ -16,13 +16,17 @@ import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Contador;
 import br.com.condominiosvirtuais.entity.EscritorioContabilidade;
+import br.com.condominiosvirtuais.entity.GrupoUsuario;
 import br.com.condominiosvirtuais.enumeration.EscritorioContabilidadeSituacaoEnum;
-import br.com.condominiosvirtuais.enumeration.TipoGrupoUsuarioEnum;
-import br.com.condominiosvirtuais.enumeration.UsuarioSituacaoEnum;
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioPadraoEnum;
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioSituacaoEnum;
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioTipoUsuarioEnum;
 import br.com.condominiosvirtuais.enumeration.UsuarioSexoEnum;
+import br.com.condominiosvirtuais.enumeration.UsuarioSituacaoEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.service.ContadorService;
 import br.com.condominiosvirtuais.service.EscritorioContabilidadeService;
+import br.com.condominiosvirtuais.service.GrupoUsuarioService;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
 import br.com.condominiosvirtuais.util.ManagedBeanUtil;
 
@@ -48,6 +52,9 @@ public class ContadorMB implements Serializable {
 	private List<SelectItem> listaSISituacao;
 	
 	private List<SelectItem> listaSIEscritorioContabilidade;
+	
+	@Inject
+	private GrupoUsuarioService grupoUsuarioService; 
 	
 	@Inject
 	private EscritorioContabilidadeService escritorioContabilidadeService;
@@ -86,10 +93,10 @@ public class ContadorMB implements Serializable {
 	}
 	
 	public String salvar(){
-		this.contador.setSituacao(UsuarioSituacaoEnum.ATIVO.getSituacao());
-		this.contador.setIdGrupoUsuario(TipoGrupoUsuarioEnum.ESCRITORIO_CONTABILIDADE.getGrupoUsuario());
-		this.contador.getEmail().setPrincipal(Boolean.TRUE);		
 		try {
+			this.contador.setSituacao(UsuarioSituacaoEnum.ATIVO.getSituacao());
+			this.popularGrupoUsuarioEscritorioContabilidade();
+			this.contador.getEmail().setPrincipal(Boolean.TRUE);		
 			if(!this.contador.getSenha().equals(this.contador.getConfirmarSenha())){
 				ManagedBeanUtil.setMensagemErro("msg.contador.senhasNaoCorrespondem");
 				return null;
@@ -201,6 +208,17 @@ public class ContadorMB implements Serializable {
 		this.listaSISituacao = new ArrayList<SelectItem>();
 		this.listaSISituacao.add(new SelectItem(UsuarioSituacaoEnum.ATIVO.getSituacao(), AplicacaoUtil.i18n("contador.situacao.1")));
 		this.listaSISituacao.add(new SelectItem(UsuarioSituacaoEnum.INATIVO.getSituacao(), AplicacaoUtil.i18n("contador.situacao.0")));
+	}
+	
+	private void popularGrupoUsuarioEscritorioContabilidade() throws SQLException, Exception{
+		List<GrupoUsuario> listaGrupoUsuario = new ArrayList<GrupoUsuario>();
+		listaGrupoUsuario.addAll(this.grupoUsuarioService.buscarPorIdEscritorioDeContabilidadeEPadraoETipoUsuarioESituacao(this.contador.getIdEscritorioContabilidade(),
+				GrupoUsuarioPadraoEnum.SIM.getPadrao(), GrupoUsuarioTipoUsuarioEnum.CONTADOR.getTipoUsuario(),GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));
+		if(listaGrupoUsuario.isEmpty()){
+			listaGrupoUsuario.add(this.grupoUsuarioService.buscarPorPadraoETipoUsuarioESituacao(GrupoUsuarioPadraoEnum.SIM.getPadrao(), GrupoUsuarioTipoUsuarioEnum.CONDOMINO.getTipoUsuario(),GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));			
+		}
+		this.contador.setListaGrupoUsuario(listaGrupoUsuario);
+			
 	}
 	
 	public Contador getContador() {

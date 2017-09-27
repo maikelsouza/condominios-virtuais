@@ -29,12 +29,13 @@ import br.com.condominiosvirtuais.entity.Condomino;
 import br.com.condominiosvirtuais.entity.Contador;
 import br.com.condominiosvirtuais.entity.Funcionario;
 import br.com.condominiosvirtuais.entity.Garagem;
+import br.com.condominiosvirtuais.entity.GrupoUsuario;
 import br.com.condominiosvirtuais.entity.SindicoProfissional;
 import br.com.condominiosvirtuais.entity.Unidade;
 import br.com.condominiosvirtuais.entity.Usuario;
 import br.com.condominiosvirtuais.entity.Veiculo;
 import br.com.condominiosvirtuais.enumeration.GaragemEnum;
-import br.com.condominiosvirtuais.enumeration.TipoGrupoUsuarioEnum;
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioTipoUsuarioEnum;
 import br.com.condominiosvirtuais.enumeration.UsuarioSituacaoEnum;
 import br.com.condominiosvirtuais.enumeration.VeiculoTipoEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
@@ -212,12 +213,17 @@ public class MeuPainelMB implements  Serializable{
 		this.popularMeuPainel();
 	}
 	
+	
+	
 	public void popularMeuPainel(){	
 		try{			
 			Usuario usuario = AplicacaoUtil.getUsuarioAutenticado();
 			Arquivo arquivo = null;
-			if(usuario.getIdGrupoUsuario().equals(TipoGrupoUsuarioEnum.CONDOMINO.getGrupoUsuario()) || 
-					usuario.getIdGrupoUsuario().equals(TipoGrupoUsuarioEnum.SINDICO.getGrupoUsuario())){
+			if(this.validaTiposUsuariosGruposUsuarios(usuario.getListaGrupoUsuario(), GrupoUsuarioTipoUsuarioEnum.CONDOMINO.getTipoUsuario(),
+					GrupoUsuarioTipoUsuarioEnum.SINDICO.getTipoUsuario())){
+// TODO: Código comentado em 21/08/2017. Apagar em 180 dias				
+//			if(usuario.getIdGrupoUsuario().equals(TipoGrupoUsuarioEnum.CONDOMINO.getGrupoUsuario()) || 
+//					usuario.getIdGrupoUsuario().equals(TipoGrupoUsuarioEnum.SINDICO.getGrupoUsuario())){
 				this.condomino = this.condominoService.buscarPorId(usuario.getId());			
 				this.telefoneCelularCondomino = String.valueOf(this.condomino.getTelefoneCelular() == null ? "" : this.condomino.getTelefoneCelular());
 				this.telefoneComercialCondomino = String.valueOf(this.condomino.getTelefoneComercial()  == null ? "" : this.condomino.getTelefoneComercial());
@@ -241,7 +247,9 @@ public class MeuPainelMB implements  Serializable{
 				this.popularSIGaragem();
 				this.popularDMVeiculo();
 			}
-			if(usuario.getIdGrupoUsuario().equals(TipoGrupoUsuarioEnum.FUNCIONARIO.getGrupoUsuario())){
+			if(this.validaTiposUsuariosGruposUsuarios(usuario.getListaGrupoUsuario(), GrupoUsuarioTipoUsuarioEnum.FUNCIONARIO.getTipoUsuario())){
+// TODO: Código comentado em 21/08/2017. Apagar em 180 dias				
+//			if(usuario.getIdGrupoUsuario().equals(TipoGrupoUsuarioEnum.FUNCIONARIO.getGrupoUsuario())){
 				this.funcionario = this.funcionarioService.buscarPorId(usuario.getId());
 				this.setTabSelecionada(ID_TAB_DADOS_PESSOAIS_FUNCIONARIO);
 				this.telefoneCelularFuncionario = String.valueOf(this.funcionario.getTelefoneCelular());
@@ -257,7 +265,9 @@ public class MeuPainelMB implements  Serializable{
 				ManagedBeanUtil.popularSIDias(this.listaSIDias);
 				ManagedBeanUtil.popularSIMeses(this.listaSIMeses);
 				ManagedBeanUtil.popularSIAnos(this.listaSIAnos);
-			}if(usuario.getIdGrupoUsuario().equals(TipoGrupoUsuarioEnum.SINDICO_PROFISSIONAL.getGrupoUsuario())){
+			}if(this.validaTiposUsuariosGruposUsuarios(usuario.getListaGrupoUsuario(), GrupoUsuarioTipoUsuarioEnum.SINDICO_PROFISSIONAL.getTipoUsuario())){
+// TODO: Código comentado em 21/08/2017. Apagar em 180 dias			
+//			}if(usuario.getIdGrupoUsuario().equals(TipoGrupoUsuarioEnum.SINDICO_PROFISSIONAL.getGrupoUsuario())){
 				this.sindicoProfissional = this.sindicoProfissionalService.buscarPorId(usuario.getId());
 				this.setTabSelecionada(ID_TAB_DADOS_PESSOAIS_SINDICO_PROFISSIONAL);
 				this.telefoneComercialSindicoProfissional = String.valueOf(this.sindicoProfissional.getTelefoneComercial() == null ? "" : this.sindicoProfissional.getTelefoneComercial());
@@ -267,8 +277,10 @@ public class MeuPainelMB implements  Serializable{
 				ManagedBeanUtil.popularSIDias(this.listaSIDias);
 				ManagedBeanUtil.popularSIMeses(this.listaSIMeses);
 				ManagedBeanUtil.popularSIAnos(this.listaSIAnos);
+// TODO: Código comentado em 21/08/2017. Apagar em 180 dias
 				// O Usuário contador deve fazer parte do grupo escritorio de contabilidade. Num futuro deverá ser criados subgruos para os contadores.
-			}if(usuario.getIdGrupoUsuario().equals(TipoGrupoUsuarioEnum.ESCRITORIO_CONTABILIDADE.getGrupoUsuario())){	
+			}if(this.validaTiposUsuariosGruposUsuarios(usuario.getListaGrupoUsuario(), GrupoUsuarioTipoUsuarioEnum.ESCRITORIO_CONTABILIDADE.getTipoUsuario())){			
+			//}if(usuario.getIdGrupoUsuario().equals(TipoGrupoUsuarioEnum.ESCRITORIO_CONTABILIDADE.getGrupoUsuario())){	
 				this.contador = this.contadorService.buscarPorId(usuario.getId());
 				this.setTabSelecionada(ID_TAB_DADOS_PESSOAIS_CONTADOR);
 				ManagedBeanUtil.popularSIDias(this.listaSIDias);
@@ -520,7 +532,7 @@ public class MeuPainelMB implements  Serializable{
 				this.novoCondomino.setTelefoneCelular(Long.parseLong(this.telefoneCelularNovoCondomino));
 				this.novoCondomino.setTelefoneComercial(Long.parseLong(this.telefoneComercialNovoCondomino));
 				this.novoCondomino.setTelefoneResidencial(Long.parseLong(this.telefoneResidencialNovoCondomino));				
-				this.novoCondomino.setIdGrupoUsuario(TipoGrupoUsuarioEnum.CONDOMINO.getGrupoUsuario());
+				//this.novoCondomino.setIdGrupoUsuario(TipoGrupoUsuarioEnum.CONDOMINO.getGrupoUsuario());
 				this.novoCondomino.getEmail().setPrincipal(Boolean.TRUE);				
 				this.novoCondomino.setSituacao(UsuarioSituacaoEnum.ATIVO.getSituacao());
 				Unidade unidade = this.unidadeService.buscarPorId(this.novoCondomino.getIdUnidade());
@@ -1219,8 +1231,8 @@ public class MeuPainelMB implements  Serializable{
 	public void carregarGaragens(){
 		try {
 			Usuario usuario = AplicacaoUtil.getUsuarioAutenticado();
-			if(usuario.getIdGrupoUsuario().equals(TipoGrupoUsuarioEnum.CONDOMINO.getGrupoUsuario()) || 
-					usuario.getIdGrupoUsuario().equals(TipoGrupoUsuarioEnum.SINDICO.getGrupoUsuario())){
+			if(this.validaTiposUsuariosGruposUsuarios(usuario.getListaGrupoUsuario(), GrupoUsuarioTipoUsuarioEnum.CONDOMINO.getTipoUsuario(),
+					GrupoUsuarioTipoUsuarioEnum.SINDICO.getTipoUsuario())){
 				this.popularDMGaragem();
 				this.popularSIGaragem();
 			}
@@ -1742,8 +1754,18 @@ public class MeuPainelMB implements  Serializable{
 			ManagedBeanUtil.setMensagemErro("msg.meuPainel.alterarSenha.confirmarSenha");
 			quantidadeErros++;
 		}
-		return quantidadeErros == 0 ? Boolean.TRUE : Boolean.FALSE;
+		return quantidadeErros == 0 ? Boolean.TRUE : Boolean.FALSE;	
+	}
 	
+	private Boolean validaTiposUsuariosGruposUsuarios(List<GrupoUsuario> listaGrupoUsuarios, Integer... tiposUsuariosGruposUsuarios){
+		for (GrupoUsuario grupoUsuario : listaGrupoUsuarios) {
+			for (Integer tipoUsuarioGrupoUsuario : tiposUsuariosGruposUsuarios) {
+				if(grupoUsuario.getTipoUsuario().equals(tipoUsuarioGrupoUsuario)){
+					return Boolean.TRUE;
+				}
+			}
+		}
+		return Boolean.FALSE;		
 	}
 	
 

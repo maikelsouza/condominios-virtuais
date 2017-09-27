@@ -43,8 +43,9 @@ public class Usuario implements Serializable{
 	
 	private Long cpf;
  	
-// TODO: Rever essa modelagem idGrupoUsuario. Porque foi criado um idGrupoUsuario e um grupoUsuario	
-	private Integer idGrupoUsuario;
+// TODO: Rever essa modelagem idGrupoUsuario. Porque foi criado um idGrupoUsuario e um grupoUsuario
+// TODO: Código comentado em 20/09/2017. Apagar em 180 dias	
+//	private Integer idGrupoUsuario;
 	
 // TODO: Rever essa modelagem listaEmail e email. Considerar tela, e-mails possível e e-mail principal que será o login.	
 	private List<EmailUsuario> listaEmail;
@@ -161,13 +162,15 @@ public class Usuario implements Serializable{
 		this.dataNascimentoAno = dataNascimentoAno;
 	}	
 
-	public Integer getIdGrupoUsuario() {
-		return idGrupoUsuario;
-	}
+//TODO: Código comentado em 20/09/2017. Apagar em 180 dias	
+//	public Integer getIdGrupoUsuario() {
+//		return idGrupoUsuario;
+//	}
 
-	public void setIdGrupoUsuario(Integer idGrupoUsuario) {
-		this.idGrupoUsuario = idGrupoUsuario;
-	}
+//	TODO: Código comentado em 20/09/2017. Apagar em 180 dias
+//	public void setIdGrupoUsuario(Integer idGrupoUsuario) {
+//		this.idGrupoUsuario = idGrupoUsuario;
+//	}
 
 	public EmailUsuario getEmail() {
 		return email;

@@ -1,8 +1,10 @@
 package br.com.condominiosvirtuais.vo;
 
 import java.util.Calendar;
+import java.util.List;
 
 import br.com.condominiosvirtuais.entity.Arquivo;
+import br.com.condominiosvirtuais.entity.GrupoUsuario;
 
 public class CondominoVO {
 	
@@ -40,7 +42,10 @@ public class CondominoVO {
 	
 	private Integer situacaoCondomino;
 	
-	private Integer idGrupoUsuario;
+	// TODO: Código comentado em 25/09/2017. Apagar em 180 dias
+	// private Integer idGrupoUsuario;
+	
+	private List<GrupoUsuario> listaGrupoUsuario;
 	
 	private Long dataNascimentoCondomino;
 	
@@ -165,12 +170,21 @@ public class CondominoVO {
 		this.situacaoCondomino = situacaoCondomino;
 	}	
 
-	public Integer getIdGrupoUsuario() {
-		return idGrupoUsuario;
+	// TODO: Código comentado em 25/09/2017. Apagar em 180 dias	
+//	public Integer getIdGrupoUsuario() {
+//		return idGrupoUsuario;
+//	}
+//
+//	public void setIdGrupoUsuario(Integer idGrupoUsuario) {
+//		this.idGrupoUsuario = idGrupoUsuario;
+//	}
+
+	public List<GrupoUsuario> getListaGrupoUsuario() {
+		return listaGrupoUsuario;
 	}
 
-	public void setIdGrupoUsuario(Integer idGrupoUsuario) {
-		this.idGrupoUsuario = idGrupoUsuario;
+	public void setListaGrupoUsuario(List<GrupoUsuario> listaGrupoUsuario) {
+		this.listaGrupoUsuario = listaGrupoUsuario;
 	}
 
 	public void setSexoCondomino(Integer sexoCondomino) {
@@ -304,8 +318,9 @@ public class CondominoVO {
 				+ ((idCondominio == null) ? 0 : idCondominio.hashCode());
 		result = prime * result
 				+ ((idCondomino == null) ? 0 : idCondomino.hashCode());
-		result = prime * result
-				+ ((idGrupoUsuario == null) ? 0 : idGrupoUsuario.hashCode());
+// TODO: Código comentado em 25/09/2017. Apagar em 180 dias		
+//		result = prime * result
+//				+ ((idGrupoUsuario == null) ? 0 : idGrupoUsuario.hashCode());
 		result = prime * result
 				+ ((idUnidade == null) ? 0 : idUnidade.hashCode());
 		result = prime * result
@@ -413,11 +428,12 @@ public class CondominoVO {
 				return false;
 		} else if (!idCondomino.equals(other.idCondomino))
 			return false;
-		if (idGrupoUsuario == null) {
-			if (other.idGrupoUsuario != null)
-				return false;
-		} else if (!idGrupoUsuario.equals(other.idGrupoUsuario))
-			return false;
+// TODO: Código comentado em 25/09/2017. Apagar em 180 dias		
+//		if (idGrupoUsuario == null) {
+//			if (other.idGrupoUsuario != null)
+//				return false;
+//		} else if (!idGrupoUsuario.equals(other.idGrupoUsuario))
+//			return false;
 		if (idUnidade == null) {
 			if (other.idUnidade != null)
 				return false;

@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioPadraoEnum;
 import br.com.condominiosvirtuais.enumeration.GrupoUsuarioSituacaoEnum;
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioTipoUsuarioEnum;
 import br.com.condominiosvirtuais.enumeration.TipoGrupoUsuarioEnum;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
 import br.com.condominiosvirtuais.vo.TelaVO;
@@ -132,6 +134,18 @@ public class GrupoUsuario implements Serializable {
 	public String getSituacaoI18n() {
 		return this.situacao == GrupoUsuarioSituacaoEnum.ATIVO.getSituacao() ? AplicacaoUtil.i18n("grupoUsuario.situacao.1") : AplicacaoUtil.i18n("grupoUsuario.situacao.0");
 	}
+	
+	public String getPadraoI18n() {
+		return this.padrao == GrupoUsuarioPadraoEnum.SIM.getPadrao() ? AplicacaoUtil.i18n("grupoUsuario.padrao.1") : AplicacaoUtil.i18n("grupoUsuario.padrao.0");
+	}
+	
+	public String getTipoUsuarioI18n() {
+		if(this.tipoUsuario == null){
+			return "";	
+		}else{
+			return this.tipoUsuario == GrupoUsuarioTipoUsuarioEnum.CONDOMINO.getTipoUsuario() ? AplicacaoUtil.i18n("grupoUsuario.tipoUsuario.1") : AplicacaoUtil.i18n("grupoUsuario.tipoUsuario.2");			
+		}
+	}
 
 	public void setSituacao(Boolean situacao) {
 		this.situacao = situacao;
@@ -195,9 +209,10 @@ public class GrupoUsuario implements Serializable {
 
 	public Boolean existeTela(String caminhoPagina){
 		// Todos os usuários que conseguiram se autenticar tem acesso a tela principal
-		if (caminhoPagina.equals("/pages/formPrincipal.xhtml")){
+		if (caminhoPagina.equals("/pages/formPrincipal.xhtml") || caminhoPagina.equals("/security/formLogin.xhtml")){
 			return Boolean.TRUE;
 		}
+		
 		String pagina = caminhoPagina.substring(7, caminhoPagina.length());
 		for (TelaVO telaVO : listaTelaAcesso) {
 			if(telaVO.getNomeArquivoTela().equals(pagina)){

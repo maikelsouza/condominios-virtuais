@@ -85,7 +85,6 @@ public class GrupoUsuarioMB implements Serializable {
 	private List<SelectItem> listaSIPadrao;
 	
 	private List<SelectItem> listaSITipoUsuario;
-	
 
 	
 	public void iniciarTelaVO (){
@@ -99,6 +98,7 @@ public class GrupoUsuarioMB implements Serializable {
 		this.condominio = new Condominio();
 		this.listaSICondominios = this.condominioMB.get().buscarListaCondominiosAtivos();
 		this.checadoTodos = Boolean.FALSE;
+		this.situacao = -1;
 		this.popularSituacao();
 		this.popularPadrao();
 		this.popularTipoUsuario();
@@ -130,6 +130,8 @@ public class GrupoUsuarioMB implements Serializable {
 	public String cadastroGrupoUsuario(){
 		try {
 			this.populaTelaVO();
+			this.grupoUsuario = new GrupoUsuario();
+			this.grupoUsuario.setPadrao(Boolean.FALSE);
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
@@ -139,6 +141,13 @@ public class GrupoUsuarioMB implements Serializable {
 		}
 		return "cadastrar";
 
+	}
+	
+	public void habilitarTipoUsuario(){
+		if(this.grupoUsuario.getPadrao() == Boolean.FALSE){
+			this.grupoUsuario.setTipoUsuario(null);
+		}
+		
 	}
 	
 	public String atualizarGrupoUsuario(){
@@ -181,6 +190,7 @@ public class GrupoUsuarioMB implements Serializable {
 			}
 			this.grupoUsuario.setListaTelaAcesso(listaTelaVO);
 			this.grupoUsuario.setSituacao(this.situacao == 1 ? Boolean.TRUE : Boolean.FALSE);
+			this.grupoUsuario.setTipoUsuario(this.grupoUsuario.getPadrao() ? this.grupoUsuario.getTipoUsuario() : null );
 			this.grupoUsuarioService.atualizar(this.grupoUsuario);
 			this.pesquisaGrupoUsuario();
 			ManagedBeanUtil.setMensagemInfo("msg.grupoUsuario.atualizadoSucesso");
@@ -680,7 +690,7 @@ public class GrupoUsuarioMB implements Serializable {
 
 	public void setListaSITipoUsuario(List<SelectItem> listaSITipoUsuario) {
 		this.listaSITipoUsuario = listaSITipoUsuario;
-	}
+	}	
 
 	private void popularSituacao(){
 		this.listaSISituacao = new ArrayList<SelectItem>();
@@ -691,13 +701,12 @@ public class GrupoUsuarioMB implements Serializable {
 	
 	private void popularPadrao(){
 		this.listaSIPadrao = new ArrayList<SelectItem>();
-		this.listaSIPadrao.add(new SelectItem(0, AplicacaoUtil.i18n("grupoUsuario.padrao.0")));
-		this.listaSIPadrao.add(new SelectItem(1, AplicacaoUtil.i18n("grupoUsuario.padrao.1")));
+		this.listaSIPadrao.add(new SelectItem(Boolean.FALSE, AplicacaoUtil.i18n("grupoUsuario.padrao.0")));
+		this.listaSIPadrao.add(new SelectItem(Boolean.TRUE, AplicacaoUtil.i18n("grupoUsuario.padrao.1")));
 	}
 	
 	private void popularTipoUsuario(){
 		this.listaSITipoUsuario = new ArrayList<SelectItem>();
-		this.listaSITipoUsuario.add(new SelectItem(-1, AplicacaoUtil.i18n("grupoUsuario.tipoUsuario.DefaultLabel")));
 		this.listaSITipoUsuario.add(new SelectItem(1, AplicacaoUtil.i18n("grupoUsuario.tipoUsuario.1")));
 		this.listaSITipoUsuario.add(new SelectItem(2, AplicacaoUtil.i18n("grupoUsuario.tipoUsuario.2")));
 	}

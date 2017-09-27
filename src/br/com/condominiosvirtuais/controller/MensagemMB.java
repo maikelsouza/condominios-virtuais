@@ -562,14 +562,16 @@ public class MensagemMB implements Serializable {
 		}else{
 			listaSIBlocos = this.blocoMB.buscarListaBlocosPorCondominio(this.condominioCondomino);
 			listaSIBlocos.add(0,new SelectItem(0, AplicacaoUtil.i18n("todos")));
-			Usuario usuarioLogado = AplicacaoUtil.getUsuarioAutenticado();
-			List<Condominio> listaCondominio = usuarioLogado.getListaCondominio();
-			for (Condominio condominio : listaCondominio) {
-				// FIXME - Regra temporária. Se for do condomínio Residencial Quinta do Horto e não for o síndico, então remove a opção TODOS 
-				if(condominio.getId() == 19 && usuarioLogado.getIdGrupoUsuario() != 4 && usuarioLogado.getIdGrupoUsuario() != 1){
-					listaSIBlocos.remove(0);
-				}
-			}
+// TODO: Código comentado em 25/09/2017. Apagar em 180 dias			
+// FIXME: Colocar essa regra no grupo de usuário do quinta do horto			
+//			Usuario usuarioLogado = AplicacaoUtil.getUsuarioAutenticado();
+//			List<Condominio> listaCondominio = usuarioLogado.getListaCondominio();
+//			for (Condominio condominio : listaCondominio) {
+//				// FIXME - Regra temporária. Se for do condomínio Residencial Quinta do Horto e não for o síndico, então remove a opção TODOS 
+//				if(condominio.getId() == 19 && usuarioLogado.getIdGrupoUsuario() != 4 && usuarioLogado.getIdGrupoUsuario() != 1){
+//					listaSIBlocos.remove(0);
+//				}
+//			}
 			this.popularListaCondominos();
 		}
 		this.setListaSIBlocos(listaSIBlocos);	
@@ -624,14 +626,16 @@ public class MensagemMB implements Serializable {
 						}	
 					}
 				}
-				Usuario usuarioLogado = AplicacaoUtil.getUsuarioAutenticado();
-				List<Condominio> listaCondominio = usuarioLogado.getListaCondominio();
-				for (Condominio condominio : listaCondominio) {
-					// FIXME - Regra temporária. Se for do condomínio Residencial Quinta do Horto e não for o síndico, então remove a opção TODOS 
-					if(condominio.getId() == 19 && usuarioLogado.getIdGrupoUsuario() != 4 && usuarioLogado.getIdGrupoUsuario() != 1){
-						listaSICondominos.remove(0);
-					}
-				}				
+// TODO: Código comentado em 25/09/2017. Apagar em 180 dias			
+// FIXME: Colocar essa regra no grupo de usuário do quinta do horto				
+//				Usuario usuarioLogado = AplicacaoUtil.getUsuarioAutenticado();
+//				List<Condominio> listaCondominio = usuarioLogado.getListaCondominio();
+//				for (Condominio condominio : listaCondominio) {
+//					// FIXME - Regra temporária. Se for do condomínio Residencial Quinta do Horto e não for o síndico, então remove a opção TODOS 
+//					if(condominio.getId() == 19 && usuarioLogado.getIdGrupoUsuario() != 4 && usuarioLogado.getIdGrupoUsuario() != 1){
+//						listaSICondominos.remove(0);
+//					}
+//				}				
 			}
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	

@@ -18,11 +18,17 @@ public class OrdenaGrupoUsuarioMB implements Serializable {
 	private SortOrder descricaoGrupoUsuario = SortOrder.unsorted;
 	
 	private SortOrder situacaoGrupoUsuario = SortOrder.unsorted;
+	
+	private SortOrder padraoGrupoUsuario = SortOrder.unsorted;
+	
+	private SortOrder tipoUsuarioGrupoUsuario = SortOrder.unsorted;	
 		
 		
 	public void ordenarPorNomeGrupoUsuario(){		
 		this.setDescricaoGrupoUsuario(SortOrder.unsorted);
 		this.setSituacaoGrupoUsuario(SortOrder.unsorted);
+		this.setPadraoGrupoUsuario(SortOrder.unsorted);
+		this.setTipoUsuarioGrupoUsuario(SortOrder.unsorted);
 		if (this.nomeGrupoUsuario.equals(SortOrder.ascending)) {
 			 this.setNomeGrupoUsuario(SortOrder.descending);
 		} else {
@@ -33,6 +39,8 @@ public class OrdenaGrupoUsuarioMB implements Serializable {
 	public void ordenarPorDescricaoGrupoUsuario(){		
 		this.setNomeGrupoUsuario(SortOrder.unsorted);
 		this.setSituacaoGrupoUsuario(SortOrder.unsorted);
+		this.setPadraoGrupoUsuario(SortOrder.unsorted);
+		this.setTipoUsuarioGrupoUsuario(SortOrder.unsorted);
 		if (this.descricaoGrupoUsuario.equals(SortOrder.ascending)) {
 			 this.setDescricaoGrupoUsuario(SortOrder.descending);
 		} else {
@@ -43,12 +51,40 @@ public class OrdenaGrupoUsuarioMB implements Serializable {
 	public void ordenarPorSituacaoGrupoUsuario(){
 		this.setNomeGrupoUsuario(SortOrder.unsorted);
 		this.setDescricaoGrupoUsuario(SortOrder.unsorted);
+		this.setPadraoGrupoUsuario(SortOrder.unsorted);
+		this.setTipoUsuarioGrupoUsuario(SortOrder.unsorted);
 		if (this.situacaoGrupoUsuario.equals(SortOrder.ascending)) {
 			 this.setSituacaoGrupoUsuario(SortOrder.descending);
 		} else {
 			 this.setSituacaoGrupoUsuario(SortOrder.ascending);
 		}	
 	}
+	
+	public void ordenarPorPadraoGrupoUsuario(){
+		this.setNomeGrupoUsuario(SortOrder.unsorted);
+		this.setDescricaoGrupoUsuario(SortOrder.unsorted);
+		this.setSituacaoGrupoUsuario(SortOrder.unsorted);
+		this.setTipoUsuarioGrupoUsuario(SortOrder.unsorted);
+		if (this.padraoGrupoUsuario.equals(SortOrder.ascending)) {
+			this.setPadraoGrupoUsuario(SortOrder.descending);
+		} else {
+			this.setPadraoGrupoUsuario(SortOrder.ascending);
+		}	
+	}
+	
+	public void ordenarPorTipoUsuarioGrupoUsuario(){
+		this.setNomeGrupoUsuario(SortOrder.unsorted);
+		this.setDescricaoGrupoUsuario(SortOrder.unsorted);
+		this.setSituacaoGrupoUsuario(SortOrder.unsorted);
+		this.setPadraoGrupoUsuario(SortOrder.unsorted);
+		if (this.tipoUsuarioGrupoUsuario.equals(SortOrder.ascending)) {
+			this.setTipoUsuarioGrupoUsuario(SortOrder.descending);
+		} else {
+			this.setTipoUsuarioGrupoUsuario(SortOrder.ascending);
+		}	
+	}
+	
+	
 
 	public SortOrder getNomeGrupoUsuario() {
 		return nomeGrupoUsuario;
@@ -72,6 +108,22 @@ public class OrdenaGrupoUsuarioMB implements Serializable {
 
 	public void setSituacaoGrupoUsuario(SortOrder situacaoGrupoUsuario) {
 		this.situacaoGrupoUsuario = situacaoGrupoUsuario;
+	}
+
+	public SortOrder getPadraoGrupoUsuario() {
+		return padraoGrupoUsuario;
+	}
+
+	public void setPadraoGrupoUsuario(SortOrder padraoGrupoUsuario) {
+		this.padraoGrupoUsuario = padraoGrupoUsuario;
+	}
+
+	public SortOrder getTipoUsuarioGrupoUsuario() {
+		return tipoUsuarioGrupoUsuario;
+	}
+
+	public void setTipoUsuarioGrupoUsuario(SortOrder tipoUsuarioGrupoUsuario) {
+		this.tipoUsuarioGrupoUsuario = tipoUsuarioGrupoUsuario;
 	}
 		
 

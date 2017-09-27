@@ -63,6 +63,18 @@
 							</f:facet>
 							<h:outputText value="#{grupoUsuario.situacaoI18n}" />
 						</rich:column>						
+						<rich:column sortBy="#{grupoUsuario.padrao}" sortOrder="#{ordenaGrupoUsuarioMB.padraoGrupoUsuario}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['grupoUsuario.padrao']}" render="tableGrupoUsuario" action="#{ordenaGrupoUsuarioMB.ordenarPorPadraoGrupoUsuario}" />
+							</f:facet>
+							<h:outputText value="#{grupoUsuario.padraoI18n}" />
+						</rich:column>						
+						<rich:column sortBy="#{grupoUsuario.tipoUsuario}" sortOrder="#{ordenaGrupoUsuarioMB.tipoUsuarioGrupoUsuario}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['grupoUsuario.tipoUsuario']}" render="tableGrupoUsuario" action="#{ordenaGrupoUsuarioMB.ordenarPorTipoUsuarioGrupoUsuario}" />
+							</f:facet>
+							<h:outputText value="#{grupoUsuario.tipoUsuarioI18n}" />
+						</rich:column>						
 						<rich:column style="width:20%;">
 							<f:facet name="header">
 								<h:outputText value="#{msg.rotuloAcao}" />

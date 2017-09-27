@@ -21,6 +21,7 @@ import br.com.condominiosvirtuais.entity.GrupoUsuario;
 import br.com.condominiosvirtuais.entity.Usuario;
 import br.com.condominiosvirtuais.entity.UsuarioCondominio;
 import br.com.condominiosvirtuais.entity.UsuarioGrupoUsuario;
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioSituacaoEnum;
 import br.com.condominiosvirtuais.enumeration.TipoGestorCondominioEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.persistence.GrupoUsuarioDAO;
@@ -56,7 +57,8 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 	
 	private static final String ULTIMO_LOGOUT = "ULTIMO_LOGOUT";
 	
-	private static final String ID_GRUPO_USUARIO = "ID_GRUPO_USUARIO";
+// TODO: Código comentado em 25/09/2017. Apagar em 180 dias	
+//	private static final String ID_GRUPO_USUARIO = "ID_GRUPO_USUARIO";
 	
 	@Inject
 	private Instance<UsuarioCondominioDAO> usuarioCondominioDAO = null;
@@ -142,11 +144,12 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 		query.append(",");
 		query.append(SITUACAO);
 		query.append(",");
-		query.append(ID_GRUPO_USUARIO);
-		query.append(",");
-		query.append(CPF);
+// TODO: Código comentado em 25/09/2017. Apagar em 180 dias		
+//		query.append(ID_GRUPO_USUARIO);
+//		query.append(",");
+//		query.append(CPF);
 		query.append(") ");
-		query.append("VALUES(?,?,?,?,?,?,?)");
+		query.append("VALUES(?,?,?,?,?,?)");
 		PreparedStatement statement = null;
 		try {			
 			statement = con.prepareStatement(query.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
@@ -155,8 +158,9 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 			SQLUtil.setValorPpreparedStatement(statement, 3,  AplicacaoUtil.gerarHashMD5(usuario.getSenha()), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement, 4, usuario.getDataNascimento(), java.sql.Types.DATE);
 			SQLUtil.setValorPpreparedStatement(statement, 5, usuario.getSituacao(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement, 6, usuario.getIdGrupoUsuario(), java.sql.Types.INTEGER );
-			SQLUtil.setValorPpreparedStatement(statement, 7, usuario.getCpf(), java.sql.Types.BIGINT);
+// TODO: Código comentado em 25/09/2017. Apagar em 180 dias			
+//			SQLUtil.setValorPpreparedStatement(statement, 6, usuario.getIdGrupoUsuario(), java.sql.Types.INTEGER );
+			SQLUtil.setValorPpreparedStatement(statement, 6, usuario.getCpf(), java.sql.Types.BIGINT);
 			statement.executeUpdate();
 			ResultSet rs = statement.getGeneratedKeys();
 			rs.next();
@@ -206,7 +210,8 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 				usuario.setSexo((Integer) SQLUtil.getValorResultSet(resultSet, SEXO, java.sql.Types.INTEGER));
 				usuario.setDataNascimento((Date) SQLUtil.getValorResultSet(resultSet, DATA_NASCIMENTO, java.sql.Types.DATE));
 				usuario.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
-				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
+// TODO: Código comentado em 25/09/2017. Apagar em 180 dias				
+//				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
 				usuario.setSenha(String.valueOf(SQLUtil.getValorResultSet(resultSet, SENHA, java.sql.Types.VARCHAR)));	
 				usuario.setCpf((Long) SQLUtil.getValorResultSet(resultSet, CPF, java.sql.Types.BIGINT));
 				usuario.setEmail(this.emailUsuarioDAO.get().buscarEmailPrincipalPorUsuario(usuario,con));
@@ -254,7 +259,8 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 				usuario.setSexo((Integer) SQLUtil.getValorResultSet(resultSet, SEXO, java.sql.Types.INTEGER));
 				usuario.setDataNascimento((Date) SQLUtil.getValorResultSet(resultSet, DATA_NASCIMENTO, java.sql.Types.DATE));
 				usuario.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
-				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
+// TODO: Código comentado em 25/09/2017. Apagar em 180 dias				
+//				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
 				usuario.setSenha(String.valueOf(SQLUtil.getValorResultSet(resultSet, SENHA, java.sql.Types.VARCHAR)));	
 				usuario.setCpf((Long) SQLUtil.getValorResultSet(resultSet, CPF, java.sql.Types.BIGINT));
 				usuario.setEmail(this.emailUsuarioDAO.get().buscarEmailPrincipalPorUsuario(usuario,con));
@@ -302,7 +308,8 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 				usuario.setSexo((Integer) SQLUtil.getValorResultSet(resultSet, SEXO, java.sql.Types.INTEGER));
 				usuario.setDataNascimento((Date) SQLUtil.getValorResultSet(resultSet, DATA_NASCIMENTO, java.sql.Types.DATE));
 				usuario.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
-				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
+// TODO: Código comentado em 25/09/2017. Apagar em 180 dias				
+//				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
 				usuario.setSenha(String.valueOf(SQLUtil.getValorResultSet(resultSet, SENHA, java.sql.Types.VARCHAR)));
 				usuario.setCpf((Long) SQLUtil.getValorResultSet(resultSet, CPF, java.sql.Types.BIGINT));
 				usuario.setEmail(this.emailUsuarioDAO.get().buscarEmailPrincipalPorUsuario(usuario,con));
@@ -363,7 +370,8 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 				usuario.setSexo((Integer) SQLUtil.getValorResultSet(resultSet, SEXO, java.sql.Types.INTEGER));				
 				usuario.setDataNascimento((Date) SQLUtil.getValorResultSet(resultSet, DATA_NASCIMENTO, java.sql.Types.DATE));
 				usuario.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
-				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
+// TODO: Código comentado em 25/09/2017. Apagar em 180 dias				
+//				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
 				usuario.setCpf((Long) SQLUtil.getValorResultSet(resultSet, CPF, java.sql.Types.BIGINT));
 				usuario.setEmail(this.emailUsuarioDAO.get().buscarEmailPrincipalPorUsuario(usuario));
 				listaUsuarioCondominio = this.usuarioCondominioDAO.get().buscarListaPorUsuario(usuario);
@@ -405,9 +413,10 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 		query.append(DATA_NASCIMENTO); 
 		query.append(" = ?, ");
 		query.append(SITUACAO); 
-		query.append(" = ?, ");		
-		query.append(ID_GRUPO_USUARIO); 
-		query.append(" = ?, ");	
+		query.append(" = ?, ");
+//TODO: Código comentado em 25/09/2017. Apagar em 180 dias	
+//		query.append(ID_GRUPO_USUARIO); 
+//		query.append(" = ?, ");	
 		query.append(CPF); 
 		query.append(" = ? ");
 		query.append("WHERE ");
@@ -420,9 +429,10 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 			SQLUtil.setValorPpreparedStatement(statement, 2, usuario.getSexo(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 3, usuario.getDataNascimento(), java.sql.Types.DATE);
 			SQLUtil.setValorPpreparedStatement(statement, 4, usuario.getSituacao(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement, 5, usuario.getIdGrupoUsuario(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement, 6, usuario.getCpf(), java.sql.Types.BIGINT);			
-			SQLUtil.setValorPpreparedStatement(statement, 7, usuario.getId(), java.sql.Types.INTEGER);
+// TODO: Código comentado em 25/09/2017. Apagar em 180 dias			
+//			SQLUtil.setValorPpreparedStatement(statement, 5, usuario.getIdGrupoUsuario(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 5, usuario.getCpf(), java.sql.Types.BIGINT);			
+			SQLUtil.setValorPpreparedStatement(statement, 6, usuario.getId(), java.sql.Types.INTEGER);
 			statement.executeUpdate();					
 		} catch (SQLException e) {
 			con.rollback();
@@ -544,7 +554,8 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 				usuario.setDataNascimento((Date) SQLUtil.getValorResultSet(resultSet, DATA_NASCIMENTO, java.sql.Types.DATE));
 				usuario.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
 				usuario.setCpf((Long) SQLUtil.getValorResultSet(resultSet, CPF, java.sql.Types.BIGINT));
-				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));					
+//TODO: Código comentado em 25/09/2017. Apagar em 180 dias				
+//				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));					
 				usuario.setEmail(this.emailUsuarioDAO.get().buscarEmailPrincipalPorUsuario(usuario));
 				listaUsuarioCondominio = this.usuarioCondominioDAO.get().buscarListaPorUsuario(usuario);	
 				for (UsuarioCondominio usuarioCondominio : listaUsuarioCondominio) {
@@ -552,7 +563,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 				}
 				List<UsuarioGrupoUsuario> listaUsuarioGrupoUsuario = this.usuarioGrupoUsuarioDAO.buscarPorIdUsuario(usuario.getId());
 				for (UsuarioGrupoUsuario usuarioGrupoUsuario : listaUsuarioGrupoUsuario) {
-					listaGrupoUsuario.add(this.grupoUsuarioDAO.buscarPorId(usuarioGrupoUsuario.getIdGrupoUsuario(), con));
+					listaGrupoUsuario.add(this.grupoUsuarioDAO.buscarPorId(usuarioGrupoUsuario.getIdGrupoUsuario(), con, GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));
 				}
 				usuario.setListaGrupoUsuario(listaGrupoUsuario);
 				listaCondominio.add(condominio);				
@@ -599,7 +610,8 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 				usuario.setSenha(String.valueOf(SQLUtil.getValorResultSet(resultSet, SENHA, java.sql.Types.VARCHAR)));			
 				usuario.setDataNascimento((Date) SQLUtil.getValorResultSet(resultSet, DATA_NASCIMENTO, java.sql.Types.DATE));
 				usuario.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
-				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
+// TODO: Código comentado em 25/09/2017. Apagar em 180 dias				
+//				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
 				usuario.setCpf((Long) SQLUtil.getValorResultSet(resultSet, CPF, java.sql.Types.BIGINT));
 				usuario.setEmail(this.emailUsuarioDAO.get().buscarEmailPrincipalPorUsuario(usuario));
 				listaUsuarioCondominio = this.usuarioCondominioDAO.get().buscarListaPorUsuario(usuario);	

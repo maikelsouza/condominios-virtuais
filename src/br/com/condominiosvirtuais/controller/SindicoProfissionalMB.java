@@ -17,9 +17,8 @@ import org.apache.log4j.Logger;
 import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.SindicoProfissional;
 import br.com.condominiosvirtuais.enumeration.CondominioSituacaoEnum;
-import br.com.condominiosvirtuais.enumeration.TipoGrupoUsuarioEnum;
-import br.com.condominiosvirtuais.enumeration.UsuarioSituacaoEnum;
 import br.com.condominiosvirtuais.enumeration.UsuarioSexoEnum;
+import br.com.condominiosvirtuais.enumeration.UsuarioSituacaoEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.service.CondominioService;
 import br.com.condominiosvirtuais.service.SindicoProfissionalService;
@@ -38,7 +37,7 @@ public class SindicoProfissionalMB implements Serializable {
 	
 	@Inject
 	private CondominioService condominioService;
-	
+		
 	private SindicoProfissional sindicoProfissional;	
 	
 	private List<SelectItem> listaSISexo;	
@@ -60,7 +59,7 @@ public class SindicoProfissionalMB implements Serializable {
 	private ListDataModel<SindicoProfissional> listaSindicoProfissionalDataModel = null;
 	
 	
-	
+		
 	@PostConstruct
 	public void iniciarSindicoProfissionalMB(){
 		this.popularListaSISexo();
@@ -75,7 +74,6 @@ public class SindicoProfissionalMB implements Serializable {
 	
 	public String salvar (){
 		this.sindicoProfissional.setSituacao(UsuarioSituacaoEnum.ATIVO.getSituacao());
-		this.sindicoProfissional.setIdGrupoUsuario(TipoGrupoUsuarioEnum.SINDICO_PROFISSIONAL.getGrupoUsuario());
 		this.sindicoProfissional.getEmail().setPrincipal(Boolean.TRUE);
 		this.sindicoProfissional.setListaCondominio(this.listaDeCondominiosAssociados);
 		try {
@@ -215,6 +213,8 @@ public class SindicoProfissionalMB implements Serializable {
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
 		}	
 	}
+	
+	
 	
 	public SindicoProfissional getSindicoProfissional() {
 		return sindicoProfissional;

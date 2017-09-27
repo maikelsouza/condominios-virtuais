@@ -23,14 +23,18 @@ import br.com.condominiosvirtuais.entity.BlocoConjuntoBloco;
 import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.ConjuntoBloco;
 import br.com.condominiosvirtuais.entity.Funcionario;
+import br.com.condominiosvirtuais.entity.GrupoUsuario;
 import br.com.condominiosvirtuais.entity.TipoConjuntoBloco;
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioPadraoEnum;
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioSituacaoEnum;
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioTipoUsuarioEnum;
 import br.com.condominiosvirtuais.enumeration.TipoConjuntoBlocoEnum;
-import br.com.condominiosvirtuais.enumeration.TipoGrupoUsuarioEnum;
 import br.com.condominiosvirtuais.enumeration.UsuarioSituacaoEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.service.BlocoService;
 import br.com.condominiosvirtuais.service.ConjuntoBlocoService;
 import br.com.condominiosvirtuais.service.FuncionarioService;
+import br.com.condominiosvirtuais.service.GrupoUsuarioService;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
 import br.com.condominiosvirtuais.util.ManagedBeanUtil;
 
@@ -70,6 +74,9 @@ public class FuncionarioMB implements  Serializable {
 	
 	@Inject
 	private ConjuntoBlocoService conjuntoBlocoService = null;
+	
+	@Inject
+	private GrupoUsuarioService grupoUsuarioService; 
 	
 	@Inject
 	private BlocoService blocoService = null;
@@ -226,7 +233,7 @@ public class FuncionarioMB implements  Serializable {
 			List<Condominio> listaCondominio = new ArrayList<Condominio>();
 			listaCondominio.add(this.condominio);
 			this.funcionario.setListaCondominio(listaCondominio);
-			this.funcionario.setIdGrupoUsuario(TipoGrupoUsuarioEnum.FUNCIONARIO.getGrupoUsuario());
+			this.popularGrupoUsuarioFuncionario();
 			this.funcionario.getEmail().setPrincipal(Boolean.TRUE);
 			this.funcionarioService.salvar(this.funcionario);
 			this.funcionario = new Funcionario();
@@ -287,7 +294,7 @@ public class FuncionarioMB implements  Serializable {
 			List<Condominio> listaCondominio = new ArrayList<Condominio>();
 			listaCondominio.add(this.condominio);
 			this.funcionario.setListaCondominio(listaCondominio);
-			this.funcionario.setIdGrupoUsuario(TipoGrupoUsuarioEnum.FUNCIONARIO.getGrupoUsuario());
+			this.popularGrupoUsuarioFuncionario();
 			this.funcionario.getEmail().setPrincipal(Boolean.TRUE);
 			// Caso sejam todos os blocos do mesmo conjunto, então eu salvo esse funcionário associando ele a esse conjunto
 			if(todosBlocosMesmoConjunto){
@@ -462,7 +469,7 @@ public class FuncionarioMB implements  Serializable {
 			List<Condominio> listaCondominio = new ArrayList<Condominio>();
 			listaCondominio.add(this.condominio);
 			this.funcionario.setListaCondominio(listaCondominio);
-			this.funcionario.setIdGrupoUsuario(TipoGrupoUsuarioEnum.FUNCIONARIO.getGrupoUsuario());
+			this.popularGrupoUsuarioFuncionario();
 			// Caso sejam todos os blocos do mesmo conjunto, então atualizo esse funcionário associando ele a esse conjunto
 			if(todosBlocosMesmoConjunto){
 				this.funcionarioService.atualizar(this.funcionario);		 	
@@ -517,10 +524,9 @@ public class FuncionarioMB implements  Serializable {
 		}
 	}	 
 	 
-	 public String cancelarCadastrarDespesasCondominio(){
-			return "cancelar";
-		}
-
+	public String cancelarCadastrarDespesasCondominio(){
+		return "cancelar";
+	}
 
 	public String voltarVisualizarFuncionarioCondominio(){		
 		return "voltar";
@@ -528,6 +534,18 @@ public class FuncionarioMB implements  Serializable {
 	
 	public String voltarVisualizarFuncionarioBloco(){		          
 		return "voltar";
+	}
+	
+	private void popularGrupoUsuarioFuncionario() throws SQLException, Exception{
+		List<GrupoUsuario> listaGrupoUsuario = new ArrayList<GrupoUsuario>();
+		listaGrupoUsuario.addAll(this.grupoUsuarioService.buscarPorIdCondominioEPadraoETipoUsuarioESituacao(this.condominio.getId(),
+				GrupoUsuarioPadraoEnum.SIM.getPadrao(), GrupoUsuarioTipoUsuarioEnum.FUNCIONARIO.getTipoUsuario(),GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));
+		if(listaGrupoUsuario.isEmpty()){
+			listaGrupoUsuario.add(this.grupoUsuarioService.buscarPorPadraoETipoUsuarioESituacao(GrupoUsuarioPadraoEnum.SIM.getPadrao(), 
+					GrupoUsuarioTipoUsuarioEnum.FUNCIONARIO.getTipoUsuario(), GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));			
+		}
+		this.funcionario.setListaGrupoUsuario(listaGrupoUsuario);
+			
 	}
 	
 	public Condominio getCondominio() {
@@ -746,25 +764,6 @@ public class FuncionarioMB implements  Serializable {
 			}
 		}
 	}
-
-// TODO: Código comentado em 17/04/2014 = Apagar após 90 dias	
-//	private void popularSIDias(){		
-//		for (int i = 1; i <= 31; i++) {
-//			this.listaSIDias.add(new SelectItem(i, String.valueOf(i)));		}
-//	}
-//	
-//	private void popularSIMeses(){		
-//		for (int i = 1; i <=12 ; i++) {
-//			this.listaSIMeses.add(new SelectItem(i-1, String.valueOf(i)));		}
-//	}
-//	
-//	private void popularSIAnos(){
-//		Calendar calendar = Calendar.getInstance();
-//		calendar.setTime(new Date());
-//		Integer anoAtual = calendar.get(Calendar.YEAR);
-//		for (int i = 1930; i <= anoAtual; i++) {
-//			this.listaSIAnos.add(new SelectItem(i, String.valueOf(i)));		}
-//	}
 	
 	private void limpaFormCadastroFuncionario(){		
 		ManagedBeanUtil.cleanSubmittedValues(this.componenteNomeFuncionario);		

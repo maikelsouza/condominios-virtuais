@@ -67,6 +67,38 @@ public class UsuarioGrupoUsuarioDAOImpl implements UsuarioGrupoUsuarioDAO, Seria
 		}				
 		return listaUsuarioGrupoUsuarios;
 	}
+	
+	@Override
+	public List<UsuarioGrupoUsuario> buscarPorIdUsuario(Integer idUsuario, Connection con) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(USUARIO_GRUPO_USUARIO);
+		query.append(" WHERE ");
+		query.append(ID_USUARIO);
+		query.append(" = ?");
+		query.append(";");
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;		
+		List<UsuarioGrupoUsuario> listaUsuarioGrupoUsuarios = new ArrayList<UsuarioGrupoUsuario>();
+		UsuarioGrupoUsuario usuarioGrupoUsuario = null;
+		try {
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, idUsuario, java.sql.Types.INTEGER);	
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				usuarioGrupoUsuario = new UsuarioGrupoUsuario();
+				usuarioGrupoUsuario.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				usuarioGrupoUsuario.setIdUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_USUARIO, java.sql.Types.INTEGER));
+				usuarioGrupoUsuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
+				listaUsuarioGrupoUsuarios.add(usuarioGrupoUsuario);
+			}
+		} catch (SQLException e) {
+			throw e;
+		} catch (Exception e) {
+			throw e;
+		}				
+		return listaUsuarioGrupoUsuarios;
+	}
 
 	@Override
 	public void excluirPorIdGrupoUsuario(Integer idGrupoUsuario, Connection con) throws SQLException, Exception {

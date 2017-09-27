@@ -14,9 +14,14 @@ import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.GestorCondominio;
+import br.com.condominiosvirtuais.entity.GrupoUsuario;
 import br.com.condominiosvirtuais.entity.SindicoProfissional;
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioPadraoEnum;
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioSituacaoEnum;
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioTipoUsuarioEnum;
 import br.com.condominiosvirtuais.enumeration.TipoGestorCondominioEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
+import br.com.condominiosvirtuais.persistence.GrupoUsuarioDAO;
 import br.com.condominiosvirtuais.persistence.SindicoProfissionalDAO;
 import br.com.condominiosvirtuais.util.SQLUtil;
 
@@ -38,8 +43,7 @@ public class SindicoProfissionalDAOImpl implements SindicoProfissionalDAO, Seria
 	
 	private static final String TELEFONE_CELULAR2 = "TELEFONE_CELULAR2";
 	
-	private static final String TELEFONE_CELULAR3 = "TELEFONE_CELULAR3";
-	
+	private static final String TELEFONE_CELULAR3 = "TELEFONE_CELULAR3";	
 	
 	@Inject
 	private UsuarioDAOImpl usuarioDAO;
@@ -47,6 +51,8 @@ public class SindicoProfissionalDAOImpl implements SindicoProfissionalDAO, Seria
 	@Inject
 	private GestorCondominioDAOImpl gestorCondominioDAO;
 	
+	@Inject
+	private GrupoUsuarioDAO grupoUsuarioDao;
 	
 
 	@Override
@@ -54,6 +60,7 @@ public class SindicoProfissionalDAOImpl implements SindicoProfissionalDAO, Seria
 		PreparedStatement statement = null;
 		Connection con = null;
 		GestorCondominio gestorCondominio = null;
+		List<GrupoUsuario> listaGrupoUsuario = null;
 		try {
 			con = Conexao.getConexao();
 			con.setAutoCommit(Boolean.FALSE);
@@ -75,7 +82,7 @@ public class SindicoProfissionalDAOImpl implements SindicoProfissionalDAO, Seria
 			query.append(TELEFONE_CELULAR3);
 			query.append(") ");
 			query.append("VALUES(?,?,?,?,?,?)");
-			statement = con.prepareStatement(query.toString());
+			statement = con.prepareStatement(query.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
 			SQLUtil.setValorPpreparedStatement(statement, 1, sindicoProfissional.getId(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 2, sindicoProfissional.getSite(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement, 3, sindicoProfissional.getTelefoneComercial(), java.sql.Types.BIGINT);
@@ -83,6 +90,12 @@ public class SindicoProfissionalDAOImpl implements SindicoProfissionalDAO, Seria
 			SQLUtil.setValorPpreparedStatement(statement, 5, sindicoProfissional.getTelefoneCelular2(), java.sql.Types.BIGINT);
 			SQLUtil.setValorPpreparedStatement(statement, 6, sindicoProfissional.getTelefoneCelular3(), java.sql.Types.BIGINT);
 			statement.execute();
+			ResultSet rs = statement.getGeneratedKeys();
+			rs.next();
+			listaGrupoUsuario = grupoUsuarioDao.buscarPorIdSindicoProfissionalEPadraoETipoUsuarioESituacao(rs.getInt(1), 
+					GrupoUsuarioPadraoEnum.SIM.getPadrao(), GrupoUsuarioTipoUsuarioEnum.SINDICO_PROFISSIONAL.getTipoUsuario(),
+					GrupoUsuarioSituacaoEnum.ATIVO.getSituacao(),con);
+			sindicoProfissional.setListaGrupoUsuario(listaGrupoUsuario);
 			for (Condominio condominio : sindicoProfissional.getListaCondominio()) {
 				gestorCondominio = new GestorCondominio();
 				gestorCondominio.setIdCondominio(condominio.getId());
@@ -107,8 +120,6 @@ public class SindicoProfissionalDAOImpl implements SindicoProfissionalDAO, Seria
 		}	
 		
 	}
-
-
 
 	@Override
 	public List<SindicoProfissional> buscarPorSituacao(Integer situacao) throws SQLException, Exception {
