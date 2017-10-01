@@ -6,7 +6,6 @@ import java.util.List;
 
 import br.com.condominiosvirtuais.enumeration.GrupoUsuarioPadraoEnum;
 import br.com.condominiosvirtuais.enumeration.GrupoUsuarioSituacaoEnum;
-import br.com.condominiosvirtuais.enumeration.GrupoUsuarioTipoUsuarioEnum;
 import br.com.condominiosvirtuais.enumeration.TipoGrupoUsuarioEnum;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
 import br.com.condominiosvirtuais.vo.TelaVO;
@@ -59,7 +58,14 @@ public class GrupoUsuario implements Serializable {
 	}
 
 	public String getNome() {
-		return nome;
+		// Condição criada para garantir que só irá recuperar os grupos fixos do sistema, onde terão seus nomes i18n, os outros são cadastrados pelo usuário
+		if(this.getPadrao().booleanValue() == GrupoUsuarioPadraoEnum.SIM.getPadrao() && 
+				this.getSituacao().booleanValue() == GrupoUsuarioSituacaoEnum.ATIVO.getSituacao().booleanValue()
+				&& (this.getIdCondominio() == null || this.getIdEscritorioContabilidade() == null || this.getIdSindicoProfissional() == null)) {
+			return AplicacaoUtil.i18n(nome);
+		}else{
+			return nome;
+		}
 	}
 
 	public void setNome(String nome) {
@@ -115,12 +121,26 @@ public class GrupoUsuario implements Serializable {
 	}
 	
 	public String getDescricaoLimitado(){
-		Integer limite = 80;
-		return this.descricao.length() > limite ? this.descricao.substring(0,limite) + "..." : this.descricao; 
+		// Condição criada para garantir que só irá recuperar os grupos fixos do sistema, onde terão seus nomes i18n, os outros são cadastrados pelo usuário
+		if(this.getPadrao().booleanValue() == GrupoUsuarioPadraoEnum.SIM.getPadrao() && 
+				this.getSituacao().booleanValue() == GrupoUsuarioSituacaoEnum.ATIVO.getSituacao().booleanValue()
+				&& (this.getIdCondominio() == null || this.getIdEscritorioContabilidade() == null || this.getIdSindicoProfissional() == null)) {
+			return AplicacaoUtil.i18n(descricao);
+		}else{
+			Integer limite = 80;
+			return this.descricao.length() > limite ? this.descricao.substring(0,limite) + "..." : this.descricao;
+		}
 	}
 	
 	public String getDescricao() {
-		return descricao;
+		// Condição criada para garantir que só irá recuperar os grupos fixos do sistema, onde terão seus nomes i18n, os outros são cadastrados pelo usuário
+		if(this.getPadrao().booleanValue() == GrupoUsuarioPadraoEnum.SIM.getPadrao() && 
+				this.getSituacao().booleanValue() == GrupoUsuarioSituacaoEnum.ATIVO.getSituacao().booleanValue()
+					&& (this.getIdCondominio() == null || this.getIdEscritorioContabilidade() == null || this.getIdSindicoProfissional() == null)) {
+			return AplicacaoUtil.i18n(descricao);
+		}else{	
+			return this.descricao;
+		}
 	}
 
 	public void setDescricao(String descricao) {
@@ -143,7 +163,7 @@ public class GrupoUsuario implements Serializable {
 		if(this.tipoUsuario == null){
 			return "";	
 		}else{
-			return this.tipoUsuario == GrupoUsuarioTipoUsuarioEnum.CONDOMINO.getTipoUsuario() ? AplicacaoUtil.i18n("grupoUsuario.tipoUsuario.1") : AplicacaoUtil.i18n("grupoUsuario.tipoUsuario.2");			
+			return AplicacaoUtil.i18n("grupoUsuario.tipoUsuario."+this.tipoUsuario);
 		}
 	}
 

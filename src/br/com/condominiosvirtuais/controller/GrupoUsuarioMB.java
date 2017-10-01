@@ -22,7 +22,9 @@ import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.GrupoUsuario;
 import br.com.condominiosvirtuais.entity.Tela;
 import br.com.condominiosvirtuais.enumeration.AtributoSessaoEnum;
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioPadraoEnum;
 import br.com.condominiosvirtuais.enumeration.GrupoUsuarioSituacaoEnum;
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioTipoUsuarioEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.service.AbaService;
 import br.com.condominiosvirtuais.service.ComponenteService;
@@ -85,6 +87,8 @@ public class GrupoUsuarioMB implements Serializable {
 	private List<SelectItem> listaSIPadrao;
 	
 	private List<SelectItem> listaSITipoUsuario;
+	
+	private List<GrupoUsuario> listaGrupoUsuarioTipoSindicoCondominoEFuncionario = new ArrayList<GrupoUsuario>();
 
 	
 	public void iniciarTelaVO (){
@@ -106,13 +110,23 @@ public class GrupoUsuarioMB implements Serializable {
 	
 	public void pesquisaGrupoUsuario(){
 		// Caso tenha selecionado todos
+		List<GrupoUsuario> listaGrupoUsuario = null;			
+		List<Integer> listaTipoUsuarioSindicoCondominoEFuncionario = new ArrayList<Integer>();		
+		listaTipoUsuarioSindicoCondominoEFuncionario.add(GrupoUsuarioTipoUsuarioEnum.SINDICO.getTipoUsuario());
+		listaTipoUsuarioSindicoCondominoEFuncionario.add(GrupoUsuarioTipoUsuarioEnum.CONDOMINO.getTipoUsuario());
+		listaTipoUsuarioSindicoCondominoEFuncionario.add(GrupoUsuarioTipoUsuarioEnum.FUNCIONARIO.getTipoUsuario());
 		try {
 			if(this.situacao == -1){
-				this.listaGruposUsuarios = new ListDataModel<GrupoUsuario>(this.grupoUsuarioService.buscarPorIdCondominio(this.grupoUsuario.getIdCondominio()));
+				listaGrupoUsuario = this.grupoUsuarioService.buscarPorIdCondominio(this.grupoUsuario.getIdCondominio());
+				this.listaGrupoUsuarioTipoSindicoCondominoEFuncionario = this.grupoUsuarioService.buscarGruposFixosTipoUsuarioSindicoCondominoEFuncionarioEPadrao(listaTipoUsuarioSindicoCondominoEFuncionario,GrupoUsuarioPadraoEnum.SIM.getPadrao());
 			}else{
-				this.listaGruposUsuarios = new ListDataModel<GrupoUsuario>(this.grupoUsuarioService.buscarPorIdCondominioESituacao(this.grupoUsuario.getIdCondominio(),
-				this.situacao == 1 ? GrupoUsuarioSituacaoEnum.ATIVO.getSituacao() : GrupoUsuarioSituacaoEnum.INATIVO.getSituacao()));
+				listaGrupoUsuario = this.grupoUsuarioService.buscarPorIdCondominioESituacao(this.grupoUsuario.getIdCondominio(),
+						this.situacao == 1 ? GrupoUsuarioSituacaoEnum.ATIVO.getSituacao() : GrupoUsuarioSituacaoEnum.INATIVO.getSituacao());
+				this.listaGrupoUsuarioTipoSindicoCondominoEFuncionario = this.grupoUsuarioService.buscarGruposFixosTipoUsuarioSindicoCondominoEFuncionarioEPadraoESituacao(listaTipoUsuarioSindicoCondominoEFuncionario,
+						GrupoUsuarioPadraoEnum.SIM.getPadrao(), this.situacao == 1 ? GrupoUsuarioSituacaoEnum.ATIVO.getSituacao() : GrupoUsuarioSituacaoEnum.INATIVO.getSituacao());
 			}
+			listaGrupoUsuario.addAll(this.listaGrupoUsuarioTipoSindicoCondominoEFuncionario);
+			this.listaGruposUsuarios = new ListDataModel<GrupoUsuario>(listaGrupoUsuario);
 			if(this.listaGruposUsuarios.getRowCount() == 0){
 				ManagedBeanUtil.setMensagemInfo("msg.grupoUsuario.semGrupoUsuario");
 			}
@@ -339,8 +353,12 @@ public class GrupoUsuarioMB implements Serializable {
 	}
 	
 	public String associarUsuarioCondominioGrupoUsuario(){
+		// FIXME REVER ESSE CASO
+		// Recuperado o idCondominio antes de pegar o grupo corrente para garantir poder usar esse id na pesquisa dos grupos fixos (condo, func
+		Integer idCondominio = this.grupoUsuario.getIdCondominio(); 
 		this.grupoUsuario = (GrupoUsuario) this.listaGruposUsuarios.getRowData();
 		ManagedBeanUtil.getSession(Boolean.FALSE).setAttribute(AtributoSessaoEnum.GRUPO_USUARIO.getAtributo(),this.grupoUsuario);
+		ManagedBeanUtil.getSession(Boolean.FALSE).setAttribute(AtributoSessaoEnum.ID_CONDOMINIO.getAtributo(),idCondominio);
 		this.usuarioMB.buscarUsuariosAssociadosOuNao();
 		return "associarUsuarioCondominio";		
 	}
@@ -596,6 +614,16 @@ public class GrupoUsuarioMB implements Serializable {
 				this.telaMB.checarTodosCheckbox();
 			}	
 		}		
+	}
+	
+	public Boolean verificarGrupoCondominoOuSindicoOuFuncionario(){
+		this.grupoUsuario = (GrupoUsuario) this.listaGruposUsuarios.getRowData();
+		for (GrupoUsuario grupoUsuario : this.listaGrupoUsuarioTipoSindicoCondominoEFuncionario) {
+			if(grupoUsuario.getId().intValue() == this.grupoUsuario.getId().intValue()){
+				return Boolean.TRUE;
+			}			
+		}
+		return Boolean.FALSE;
 	}
 	
 	

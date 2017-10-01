@@ -75,6 +75,20 @@ public class GrupoUsuarioServiceImpl implements GrupoUsuarioService, Serializabl
 		return this.grupoUsuarioDAO.buscarPorIdEscritorioDeContabilidadeEPadraoETipoUsuarioESituacao(idEscritorioDeContabilidade, padrao, tipoUsuario, situacao);
 	}
 
+	@Override
+	public List<GrupoUsuario> buscarGruposFixosTipoUsuarioSindicoCondominoEFuncionarioEPadraoESituacao(
+			List<Integer> listaTipoUsuarioSindicoCondominoEFuncionario, Boolean padrao, Boolean situacao)
+			throws SQLException, Exception {
+		return this.grupoUsuarioDAO.buscarGruposFixosTipoUsuarioSindicoCondominoEFuncionarioEPadraoESituacao(listaTipoUsuarioSindicoCondominoEFuncionario, 
+				padrao, situacao);
+	}
+
+	@Override
+	public List<GrupoUsuario> buscarGruposFixosTipoUsuarioSindicoCondominoEFuncionarioEPadrao(
+			List<Integer> listaTipoUsuarioSindicoCondominoEFuncionario, Boolean padrao) throws SQLException, Exception {
+		return this.grupoUsuarioDAO.buscarGruposFixosTipoUsuarioSindicoCondominoEFuncionarioEPadrao(listaTipoUsuarioSindicoCondominoEFuncionario, padrao);
+	}
+
 // TODO: Código comentado em 27/09/2017. Apagar em 180 dias	
 //	@Override
 //	public List<GrupoUsuario> buscarPorIdUsuarioESituacao(Integer idUsuario, Boolean situacao)

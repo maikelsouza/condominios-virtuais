@@ -17,7 +17,6 @@ import br.com.condominiosvirtuais.entity.GrupoUsuarioTela;
 import br.com.condominiosvirtuais.entity.GrupoUsuarioTelaAba;
 import br.com.condominiosvirtuais.entity.GrupoUsuarioTelaComponente;
 import br.com.condominiosvirtuais.entity.Tela;
-import br.com.condominiosvirtuais.entity.UsuarioGrupoUsuario;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.persistence.GrupoUsuarioDAO;
 import br.com.condominiosvirtuais.persistence.GrupoUsuarioTelaAbaDAO;
@@ -707,6 +706,137 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 		}	
 		return listaGrupoUsuario;
 
+	}
+
+
+	@Override
+	public List<GrupoUsuario> buscarGruposFixosTipoUsuarioSindicoCondominoEFuncionarioEPadraoESituacao(
+			List<Integer> listaTipoUsuarioSindicoCondominoEFuncionario, Boolean padrao, Boolean situacao)
+			throws SQLException, Exception {
+		List<GrupoUsuario> listaGrupoUsuario = new ArrayList<GrupoUsuario>();		
+		if(!listaTipoUsuarioSindicoCondominoEFuncionario.isEmpty()){			
+			StringBuffer query = new StringBuffer();
+			query.append("SELECT * FROM ");
+			query.append(GRUPO_USUARIO);
+			query.append(" WHERE ");
+			query.append(TIPO_USUARIO);
+			query.append(" IN (");		
+			query.append(SQLUtil.popularInterrocacoes(listaTipoUsuarioSindicoCondominoEFuncionario.size()));		
+			query.append(")");		
+			query.append(" AND ");
+			query.append(SITUACAO);
+			query.append(" = ?");
+			query.append(" AND ");
+			query.append(PADRAO);
+			query.append(" = ?");
+			query.append(" AND ");
+			query.append(ID_CONDOMINIO);
+			query.append(" IS NULL");
+			query.append(" ORDER BY ");
+			query.append(NOME);
+			Connection con = Conexao.getConexao();
+			PreparedStatement statement = null;
+			ResultSet resultSet = null;	
+			GrupoUsuario grupoUsuario = null;		
+			Integer contador = 1;
+			try {
+				statement = con.prepareStatement(query.toString());
+				for (Integer tipoUsuario : listaTipoUsuarioSindicoCondominoEFuncionario) {
+					SQLUtil.setValorPpreparedStatement(statement, contador++,tipoUsuario, java.sql.Types.INTEGER);
+				}
+				SQLUtil.setValorPpreparedStatement(statement,contador++,padrao, java.sql.Types.BOOLEAN);
+				SQLUtil.setValorPpreparedStatement(statement,contador++,situacao, java.sql.Types.BOOLEAN);
+				resultSet = statement.executeQuery();
+				while(resultSet.next()){
+					grupoUsuario = new GrupoUsuario();
+					grupoUsuario.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+					grupoUsuario.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+					grupoUsuario.setDescricao(String.valueOf(SQLUtil.getValorResultSet(resultSet, DESCRICAO, java.sql.Types.VARCHAR)));
+					grupoUsuario.setSituacao((Boolean) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.BOOLEAN));
+					grupoUsuario.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
+					grupoUsuario.setIdSindicoProfissional((Integer) SQLUtil.getValorResultSet(resultSet, ID_SINDICO_PROFISSIONAL, java.sql.Types.INTEGER));
+					grupoUsuario.setIdEscritorioContabilidade((Integer) SQLUtil.getValorResultSet(resultSet, ID_ESCRITORIO_CONTABILIDADE, java.sql.Types.INTEGER));
+					grupoUsuario.setPadrao((Boolean) SQLUtil.getValorResultSet(resultSet, PADRAO, java.sql.Types.BOOLEAN));
+					grupoUsuario.setTipoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, TIPO_USUARIO, java.sql.Types.INTEGER));
+					listaGrupoUsuario.add(grupoUsuario);
+				}
+			}catch (SQLException e) {
+				throw e;
+			}catch (Exception e) {		
+				throw e;
+			}finally{
+				try {
+					SQLUtil.closeStatement(statement);
+					SQLUtil.closeConnection(con);				
+				} catch (SQLException e) {
+					logger.error("erro sqlstate "+e.getSQLState(), e);
+				}
+			}	
+		}
+		return listaGrupoUsuario;
+	}
+
+
+	@Override
+	public List<GrupoUsuario> buscarGruposFixosTipoUsuarioSindicoCondominoEFuncionarioEPadrao(
+			List<Integer> listaTipoUsuarioSindicoCondominoEFuncionario, Boolean padrao) throws SQLException, Exception {
+		List<GrupoUsuario> listaGrupoUsuario = new ArrayList<GrupoUsuario>();		
+		if(!listaTipoUsuarioSindicoCondominoEFuncionario.isEmpty()){			
+			StringBuffer query = new StringBuffer();
+			query.append("SELECT * FROM ");
+			query.append(GRUPO_USUARIO);
+			query.append(" WHERE ");
+			query.append(TIPO_USUARIO);
+			query.append(" IN (");		
+			query.append(SQLUtil.popularInterrocacoes(listaTipoUsuarioSindicoCondominoEFuncionario.size()));		
+			query.append(")");
+			query.append(" AND ");
+			query.append(PADRAO);
+			query.append(" = ?");
+			query.append(" AND ");
+			query.append(ID_CONDOMINIO);
+			query.append(" IS NULL");
+			query.append(" ORDER BY ");
+			query.append(NOME);
+			Connection con = Conexao.getConexao();
+			PreparedStatement statement = null;
+			ResultSet resultSet = null;	
+			GrupoUsuario grupoUsuario = null;		
+			Integer contador = 1;
+			try {
+				statement = con.prepareStatement(query.toString());
+				for (Integer tipoUsuario : listaTipoUsuarioSindicoCondominoEFuncionario) {
+					SQLUtil.setValorPpreparedStatement(statement, contador++,tipoUsuario, java.sql.Types.INTEGER);
+				}
+				SQLUtil.setValorPpreparedStatement(statement,contador++,padrao, java.sql.Types.BOOLEAN);
+				resultSet = statement.executeQuery();
+				while(resultSet.next()){
+					grupoUsuario = new GrupoUsuario();
+					grupoUsuario.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+					grupoUsuario.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+					grupoUsuario.setDescricao(String.valueOf(SQLUtil.getValorResultSet(resultSet, DESCRICAO, java.sql.Types.VARCHAR)));
+					grupoUsuario.setSituacao((Boolean) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.BOOLEAN));
+					grupoUsuario.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
+					grupoUsuario.setIdSindicoProfissional((Integer) SQLUtil.getValorResultSet(resultSet, ID_SINDICO_PROFISSIONAL, java.sql.Types.INTEGER));
+					grupoUsuario.setIdEscritorioContabilidade((Integer) SQLUtil.getValorResultSet(resultSet, ID_ESCRITORIO_CONTABILIDADE, java.sql.Types.INTEGER));
+					grupoUsuario.setPadrao((Boolean) SQLUtil.getValorResultSet(resultSet, PADRAO, java.sql.Types.BOOLEAN));
+					grupoUsuario.setTipoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, TIPO_USUARIO, java.sql.Types.INTEGER));
+					listaGrupoUsuario.add(grupoUsuario);
+				}
+			}catch (SQLException e) {
+				throw e;
+			}catch (Exception e) {		
+				throw e;
+			}finally{
+				try {
+					SQLUtil.closeStatement(statement);
+					SQLUtil.closeConnection(con);				
+				} catch (SQLException e) {
+					logger.error("erro sqlstate "+e.getSQLState(), e);
+				}
+			}	
+		}
+		return listaGrupoUsuario;
 	}
 
 //	TODO: Código comentado em 27/09/2017. Apagar em 180 dias	

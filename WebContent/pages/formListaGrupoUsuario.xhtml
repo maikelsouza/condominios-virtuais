@@ -81,9 +81,9 @@
 							</f:facet>
 							<h:commandLink value="#{msg.linkVisualizarTelas}" action="#{grupoUsuarioMB.visualizarGrupoUsuarioTela}" immediate="true"/>
 							#{' '}
-							<h:commandLink value="#{msg.linkEditar}" action="#{grupoUsuarioMB.editarGrupoUsuario}" immediate="true"/>
+							<h:commandLink value="#{msg.linkEditar}" action="#{grupoUsuarioMB.editarGrupoUsuario}" immediate="true" rendered="#{!grupoUsuarioMB.verificarGrupoCondominoOuSindicoOuFuncionario()}" />
 							#{' '}
-							<h:commandLink value="#{msg.linkExcluir}"  immediate="true">
+							<h:commandLink value="#{msg.linkExcluir}"  immediate="true" rendered="#{!grupoUsuarioMB.verificarGrupoCondominoOuSindicoOuFuncionario()}">
 								<rich:componentControl target="confirmaExcluirGrupoUsuario" operation="show" />
 							</h:commandLink>
 							<rich:popupPanel id="confirmaExcluirGrupoUsuario" autosized="true">

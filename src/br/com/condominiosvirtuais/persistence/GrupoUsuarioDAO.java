@@ -34,6 +34,11 @@ public interface GrupoUsuarioDAO {
 	
 //TODO: Código comentado em 27/09/2017. Apagar em 180 dias	
 //	public abstract List<GrupoUsuario> buscarPorIdUsuarioESituacao(Integer idUsuario, Boolean situacao) throws SQLException, Exception;
+	
+	public abstract List<GrupoUsuario> buscarGruposFixosTipoUsuarioSindicoCondominoEFuncionarioEPadraoESituacao(List<Integer> listaTipoUsuarioSindicoCondominoEFuncionario, Boolean padrao,
+			Boolean situacao) throws SQLException, Exception;
+	
+	public abstract List<GrupoUsuario> buscarGruposFixosTipoUsuarioSindicoCondominoEFuncionarioEPadrao(List<Integer> listaTipoUsuarioSindicoCondominoEFuncionario, Boolean padrao) throws SQLException, Exception;
 
 
 }

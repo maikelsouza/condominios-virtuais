@@ -126,7 +126,9 @@ public class LoginMB implements Serializable{
 	 * Médodo que verifica se o usuário logado pertence a um dos grupos informados 
 	 * @param idGrupo = Recebe uma lista de id's de grupos usuários, separados por vírgula.
 	 * @return Boolean = Informa se o usuário logado pertence a um dos grupos informados
-	 */
+	 * TODO: Código comentado em 28/09/2017. Apagar em 180 dias 
+	 * 
+	 */	
 //	public Boolean usuarioLogadoPertenceUmDosGrupos(String idGrupoUsuario){
 //		Boolean usuarioLogadoPertenceUmDosGrupos = Boolean.FALSE;
 //		StringTokenizer tokenizer = new StringTokenizer(idGrupoUsuario, ",");
@@ -207,6 +209,7 @@ public class LoginMB implements Serializable{
 	 * FIXME: Método criado para não exibir o menu financeiro.
 	 * Esse deve ser apagado após mudar o layout do menu
 	 * OBS: Regra chumbada no código. Deve ser repensada para deixar configurável
+	 * TODO: Código comentado em 28/09/2017. Apagar em 180 dias
 	 */	
 	public Boolean exibeMenuFinanceiro(){
 		Boolean exibeMenuFianceiro = Boolean.TRUE;
@@ -225,6 +228,7 @@ public class LoginMB implements Serializable{
 	 * FIXME: Método criado para atender o condomínio Quinta do Horto (id 19)
 	 * Esse deverá ser removido após criar os grupos de usuários e suas autorizações.
 	 * @return True: - Exibe - False: Não exibe 
+	 * TODO: Código comentado em 28/09/2017. Apagar em 180 dias
 	 */
 	public Boolean exibeMenuArquivoAdvogadoQuintaDoHorto(){
 		Boolean exibeMenuArquivo = Boolean.FALSE;
@@ -238,6 +242,7 @@ public class LoginMB implements Serializable{
 	 * FIXME: Método criado para atender o condomínio Quinta do Horto (id 19)
 	 * Esse deverá ser removido após criar os grupos de usuários e suas autorizações.
 	 * @return True: - Exibe - False: Não exibe 
+	 * TODO: Código comentado em 28/09/2017. Apagar em 180 dias
 	 */
 	public Boolean exibeMenuEscreverMensagemQuintaDoHorto(){
 		Boolean exibeMenuEscreverMensagem = Boolean.TRUE;
@@ -257,6 +262,7 @@ public class LoginMB implements Serializable{
 	 * FIXME: Método criado para atender o condomínio Quinta do Horto (id 19)
 	 * Esse deverá ser removido após criar os grupos de usuários e suas autorizações.
 	 * @return True: - Exibe - False: Não exibe 
+	 * TODO: Código comentado em 28/09/2017. Apagar em 180 dias
 	 */
 	public Boolean exibeMenuArquivoContadorQuintaDoHorto(){
 		Boolean exibeMenuArquivo = Boolean.FALSE;
@@ -312,9 +318,6 @@ public class LoginMB implements Serializable{
 				email = new Email();
 				email.setPara(usuario.getEmail().getEmail());
 				email.setAssunto(AplicacaoUtil.i18n("msg.usuarioNovaSenhaGerada.assunto"));
-//				Object[] parametros = new Object[2];
-//				parametros[0] = usuario.getNome().toUpperCase();
-//				parametros[1] = senha;
 				email.setMensagem(MensagensEmailUtil.novaSenhaGerada(usuario, novaSenha));
 				this.emailService.salvar(email);
 				logar = "logar";
