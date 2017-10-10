@@ -353,12 +353,13 @@ public class GrupoUsuarioMB implements Serializable {
 	}
 	
 	public String associarUsuarioCondominioGrupoUsuario(){
-		// FIXME REVER ESSE CASO
-		// Recuperado o idCondominio antes de pegar o grupo corrente para garantir poder usar esse id na pesquisa dos grupos fixos (condo, func
 		Integer idCondominio = this.grupoUsuario.getIdCondominio(); 
 		this.grupoUsuario = (GrupoUsuario) this.listaGruposUsuarios.getRowData();
-		ManagedBeanUtil.getSession(Boolean.FALSE).setAttribute(AtributoSessaoEnum.GRUPO_USUARIO.getAtributo(),this.grupoUsuario);
-		ManagedBeanUtil.getSession(Boolean.FALSE).setAttribute(AtributoSessaoEnum.ID_CONDOMINIO.getAtributo(),idCondominio);
+		// Condição criada para contemplar os casos dos grupos fixos, onde o idCondominio é null
+		if (this.grupoUsuario.getIdCondominio() == null){
+			this.grupoUsuario.setIdCondominio(idCondominio);
+		}
+		ManagedBeanUtil.getSession(Boolean.FALSE).setAttribute(AtributoSessaoEnum.GRUPO_USUARIO.getAtributo(),this.grupoUsuario);		
 		this.usuarioMB.buscarUsuariosAssociadosOuNao();
 		return "associarUsuarioCondominio";		
 	}

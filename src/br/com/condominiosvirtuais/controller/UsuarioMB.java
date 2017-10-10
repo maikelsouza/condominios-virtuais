@@ -47,6 +47,8 @@ public class UsuarioMB implements Serializable {
 	
 	private List<UsuarioVO> listaUsuariosAssociados;
 	
+	private List<UsuarioVO> listaOriginalUsuariosAssociados;
+	
 	private List<UsuarioVO> listaUsuariosNaoAssociados;
 
 	
@@ -55,12 +57,14 @@ public class UsuarioMB implements Serializable {
 	public void buscarUsuariosAssociadosOuNao(){
 		listaUsuariosAssociados = new ArrayList<UsuarioVO>();
 		listaUsuariosNaoAssociados = new ArrayList<UsuarioVO>();
+		listaOriginalUsuariosAssociados = new ArrayList<UsuarioVO>();
 		this.grupoUsuario = (GrupoUsuario) ManagedBeanUtil.getSession(Boolean.FALSE).getAttribute(AtributoSessaoEnum.GRUPO_USUARIO.getAtributo());
 		
 		try{
 			for (CondominoVO condominoVO : this.condominoService.buscarPorIdsEidGrupoUsuarioESituacaoSemImagem(grupoUsuario.getIdCondominio(), 
 					grupoUsuario.getId(), UsuarioSituacaoEnum.ATIVO.getSituacao())) {
 				listaUsuariosAssociados.add(this.popularUsuarioVO(condominoVO));
+				listaOriginalUsuariosAssociados.add(this.popularUsuarioVO(condominoVO));
 			}		
 			for (CondominoVO condominoVO : this.condominoService.buscarPorIdsESituacaoSemImagem(grupoUsuario.getIdCondominio(), 
 					UsuarioSituacaoEnum.ATIVO.getSituacao())) {
@@ -73,7 +77,9 @@ public class UsuarioMB implements Serializable {
 			for (Funcionario funcionario : this.funcionarioService.buscarPorIdCondominioEIdGrupoUsuarioESituacaoSemImagem(grupoUsuario.getIdCondominio(), 
 					grupoUsuario.getId(),UsuarioSituacaoEnum.ATIVO.getSituacao())) {
 				listaUsuariosAssociados.add(this.popularUsuarioVO(funcionario));	
+				listaOriginalUsuariosAssociados.add(this.popularUsuarioVO(funcionario));
 			}
+			//listaUsuariossAssociados = new ArrayList<UsuarioVO>(listaUsuariosAssociados); 
 			
 			Collections.sort(this.listaUsuariosAssociados);
 			Collections.sort(this.listaUsuariosNaoAssociados);
@@ -108,12 +114,25 @@ public class UsuarioMB implements Serializable {
 	
 	public String associarUsuario(){	
 		try {
-			List<Usuario> listaUsuarios = new ArrayList<Usuario>();
-			for (UsuarioVO usuarioVO : this.listaUsuariosAssociados) {
-				listaUsuarios.add(this.popularUsuario(usuarioVO));
-			}		
-			this.usuarioService.associar(listaUsuarios, this.grupoUsuario.getId());
-			ManagedBeanUtil.setMensagemInfo("msg.usuario.associadoSucesso");
+			List<Usuario> listaUsuariosAssociados = new ArrayList<Usuario>();
+			List<Usuario> listaOriginalUsuariosAssociados = new ArrayList<Usuario>();
+			//if(!this.listaUsuariosAssociados.isEmpty()){
+				for (UsuarioVO usuarioVO : this.listaUsuariosAssociados) {
+					listaUsuariosAssociados.add(this.popularUsuario(usuarioVO));
+				}		
+				for (UsuarioVO usuarioVO : this.listaOriginalUsuariosAssociados) {
+					listaOriginalUsuariosAssociados.add(this.popularUsuario(usuarioVO));
+				}		
+				this.usuarioService.associar(listaUsuariosAssociados,listaOriginalUsuariosAssociados, this.grupoUsuario.getId());
+				ManagedBeanUtil.setMensagemInfo("msg.usuario.associadoSucesso");
+//			}else if (!this.listaOriginalUsuariosAssociados.isEmpty()){
+//				for (UsuarioVO usuarioVO : this.listaOriginalUsuariosAssociados) {
+//					listaUsuarios.add(this.popularUsuario(usuarioVO));
+//				}		
+//				this.usuarioService.desassociar(listaUsuarios, this.grupoUsuario.getId());
+//				ManagedBeanUtil.setMensagemInfo("msg.usuario.desassociadoSucesso");				
+//			}
+			
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");				

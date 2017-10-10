@@ -915,7 +915,28 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 	}
 
 	@Override
-	public void associarUsuariosGrupoUsuario(List<Usuario> listaDeUsuarios, Integer idGrupoUsuario)
+	public void associarUsuariosGrupoUsuario(List<Usuario> listaUsuariosAssociados, List<Usuario> listaOriginalUsuariosAssociados, Integer idGrupoUsuario)
+			throws SQLException, Exception {
+		UsuarioGrupoUsuario usuarioGrupoUsuario = null;
+		List<UsuarioGrupoUsuario> listaUsuarioGrupoUsuarioAssociados = new ArrayList<UsuarioGrupoUsuario>();
+		List<UsuarioGrupoUsuario> listaUsuarioGrupoUsuarioOriginalAssociados = new ArrayList<UsuarioGrupoUsuario>();
+		for (Usuario usuario : listaUsuariosAssociados) {
+			usuarioGrupoUsuario = new UsuarioGrupoUsuario();
+			usuarioGrupoUsuario.setIdUsuario(usuario.getId());
+			usuarioGrupoUsuario.setIdGrupoUsuario(idGrupoUsuario);
+			listaUsuarioGrupoUsuarioAssociados.add(usuarioGrupoUsuario);			
+		}
+		for (Usuario usuario : listaOriginalUsuariosAssociados) {
+			usuarioGrupoUsuario = new UsuarioGrupoUsuario();
+			usuarioGrupoUsuario.setIdUsuario(usuario.getId());
+			usuarioGrupoUsuario.setIdGrupoUsuario(idGrupoUsuario);
+			listaUsuarioGrupoUsuarioOriginalAssociados.add(usuarioGrupoUsuario);			
+		}
+		this.usuarioGrupoUsuarioDAO.associar(listaUsuarioGrupoUsuarioAssociados,listaUsuarioGrupoUsuarioOriginalAssociados);
+	}
+	
+	@Override
+	public void desassociarUsuariosGrupoUsuario(List<Usuario> listaDeUsuarios, Integer idGrupoUsuario)
 			throws SQLException, Exception {
 		UsuarioGrupoUsuario usuarioGrupoUsuario = null;
 		List<UsuarioGrupoUsuario> listaUsuarioGrupoUsuario = new ArrayList<UsuarioGrupoUsuario>();
@@ -925,7 +946,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 			usuarioGrupoUsuario.setIdGrupoUsuario(idGrupoUsuario);
 			listaUsuarioGrupoUsuario.add(usuarioGrupoUsuario);			
 		}
-		this.usuarioGrupoUsuarioDAO.associar(listaUsuarioGrupoUsuario);
+		this.usuarioGrupoUsuarioDAO.desassociar(listaUsuarioGrupoUsuario);
 	}
 	
 }

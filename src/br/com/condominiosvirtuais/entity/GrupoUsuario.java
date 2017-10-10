@@ -81,44 +81,46 @@ public class GrupoUsuario implements Serializable {
 //		this.tipoGrupoUsuario = tipoGrupoUsuario;
 //	}
 	
-	public Boolean temAcesso(String pagina){
-		List<String> listaTelas = null;
-		Boolean temAcesso = Boolean.FALSE;		
-		switch(this.getId()){
-			case 1 :					
-				listaTelas = TipoGrupoUsuarioEnum.ADMINISTRADOR.getGrupoUsuariosTelasAcesso().get(this.getId()); 
-				temAcesso = this.contemTela(pagina, listaTelas);
-				break;
-			case 2 :					
-				listaTelas = TipoGrupoUsuarioEnum.ADMINISTRADORA.getGrupoUsuariosTelasAcesso().get(this.getId()); 
-				temAcesso = this.contemTela(pagina, listaTelas);
-				break;
-			case 3 :					
-				listaTelas = TipoGrupoUsuarioEnum.SINDICO_PROFISSIONAL.getGrupoUsuariosTelasAcesso().get(this.getId()); 
-				temAcesso = this.contemTela(pagina, listaTelas);
-				break;
-			case 4 :					
-				listaTelas = TipoGrupoUsuarioEnum.SINDICO.getGrupoUsuariosTelasAcesso().get(this.getId()); 
-				temAcesso = this.contemTela(pagina, listaTelas);
-				break;
-			case 5:					
-				listaTelas = TipoGrupoUsuarioEnum.CONDOMINO.getGrupoUsuariosTelasAcesso().get(this.getId()); 
-				temAcesso = this.contemTela(pagina, listaTelas);
-				break;
-			case 6 :					
-				TipoGrupoUsuarioEnum.FUNCIONARIO.inicializar();
-				listaTelas = TipoGrupoUsuarioEnum.FUNCIONARIO.getGrupoUsuariosTelasAcesso().get(this.getId()); 
-				temAcesso = this.contemTela(pagina, listaTelas);
-				break;
-			case 7 :					
-				listaTelas = TipoGrupoUsuarioEnum.ESCRITORIO_CONTABILIDADE.getGrupoUsuariosTelasAcesso().get(this.getId()); 
-				temAcesso = this.contemTela(pagina, listaTelas);	
-				
-			}
-		
-		return temAcesso;
-		
-	}
+	
+// TODO: Código comentado em 04/10/2017. Apagar em 180 dias	
+//	public Boolean temAcesso(String pagina){
+//		List<String> listaTelas = null;
+//		Boolean temAcesso = Boolean.FALSE;		
+//		switch(this.getId()){
+//			case 1 :					
+//				listaTelas = TipoGrupoUsuarioEnum.ADMINISTRADOR.getGrupoUsuariosTelasAcesso().get(this.getId()); 
+//				temAcesso = this.contemTela(pagina, listaTelas);
+//				break;
+//			case 2 :					
+//				listaTelas = TipoGrupoUsuarioEnum.ADMINISTRADORA.getGrupoUsuariosTelasAcesso().get(this.getId()); 
+//				temAcesso = this.contemTela(pagina, listaTelas);
+//				break;
+//			case 3 :					
+//				listaTelas = TipoGrupoUsuarioEnum.SINDICO_PROFISSIONAL.getGrupoUsuariosTelasAcesso().get(this.getId()); 
+//				temAcesso = this.contemTela(pagina, listaTelas);
+//				break;
+//			case 4 :					
+//				listaTelas = TipoGrupoUsuarioEnum.SINDICO.getGrupoUsuariosTelasAcesso().get(this.getId()); 
+//				temAcesso = this.contemTela(pagina, listaTelas);
+//				break;
+//			case 5:					
+//				listaTelas = TipoGrupoUsuarioEnum.CONDOMINO.getGrupoUsuariosTelasAcesso().get(this.getId()); 
+//				temAcesso = this.contemTela(pagina, listaTelas);
+//				break;
+//			case 6 :					
+//				TipoGrupoUsuarioEnum.FUNCIONARIO.inicializar();
+//				listaTelas = TipoGrupoUsuarioEnum.FUNCIONARIO.getGrupoUsuariosTelasAcesso().get(this.getId()); 
+//				temAcesso = this.contemTela(pagina, listaTelas);
+//				break;
+//			case 7 :					
+//				listaTelas = TipoGrupoUsuarioEnum.ESCRITORIO_CONTABILIDADE.getGrupoUsuariosTelasAcesso().get(this.getId()); 
+//				temAcesso = this.contemTela(pagina, listaTelas);	
+//				
+//			}
+//		
+//		return temAcesso;
+//		
+//	}
 	
 	public String getDescricaoLimitado(){
 		// Condição criada para garantir que só irá recuperar os grupos fixos do sistema, onde terão seus nomes i18n, os outros são cadastrados pelo usuário
@@ -264,15 +266,16 @@ public class GrupoUsuario implements Serializable {
 		return Boolean.FALSE;
 	}
 
-	private Boolean contemTela(String tela, List<String> listaTelas){
-		Boolean contem = Boolean.FALSE;		
-		Iterator<String> iteratorListaTelas = listaTelas.iterator();
-		while(iteratorListaTelas.hasNext() && !contem) {
-			String telaLista = iteratorListaTelas.next();			
-			if(telaLista.equals(tela)){
-				contem = Boolean.TRUE;
-			}			
-		}
-		return contem;
-	}	
+// TODO: Código comentado em 04/10/2017. Apagar em 180 dias	
+//	private Boolean contemTela(String tela, List<String> listaTelas){
+//		Boolean contem = Boolean.FALSE;		
+//		Iterator<String> iteratorListaTelas = listaTelas.iterator();
+//		while(iteratorListaTelas.hasNext() && !contem) {
+//			String telaLista = iteratorListaTelas.next();			
+//			if(telaLista.equals(tela)){
+//				contem = Boolean.TRUE;
+//			}			
+//		}
+//		return contem;
+//	}	
 }

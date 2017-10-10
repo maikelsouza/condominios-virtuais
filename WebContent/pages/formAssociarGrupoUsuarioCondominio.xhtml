@@ -23,7 +23,7 @@
 			</rich:panel>
 			<rich:panel header="#{msg['usuario.associarUsuariosGrupoUsuario']}">				
 				<rich:pickList addAllText="#{msg.adicionarTodos}" listWidth="550px" targetCaption="#{msg['usuario.usuariosAssociados']}" sourceCaption="#{msg['usuariosNaoAssociados']}"
-					addText="#{msg.adicionar}" var="usuarioVO" id="idUsuarioVO" removeAllText="#{msg.removerTodos}" removeText="#{msg.remover}" required="true"
+					addText="#{msg.adicionar}" var="usuarioVO" id="idUsuarioVO" removeAllText="#{msg.removerTodos}" removeText="#{msg.remover}" 
 					rendered="true" converter="usuarioVOConversor" value="#{usuarioMB.listaUsuariosAssociados}" label="#{msg['usuario.associarUsuario.label']}">
 					<f:selectItems value="#{usuarioMB.listaUsuariosNaoAssociados}" var="usuarioVO" itemValue="#{usuarioVO}"  itemLabel="#{usuarioVO.nomeUsuario}" />
 					     <rich:column style="width:50%;">

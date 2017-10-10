@@ -113,7 +113,7 @@
 								render="tableCondomino" action="#{condominoMB.visualizarCondomino}" immediate="true" />	
 				 			#{' '}                                                                           
  							<a4j:commandLink value="#{msg.linkEditar}" render="tableCondomino" action="#{condominoMB.editarCondomino}" immediate="true"
-								rendered="#{loginMB.temAcesso('#{condominioMB.editarCondominio}')" />
+								rendered="#{loginMB.temAcesso('#{condominioMB.editarCondominio}')}" />
 						</rich:column>
 						<f:facet name="footer">
               				<rich:dataScroller for="tableCondomino"  fastControls="hide" renderIfSinglePage="false" />
@@ -121,8 +121,8 @@
 					</rich:dataTable>
 				</div>
 			</rich:panel>
-			<h:commandButton value="#{msg.botaoCriarNovo}" rendered="#{loginMB.temAcesso('#{condominioMB.editarCondominio}')"
-				action="#{condominoMB.cadastroCondomino}" immediate="true"></h:commandButton>
+			<h:commandButton value="#{msg.botaoCriarNovo}" rendered="#{loginMB.temAcesso('#{condominioMB.editarCondominio}')}" action="#{condominoMB.cadastroCondomino}" 
+				immediate="true"/>
 		</h:form>
 
 		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />

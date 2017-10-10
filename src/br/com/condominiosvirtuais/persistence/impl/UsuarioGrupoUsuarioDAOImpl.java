@@ -122,6 +122,33 @@ public class UsuarioGrupoUsuarioDAOImpl implements UsuarioGrupoUsuarioDAO, Seria
 		}
 		
 	}
+	
+	@Override
+	public void excluirPorIdGrupoUsuarioEIdUsuario(Integer idGrupoUsuario, Integer idUsuario, Connection con) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		PreparedStatement statement = null;
+		try {
+			query.append("DELETE FROM ");
+			query.append(USUARIO_GRUPO_USUARIO);
+			query.append(" WHERE ");		
+			query.append(ID_GRUPO_USUARIO);
+			query.append(" = ?");
+			query.append(" AND ");
+			query.append(ID_USUARIO);
+			query.append(" = ?");
+			statement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(statement, 1, idGrupoUsuario, java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 2, idUsuario, java.sql.Types.INTEGER);
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			con.rollback();
+			throw e;
+		}catch (Exception e) {
+			con.rollback();
+			throw e;
+		}
+		
+	}
 
 	@Override
 	public List<UsuarioGrupoUsuario> buscarPorIdGrupoUsuario(Integer idGrupoUsuario, Integer idUsuario, Connection con) throws SQLException, Exception {
@@ -160,13 +187,13 @@ public class UsuarioGrupoUsuarioDAOImpl implements UsuarioGrupoUsuarioDAO, Seria
 	}
 
 	@Override
-	public void associar(List<UsuarioGrupoUsuario> listaUsuarioGrupoUsuario) throws SQLException, Exception {
+	public void associar(List<UsuarioGrupoUsuario> listaUsuarioGrupoUsuario, List<UsuarioGrupoUsuario> listaUsuarioGrupoUsuarioOriginalAssociados) throws SQLException, Exception {
 		Connection con = Conexao.getConexao();
 		PreparedStatement statement = null;
 		try {			
 			con.setAutoCommit(Boolean.FALSE);
-			for (UsuarioGrupoUsuario usuarioGrupoUsuario : listaUsuarioGrupoUsuario) {
-				this.excluirPorIdGrupoUsuario(usuarioGrupoUsuario.getIdGrupoUsuario(), con);
+			for (UsuarioGrupoUsuario usuarioGrupoUsuario : listaUsuarioGrupoUsuarioOriginalAssociados) {
+				this.excluirPorIdGrupoUsuarioEIdUsuario(usuarioGrupoUsuario.getIdGrupoUsuario(), usuarioGrupoUsuario.getIdUsuario(), con);
 			}		
 			StringBuffer query = new StringBuffer();
 			query.append("INSERT INTO "); 
@@ -184,6 +211,29 @@ public class UsuarioGrupoUsuarioDAOImpl implements UsuarioGrupoUsuarioDAO, Seria
 				statement.execute();
 			}
 			con.commit();
+		} catch (SQLException e) {			
+			throw e;
+		}catch (Exception e) {
+			throw e;		
+		}finally{ 
+			try {
+				SQLUtil.closeStatement(statement);
+				SQLUtil.closeConnection(con);				
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);				
+			}
+		}
+	}
+	
+	@Override
+	public void desassociar(List<UsuarioGrupoUsuario> listaUsuarioGrupoUsuario) throws SQLException, Exception {
+		Connection con = Conexao.getConexao();
+		PreparedStatement statement = null;
+		try {			
+			con.setAutoCommit(Boolean.FALSE);
+			for (UsuarioGrupoUsuario usuarioGrupoUsuario : listaUsuarioGrupoUsuario) {
+				this.excluirPorIdGrupoUsuarioEIdUsuario(usuarioGrupoUsuario.getIdGrupoUsuario(), usuarioGrupoUsuario.getIdUsuario(), con);
+			}con.commit();
 		} catch (SQLException e) {			
 			throw e;
 		}catch (Exception e) {

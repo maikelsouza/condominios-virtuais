@@ -3,7 +3,7 @@ package br.com.condominiosvirtuais.vo;
 import br.com.condominiosvirtuais.enumeration.UsuarioVOTipoUsuarioEnum;
 
 public class UsuarioVO implements Comparable<UsuarioVO> {
-
+	
 	private Integer id;
 	
 	private Integer idUsuario;

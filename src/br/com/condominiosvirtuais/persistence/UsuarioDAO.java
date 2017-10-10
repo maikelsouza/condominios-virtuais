@@ -38,6 +38,8 @@ public interface UsuarioDAO {
 	
 	public abstract Boolean buscarPorEPopularPeloIdEGrupoUsuarioESituacaoSemImagem(Usuario usuario, Integer idGrupoUsuario, Integer situacao, Connection con) throws SQLException, Exception;
 	
-	public abstract void associarUsuariosGrupoUsuario(List<Usuario> listaDeUsuarios, Integer idGrupoUsuario) throws SQLException, Exception;
+	public abstract void associarUsuariosGrupoUsuario(List<Usuario> listaUsuariosAssociados, List<Usuario> listaOriginalUsuariosAssociados, Integer idGrupoUsuario) throws SQLException, Exception;
+	
+	public abstract void desassociarUsuariosGrupoUsuario(List<Usuario> listaDeUsuarios, Integer idGrupoUsuario) throws SQLException, Exception;
 
 }

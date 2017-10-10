@@ -211,17 +211,17 @@ public class LoginMB implements Serializable{
 	 * OBS: Regra chumbada no código. Deve ser repensada para deixar configurável
 	 * TODO: Código comentado em 28/09/2017. Apagar em 180 dias
 	 */	
-	public Boolean exibeMenuFinanceiro(){
-		Boolean exibeMenuFianceiro = Boolean.TRUE;
-		if (this.usuario.getId() != 280 &&  this.usuario.getId() != 1) { // Caso não seja o usuário Ivan, então deve aplicar a regra abaixo
-			for (Condominio condominio : this.usuario.getListaCondominio()) {
-				if (condominio.getId() == 20){ // Caso seja o condomínio SANTA ANA, então não deve exibir
-					exibeMenuFianceiro = Boolean.FALSE;
-				}
-			}			
-		}
-		return exibeMenuFianceiro;
-	}    
+//	public Boolean exibeMenuFinanceiro(){
+//		Boolean exibeMenuFianceiro = Boolean.TRUE;
+//		if (this.usuario.getId() != 280 &&  this.usuario.getId() != 1) { // Caso não seja o usuário Ivan, então deve aplicar a regra abaixo
+//			for (Condominio condominio : this.usuario.getListaCondominio()) {
+//				if (condominio.getId() == 20){ // Caso seja o condomínio SANTA ANA, então não deve exibir
+//					exibeMenuFianceiro = Boolean.FALSE;
+//				}
+//			}			
+//		}
+//		return exibeMenuFianceiro;
+//	}    
 	
 	
 	/**
@@ -230,13 +230,13 @@ public class LoginMB implements Serializable{
 	 * @return True: - Exibe - False: Não exibe 
 	 * TODO: Código comentado em 28/09/2017. Apagar em 180 dias
 	 */
-	public Boolean exibeMenuArquivoAdvogadoQuintaDoHorto(){
-		Boolean exibeMenuArquivo = Boolean.FALSE;
-		if(this.usuario.getId() == 367){
-			exibeMenuArquivo = Boolean.TRUE;
-		}		
-		return exibeMenuArquivo;
-	}
+//	public Boolean exibeMenuArquivoAdvogadoQuintaDoHorto(){
+//		Boolean exibeMenuArquivo = Boolean.FALSE;
+//		if(this.usuario.getId() == 367){
+//			exibeMenuArquivo = Boolean.TRUE;
+//		}		
+//		return exibeMenuArquivo;
+//	}
 	
 	/**
 	 * FIXME: Método criado para atender o condomínio Quinta do Horto (id 19)
@@ -244,19 +244,19 @@ public class LoginMB implements Serializable{
 	 * @return True: - Exibe - False: Não exibe 
 	 * TODO: Código comentado em 28/09/2017. Apagar em 180 dias
 	 */
-	public Boolean exibeMenuEscreverMensagemQuintaDoHorto(){
-		Boolean exibeMenuEscreverMensagem = Boolean.TRUE;
-		for (Condominio condominio : this.usuario.getListaCondominio()) {
-			if (condominio.getId() == 19){ // Caso seja o condomínio Quinta do Horto, então não deve exibir a opção de escrever mensagens para os condôminos
-				exibeMenuEscreverMensagem = Boolean.FALSE;
-				// id usuário síndico  José de Oliveira Júnior
-				if(this.usuario.getId() == 236 || this.usuario.getId() == 1){
-					exibeMenuEscreverMensagem = Boolean.TRUE;
-				}
-			}			
-		}
-		return exibeMenuEscreverMensagem;
-	}
+//	public Boolean exibeMenuEscreverMensagemQuintaDoHorto(){
+//		Boolean exibeMenuEscreverMensagem = Boolean.TRUE;
+//		for (Condominio condominio : this.usuario.getListaCondominio()) {
+//			if (condominio.getId() == 19){ // Caso seja o condomínio Quinta do Horto, então não deve exibir a opção de escrever mensagens para os condôminos
+//				exibeMenuEscreverMensagem = Boolean.FALSE;
+//				// id usuário síndico  José de Oliveira Júnior
+//				if(this.usuario.getId() == 236 || this.usuario.getId() == 1){
+//					exibeMenuEscreverMensagem = Boolean.TRUE;
+//				}
+//			}			
+//		}
+//		return exibeMenuEscreverMensagem;
+//	}
 	
 	/**
 	 * FIXME: Método criado para atender o condomínio Quinta do Horto (id 19)
@@ -264,26 +264,26 @@ public class LoginMB implements Serializable{
 	 * @return True: - Exibe - False: Não exibe 
 	 * TODO: Código comentado em 28/09/2017. Apagar em 180 dias
 	 */
-	public Boolean exibeMenuArquivoContadorQuintaDoHorto(){
-		Boolean exibeMenuArquivo = Boolean.FALSE;
-		if(this.usuario.getId() == 365){
-			exibeMenuArquivo = Boolean.TRUE;
-		}		
-		return exibeMenuArquivo;
-	}
+//	public Boolean exibeMenuArquivoContadorQuintaDoHorto(){
+//		Boolean exibeMenuArquivo = Boolean.FALSE;
+//		if(this.usuario.getId() == 365){
+//			exibeMenuArquivo = Boolean.TRUE;
+//		}		
+//		return exibeMenuArquivo;
+//	}
 	
 	/**
 	 * FIXME: Método criado para atender o condomínio Quinta do Horto (id 19)
 	 * Esse deverá ser removido após criar os grupos de usuários e suas autorizações.
 	 * @return True: - Exibe - False: Não exibe 
 	 */
-	public Boolean exibeMenuListaReservaQuintaDoHorto(){
-		Boolean exibeMenuArquivo = Boolean.FALSE;
-		if(this.usuario.getId() == 368 || this.usuario.getId() == 369 || this.usuario.getId() == 425 || this.usuario.getId() == 469){
-			exibeMenuArquivo = Boolean.TRUE;
-		}		
-		return exibeMenuArquivo;
-	}
+//	public Boolean exibeMenuListaReservaQuintaDoHorto(){
+//		Boolean exibeMenuArquivo = Boolean.FALSE;
+//		if(this.usuario.getId() == 368 || this.usuario.getId() == 369 || this.usuario.getId() == 425 || this.usuario.getId() == 469){
+//			exibeMenuArquivo = Boolean.TRUE;
+//		}		
+//		return exibeMenuArquivo;
+//	}
 	
 	public Boolean sindicoGeralAssociado(){
 		Boolean sindicoGeralAssociado = Boolean.TRUE;

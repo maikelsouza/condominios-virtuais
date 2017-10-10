@@ -134,9 +134,13 @@ public class UsuarioServiceImpl implements UsuarioService, Serializable {
 	}
 
 	@Override
-	public void associar(List<Usuario> listaDeUsuarios, Integer idGrupoUsuario) throws SQLException, Exception {
-		this.usuarioDAO.associarUsuariosGrupoUsuario(listaDeUsuarios, idGrupoUsuario);
-		
+	public void associar(List<Usuario> listaUsuariosAssociados, List<Usuario> listaOriginalUsuariosAssociados, Integer idGrupoUsuario) throws SQLException, Exception {
+		this.usuarioDAO.associarUsuariosGrupoUsuario(listaUsuariosAssociados, listaOriginalUsuariosAssociados, idGrupoUsuario);		
+	}
+	
+	@Override
+	public void desassociar(List<Usuario> listaDeUsuarios, Integer idGrupoUsuario) throws SQLException, Exception {
+		this.usuarioDAO.desassociarUsuariosGrupoUsuario(listaDeUsuarios, idGrupoUsuario);		
 	}
 
 }

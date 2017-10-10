@@ -22,6 +22,8 @@ public interface UsuarioService {
 	
 	public abstract Usuario buscarSindicoGeralPorCondominio(Condominio condominio) throws SQLException, Exception;
 	
-	public abstract void associar(List<Usuario> listaDeUsuarios, Integer idGrupoUsuario) throws SQLException, Exception;
+	public abstract void associar(List<Usuario> listaUsuariosAssociados, List<Usuario> listaOriginalUsuariosAssociados, Integer idGrupoUsuario) throws SQLException, Exception;
+	
+	public abstract void desassociar(List<Usuario> listaDeUsuarios, Integer idGrupoUsuario) throws SQLException, Exception;
 
 }
