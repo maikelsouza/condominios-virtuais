@@ -144,10 +144,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 		query.append(",");
 		query.append(SITUACAO);
 		query.append(",");
-// TODO: Código comentado em 25/09/2017. Apagar em 180 dias		
-//		query.append(ID_GRUPO_USUARIO);
-//		query.append(",");
-//		query.append(CPF);
+		query.append(CPF);
 		query.append(") ");
 		query.append("VALUES(?,?,?,?,?,?)");
 		PreparedStatement statement = null;
@@ -158,8 +155,6 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 			SQLUtil.setValorPpreparedStatement(statement, 3,  AplicacaoUtil.gerarHashMD5(usuario.getSenha()), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement, 4, usuario.getDataNascimento(), java.sql.Types.DATE);
 			SQLUtil.setValorPpreparedStatement(statement, 5, usuario.getSituacao(), java.sql.Types.INTEGER);
-// TODO: Código comentado em 25/09/2017. Apagar em 180 dias			
-//			SQLUtil.setValorPpreparedStatement(statement, 6, usuario.getIdGrupoUsuario(), java.sql.Types.INTEGER );
 			SQLUtil.setValorPpreparedStatement(statement, 6, usuario.getCpf(), java.sql.Types.BIGINT);
 			statement.executeUpdate();
 			ResultSet rs = statement.getGeneratedKeys();
@@ -173,7 +168,13 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 				this.usuarioCondominioDAO.get().salvarUsuarioCondominio(usuarioCondominio, con);
 			}
 			usuario.getEmail().setIdUsuario(usuario.getId());
-			this.emailUsuarioDAO.get().salvar(usuario.getEmail(), con);			
+			this.emailUsuarioDAO.get().salvar(usuario.getEmail(), con);
+			for (GrupoUsuario grupoUsuario : usuario.getListaGrupoUsuario()) {
+				UsuarioGrupoUsuario usuarioGrupoUsuario = new UsuarioGrupoUsuario();
+				usuarioGrupoUsuario.setIdUsuario(usuario.getId());
+				usuarioGrupoUsuario.setIdGrupoUsuario(grupoUsuario.getId());
+				this.usuarioGrupoUsuarioDAO.salvar(usuarioGrupoUsuario, con);
+			}
 		} catch (NumberFormatException e) {
 			con.rollback();
 			throw e;

@@ -22,5 +22,7 @@ public interface UsuarioGrupoUsuarioDAO {
 	public abstract void desassociar(List<UsuarioGrupoUsuario> listaUsuarioGrupoUsuario) throws SQLException, Exception;
 	
 	public abstract void excluirPorIdGrupoUsuarioEIdUsuario(Integer idGrupoUsuario, Integer idUsuario, Connection con) throws SQLException, Exception;
+	
+	public abstract void salvar(UsuarioGrupoUsuario usuarioGrupoUsuario, Connection con) throws SQLException, Exception;
 
 }

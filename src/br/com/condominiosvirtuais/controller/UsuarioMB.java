@@ -59,27 +59,27 @@ public class UsuarioMB implements Serializable {
 		listaUsuariosNaoAssociados = new ArrayList<UsuarioVO>();
 		listaOriginalUsuariosAssociados = new ArrayList<UsuarioVO>();
 		this.grupoUsuario = (GrupoUsuario) ManagedBeanUtil.getSession(Boolean.FALSE).getAttribute(AtributoSessaoEnum.GRUPO_USUARIO.getAtributo());
+		Integer idCondominio = (Integer) ManagedBeanUtil.getSession(Boolean.FALSE).getAttribute(AtributoSessaoEnum.ID_CONDOMINIO.getAtributo());
 		
 		try{
-			for (CondominoVO condominoVO : this.condominoService.buscarPorIdsEidGrupoUsuarioESituacaoSemImagem(grupoUsuario.getIdCondominio(), 
+			for (CondominoVO condominoVO : this.condominoService.buscarPorIdsEidGrupoUsuarioESituacaoSemImagem(idCondominio, 
 					grupoUsuario.getId(), UsuarioSituacaoEnum.ATIVO.getSituacao())) {
 				listaUsuariosAssociados.add(this.popularUsuarioVO(condominoVO));
 				listaOriginalUsuariosAssociados.add(this.popularUsuarioVO(condominoVO));
 			}		
-			for (CondominoVO condominoVO : this.condominoService.buscarPorIdsESituacaoSemImagem(grupoUsuario.getIdCondominio(), 
+			for (CondominoVO condominoVO : this.condominoService.buscarPorIdsESituacaoSemImagem(idCondominio, 
 					UsuarioSituacaoEnum.ATIVO.getSituacao())) {
 				listaUsuariosNaoAssociados.add(this.popularUsuarioVO(condominoVO));
 			}		
-			for (Funcionario funcionario : this.funcionarioService.buscarPorCondominioESituacaoSemImagem(grupoUsuario.getIdCondominio(),
+			for (Funcionario funcionario : this.funcionarioService.buscarPorCondominioESituacaoSemImagem(idCondominio,
 					UsuarioSituacaoEnum.ATIVO.getSituacao())) {
 				listaUsuariosNaoAssociados.add(this.popularUsuarioVO(funcionario));	
 			}		
-			for (Funcionario funcionario : this.funcionarioService.buscarPorIdCondominioEIdGrupoUsuarioESituacaoSemImagem(grupoUsuario.getIdCondominio(), 
+			for (Funcionario funcionario : this.funcionarioService.buscarPorIdCondominioEIdGrupoUsuarioESituacaoSemImagem(idCondominio, 
 					grupoUsuario.getId(),UsuarioSituacaoEnum.ATIVO.getSituacao())) {
 				listaUsuariosAssociados.add(this.popularUsuarioVO(funcionario));	
 				listaOriginalUsuariosAssociados.add(this.popularUsuarioVO(funcionario));
 			}
-			//listaUsuariossAssociados = new ArrayList<UsuarioVO>(listaUsuariosAssociados); 
 			
 			Collections.sort(this.listaUsuariosAssociados);
 			Collections.sort(this.listaUsuariosNaoAssociados);

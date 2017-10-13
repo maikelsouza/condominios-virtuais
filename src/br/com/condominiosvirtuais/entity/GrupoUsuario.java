@@ -1,7 +1,6 @@
 package br.com.condominiosvirtuais.entity;
 
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.List;
 
 import br.com.condominiosvirtuais.enumeration.GrupoUsuarioPadraoEnum;
@@ -58,13 +57,17 @@ public class GrupoUsuario implements Serializable {
 	}
 
 	public String getNome() {
-		// Condição criada para garantir que só irá recuperar os grupos fixos do sistema, onde terão seus nomes i18n, os outros são cadastrados pelo usuário
-		if(this.getPadrao().booleanValue() == GrupoUsuarioPadraoEnum.SIM.getPadrao() && 
-				this.getSituacao().booleanValue() == GrupoUsuarioSituacaoEnum.ATIVO.getSituacao().booleanValue()
-				&& (this.getIdCondominio() == null || this.getIdEscritorioContabilidade() == null || this.getIdSindicoProfissional() == null)) {
-			return AplicacaoUtil.i18n(nome);
+		if(this.nome != null){
+			// Condição criada para garantir que só irá recuperar os grupos fixos do sistema, onde terão seus nomes i18n, os outros são cadastrados pelo usuário
+			if(this.getPadrao().booleanValue() == GrupoUsuarioPadraoEnum.SIM.getPadrao() && 
+					this.getSituacao().booleanValue() == GrupoUsuarioSituacaoEnum.ATIVO.getSituacao().booleanValue()
+					&& this.getIdCondominio() == null && this.getIdEscritorioContabilidade() == null && this.getIdSindicoProfissional() == null) {
+				return AplicacaoUtil.i18n(this.nome);
+			}else{
+				return this.nome;
+			}
 		}else{
-			return nome;
+			return this.nome;
 		}
 	}
 
@@ -123,24 +126,32 @@ public class GrupoUsuario implements Serializable {
 //	}
 	
 	public String getDescricaoLimitado(){
-		// Condição criada para garantir que só irá recuperar os grupos fixos do sistema, onde terão seus nomes i18n, os outros são cadastrados pelo usuário
-		if(this.getPadrao().booleanValue() == GrupoUsuarioPadraoEnum.SIM.getPadrao() && 
-				this.getSituacao().booleanValue() == GrupoUsuarioSituacaoEnum.ATIVO.getSituacao().booleanValue()
-				&& (this.getIdCondominio() == null || this.getIdEscritorioContabilidade() == null || this.getIdSindicoProfissional() == null)) {
-			return AplicacaoUtil.i18n(descricao);
+		if(this.descricao != null){
+			// Condição criada para garantir que só irá recuperar os grupos fixos do sistema, onde terão seus nomes i18n, os outros são cadastrados pelo usuário
+			if(this.getPadrao().booleanValue() == GrupoUsuarioPadraoEnum.SIM.getPadrao() && 
+					this.getSituacao().booleanValue() == GrupoUsuarioSituacaoEnum.ATIVO.getSituacao().booleanValue()
+					&& this.getIdCondominio() == null && this.getIdEscritorioContabilidade() == null && this.getIdSindicoProfissional() == null) {
+				return AplicacaoUtil.i18n(descricao);
+			}else{
+				Integer limite = 80;
+				return this.descricao.length() > limite ? this.descricao.substring(0,limite) + "..." : this.descricao;
+			}
 		}else{
-			Integer limite = 80;
-			return this.descricao.length() > limite ? this.descricao.substring(0,limite) + "..." : this.descricao;
+			return this.descricao;
 		}
 	}
 	
 	public String getDescricao() {
-		// Condição criada para garantir que só irá recuperar os grupos fixos do sistema, onde terão seus nomes i18n, os outros são cadastrados pelo usuário
-		if(this.getPadrao().booleanValue() == GrupoUsuarioPadraoEnum.SIM.getPadrao() && 
-				this.getSituacao().booleanValue() == GrupoUsuarioSituacaoEnum.ATIVO.getSituacao().booleanValue()
-					&& (this.getIdCondominio() == null || this.getIdEscritorioContabilidade() == null || this.getIdSindicoProfissional() == null)) {
-			return AplicacaoUtil.i18n(descricao);
-		}else{	
+		if(this.descricao != null){
+			// Condição criada para garantir que só irá recuperar os grupos fixos do sistema, onde terão seus nomes i18n, os outros são cadastrados pelo usuário
+			if(this.getPadrao().booleanValue() == GrupoUsuarioPadraoEnum.SIM.getPadrao() && 
+					this.getSituacao().booleanValue() == GrupoUsuarioSituacaoEnum.ATIVO.getSituacao().booleanValue()
+					&& this.getIdCondominio() == null && this.getIdEscritorioContabilidade() == null && this.getIdSindicoProfissional() == null) {
+				return AplicacaoUtil.i18n(descricao);
+			}else{	
+				return this.descricao;
+			}
+		}else{
 			return this.descricao;
 		}
 	}

@@ -248,4 +248,30 @@ public class UsuarioGrupoUsuarioDAOImpl implements UsuarioGrupoUsuarioDAO, Seria
 		}
 	}
 
+	@Override
+	public void salvar(UsuarioGrupoUsuario usuarioGrupoUsuario, Connection con) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		try {	
+			query.append("INSERT INTO "); 
+			query.append(USUARIO_GRUPO_USUARIO);
+			query.append("(");
+			query.append(ID_USUARIO); 
+			query.append(",");
+			query.append(ID_GRUPO_USUARIO); 
+			query.append(") ");
+			query.append("VALUES(?,?)");	
+			PreparedStatement preparedStatement = null;
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, usuarioGrupoUsuario.getIdUsuario(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 2, usuarioGrupoUsuario.getIdGrupoUsuario(), java.sql.Types.INTEGER);
+			preparedStatement.execute();
+		} catch (SQLException e) {		
+			con.rollback();
+			throw e;
+		}catch (Exception e) {
+			con.rollback();
+			throw e;		
+		}
+	}
+
 }

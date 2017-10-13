@@ -89,6 +89,8 @@ public class GrupoUsuarioMB implements Serializable {
 	private List<SelectItem> listaSITipoUsuario;
 	
 	private List<GrupoUsuario> listaGrupoUsuarioTipoSindicoCondominoEFuncionario = new ArrayList<GrupoUsuario>();
+	
+	private Integer idCondominio;
 
 	
 	public void iniciarTelaVO (){
@@ -99,6 +101,7 @@ public class GrupoUsuarioMB implements Serializable {
 	@PostConstruct
 	public void inciarGrupoUsuarioMB(){
 		this.grupoUsuario = new GrupoUsuario();
+		this.grupoUsuario.setSituacao(GrupoUsuarioSituacaoEnum.ATIVO.getSituacao());
 		this.condominio = new Condominio();
 		this.listaSICondominios = this.condominioMB.get().buscarListaCondominiosAtivos();
 		this.checadoTodos = Boolean.FALSE;
@@ -117,10 +120,10 @@ public class GrupoUsuarioMB implements Serializable {
 		listaTipoUsuarioSindicoCondominoEFuncionario.add(GrupoUsuarioTipoUsuarioEnum.FUNCIONARIO.getTipoUsuario());
 		try {
 			if(this.situacao == -1){
-				listaGrupoUsuario = this.grupoUsuarioService.buscarPorIdCondominio(this.grupoUsuario.getIdCondominio());
+				listaGrupoUsuario = this.grupoUsuarioService.buscarPorIdCondominio(this.idCondominio);
 				this.listaGrupoUsuarioTipoSindicoCondominoEFuncionario = this.grupoUsuarioService.buscarGruposFixosTipoUsuarioSindicoCondominoEFuncionarioEPadrao(listaTipoUsuarioSindicoCondominoEFuncionario,GrupoUsuarioPadraoEnum.SIM.getPadrao());
 			}else{
-				listaGrupoUsuario = this.grupoUsuarioService.buscarPorIdCondominioESituacao(this.grupoUsuario.getIdCondominio(),
+				listaGrupoUsuario = this.grupoUsuarioService.buscarPorIdCondominioESituacao(this.idCondominio,
 						this.situacao == 1 ? GrupoUsuarioSituacaoEnum.ATIVO.getSituacao() : GrupoUsuarioSituacaoEnum.INATIVO.getSituacao());
 				this.listaGrupoUsuarioTipoSindicoCondominoEFuncionario = this.grupoUsuarioService.buscarGruposFixosTipoUsuarioSindicoCondominoEFuncionarioEPadraoESituacao(listaTipoUsuarioSindicoCondominoEFuncionario,
 						GrupoUsuarioPadraoEnum.SIM.getPadrao(), this.situacao == 1 ? GrupoUsuarioSituacaoEnum.ATIVO.getSituacao() : GrupoUsuarioSituacaoEnum.INATIVO.getSituacao());
@@ -146,6 +149,7 @@ public class GrupoUsuarioMB implements Serializable {
 			this.populaTelaVO();
 			this.grupoUsuario = new GrupoUsuario();
 			this.grupoUsuario.setPadrao(Boolean.FALSE);
+			this.grupoUsuario.setSituacao(GrupoUsuarioSituacaoEnum.ATIVO.getSituacao());
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
@@ -353,12 +357,9 @@ public class GrupoUsuarioMB implements Serializable {
 	}
 	
 	public String associarUsuarioCondominioGrupoUsuario(){
-		Integer idCondominio = this.grupoUsuario.getIdCondominio(); 
+		 
 		this.grupoUsuario = (GrupoUsuario) this.listaGruposUsuarios.getRowData();
-		// Condição criada para contemplar os casos dos grupos fixos, onde o idCondominio é null
-		if (this.grupoUsuario.getIdCondominio() == null){
-			this.grupoUsuario.setIdCondominio(idCondominio);
-		}
+		ManagedBeanUtil.getSession(Boolean.FALSE).setAttribute(AtributoSessaoEnum.ID_CONDOMINIO.getAtributo(),this.idCondominio);
 		ManagedBeanUtil.getSession(Boolean.FALSE).setAttribute(AtributoSessaoEnum.GRUPO_USUARIO.getAtributo(),this.grupoUsuario);		
 		this.usuarioMB.buscarUsuariosAssociadosOuNao();
 		return "associarUsuarioCondominio";		
@@ -513,7 +514,8 @@ public class GrupoUsuarioMB implements Serializable {
 		}
 		this.listaTelaVO = new ListDataModel<TelaVO>(listaTelaVO);
 	}
-	
+
+// TODO: Código comentado em 12/10/2017. Apagar em 180 dias
 //	private void populaEditarTelaVO() throws SQLException, Exception{
 //		TelaVO telaVO = null;
 //		List<TelaVO> listaTelaVO = new ArrayList<TelaVO>();
@@ -719,7 +721,15 @@ public class GrupoUsuarioMB implements Serializable {
 
 	public void setListaSITipoUsuario(List<SelectItem> listaSITipoUsuario) {
 		this.listaSITipoUsuario = listaSITipoUsuario;
-	}	
+	}		
+
+	public Integer getIdCondominio() {
+		return idCondominio;
+	}
+
+	public void setIdCondominio(Integer idCondominio) {
+		this.idCondominio = idCondominio;
+	}
 
 	private void popularSituacao(){
 		this.listaSISituacao = new ArrayList<SelectItem>();
