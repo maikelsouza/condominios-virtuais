@@ -24,5 +24,7 @@ public interface UsuarioGrupoUsuarioDAO {
 	public abstract void excluirPorIdGrupoUsuarioEIdUsuario(Integer idGrupoUsuario, Integer idUsuario, Connection con) throws SQLException, Exception;
 	
 	public abstract void salvar(UsuarioGrupoUsuario usuarioGrupoUsuario, Connection con) throws SQLException, Exception;
+	
+	public abstract void atualizar(UsuarioGrupoUsuario usuarioGrupoUsuario, Connection con) throws SQLException, Exception;
 
 }

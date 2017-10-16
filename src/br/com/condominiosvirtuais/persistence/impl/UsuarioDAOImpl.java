@@ -415,9 +415,6 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 		query.append(" = ?, ");
 		query.append(SITUACAO); 
 		query.append(" = ?, ");
-//TODO: Código comentado em 25/09/2017. Apagar em 180 dias	
-//		query.append(ID_GRUPO_USUARIO); 
-//		query.append(" = ?, ");	
 		query.append(CPF); 
 		query.append(" = ? ");
 		query.append("WHERE ");
@@ -430,8 +427,6 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 			SQLUtil.setValorPpreparedStatement(statement, 2, usuario.getSexo(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 3, usuario.getDataNascimento(), java.sql.Types.DATE);
 			SQLUtil.setValorPpreparedStatement(statement, 4, usuario.getSituacao(), java.sql.Types.INTEGER);
-// TODO: Código comentado em 25/09/2017. Apagar em 180 dias			
-//			SQLUtil.setValorPpreparedStatement(statement, 5, usuario.getIdGrupoUsuario(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 5, usuario.getCpf(), java.sql.Types.BIGINT);			
 			SQLUtil.setValorPpreparedStatement(statement, 6, usuario.getId(), java.sql.Types.INTEGER);
 			statement.executeUpdate();					

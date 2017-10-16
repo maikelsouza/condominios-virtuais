@@ -273,5 +273,35 @@ public class UsuarioGrupoUsuarioDAOImpl implements UsuarioGrupoUsuarioDAO, Seria
 			throw e;		
 		}
 	}
+	
+	@Override
+	public void atualizar(UsuarioGrupoUsuario usuarioGrupoUsuario, Connection con) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		try {	
+			query.append("UPDATE ");
+			query.append(USUARIO_GRUPO_USUARIO);
+			query.append(" SET ");
+			query.append(ID_USUARIO); 
+			query.append(" = ?,");
+			query.append(ID_GRUPO_USUARIO); 
+			query.append(" = ?");
+			query.append("WHERE ");					
+			query.append(ID);
+			query.append(" = ?");
+			PreparedStatement preparedStatement = null;
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, usuarioGrupoUsuario.getIdUsuario(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 2, usuarioGrupoUsuario.getIdGrupoUsuario(), java.sql.Types.INTEGER);
+			preparedStatement.execute();
+		} catch (SQLException e) {		
+			con.rollback();
+			throw e;
+		}catch (Exception e) {
+			con.rollback();
+			throw e;		
+		}
+	}
+	
+	
 
 }
