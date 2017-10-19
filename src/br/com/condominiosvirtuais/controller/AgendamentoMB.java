@@ -20,9 +20,12 @@ import javax.inject.Named;
 import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Agendamento;
+import br.com.condominiosvirtuais.entity.Bloco;
 import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.Condomino;
 import br.com.condominiosvirtuais.entity.SindicoProfissional;
+import br.com.condominiosvirtuais.entity.Unidade;
+import br.com.condominiosvirtuais.entity.Usuario;
 import br.com.condominiosvirtuais.enumeration.AgendamentoSituacaoEnum;
 import br.com.condominiosvirtuais.enumeration.AgendamentoTipoEnum;
 import br.com.condominiosvirtuais.enumeration.TipoGrupoUsuarioEnum;
@@ -151,7 +154,23 @@ public class AgendamentoMB implements Serializable {
 					FacesContext context  = FacesContext.getCurrentInstance();
 					context.addMessage(null, facesMessage);
 					return null;
-				}	
+				}
+				// Regra para não deixar um condômino fazer agendamento de mudança para o mesmo bloco no mesmo dia. 
+				List<Agendamento> listaAgendamento = this.agendamentoService.buscarPorCondominioEData(this.condominio, this.agendamento.getData());
+				if(!listaAgendamento.isEmpty()){
+					Condomino condomino = this.condominoService.buscarPorId(AplicacaoUtil.getUsuarioAutenticado().getId());
+					Unidade unidade = this.unidadeService.buscarPorId(condomino.getIdUnidade());
+					Bloco bloco = this.blocoService.buscarPorId(unidade.getIdBloco());					
+					for (Agendamento agendamento : listaAgendamento) {
+						if(agendamento.getBloco().getId().intValue() == bloco.getId().intValue()){
+							FacesMessage facesMessage = new FacesMessage("Já existe um agendamento para a "+bloco.getNome()+" nesse dia.");
+							facesMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
+							FacesContext context  = FacesContext.getCurrentInstance();
+							context.addMessage(null, facesMessage);
+							return null;
+						}
+					}
+				}
 			}
 			
 			

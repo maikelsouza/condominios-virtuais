@@ -2,6 +2,7 @@ package br.com.condominiosvirtuais.service.impl;
 
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -111,6 +112,11 @@ public class AgendamentoServiceImpl implements Serializable, AgendamentoService 
 	@Override
 	public List<Agendamento> buscarPorCondominioETipo(Condominio condominio, String tipo) throws SQLException, Exception {
 		return this.agendamentoDAO.buscarPorCondominioETipo(condominio, tipo);
+	}
+
+	@Override
+	public List<Agendamento> buscarPorCondominioEData(Condominio condominio, Date data) throws SQLException, Exception {		
+		return this.agendamentoDAO.buscarPorCondominioEData(condominio, data);
 	}
 	
 
