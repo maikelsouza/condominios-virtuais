@@ -47,9 +47,6 @@ public class EmailThread extends Thread {
 				List<Email> listaEmail = this.emailService.buscar(Integer.parseInt(this.configuracaoAplicacaoService.getConfiguracoes().
 			    get(ConfiguracaoAplicacaoEnum.QTD_ENVIO_EMAIL_LOTE.getChave())));
 				for (Email email : listaEmail) {
-// TODO: Código comentado em 06/08/2016. Apagar em 180 dias					
-					//this.emailService.enviar(email);
-					//email.setPara("condominiosvirtuais@hotmail.com");
 					this.emailService.enviarHTML(email, principalMB.getCaminhoAplicacao(), principalMB.getCharset());
 					this.emailService.excluir(email);					 
 				 }
