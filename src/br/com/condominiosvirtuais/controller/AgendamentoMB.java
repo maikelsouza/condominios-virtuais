@@ -4,10 +4,13 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
@@ -137,6 +140,21 @@ public class AgendamentoMB implements Serializable {
 			this.agendamento.setUnidade(this.unidadeService.buscarPorId(this.condomino.getIdUnidade()));
 			this.agendamento.setBloco(this.blocoService.buscarPorId(this.agendamento.getUnidade().getIdBloco()));
 			this.agendamento.setCondomino(this.condomino);
+			// FIXME: Regra temporária. Essa deve ser criada para um modelo genérico
+			if(this.condominio.getId() == 8){
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(new Date());
+				calendar.add(Calendar.HOUR_OF_DAY, 48);
+				if(this.agendamento.getData().before(calendar.getTime())){	
+					FacesMessage facesMessage = new FacesMessage("O período de agendamento deve ser superior a 48 horas");
+					facesMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
+					FacesContext context  = FacesContext.getCurrentInstance();
+					context.addMessage(null, facesMessage);
+					return null;
+				}	
+			}
+			
+			
 			this.agendamentoService.solicitarAgendamento(this.agendamento,this.condominio.getSindicoGeral().getNome(),this.condominio.getSindicoGeral().getEmail().getEmail());
 			this.agendamento = new Agendamento();	
 			this.popularListaMeusAgendamentos();

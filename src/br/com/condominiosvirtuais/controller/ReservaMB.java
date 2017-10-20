@@ -159,6 +159,15 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 					context.addMessage(null, facesMessage);
 					return null;
 				}
+				calendar.setTime(new Date());
+				calendar.add(Calendar.HOUR_OF_DAY, 72);
+				if(this.reserva.getData().before(calendar.getTime())){
+					FacesMessage facesMessage = new FacesMessage("O período de reserva deve ser superior a 72 horas");
+					facesMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
+					FacesContext context  = FacesContext.getCurrentInstance();
+					context.addMessage(null, facesMessage);
+					return null;
+				}
 			}
 			this.populaNomeMeusAmbiente();
 			this.reservaService.solicitar(this.reserva,this.condominio.getSindicoGeral().getEmail().getEmail(),this.condominio.getSindicoGeral().getNome() );
