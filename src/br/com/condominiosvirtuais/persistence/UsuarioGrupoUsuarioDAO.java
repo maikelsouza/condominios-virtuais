@@ -13,7 +13,7 @@ public interface UsuarioGrupoUsuarioDAO {
 		
 	public abstract void excluirPorIdGrupoUsuario(Integer idGrupoUsuario, Connection con) throws SQLException, Exception;
 	
-	public abstract List<UsuarioGrupoUsuario> buscarPorIdGrupoUsuario(Integer idGrupoUsuario, Integer idUsuario, Connection con) throws SQLException, Exception;
+	public abstract UsuarioGrupoUsuario buscarPorIdGrupoUsuarioEIdUsuario(Integer idGrupoUsuario, Integer idUsuario, Connection con) throws SQLException, Exception;
 	
 	public abstract void associar(List<UsuarioGrupoUsuario> listaUsuariosAssociados, List<UsuarioGrupoUsuario> listaOriginalUsuariosAssociados) throws SQLException, Exception;
 	
@@ -26,5 +26,7 @@ public interface UsuarioGrupoUsuarioDAO {
 	public abstract void salvar(UsuarioGrupoUsuario usuarioGrupoUsuario, Connection con) throws SQLException, Exception;
 	
 	public abstract void atualizar(UsuarioGrupoUsuario usuarioGrupoUsuario, Connection con) throws SQLException, Exception;
+	
+	public abstract void excluirPorId(Integer id, Connection con) throws SQLException, Exception;
 
 }

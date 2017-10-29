@@ -40,22 +40,20 @@
 						<h:outputLabel value="#{msg['grupoUsuario.padrao']}:" for="idPadrao" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
-					<h:panelGroup id="idPainelGroupSelectOneMenuLabelTipoUsuario">	
-						<h:outputLabel id="idLabelTipoUsuario" value="#{msg['grupoUsuario.tipoUsuario']}:" for="idSelectOneMenuTipoUsuairo" rendered="#{grupoUsuarioMB.grupoUsuario.padrao}" />
+					<h:panelGroup>
+						<h:outputLabel id="idLabelTipoUsuario" value="#{msg['grupoUsuario.tipoUsuario']}:" for="idSelectOneMenuTipoUsuairo" />
+						<span class="asterisco">*</span>
 					</h:panelGroup>
 					<h:outputLabel value="" />
 					<h:selectOneMenu id="idPadrao" value="#{grupoUsuarioMB.grupoUsuario.padrao}"
 						defaultLabel="#{msg['grupoUsuario.padrao.DefaultLabel']}" label="#{msg['grupoUsuario.padrao.label']}">
 						<f:selectItems value="#{grupoUsuarioMB.listaSIPadrao}" />
-						<f:ajax listener="#{grupoUsuarioMB.habilitarTipoUsuario}" render="idPainelGroupSelectOneMenuLabelTipoUsuario idPainelGroupSelectOneMenuTipoUsuairo" />
 					</h:selectOneMenu>
-					<h:panelGroup id="idPainelGroupSelectOneMenuTipoUsuairo">
-						<h:selectOneMenu id="idSelectOneMenuTipoUsuairo" value="#{grupoUsuarioMB.grupoUsuario.tipoUsuario}" rendered="#{grupoUsuarioMB.grupoUsuario.padrao}"
-							defaultLabel="#{msg['grupoUsuario.tipoUsuario.DefaultLabel']}" label="#{msg['grupoUsuario.tipoUsuario.label']}" required="#{grupoUsuarioMB.grupoUsuario.padrao}">
-							<f:selectItem itemLabel="#{msg['grupoUsuario.tipoUsuario.DefaultLabel']}" noSelectionOption="true" />
-							<f:selectItems value="#{grupoUsuarioMB.listaSITipoUsuario}" />
-						</h:selectOneMenu>
-					</h:panelGroup>
+					<h:selectOneMenu id="idSelectOneMenuTipoUsuairo" value="#{grupoUsuarioMB.grupoUsuario.tipoUsuario}" 
+						defaultLabel="#{msg['grupoUsuario.tipoUsuario.DefaultLabel']}" label="#{msg['grupoUsuario.tipoUsuario.label']}" required="true">
+						<f:selectItem itemLabel="#{msg['grupoUsuario.tipoUsuario.DefaultLabel']}" noSelectionOption="true" />
+						<f:selectItems value="#{grupoUsuarioMB.listaSITipoUsuario}" />
+					</h:selectOneMenu>
 				</h:panelGrid>
 				
 				<rich:panel header="#{msg.listaTelaGrupoUsuario}">

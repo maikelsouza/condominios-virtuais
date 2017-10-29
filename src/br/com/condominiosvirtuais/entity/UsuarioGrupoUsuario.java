@@ -8,6 +8,15 @@ public class UsuarioGrupoUsuario {
 	
 	private Integer idGrupoUsuario;
 
+	
+	public UsuarioGrupoUsuario(Integer id, Integer idUsuario, Integer idGrupoUsuario){
+		this.id = id;
+		this.idUsuario = idUsuario;		
+		this.idGrupoUsuario = idGrupoUsuario;
+	}
+	
+	public UsuarioGrupoUsuario(){}
+	
 	public Integer getId() {
 		return id;
 	}

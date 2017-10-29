@@ -358,45 +358,63 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 			con.rollback();
 			throw e;
 		}	
-	}
+	}	
 	
-	private void popularUsuarioGrupoUsuarioCondomino(List<UsuarioGrupoUsuario> listaUsuarioGrupoUsuario, Integer idCondominnio) throws SQLException, Exception{
-		List<GrupoUsuario> listaGrupoUsuario = new ArrayList<GrupoUsuario>();
-		listaGrupoUsuario.addAll(this.grupoUsuarioService.buscarPorIdCondominioEPadraoETipoUsuarioESituacao(idCondominnio,
-				GrupoUsuarioPadraoEnum.SIM.getPadrao(), GrupoUsuarioTipoUsuarioEnum.CONDOMINO.getTipoUsuario(),GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));
-		if(listaGrupoUsuario.isEmpty()){
-			listaGrupoUsuario.add(this.grupoUsuarioService.buscarPorPadraoETipoUsuarioESituacao(GrupoUsuarioPadraoEnum.SIM.getPadrao(), GrupoUsuarioTipoUsuarioEnum.CONDOMINO.getTipoUsuario(),GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));			
-		}
-		// FIXME: Testar essa parte
-		//usuarioGrupoUsuario.setIdGrupoUsuario(idGrupoUsuario);
-		//this.condomino.setListaGrupoUsuario(listaGrupoUsuario);
-			
-	}
 	
 	public void excluirGestorCondominioPorCondominio(Condominio condominio, Connection con) throws SQLException, Exception{
 		StringBuffer query = new StringBuffer();	
 		PreparedStatement statement = null;		
 		// Código que atualiza os usuarios, que não serão mais gestores, setando o seu grupo para condônino.
 		List<GestorCondominio> listaGestores = this.buscarListaGestoresCondominioPorCondominio(condominio);
-		List<UsuarioGrupoUsuario> listaUsuarioGrupoUsuario = new ArrayList<UsuarioGrupoUsuario>();
-		Usuario usuario = null;
+		// UsuarioGrupoUsuario que representa o condômino que está persistido no banco, antes do usuário modificar 
+		UsuarioGrupoUsuario usuarioGrupoUsuarioAtualCondomino = null;
+		// UsuarioGrupoUsuario que representa o síndico que está persistido no banco, antes do usuário modificar
+		UsuarioGrupoUsuario usuarioGrupoUsuarioAtualSindico = null;
+		// Usuario que representa o síndico que está persistido no banco, antes do usuário modificar
+		Usuario sindicoAtual = null;		
+		// Usuario que representa o condômino que está persistido no banco, antes do usuário modificar
+		Usuario condominoAtual = null;		
 		for (GestorCondominio gestorCondominio : listaGestores) {
-			usuario = this.usuarioDAO.buscarPorId(gestorCondominio.getIdUsuario());
+			sindicoAtual = this.usuarioDAO.buscarPorId(gestorCondominio.getIdUsuario());
 			// Caso o usuário seja um síndico profissional ele não muda o grupo, apenas saí da gestão do condomínio.
-			if(!this.existeTipoUsuarioGrupoUsuario(usuario, GrupoUsuarioTipoUsuarioEnum.SINDICO_PROFISSIONAL.getTipoUsuario())){
-				this.removeSindicoProfissionalEAdicionaCondomino(gestorCondominio.getIdCondominio(), usuario);
+			if(!this.existeTipoUsuarioGrupoUsuario(sindicoAtual, GrupoUsuarioTipoUsuarioEnum.SINDICO_PROFISSIONAL.getTipoUsuario())){
+				this.removeSindicoProfissionalEAdicionaCondomino(gestorCondominio.getIdCondominio(), sindicoAtual);
 			}			
-			if (this.existeTipoUsuarioGrupoUsuario(usuario, GrupoUsuarioTipoUsuarioEnum.SINDICO.getTipoUsuario())){				
-				for (GrupoUsuario grupoUsuario : usuario.getListaGrupoUsuario()) {
+			if (this.existeTipoUsuarioGrupoUsuario(sindicoAtual, GrupoUsuarioTipoUsuarioEnum.SINDICO.getTipoUsuario())){				
+				for (GrupoUsuario grupoUsuario : sindicoAtual.getListaGrupoUsuario()) {
 					if(grupoUsuario.getTipoUsuario() == GrupoUsuarioTipoUsuarioEnum.SINDICO.getTipoUsuario()){
-						listaUsuarioGrupoUsuario.addAll(this.usuarioGrupoUsuarioDAO.buscarPorIdGrupoUsuario(grupoUsuario.getId(), usuario.getId(), con));
+						usuarioGrupoUsuarioAtualSindico = this.usuarioGrupoUsuarioDAO.buscarPorIdGrupoUsuarioEIdUsuario(grupoUsuario.getId(), sindicoAtual.getId(), con);
 					}
-				}		
-				for (UsuarioGrupoUsuario usuarioGrupoUsuario : listaUsuarioGrupoUsuario) {
-					this.usuarioGrupoUsuarioDAO.atualizar(usuarioGrupoUsuario, con);
 				}
+				
+				condominoAtual = this.usuarioDAO.buscarPorId(condominio.getSindicoGeral().getId());
+				for (GrupoUsuario grupoUsuario : condominoAtual.getListaGrupoUsuario()) {
+					if(grupoUsuario.getTipoUsuario() == GrupoUsuarioTipoUsuarioEnum.CONDOMINO.getTipoUsuario()){
+						usuarioGrupoUsuarioAtualCondomino = this.usuarioGrupoUsuarioDAO.buscarPorIdGrupoUsuarioEIdUsuario(grupoUsuario.getId(), condominoAtual.getId(), con);
+					}
+				}	
+				
+				// Caso não encontre nenhum novo usuário (condômino) associado a um grupo de usuário, ou seja, não houve a atualização do síndico, então exclui o 
+				// síndico atual, pois esse será incluso num outro momento dessa ação.
+				if(usuarioGrupoUsuarioAtualCondomino == null){
+					// Condição que considera uma atulização do condôminio, sem modificar o síndico
+					if(sindicoAtual.getId().intValue() == condominoAtual.getId().intValue()){
+						this.usuarioGrupoUsuarioDAO.excluirPorId(usuarioGrupoUsuarioAtualSindico.getId(), con);
+					}else{ // Caso onde atualiza o condomínio e o novo síndico não possuia grupo, então atualiza o grupo de usuários do síndico anterior, e o novo
+						   // síndico será inserido na tabela USUARIO_GRUPO_USUARIO mais à frete
+						this.popularUsuarioGrupoUsuarioCondomino(usuarioGrupoUsuarioAtualSindico, condominio.getId());
+						this.usuarioGrupoUsuarioDAO.atualizar(usuarioGrupoUsuarioAtualSindico, con);						
+					}
+				}else{
+					// Modifica os grupos de seus usuários, ou seja, o síndico virá condômino e o condômino será removido, pois será inserido um novo síndico mais à frente
+					Integer idGrupoUsuarioCondominoAtual = usuarioGrupoUsuarioAtualCondomino.getIdGrupoUsuario();								
+					usuarioGrupoUsuarioAtualSindico.setIdGrupoUsuario(idGrupoUsuarioCondominoAtual);
+					this.usuarioGrupoUsuarioDAO.excluirPorId(usuarioGrupoUsuarioAtualCondomino.getId(), con);
+					this.usuarioGrupoUsuarioDAO.atualizar(usuarioGrupoUsuarioAtualSindico, con);
+				}
+
 			}
-			this.usuarioDAO.atualizarUsuario(usuario, con);		
+			this.usuarioDAO.atualizarUsuario(sindicoAtual, con);		
 		}
 		try {			
 			query.append("DELETE FROM ");
@@ -565,4 +583,18 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 			throw e;	
 		}
 	}	
+	
+
+	private void popularUsuarioGrupoUsuarioCondomino(UsuarioGrupoUsuario usuarioGrupoUsuario, Integer idCondominio) throws SQLException, Exception{
+		List<GrupoUsuario> listaGrupoUsuario = new ArrayList<GrupoUsuario>();
+		listaGrupoUsuario.addAll(this.grupoUsuarioService.buscarPorIdCondominioEPadraoETipoUsuarioESituacao(idCondominio,
+				GrupoUsuarioPadraoEnum.SIM.getPadrao(), GrupoUsuarioTipoUsuarioEnum.CONDOMINO.getTipoUsuario(),GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));
+		if(listaGrupoUsuario.isEmpty()){
+			listaGrupoUsuario.add(this.grupoUsuarioService.buscarPorPadraoETipoUsuarioESituacao(GrupoUsuarioPadraoEnum.SIM.getPadrao(), 
+					GrupoUsuarioTipoUsuarioEnum.CONDOMINO.getTipoUsuario(),
+					GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));			
+		}
+		// Pega o primeiro grupo, pois esse método está sendo chamado por um usuário que não tem grupo associado, logo para não ficar sem pega o primeiro.
+		usuarioGrupoUsuario.setIdGrupoUsuario(listaGrupoUsuario.get(0).getId());			
+	}
 }

@@ -116,7 +116,7 @@ public class UsuarioMB implements Serializable {
 		try {
 			List<Usuario> listaUsuariosAssociados = new ArrayList<Usuario>();
 			List<Usuario> listaOriginalUsuariosAssociados = new ArrayList<Usuario>();
-			//if(!this.listaUsuariosAssociados.isEmpty()){
+
 				for (UsuarioVO usuarioVO : this.listaUsuariosAssociados) {
 					listaUsuariosAssociados.add(this.popularUsuario(usuarioVO));
 				}		
@@ -124,14 +124,11 @@ public class UsuarioMB implements Serializable {
 					listaOriginalUsuariosAssociados.add(this.popularUsuario(usuarioVO));
 				}		
 				this.usuarioService.associar(listaUsuariosAssociados,listaOriginalUsuariosAssociados, this.grupoUsuario.getId());
-				ManagedBeanUtil.setMensagemInfo("msg.usuario.associadoSucesso");
-//			}else if (!this.listaOriginalUsuariosAssociados.isEmpty()){
-//				for (UsuarioVO usuarioVO : this.listaOriginalUsuariosAssociados) {
-//					listaUsuarios.add(this.popularUsuario(usuarioVO));
-//				}		
-//				this.usuarioService.desassociar(listaUsuarios, this.grupoUsuario.getId());
-//				ManagedBeanUtil.setMensagemInfo("msg.usuario.desassociadoSucesso");				
-//			}
+				if (listaUsuariosAssociados.isEmpty()){
+					ManagedBeanUtil.setMensagemInfo("msg.usuario.nenhumUsuarioAssociado");					
+				}else{
+					ManagedBeanUtil.setMensagemInfo("msg.usuario.associadoSucesso");
+				}
 			
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	

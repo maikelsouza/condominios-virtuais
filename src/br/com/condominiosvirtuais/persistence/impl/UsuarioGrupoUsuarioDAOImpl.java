@@ -124,6 +124,29 @@ public class UsuarioGrupoUsuarioDAOImpl implements UsuarioGrupoUsuarioDAO, Seria
 	}
 	
 	@Override
+	public void excluirPorId(Integer id, Connection con) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		PreparedStatement statement = null;
+		try {
+			query.append("DELETE FROM ");
+			query.append(USUARIO_GRUPO_USUARIO);
+			query.append(" WHERE ");		
+			query.append(ID);
+			query.append(" = ?");
+			statement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(statement, 1, id, java.sql.Types.INTEGER);
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			con.rollback();
+			throw e;
+		}catch (Exception e) {
+			con.rollback();
+			throw e;
+		}
+		
+	}
+	
+	@Override
 	public void excluirPorIdGrupoUsuarioEIdUsuario(Integer idGrupoUsuario, Integer idUsuario, Connection con) throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
 		PreparedStatement statement = null;
@@ -151,7 +174,7 @@ public class UsuarioGrupoUsuarioDAOImpl implements UsuarioGrupoUsuarioDAO, Seria
 	}
 
 	@Override
-	public List<UsuarioGrupoUsuario> buscarPorIdGrupoUsuario(Integer idGrupoUsuario, Integer idUsuario, Connection con) throws SQLException, Exception {
+	public UsuarioGrupoUsuario buscarPorIdGrupoUsuarioEIdUsuario(Integer idGrupoUsuario, Integer idUsuario, Connection con) throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
 		query.append("SELECT * FROM ");
 		query.append(USUARIO_GRUPO_USUARIO);
@@ -163,27 +186,24 @@ public class UsuarioGrupoUsuarioDAOImpl implements UsuarioGrupoUsuarioDAO, Seria
 		query.append(" = ?");
 		query.append(";");
 		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;		
-		List<UsuarioGrupoUsuario> listaUsuarioGrupoUsuarios = new ArrayList<UsuarioGrupoUsuario>();
-		UsuarioGrupoUsuario usuarioGrupoUsuario = null;
+		ResultSet resultSet = null;
+		UsuarioGrupoUsuario usuarioGrupoUsuario =  new UsuarioGrupoUsuario();;
 		try {
 			preparedStatement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, idGrupoUsuario, java.sql.Types.INTEGER);	
 			SQLUtil.setValorPpreparedStatement(preparedStatement, 2, idUsuario, java.sql.Types.INTEGER);	
 			resultSet = preparedStatement.executeQuery();
-			while(resultSet.next()){
-				usuarioGrupoUsuario = new UsuarioGrupoUsuario();
+			while(resultSet.next()){				
 				usuarioGrupoUsuario.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
 				usuarioGrupoUsuario.setIdUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_USUARIO, java.sql.Types.INTEGER));
 				usuarioGrupoUsuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
-				listaUsuarioGrupoUsuarios.add(usuarioGrupoUsuario);
 			}
 		} catch (SQLException e) {
 			throw e;
 		} catch (Exception e) {
 			throw e;
 		}				
-		return listaUsuarioGrupoUsuarios;
+		return usuarioGrupoUsuario;
 	}
 
 	@Override
@@ -284,7 +304,7 @@ public class UsuarioGrupoUsuarioDAOImpl implements UsuarioGrupoUsuarioDAO, Seria
 			query.append(ID_USUARIO); 
 			query.append(" = ?,");
 			query.append(ID_GRUPO_USUARIO); 
-			query.append(" = ?");
+			query.append(" = ? ");
 			query.append("WHERE ");					
 			query.append(ID);
 			query.append(" = ?");
@@ -292,6 +312,7 @@ public class UsuarioGrupoUsuarioDAOImpl implements UsuarioGrupoUsuarioDAO, Seria
 			preparedStatement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, usuarioGrupoUsuario.getIdUsuario(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(preparedStatement, 2, usuarioGrupoUsuario.getIdGrupoUsuario(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 3, usuarioGrupoUsuario.getId(), java.sql.Types.INTEGER);
 			preparedStatement.execute();
 		} catch (SQLException e) {		
 			con.rollback();

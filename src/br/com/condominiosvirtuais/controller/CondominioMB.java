@@ -264,8 +264,7 @@ public class CondominioMB implements Serializable{
 			}else{ // Caso já exista um síndico geral, esse trecho de código modifica o síndico geral
 				this.condominio.getSindicoGeral().setId(this.nomeSindicoGeral.trim().isEmpty() ? -1 : this.idSindicoGeral);			
 			}
-			//this.popularGrupoUsuarioSindico();
-			
+						
 			if(this.idSubSindicoGeral != 0){
 				Condomino subSindicoGeral = new Condomino();
 				// Condição que contempla o caso onde o usuário apagou o nome do subsindico. -1 é igual a branco.
@@ -371,18 +370,7 @@ public class CondominioMB implements Serializable{
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
 		}
 		return listaSICondominios;
-	}
-	
-	private void popularGrupoUsuarioSindico() throws SQLException, Exception{
-		List<GrupoUsuario> listaGrupoUsuario = new ArrayList<GrupoUsuario>();
-		listaGrupoUsuario.addAll(this.grupoUsuarioService.buscarPorIdCondominioEPadraoETipoUsuarioESituacao(this.condominio.getId(),
-				GrupoUsuarioPadraoEnum.SIM.getPadrao(), GrupoUsuarioTipoUsuarioEnum.SINDICO.getTipoUsuario(),GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));
-		if(listaGrupoUsuario.isEmpty()){
-			listaGrupoUsuario.add(this.grupoUsuarioService.buscarPorPadraoETipoUsuarioESituacao(GrupoUsuarioPadraoEnum.SIM.getPadrao(), GrupoUsuarioTipoUsuarioEnum.SINDICO.getTipoUsuario(),
-					GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));			
-		}
-		this.condominio.getSindicoGeral().setListaGrupoUsuario(listaGrupoUsuario);			
-	}
+	}	
 	
 	private void carregarDadosCondominio() throws  SQLException, Exception{
 		this.condominio = this.listaDeCondominios.getRowData();

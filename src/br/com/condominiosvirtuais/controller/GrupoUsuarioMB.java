@@ -114,8 +114,9 @@ public class GrupoUsuarioMB implements Serializable {
 	public void pesquisaGrupoUsuario(){
 		// Caso tenha selecionado todos
 		List<GrupoUsuario> listaGrupoUsuario = null;			
-		List<Integer> listaTipoUsuarioSindicoCondominoEFuncionario = new ArrayList<Integer>();		
-		listaTipoUsuarioSindicoCondominoEFuncionario.add(GrupoUsuarioTipoUsuarioEnum.SINDICO.getTipoUsuario());
+		List<Integer> listaTipoUsuarioSindicoCondominoEFuncionario = new ArrayList<Integer>();
+		// TODO: Código comentado em 28/10/2017. Apagar em 90 dias
+		//listaTipoUsuarioSindicoCondominoEFuncionario.add(GrupoUsuarioTipoUsuarioEnum.SINDICO.getTipoUsuario());
 		listaTipoUsuarioSindicoCondominoEFuncionario.add(GrupoUsuarioTipoUsuarioEnum.CONDOMINO.getTipoUsuario());
 		listaTipoUsuarioSindicoCondominoEFuncionario.add(GrupoUsuarioTipoUsuarioEnum.FUNCIONARIO.getTipoUsuario());
 		try {
@@ -161,12 +162,13 @@ public class GrupoUsuarioMB implements Serializable {
 
 	}
 	
-	public void habilitarTipoUsuario(){
-		if(this.grupoUsuario.getPadrao() == Boolean.FALSE){
-			this.grupoUsuario.setTipoUsuario(null);
-		}
-		
-	}
+// TODO: Código comentado em 28/10/2017. Apagar em 90 dias	
+//	public void habilitarTipoUsuario(){
+//		if(this.grupoUsuario.getPadrao() == Boolean.FALSE){
+//			this.grupoUsuario.setTipoUsuario(null);
+//		}
+//		
+//	}
 	
 	public String atualizarGrupoUsuario(){
 		try {
