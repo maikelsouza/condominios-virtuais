@@ -21,13 +21,9 @@ import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.Condomino;
-import br.com.condominiosvirtuais.entity.GrupoUsuario;
 import br.com.condominiosvirtuais.entity.Usuario;
 import br.com.condominiosvirtuais.enumeration.AtributoSessaoEnum;
 import br.com.condominiosvirtuais.enumeration.CondominioSituacaoEnum;
-import br.com.condominiosvirtuais.enumeration.GrupoUsuarioPadraoEnum;
-import br.com.condominiosvirtuais.enumeration.GrupoUsuarioSituacaoEnum;
-import br.com.condominiosvirtuais.enumeration.GrupoUsuarioTipoUsuarioEnum;
 import br.com.condominiosvirtuais.service.CondominioService;
 import br.com.condominiosvirtuais.service.CondominoService;
 import br.com.condominiosvirtuais.service.GrupoUsuarioService;

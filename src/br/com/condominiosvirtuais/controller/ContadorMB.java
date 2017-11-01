@@ -215,7 +215,7 @@ public class ContadorMB implements Serializable {
 		listaGrupoUsuario.addAll(this.grupoUsuarioService.buscarPorIdEscritorioDeContabilidadeEPadraoETipoUsuarioESituacao(this.contador.getIdEscritorioContabilidade(),
 				GrupoUsuarioPadraoEnum.SIM.getPadrao(), GrupoUsuarioTipoUsuarioEnum.ESCRITORIO_CONTABILIDADE.getTipoUsuario(),GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));
 		if(listaGrupoUsuario.isEmpty()){
-			listaGrupoUsuario.add(this.grupoUsuarioService.buscarPorPadraoETipoUsuarioESituacao(GrupoUsuarioPadraoEnum.SIM.getPadrao(), GrupoUsuarioTipoUsuarioEnum.CONDOMINO.getTipoUsuario(),GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));			
+			listaGrupoUsuario.add(this.grupoUsuarioService.buscarPorPadraoETipoUsuarioESituacao(GrupoUsuarioPadraoEnum.SIM.getPadrao(), GrupoUsuarioTipoUsuarioEnum.ESCRITORIO_CONTABILIDADE.getTipoUsuario(),GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));			
 		}
 		this.contador.setListaGrupoUsuario(listaGrupoUsuario);
 			

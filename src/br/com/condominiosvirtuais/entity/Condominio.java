@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class Condominio implements Serializable{	
 
+	
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
@@ -47,7 +48,7 @@ public class Condominio implements Serializable{
 		this.sindicoGeral = new Usuario();
 		this.subSindicoGeral = new Condomino();
 	}
-		
+	
 	public Integer getId() {	
 		return id;
 	}
@@ -158,7 +159,7 @@ public class Condominio implements Serializable{
 
 	public void setIdEscritorioContabilidade(Integer idEscritorioContabilidade) {
 		this.idEscritorioContabilidade = idEscritorioContabilidade;
-	}
+	}	
 
 	@Override
 	public int hashCode() {

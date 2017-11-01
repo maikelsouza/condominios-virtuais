@@ -15,12 +15,17 @@ import javax.inject.Named;
 import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Condominio;
+import br.com.condominiosvirtuais.entity.GrupoUsuario;
 import br.com.condominiosvirtuais.entity.SindicoProfissional;
 import br.com.condominiosvirtuais.enumeration.CondominioSituacaoEnum;
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioPadraoEnum;
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioSituacaoEnum;
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioTipoUsuarioEnum;
 import br.com.condominiosvirtuais.enumeration.UsuarioSexoEnum;
 import br.com.condominiosvirtuais.enumeration.UsuarioSituacaoEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.service.CondominioService;
+import br.com.condominiosvirtuais.service.GrupoUsuarioService;
 import br.com.condominiosvirtuais.service.SindicoProfissionalService;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
 import br.com.condominiosvirtuais.util.ManagedBeanUtil;
@@ -37,6 +42,9 @@ public class SindicoProfissionalMB implements Serializable {
 	
 	@Inject
 	private CondominioService condominioService;
+	
+	@Inject
+	private GrupoUsuarioService grupoUsuarioService = null;
 		
 	private SindicoProfissional sindicoProfissional;	
 	
@@ -77,6 +85,7 @@ public class SindicoProfissionalMB implements Serializable {
 		this.sindicoProfissional.getEmail().setPrincipal(Boolean.TRUE);
 		this.sindicoProfissional.setListaCondominio(this.listaDeCondominiosAssociados);
 		try {
+			this.popularGrupoUsuarioSindicoProfissional();
 			if(!this.sindicoProfissional.getSenha().equals(this.sindicoProfissional.getConfirmarSenha())){
 				ManagedBeanUtil.setMensagemErro("msg.sindicoProfissional.senhasNaoCorrespondem");
 				return null;
@@ -212,6 +221,18 @@ public class SindicoProfissionalMB implements Serializable {
 			logger.error("", e);
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
 		}	
+	}
+	
+	private void popularGrupoUsuarioSindicoProfissional() throws SQLException, Exception{
+		List<GrupoUsuario> listaGrupoUsuario = new ArrayList<GrupoUsuario>();
+		listaGrupoUsuario.addAll(this.grupoUsuarioService.buscarPorIdCondominioEPadraoETipoUsuarioESituacao(this.sindicoProfissional.getId(),
+				GrupoUsuarioPadraoEnum.SIM.getPadrao(), GrupoUsuarioTipoUsuarioEnum.SINDICO_PROFISSIONAL.getTipoUsuario(),GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));
+		if(listaGrupoUsuario.isEmpty()){
+			listaGrupoUsuario.add(this.grupoUsuarioService.buscarPorPadraoETipoUsuarioESituacao(GrupoUsuarioPadraoEnum.SIM.getPadrao(), 
+					GrupoUsuarioTipoUsuarioEnum.SINDICO_PROFISSIONAL.getTipoUsuario(),GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));			
+		}
+		this.sindicoProfissional.setListaGrupoUsuario(listaGrupoUsuario);
+			
 	}
 	
 	

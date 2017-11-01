@@ -209,8 +209,7 @@ public class GrupoUsuarioMB implements Serializable {
 				}
 			}
 			this.grupoUsuario.setListaTelaAcesso(listaTelaVO);
-			this.grupoUsuario.setSituacao(this.situacao == 1 ? Boolean.TRUE : Boolean.FALSE);
-			this.grupoUsuario.setTipoUsuario(this.grupoUsuario.getPadrao() ? this.grupoUsuario.getTipoUsuario() : null );
+			this.grupoUsuario.setSituacao(this.situacao == 1 ? Boolean.TRUE : Boolean.FALSE);			
 			this.grupoUsuarioService.atualizar(this.grupoUsuario);
 			this.pesquisaGrupoUsuario();
 			ManagedBeanUtil.setMensagemInfo("msg.grupoUsuario.atualizadoSucesso");
