@@ -11,5 +11,7 @@ public interface ComponenteDAO {
 	public abstract List<Componente> buscarPorIdTela(Integer idTela) throws SQLException, Exception;
 	
 	public abstract List<Componente> buscarPorIdTela(Integer idTela, Connection con) throws SQLException, Exception; 
+	
+	public abstract List<Componente> buscarPoridGrupoUsuarioEIdTela(Integer idGrupoUsuario, Integer idTela, Connection con) throws SQLException, Exception;
 
 }

@@ -73,12 +73,15 @@ public class TelaDAOImpl implements TelaDAO, Serializable {
 				tela.setNomeArquivo(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME_ARQUIVO, java.sql.Types.VARCHAR)));
 				tela.setDescricao(String.valueOf(SQLUtil.getValorResultSet(resultSet, DESCRICAO, java.sql.Types.VARCHAR)));
 				tela.setIdModulo((Integer) SQLUtil.getValorResultSet(resultSet, ID_MODULO, java.sql.Types.INTEGER));
-				tela.setListaAbas(this.abaDAO.buscarPorIdTela(tela.getId(), con));
-				tela.setListaComponentes(this.componenteDAO.buscarPorIdTela(tela.getId(), con));
+// Código comentado em 02/11/2017. Apagar em 90 dias				
+//				tela.setListaAbas(this.abaDAO.buscarPorIdTela(tela.getId(), con));
+//				tela.setListaComponentes(this.componenteDAO.buscarPorIdTela(tela.getId(), con));
 			}
 		}catch (SQLException e) {
+			con.rollback();
 			throw e;
-		}catch (Exception e) {		
+		}catch (Exception e) {
+			con.rollback();
 			throw e;
 		}	
 		return tela;	
@@ -137,9 +140,9 @@ public class TelaDAOImpl implements TelaDAO, Serializable {
 				logger.error("erro sqlstate "+e.getSQLState(), e);
 			}
 		}	
-		return listaTela;
+		return listaTela;	
 	}
-
+	
 	@Override
 	public List<Tela> buscarTodas() throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();

@@ -37,31 +37,31 @@ public class AbaDAOImpl implements AbaDAO, Serializable {
 	private static final String ID_ABA = "ID_ABA";
 	
 	@Inject
-	private GrupoUsuarioTelaAbaDAO telaAbaDAO; 
+	private GrupoUsuarioTelaAbaDAO grupoUsuarioTelaAbaDAO; 
 	
 	
 	@Override
 	public List<Aba> buscarPoridGrupoUsuarioEIdTela(Integer idGrupoUsuario, Integer idTela, Connection con) throws SQLException, Exception {
 		// Busca a lista de abas associadas a uma tela
-		List<GrupoUsuarioTelaAba> listaTelaAba = this.telaAbaDAO.buscarPorIdGrupoUsuarioEIdTela(idGrupoUsuario, idTela, con);
+		List<GrupoUsuarioTelaAba> listaGrupoUsuarioTelaAba = this.grupoUsuarioTelaAbaDAO.buscarPorIdGrupoUsuarioEIdTela(idGrupoUsuario, idTela, con);
 		Integer contador = 1;
 		List<Aba> listaAba = new ArrayList<Aba>();
-		if(!listaTelaAba.isEmpty()){
+		if(!listaGrupoUsuarioTelaAba.isEmpty()){
 			StringBuffer query = new StringBuffer();
 			query.append("SELECT * FROM ");
 			query.append(ABA);
 			query.append(" WHERE ");
-			query.append(ID_TELA);
+			query.append(ID);
 			query.append(" IN (");
-			query.append(SQLUtil.popularInterrocacoes(listaTelaAba.size()));
+			query.append(SQLUtil.popularInterrocacoes(listaGrupoUsuarioTelaAba.size()));
 			query.append(");");		
 			PreparedStatement preparedStatement = null;
 			ResultSet resultSet = null;
 			Aba aba = null;
 			try {
 				preparedStatement = con.prepareStatement(query.toString());
-				for (GrupoUsuarioTelaAba telaAba : listaTelaAba) {
-					SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, telaAba.getIdTela(), java.sql.Types.INTEGER);
+				for (GrupoUsuarioTelaAba grupoUsuarioTelaAba : listaGrupoUsuarioTelaAba) {
+					SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, grupoUsuarioTelaAba.getIdAba(), java.sql.Types.INTEGER);
 				}
 				resultSet = preparedStatement.executeQuery();
 				while(resultSet.next()){

@@ -13,8 +13,9 @@ import javax.inject.Inject;
 import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Componente;
+import br.com.condominiosvirtuais.entity.GrupoUsuarioTelaComponente;
 import br.com.condominiosvirtuais.persistence.ComponenteDAO;
-import br.com.condominiosvirtuais.persistence.TelaComponenteDAO;
+import br.com.condominiosvirtuais.persistence.GrupoUsuarioTelaComponenteDAO;
 import br.com.condominiosvirtuais.util.SQLUtil;
 
 public class ComponenteDAOImpl implements ComponenteDAO, Serializable {
@@ -40,7 +41,8 @@ public class ComponenteDAOImpl implements ComponenteDAO, Serializable {
 	private static final String TIPO = "TIPO";
 	
 	@Inject
-	private TelaComponenteDAO telaComponenteDAO; 
+	private GrupoUsuarioTelaComponenteDAO grupoUsuarioTelaComponenteDAO; 
+	
 	
 
 	@Override
@@ -125,5 +127,50 @@ public class ComponenteDAOImpl implements ComponenteDAO, Serializable {
 		return listaComponente;
 	}
 	
+	
+	@Override
+	public List<Componente> buscarPoridGrupoUsuarioEIdTela(Integer idGrupoUsuario, Integer idTela, Connection con) throws SQLException, Exception {
+		// Busca a lista de abas associadas a uma tela
+		List<GrupoUsuarioTelaComponente> listaGrupoUsuarioTelaComponente = this.grupoUsuarioTelaComponenteDAO.buscarPorIdGrupoUsuarioEIdTela(idGrupoUsuario, idTela, con);
+		Integer contador = 1;
+		List<Componente> listaComponente = new ArrayList<Componente>();
+		if(!listaGrupoUsuarioTelaComponente.isEmpty()){
+			StringBuffer query = new StringBuffer();
+			query.append("SELECT * FROM ");
+			query.append(COMPONENTE);
+			query.append(" WHERE ");
+			query.append(ID);
+			query.append(" IN (");
+			query.append(SQLUtil.popularInterrocacoes(listaGrupoUsuarioTelaComponente.size()));
+			query.append(");");		
+			PreparedStatement preparedStatement = null;
+			ResultSet resultSet = null;			
+			Componente componente = null;
+			try {
+				preparedStatement = con.prepareStatement(query.toString());
+				for (GrupoUsuarioTelaComponente grupoUsuarioTelaAba : listaGrupoUsuarioTelaComponente) {
+					SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, grupoUsuarioTelaAba.getIdComponente(), java.sql.Types.INTEGER);
+				}
+				resultSet = preparedStatement.executeQuery();
+				while(resultSet.next()){
+					componente = new Componente();
+					componente.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+					componente.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+					componente.setIdTela((Integer) SQLUtil.getValorResultSet(resultSet, ID_TELA, java.sql.Types.INTEGER));					
+					componente.setDescricao(String.valueOf(SQLUtil.getValorResultSet(resultSet, DESCRICAO, java.sql.Types.VARCHAR)));
+					componente.setIdAba((Integer)SQLUtil.getValorResultSet(resultSet, ID_ABA, java.sql.Types.INTEGER));
+					componente.setTipo(String.valueOf(SQLUtil.getValorResultSet(resultSet, TIPO, java.sql.Types.VARCHAR)));
+					listaComponente.add(componente);
+				}
+			}catch (SQLException e) {
+				con.rollback();
+				throw e;
+			}catch (Exception e) {
+				con.rollback();
+				throw e;
+			}
+		}
+		return listaComponente;
+	}
 
 }

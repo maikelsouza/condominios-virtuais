@@ -18,6 +18,8 @@ import br.com.condominiosvirtuais.entity.GrupoUsuarioTelaAba;
 import br.com.condominiosvirtuais.entity.GrupoUsuarioTelaComponente;
 import br.com.condominiosvirtuais.entity.Tela;
 import br.com.condominiosvirtuais.exception.BusinessException;
+import br.com.condominiosvirtuais.persistence.AbaDAO;
+import br.com.condominiosvirtuais.persistence.ComponenteDAO;
 import br.com.condominiosvirtuais.persistence.GrupoUsuarioDAO;
 import br.com.condominiosvirtuais.persistence.GrupoUsuarioTelaAbaDAO;
 import br.com.condominiosvirtuais.persistence.GrupoUsuarioTelaComponenteDAO;
@@ -49,6 +51,12 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 	
 	@Inject
 	private TelaDAO telaDAO;
+	
+	@Inject
+	private AbaDAO abaDAO;
+	
+	@Inject
+	private ComponenteDAO componenteDAO;
 
 	private static final String  GRUPO_USUARIO = " GRUPO_USUARIO";
 	
@@ -425,7 +433,7 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 				listaTelaVO = new ArrayList<TelaVO>();
 				for (GrupoUsuarioTela grupoUsuarioTela : listaGrupoUsuarioTela) {
 					tela = telaDAO.buscarPorId(grupoUsuarioTela.getIdTela(),con);
-					listaTelaVO.add(popularTelaVO(tela));
+					listaTelaVO.add(popularTelaVO(tela,grupoUsuario.getId(),con));
 				}
 				grupoUsuario.setListaTelaAcesso(listaTelaVO);
 				
@@ -440,12 +448,12 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 		return grupoUsuario;
 	}
 	
-	private TelaVO popularTelaVO(Tela tela){
+	private TelaVO popularTelaVO(Tela tela, Integer idGrupoUsuario,  Connection con) throws SQLException, Exception{
 		TelaVO telaVO = new TelaVO();
 		telaVO.setIdTela(tela.getId());
 		telaVO.setNomeArquivoTela(tela.getNomeArquivo());		
-		telaVO.setListaAbasTela(tela.getListaAbas());
-		telaVO.setListaComponentesTela(tela.getListaComponentes());
+		telaVO.setListaAbasTela(this.abaDAO.buscarPoridGrupoUsuarioEIdTela(idGrupoUsuario,tela.getId(), con));		
+		telaVO.setListaComponentesTela(this.componenteDAO.buscarPoridGrupoUsuarioEIdTela(idGrupoUsuario, tela.getId(), con));
 		
 		return telaVO;
 	}

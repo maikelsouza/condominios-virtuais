@@ -14,4 +14,6 @@ public interface TelaDAO {
 	
 	public abstract List<Tela> buscarTodas() throws SQLException, Exception;
 	
+	
+	
 }
