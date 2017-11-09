@@ -113,7 +113,7 @@
 								render="tableCondomino" action="#{condominoMB.visualizarCondomino}" immediate="true" />	
 				 			#{' '}                                                                           
  							<a4j:commandLink value="#{msg.linkEditar}" render="tableCondomino" action="#{condominoMB.editarCondomino}" immediate="true"
-								rendered="#{loginMB.temAcesso('#{condominioMB.editarCondominio}')}" />
+								rendered="#{loginMB.temAcesso('#{condominoMB.editarCondomino}')}" />
 						</rich:column>
 						<f:facet name="footer">
               				<rich:dataScroller for="tableCondomino"  fastControls="hide" renderIfSinglePage="false" />

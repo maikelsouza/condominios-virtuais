@@ -35,6 +35,8 @@ import br.com.condominiosvirtuais.entity.Unidade;
 import br.com.condominiosvirtuais.entity.Usuario;
 import br.com.condominiosvirtuais.entity.Veiculo;
 import br.com.condominiosvirtuais.enumeration.GaragemEnum;
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioPadraoEnum;
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioSituacaoEnum;
 import br.com.condominiosvirtuais.enumeration.GrupoUsuarioTipoUsuarioEnum;
 import br.com.condominiosvirtuais.enumeration.UsuarioSituacaoEnum;
 import br.com.condominiosvirtuais.enumeration.VeiculoTipoEnum;
@@ -46,6 +48,7 @@ import br.com.condominiosvirtuais.service.CondominoService;
 import br.com.condominiosvirtuais.service.ContadorService;
 import br.com.condominiosvirtuais.service.FuncionarioService;
 import br.com.condominiosvirtuais.service.GaragemService;
+import br.com.condominiosvirtuais.service.GrupoUsuarioService;
 import br.com.condominiosvirtuais.service.SindicoProfissionalService;
 import br.com.condominiosvirtuais.service.UnidadeService;
 import br.com.condominiosvirtuais.service.UsuarioService;
@@ -134,6 +137,9 @@ public class MeuPainelMB implements  Serializable{
 	
 	@Inject
 	private ContadorService contadorService;
+	
+	@Inject
+	private GrupoUsuarioService grupoUsuarioService = null;
 	
 	private String senhaAtualCondomino;
 	
@@ -535,6 +541,7 @@ public class MeuPainelMB implements  Serializable{
 				//this.novoCondomino.setIdGrupoUsuario(TipoGrupoUsuarioEnum.CONDOMINO.getGrupoUsuario());
 				this.novoCondomino.getEmail().setPrincipal(Boolean.TRUE);				
 				this.novoCondomino.setSituacao(UsuarioSituacaoEnum.ATIVO.getSituacao());
+				this.popularGrupoUsuarioCondomino();
 				Unidade unidade = this.unidadeService.buscarPorId(this.novoCondomino.getIdUnidade());
 				Bloco bloco = this.blocoService.buscarPorId(unidade.getIdBloco());				
 				Condominio condominio = this.condominioService.buscarPorId(bloco.getIdCondominio());
@@ -808,6 +815,18 @@ public class MeuPainelMB implements  Serializable{
             return 0;
         }
 	 }
+	 
+	 
+	 private void popularGrupoUsuarioCondomino() throws SQLException, Exception{
+			List<GrupoUsuario> listaGrupoUsuario = new ArrayList<GrupoUsuario>();
+			listaGrupoUsuario.addAll(this.grupoUsuarioService.buscarPorIdCondominioEPadraoETipoUsuarioESituacao(this.novoCondomino.getId(),
+					GrupoUsuarioPadraoEnum.SIM.getPadrao(), GrupoUsuarioTipoUsuarioEnum.CONDOMINO.getTipoUsuario(),GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));
+			if(listaGrupoUsuario.isEmpty()){
+				listaGrupoUsuario.add(this.grupoUsuarioService.buscarPorPadraoETipoUsuarioESituacao(GrupoUsuarioPadraoEnum.SIM.getPadrao(), GrupoUsuarioTipoUsuarioEnum.CONDOMINO.getTipoUsuario(),GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));			
+			}
+			this.novoCondomino.setListaGrupoUsuario(listaGrupoUsuario);
+				
+		}
 	 
 	public UsuarioService getUsuarioService() {
 		return usuarioService;

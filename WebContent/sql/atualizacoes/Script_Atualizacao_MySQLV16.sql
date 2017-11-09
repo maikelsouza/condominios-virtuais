@@ -300,6 +300,7 @@ INSERT INTO TELA VALUES
 (DEFAULT,'formMeuPainel','formMeuPainelDescricao','formMeuPainel.xhtml',24);
 
 
+
 INSERT INTO ABA VALUES
 (DEFAULT,'formMeuPainel.idTabPanelDadosPessoaisCondomino','formMeuPainel.idTabPanelDadosPessoaisCondomino.descricao','idTabPanelDadosPessoaisCondomino',87),
 (DEFAULT,'formMeuPainel.idTabPanelDadosPessoaisFuncionario','formMeuPainel.idTabPanelDadosPessoaisFuncionario.descricao','idTabPanelDadosPessoaisFuncionario',87),
@@ -338,6 +339,8 @@ INSERT INTO GRUPO_USUARIO_TELA VALUES
 (DEFAULT,6,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formVerMensagemEnviada.xhtml')),
 (DEFAULT,6,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formVerMensagemRecebida.xhtml')),
 (DEFAULT,6,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formVerMensagemEnviada.xhtml')),
+(DEFAULT,6,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formMensagensRecebidas.xhtml')),
+(DEFAULT,6,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formMensagensEnviadas.xhtml')),
 (DEFAULT,6,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formMeuPainel.xhtml')),
 (DEFAULT,6,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formListaTelefonesUteis.xhtml')),
 (DEFAULT,6,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formListaVeiculo.xhtml')),
@@ -349,23 +352,6 @@ INSERT INTO GRUPO_USUARIO_TELA VALUES
 
 
 INSERT INTO GRUPO_USUARIO_TELA VALUES 
-(DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formVisualizaCondominio.xhtml')),
-(DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formListaBloco.xhtml')),
-(DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formEditaBloco.xhtml')),
-(DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formCadastroBloco.xhtml')),
-(DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formVisualizaBloco.xhtml')),
-(DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formListaUnidade.xhtml')),
-(DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formEditaUnidade.xhtml')),
-(DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formCadastroUnidade.xhtml')),
-(DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formVisualizaUnidade.xhtml')),
-(DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formListaCondomino.xhtml')),
-(DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formEditaCondomino.xhtml')),
-(DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formCadastroCondomino.xhtml')),
-(DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formVisualizaCondomino.xhtml')),
-(DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formListaAmbienteCondominio.xhtml')),
-(DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formEditaAmbienteCondominio.xhtml')),
-(DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formCadastroAmbienteCondominio.xhtml')),
-(DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formVisualizaAmbienteCondominio.xhtml')),
 (DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formCadastroListaReserva.xhtml')),
 (DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formEditaReserva.xhtml')),
 (DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formFaleComSindico.xhtml')),
@@ -373,6 +359,8 @@ INSERT INTO GRUPO_USUARIO_TELA VALUES
 (DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formMensagensEnviadas.xhtml')),
 (DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formVerMensagemRecebida.xhtml')),
 (DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formVerMensagemEnviada.xhtml')),
+(DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formMensagensRecebidas.xhtml')),
+(DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formMensagensEnviadas.xhtml')),
 (DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formMeuPainel.xhtml')),
 (DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formListaDocumento.xhtml')),
 (DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formListaImagem.xhtml')),
@@ -389,8 +377,8 @@ INSERT INTO GRUPO_USUARIO_TELA VALUES
 (DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formCadastroChamado.xhtml')),
 (DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formListaObra.xhtml')),
 (DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formVisualizaObra.xhtml')),
+(DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formListaReceitaDespesa.xhtml')),
 (DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formEscreverMensagem.xhtml'));
-
 
 INSERT INTO GRUPO_USUARIO_TELA VALUES 
 (DEFAULT,7,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formListaCondominio.xhtml')),
@@ -414,6 +402,7 @@ INSERT INTO GRUPO_USUARIO_TELA VALUES
 (DEFAULT,7,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formMensagensRecebidas.xhtml')),
 (DEFAULT,7,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formMensagensEnviadas.xhtml')),
 (DEFAULT,7,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formVerMensagemRecebida.xhtml')),
+(DEFAULT,7,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formVerMensagemEnviada.xhtml')),
 (DEFAULT,7,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formMeuPainel.xhtml')),
 (DEFAULT,7,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formListaDocumento.xhtml')),
 (DEFAULT,7,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formListaImagem.xhtml')),
@@ -631,14 +620,9 @@ INSERT INTO GRUPO_USUARIO_TELA VALUES
 (DEFAULT,2,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formCadastroReceitaDespesa.xhtml')),
 (DEFAULT,2,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formListaReceitaDespesa.xhtml')),
 (DEFAULT,2,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formEditaDespesa.xhtml')),
+(DEFAULT,2,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formMeuPainel.xhtml')),
 (DEFAULT,2,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formEditaReceita.xhtml'));
 
-
-
-(DEFAULT,'formListaReceitaDespesa','formListaReceitaDespesaDescricao','formListaReceitaDespesa.xhtml',17),
-(DEFAULT,'formEditaReceita','formEditaReceitaDescricao','formEditaReceita.xhtml',17),
-(DEFAULT,'formEditaDespesa','formEditaDespesaDescricao','formEditaDespesa.xhtml',17),
-(DEFAULT,'formCadastroReceitaDespesa','formCadastroReceitaDespesaDescricao','formCadastroReceitaDespesa.xhtml',17),
 
 
 INSERT INTO GRUPO_USUARIO_TELA VALUES 

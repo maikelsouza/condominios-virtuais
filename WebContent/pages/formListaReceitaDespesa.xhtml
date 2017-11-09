@@ -118,11 +118,11 @@
 						</f:facet>
 						<h:outputText value="#{receita.observacao}" />
 					</rich:column>
-					<rich:column style="width:5%;" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7') and loginMB.exibeMenuFinanceiro()}">
+					<rich:column style="width:5%;" rendered="#{loginMB.temAcesso('#{receitaDespesaMB.editarReceita}')}">
 						<f:facet name="header">
 							<h:outputText value="#{msg.rotuloAcao}" />
 						</f:facet>
-						<a4j:commandLink value="#{msg.linkEditar}" render="tableReceita"  action="#{receitaDespesaMB.editarReceita}" immediate="true" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,7')}" />
+						<a4j:commandLink value="#{msg.linkEditar}" render="tableReceita"  action="#{receitaDespesaMB.editarReceita}" immediate="true" rendered="#{loginMB.temAcesso('#{receitaDespesaMB.editarReceita}')}" />
 					</rich:column>
 					<f:facet name="footer">						
              			<rich:dataScroller for="tableReceita"  fastControls="hide" renderIfSinglePage="false" />
@@ -181,11 +181,11 @@
 						</f:facet>
 						<h:outputText value="#{despesa.observacao}" />
 					</rich:column>
-					<rich:column style="width:5%;" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7') and loginMB.exibeMenuFinanceiro()}">
+					<rich:column style="width:5%;" rendered="#{loginMB.temAcesso('#{receitaDespesaMB.editarDespesa}')}">
 						<f:facet name="header">
 							<h:outputText value="#{msg.rotuloAcao}" />
 						</f:facet>
-						<a4j:commandLink value="#{msg.linkEditar}" render="tableDespesa"  action="#{receitaDespesaMB.editarDespesa}" immediate="true"  rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,7')}"/>
+						<a4j:commandLink value="#{msg.linkEditar}" render="tableDespesa"  action="#{receitaDespesaMB.editarDespesa}" immediate="true"  rendered="#{loginMB.temAcesso('#{receitaDespesaMB.editarDespesa}')}"/>
 					</rich:column>
 					<f:facet name="footer">
              			<rich:dataScroller for="tableDespesa"  fastControls="hide" renderIfSinglePage="false" />
