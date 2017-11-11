@@ -152,7 +152,7 @@
 			<rich:menuItem label="#{msg['telefonesUteis.listarTelefonesUteis']}" action="#{principalMB.listarTelefonesUteis}" rendered="#{loginMB.temAcesso('#{principalMB.listarTelefonesUteis}')}" />
 			<rich:menuItem label="#{msg['telefonesUteis.cadastrarTelefonesUteis']}" action="#{principalMB.cadastrarTelefonesUteis}" rendered="#{loginMB.temAcesso('#{principalMB.cadastrarTelefonesUteis}')}" />
 		</rich:dropDownMenu>
-		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.temAcesso('#{principalMB.cadastrarReceitaDespesa}','#{principalMB.listarReceitaDespesa}')}">
+		<rich:dropDownMenu mode="ajax" rendered="#{loginMB.temAcesso('#{principalMB.cadastrarReceitaDespesa}','#{principalMB.listarReceitaDespesa}') and loginMB.sindicoGeralAssociado()}">
 			<f:facet name="label">
 				<h:panelGroup>
 					<h:outputText value="#{msg.financeiro}" />

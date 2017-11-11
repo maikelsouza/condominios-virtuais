@@ -708,7 +708,7 @@ INSERT INTO GRUPO_USUARIO_TELA_ABA VALUES
 (DEFAULT,5,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formMeuPainel.xhtml'),(SELECT ID FROM ABA WHERE NOME = 'formMeuPainel.idTabAlterarImagemCondomino')),
 (DEFAULT,4,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formMeuPainel.xhtml'),(SELECT ID FROM ABA WHERE NOME = 'formMeuPainel.idTabPanelDadosPessoaisCondomino')),
 (DEFAULT,4,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formMeuPainel.xhtml'),(SELECT ID FROM ABA WHERE NOME = 'formMeuPainel.idTabAlterarImagemCondomino')),
-(DEFAULT,6,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formMeuPainel.xhtml'),(SELECT ID FROM ABA WHERE NOME = 'formMeuPainel.idTabPanelDadosPessoaisFuncionario')),
+(DEFAULT,2,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formMeuPainel.xhtml'),(SELECT ID FROM ABA WHERE NOME = 'formMeuPainel.idTabPanelDadosPessoaisFuncionario')),
 (DEFAULT,3,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formMeuPainel.xhtml'),(SELECT ID FROM ABA WHERE NOME = 'formMeuPainel.idTabPanelDadosPessoaisSindicoProfissional')),
 (DEFAULT,7,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formMeuPainel.xhtml'),(SELECT ID FROM ABA WHERE NOME = 'formMeuPainel.idTabPanelDadosPessoaisContador')),
 (DEFAULT,1,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formEscreverMensagem.xhtml'),(SELECT ID FROM ABA WHERE NOME = 'formEscreverMensagem.idTabMensagemFuncionarios')),
