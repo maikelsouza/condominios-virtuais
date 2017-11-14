@@ -24,14 +24,10 @@
 					<h:inputText id="idNome" value="#{condominioMB.condominio.nome}"
 						size="50" binding="#{condominioMB.componenteNomeCondominio}"
 						required="false" />
-					<h:selectOneRadio id="idSituacao"
-						value="#{condominioMB.condominio.situacao}" required="true"
+					<h:selectOneRadio id="idSituacao" value="#{condominioMB.condominio.situacao}" required="true"
 						label="#{msg['condominio.situacao.label']}"  >
-						<f:selectItems value="#{condominioMB.listaSituacoes}"
-							binding="#{condominioMB.componenteItensSituacaoCondominio}" />
-						<f:selectItem
-							itemLabel="#{msg['condominio.situacao.itemLabel.2']}"
-							itemValue="2" />
+						<f:selectItems value="#{condominioMB.listaSituacoes}" binding="#{condominioMB.componenteItensSituacaoCondominio}" />
+						<f:selectItem itemLabel="#{msg['condominio.situacao.itemLabel.2']}" itemValue="2" />
 					</h:selectOneRadio>
 				</h:panelGrid>
 

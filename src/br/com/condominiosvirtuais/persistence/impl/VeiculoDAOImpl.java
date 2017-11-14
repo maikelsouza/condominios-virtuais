@@ -469,6 +469,7 @@ public class VeiculoDAOImpl implements VeiculoDAO, Serializable {
 
 	@Override
 	public List<Veiculo> buscarPorIdCondominio(Integer idCondominio) throws SQLException, Exception {
+		List<Veiculo> listaVeiculo = new ArrayList<Veiculo>();
 		String pontoInterrogacao = "";
 		Condominio condominio = new Condominio();
 		condominio.setId(idCondominio);
@@ -488,62 +489,60 @@ public class VeiculoDAOImpl implements VeiculoDAO, Serializable {
 			if(virgula.equals(",")){
 				pontoInterrogacao =  pontoInterrogacao.substring(0,pontoInterrogacao.length()-1);
 			}
-		}
-		StringBuffer query = new StringBuffer();
-		query.append("SELECT * FROM ");
-		query.append(VEICULO);
-		query.append(" WHERE ");
-		query.append(ID_CONDOMINO);		
-		query.append(" in (");
-		query.append(pontoInterrogacao);
-		query.append(") ");
-		query.append(";");
-		Connection con = Conexao.getConexao();
-		PreparedStatement preparedStatement = null;
-		Veiculo veiculo = null;
-		Garagem garagem = null;
-		Bloco bloco = null;
-		Unidade unidade = null;
-		Condomino condomino = null;
-		
-		Integer contador = 1;
-		List<Veiculo> listaVeiculo = new ArrayList<Veiculo>();
-		try {
-			preparedStatement = con.prepareStatement(query.toString());
-			for (Condomino condominoBase : listaCondomino) {
-				SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, condominoBase.getId(), java.sql.Types.INTEGER);				
-			}			
-			ResultSet resultSet = preparedStatement.executeQuery();
-			while(resultSet.next()){				
-				veiculo = new Veiculo();				
-				veiculo.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
-				veiculo.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
-				veiculo.setPlaca(String.valueOf(SQLUtil.getValorResultSet(resultSet, PLACA, java.sql.Types.VARCHAR)));
-				veiculo.setTipo((Integer) SQLUtil.getValorResultSet(resultSet, TIPO, java.sql.Types.INTEGER));
-				veiculo.setTamanho((Integer) SQLUtil.getValorResultSet(resultSet, TAMANHO, java.sql.Types.INTEGER));
-				condomino = this.condominoDAO.buscarCondominoPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINO, java.sql.Types.INTEGER), con);
-				unidade = this.unidadeDAO.buscarPorId(condomino.getIdUnidade(), con);
-				bloco = this.blocoDAO.buscarPorId(unidade.getIdBloco(), con);
-				veiculo.setBloco(bloco);
-				veiculo.setUnidade(unidade);
-				veiculo.setCondomino(condomino);
-				garagem = this.garagemDAO.buscarPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_GARAGEM, java.sql.Types.INTEGER), con);
-				veiculo.setGaragem(garagem);							
-				listaVeiculo.add(veiculo);
+			StringBuffer query = new StringBuffer();
+			query.append("SELECT * FROM ");
+			query.append(VEICULO);
+			query.append(" WHERE ");
+			query.append(ID_CONDOMINO);		
+			query.append(" in (");
+			query.append(pontoInterrogacao);
+			query.append(") ");
+			query.append(";");
+			Connection con = Conexao.getConexao();
+			PreparedStatement preparedStatement = null;
+			Veiculo veiculo = null;
+			Garagem garagem = null;
+			Bloco bloco = null;
+			Unidade unidade = null;
+			Condomino condomino = null;		
+			Integer contador = 1;		
+			try {
+				preparedStatement = con.prepareStatement(query.toString());
+				for (Condomino condominoBase : listaCondomino) {
+					SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, condominoBase.getId(), java.sql.Types.INTEGER);				
+				}			
+				ResultSet resultSet = preparedStatement.executeQuery();
+				while(resultSet.next()){				
+					veiculo = new Veiculo();				
+					veiculo.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+					veiculo.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+					veiculo.setPlaca(String.valueOf(SQLUtil.getValorResultSet(resultSet, PLACA, java.sql.Types.VARCHAR)));
+					veiculo.setTipo((Integer) SQLUtil.getValorResultSet(resultSet, TIPO, java.sql.Types.INTEGER));
+					veiculo.setTamanho((Integer) SQLUtil.getValorResultSet(resultSet, TAMANHO, java.sql.Types.INTEGER));
+					condomino = this.condominoDAO.buscarCondominoPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINO, java.sql.Types.INTEGER), con);
+					unidade = this.unidadeDAO.buscarPorId(condomino.getIdUnidade(), con);
+					bloco = this.blocoDAO.buscarPorId(unidade.getIdBloco(), con);
+					veiculo.setBloco(bloco);
+					veiculo.setUnidade(unidade);
+					veiculo.setCondomino(condomino);
+					garagem = this.garagemDAO.buscarPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_GARAGEM, java.sql.Types.INTEGER), con);
+					veiculo.setGaragem(garagem);							
+					listaVeiculo.add(veiculo);
+				}	
+			} catch (SQLException e) {			
+				throw e;
+			} catch (Exception e) {					
+				throw e;	
+			}finally{
+				try{				
+					preparedStatement.close();
+					con.close();				
+				}catch (SQLException e) {
+					logger.error("erro sqlstate "+e.getSQLState(), e);
+				}
 			}	
-		} catch (SQLException e) {			
-			throw e;
-		} catch (Exception e) {					
-			throw e;	
-		}finally{
-			try{				
-				preparedStatement.close();
-				con.close();				
-			}catch (SQLException e) {
-				logger.error("erro sqlstate "+e.getSQLState(), e);
-		    }
-		}	
-		Collections.sort(listaVeiculo);
+			Collections.sort(listaVeiculo);
+		}		
 		return listaVeiculo;
 	}
 

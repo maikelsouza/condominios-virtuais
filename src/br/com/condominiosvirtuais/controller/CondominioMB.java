@@ -116,8 +116,13 @@ public class CondominioMB implements Serializable{
 	}
 	
 	public void pesquisar(ActionEvent event){
-		try {			
-			this.listaDeCondominios = new ListDataModel<Condominio>(this.condominioService.buscarPorNomeESituacao(this.condominio));
+		try {
+			// Caso seja igual a todos
+			if(this.condominio.getSituacao() == 2){
+				this.listaDeCondominios = new ListDataModel<Condominio>(this.condominioService.buscarListaCondominiosPorNome(this.condominio));
+			}else{
+				this.listaDeCondominios = new ListDataModel<Condominio>(this.condominioService.buscarPorNomeESituacao(this.condominio));
+			}
 			if (this.listaDeCondominios.getRowCount() == 0){
 				ManagedBeanUtil.setMensagemInfo("msg.condominio.semCondominios");
 			}		
