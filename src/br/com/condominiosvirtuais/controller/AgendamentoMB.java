@@ -4,10 +4,13 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
@@ -17,10 +20,12 @@ import javax.inject.Named;
 import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Agendamento;
+import br.com.condominiosvirtuais.entity.Bloco;
 import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.Condomino;
 import br.com.condominiosvirtuais.entity.GrupoUsuario;
 import br.com.condominiosvirtuais.entity.SindicoProfissional;
+import br.com.condominiosvirtuais.entity.Unidade;
 import br.com.condominiosvirtuais.entity.Usuario;
 import br.com.condominiosvirtuais.enumeration.AgendamentoSituacaoEnum;
 import br.com.condominiosvirtuais.enumeration.AgendamentoTipoEnum;
@@ -148,6 +153,35 @@ public class AgendamentoMB implements Serializable {
 			this.agendamento.setUnidade(this.unidadeService.buscarPorId(this.condomino.getIdUnidade()));
 			this.agendamento.setBloco(this.blocoService.buscarPorId(this.agendamento.getUnidade().getIdBloco()));
 			this.agendamento.setCondomino(this.condomino);
+			// FIXME: Regra temporária. Essa deve ser criada para um modelo genérico
+			if(this.condominio.getId() == 8){
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(new Date());
+				calendar.add(Calendar.HOUR_OF_DAY, 48);
+				if(this.agendamento.getData().before(calendar.getTime())){	
+					FacesMessage facesMessage = new FacesMessage("O período de agendamento deve ser superior a 48 horas");
+					facesMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
+					FacesContext context  = FacesContext.getCurrentInstance();
+					context.addMessage(null, facesMessage);
+					return null;
+				}
+				// Regra para não deixar um condômino fazer agendamento de mudança para o mesmo bloco no mesmo dia. 
+				List<Agendamento> listaAgendamento = this.agendamentoService.buscarPorCondominioEData(this.condominio, this.agendamento.getData());
+				if(!listaAgendamento.isEmpty()){
+					Condomino condomino = this.condominoService.buscarPorId(AplicacaoUtil.getUsuarioAutenticado().getId());
+					Unidade unidade = this.unidadeService.buscarPorId(condomino.getIdUnidade());
+					Bloco bloco = this.blocoService.buscarPorId(unidade.getIdBloco());					
+					for (Agendamento agendamento : listaAgendamento) {
+						if(agendamento.getBloco().getId().intValue() == bloco.getId().intValue()){
+							FacesMessage facesMessage = new FacesMessage("Já existe um agendamento para a "+bloco.getNome()+" nesse dia.");
+							facesMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
+							FacesContext context  = FacesContext.getCurrentInstance();
+							context.addMessage(null, facesMessage);
+							return null;
+						}
+					}
+				}
+			}
 			this.agendamentoService.solicitarAgendamento(this.agendamento,this.condominio.getSindicoGeral().getNome(),this.condominio.getSindicoGeral().getEmail().getEmail());
 			this.agendamento = new Agendamento();	
 			this.popularListaMeusAgendamentos();

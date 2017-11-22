@@ -1,6 +1,7 @@
 package br.com.condominiosvirtuais.persistence;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import br.com.condominiosvirtuais.entity.Agendamento;
@@ -15,8 +16,7 @@ public interface AgendamentoDAO {
 	
 	public abstract List<Agendamento> buscarPorCondominioESituacaoETipo(Condominio condominio, String situacao, String tipo) throws SQLException, Exception;
 	
-	public abstract List<Agendamento> buscarPorCondominioETipo(Condominio condominio, String tipo) throws SQLException, Exception;
-	 
+	public abstract List<Agendamento> buscarPorCondominioETipo(Condominio condominio, String tipo) throws SQLException, Exception;	 
 	
 	public abstract List<Agendamento> buscarPorCondominio(Condominio condominio) throws SQLException, Exception;
 	
@@ -25,5 +25,7 @@ public interface AgendamentoDAO {
 	public abstract void aprovar(Agendamento agendamento) throws SQLException, Exception;
 	
 	public abstract void reprovar(Agendamento agendamento) throws SQLException, Exception;
+	
+	public abstract List<Agendamento> buscarPorCondominioEData(Condominio condominio, Date data) throws SQLException, Exception;
 
 }

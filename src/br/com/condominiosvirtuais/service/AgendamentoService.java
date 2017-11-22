@@ -1,6 +1,7 @@
 package br.com.condominiosvirtuais.service;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import br.com.condominiosvirtuais.entity.Agendamento;
@@ -24,5 +25,7 @@ public interface AgendamentoService {
 	public abstract List<Agendamento> buscarPorCondominioESituacaoETipo(Condominio condominio, String situacao, String tipo) throws SQLException, Exception;
 	
 	public abstract List<Agendamento> buscarPorCondominioETipo(Condominio condominio, String tipo) throws SQLException, Exception;
+	
+	public abstract List<Agendamento> buscarPorCondominioEData(Condominio condominio, Date data) throws SQLException, Exception;
 
 }
