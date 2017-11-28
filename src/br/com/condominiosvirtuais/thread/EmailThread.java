@@ -48,7 +48,7 @@ public class EmailThread extends Thread {
 			    get(ConfiguracaoAplicacaoEnum.QTD_ENVIO_EMAIL_LOTE.getChave())));
 				for (Email email : listaEmail) {
 					//email.setPara("condominiosvirtuais@hotmail.com");
-					//this.emailService.enviarHTML(email, principalMB.getCaminhoAplicacao(), principalMB.getCharset());
+					this.emailService.enviarHTML(email, principalMB.getCaminhoAplicacao(), principalMB.getCharset());
 					this.emailService.excluir(email);					 
 				 }
 				logger.info("Fim do processo para envio de email em : " + new Date());
