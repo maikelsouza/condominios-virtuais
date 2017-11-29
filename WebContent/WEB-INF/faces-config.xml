@@ -22,6 +22,10 @@
   <converter-id>meioPagamentoConversor</converter-id>
   <converter-class>br.com.condominiosvirtuais.converter.MeioPagamentoConversor</converter-class>
  </converter>
+ <converter>
+  <converter-id>usuarioVOConversor</converter-id>
+  <converter-class>br.com.condominiosvirtuais.converter.UsuarioVOConversor</converter-class>
+ </converter>
  <managed-bean>
   <managed-bean-name>ordenaCondominioMB</managed-bean-name>
   <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaCondominioMB</managed-bean-class>
@@ -170,6 +174,26 @@
  <managed-bean>
   <managed-bean-name>ordenaPreCadastroBoletoMB</managed-bean-name>
   <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaPreCadastroBoletoMB</managed-bean-class>
+  <managed-bean-scope>view</managed-bean-scope>
+ </managed-bean>
+ <managed-bean>
+  <managed-bean-name>ordenaGrupoUsuarioMB</managed-bean-name>
+  <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaGrupoUsuarioMB</managed-bean-class>
+  <managed-bean-scope>view</managed-bean-scope>
+ </managed-bean>
+ <managed-bean>
+  <managed-bean-name>ordenaTelaMB</managed-bean-name>
+  <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaTelaMB</managed-bean-class>
+  <managed-bean-scope>view</managed-bean-scope>
+ </managed-bean>
+ <managed-bean>
+  <managed-bean-name>ordenaAbaMB</managed-bean-name>
+  <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaAbaMB</managed-bean-class>
+  <managed-bean-scope>view</managed-bean-scope>
+ </managed-bean>
+ <managed-bean>
+  <managed-bean-name>ordenaComponenteMB</managed-bean-name>
+  <managed-bean-class>br.com.condominiosvirtuais.controller.OrdenaComponenteMB</managed-bean-class>
   <managed-bean-scope>view</managed-bean-scope>
  </managed-bean>
  
@@ -525,8 +549,20 @@
   </navigation-case> 
   <navigation-case>
    <from-action>#{principalMB.listaPreCadastroBoleto}</from-action>
-   <from-outcome>listaPreCadastroBoleto</from-outcome>
+   <from-outcome>listarPreCadastroBoleto</from-outcome>
    <to-view-id>/pages/formListaPreCadastroBoleto.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case> 
+  <navigation-case>
+   <from-action>#{principalMB.listarGrupoUsuario}</from-action>
+   <from-outcome>listarGrupoUsuario</from-outcome>
+   <to-view-id>/pages/formListaGrupoUsuario.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case> 
+  <navigation-case>
+   <from-action>#{principalMB.associarGrupoUsuario}</from-action>
+   <from-outcome>associarGrupoUsuario</from-outcome>
+   <to-view-id>/pages/formAssociarGrupoUsuario.xhtml</to-view-id>
     <redirect/>
   </navigation-case> 
  </navigation-rule>
@@ -2096,8 +2132,219 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
- 
- 
+ <navigation-rule>                       
+  <from-view-id>/pages/formListaGrupoUsuario.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{grupoUsuarioMB.visualizarGrupoUsuarioTela}</from-action>
+   <from-outcome>visualizar</from-outcome>
+   <to-view-id>/pages/formVisualizaGrupoUsuarioTela.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>                  
+   <from-action>#{grupoUsuarioMB.cadastroGrupoUsuario}</from-action>
+   <from-outcome>cadastrar</from-outcome>
+   <to-view-id>/pages/formCadastroGrupoUsuario.xhtml</to-view-id>
+  	<redirect/>
+  </navigation-case>
+  <navigation-case>                  
+   <from-action>#{grupoUsuarioMB.editarGrupoUsuario}</from-action>
+   <from-outcome>editar</from-outcome>
+   <to-view-id>/pages/formEditaGrupoUsuario.xhtml</to-view-id>
+  	<redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formVisualizaGrupoUsuarioTela.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{telaMB.visualizarTelaAba}</from-action>
+   <from-outcome>visualizar</from-outcome>
+   <to-view-id>/pages/formVisualizaTelaAba.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>                  
+   <from-action>#{telaMB.visualizarTelaComponente}</from-action>
+   <from-outcome>visualizar</from-outcome>
+   <to-view-id>/pages/formVisualizaTelaComponente.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>      
+   <from-action>#{telaMB.voltarVisualizarGrupoUsuarioTela}</from-action>
+   <from-outcome>voltar</from-outcome>
+   <to-view-id>/pages/formListaGrupoUsuario.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+   <navigation-case>                  
+   <from-action>#{telaMB.cancelarVisualizarGrupoUsuarioTela}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formVisualizaTelaAba.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{telaMB.voltarVisualizarTelaAba}</from-action>
+   <from-outcome>voltar</from-outcome>
+   <to-view-id>/pages/formVisualizaGrupoUsuarioTela.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+   <navigation-case>                  
+   <from-action>#{telaMB.cancelarVisualizarTelaAba}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formVisualizaTelaComponente.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{telaMB.voltarVisualizarTelaComponente}</from-action>
+   <from-outcome>voltar</from-outcome>
+   <to-view-id>/pages/formVisualizaGrupoUsuarioTela.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+   <navigation-case>                  
+   <from-action>#{telaMB.cancelarVisualizarTelaComponente}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formCadastroGrupoUsuario.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{grupoUsuarioMB.listarGrupoUsuarioTelaAba}</from-action>
+   <from-outcome>listar</from-outcome>
+   <to-view-id>/pages/formListaTelaAba.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+   <navigation-case>                  
+   <from-action>#{grupoUsuarioMB.salvarGrupoUsuario}</from-action>
+   <from-outcome>salvar</from-outcome>
+   <to-view-id>/pages/formListaGrupoUsuario.xhtml</to-view-id>
+  </navigation-case>
+   <navigation-case>                  
+   <from-action>#{grupoUsuarioMB.listarGrupoUsuarioTelaComponente}</from-action>
+   <from-outcome>listar</from-outcome>
+   <to-view-id>/pages/formListaTelaComponente.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+   <navigation-case>                  
+   <from-action>#{grupoUsuarioMB.cancelarCadastroGrupoUsuario}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formListaTelaAba.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{telaMB.salvarListaTelaAba}</from-action>
+   <from-outcome>salvar</from-outcome>
+   <to-view-id>/pages/formCadastroGrupoUsuario.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>                  
+   <from-action>#{telaMB.voltarListaTelaAba}</from-action>
+   <from-outcome>voltar</from-outcome>
+   <to-view-id>/pages/formCadastroGrupoUsuario.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formListaTelaComponente.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{telaMB.salvarListaTelaComponente}</from-action>
+   <from-outcome>salvar</from-outcome>
+   <to-view-id>/pages/formCadastroGrupoUsuario.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>                  
+   <from-action>#{telaMB.voltarListaTelaComponente}</from-action>
+   <from-outcome>voltar</from-outcome>
+   <to-view-id>/pages/formCadastroGrupoUsuario.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formEditaGrupoUsuario.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{grupoUsuarioMB.editarGrupoUsuarioTelaComponente}</from-action>
+   <from-outcome>editar</from-outcome>
+   <to-view-id>/pages/formEditaTelaComponente.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>                  
+   <from-action>#{grupoUsuarioMB.editarGrupoUsuarioTelaAba}</from-action>
+   <from-outcome>editar</from-outcome>
+   <to-view-id>/pages/formEditaTelaAba.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>                  
+   <from-action>#{grupoUsuarioMB.atualizarGrupoUsuario}</from-action>
+   <from-outcome>atualizar</from-outcome>
+   <to-view-id>/pages/formListaGrupoUsuario.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>                  
+   <from-action>#{grupoUsuarioMB.cancelarEditaGrupoUsuario}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formEditaTelaAba.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{telaMB.salvarEditaTelaAba}</from-action>
+   <from-outcome>salvar</from-outcome>
+   <to-view-id>/pages/formEditaGrupoUsuario.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>                  
+   <from-action>#{telaMB.voltarEditaTelaAba}</from-action>
+   <from-outcome>voltar</from-outcome>
+   <to-view-id>/pages/formEditaGrupoUsuario.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formEditaTelaComponente.xhtml</from-view-id>  
+  <navigation-case>                  
+   <from-action>#{telaMB.salvarEditaTelaComponente}</from-action>
+   <from-outcome>salvar</from-outcome>
+   <to-view-id>/pages/formEditaGrupoUsuario.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>                  
+   <from-action>#{telaMB.voltarEditaTelaComponente}</from-action>
+   <from-outcome>voltar</from-outcome>
+   <to-view-id>/pages/formEditaGrupoUsuario.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>                       
+  <from-view-id>/pages/formAssociarGrupoUsuario.xhtml</from-view-id>
+  <navigation-case>                  
+   <from-action>#{grupoUsuarioMB.associarUsuarioCondominioGrupoUsuario}</from-action>
+   <from-outcome>associarUsuarioCondominio</from-outcome>
+   <to-view-id>/pages/formAssociarGrupoUsuarioCondominio.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule> 
+ <navigation-rule>                       
+  <from-view-id>/pages/formAssociarGrupoUsuarioCondominio.xhtml</from-view-id>
+  <navigation-case>                  
+   <from-action>#{usuarioMB.associarUsuario}</from-action>
+   <from-outcome>associar</from-outcome>
+   <to-view-id>/pages/formAssociarGrupoUsuario.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>                  
+   <from-action>#{usuarioMB.cancelarAssociarUsuario}</from-action>
+   <from-outcome>cancelar</from-outcome>
+   <to-view-id>/pages/formPrincipal.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
  
  <application>
   <locale-config>

@@ -47,6 +47,10 @@ public class EmailThread extends Thread {
 				List<Email> listaEmail = this.emailService.buscar(Integer.parseInt(this.configuracaoAplicacaoService.getConfiguracoes().
 			    get(ConfiguracaoAplicacaoEnum.QTD_ENVIO_EMAIL_LOTE.getChave())));
 				for (Email email : listaEmail) {
+<<<<<<< HEAD
+=======
+					//email.setPara("condominiosvirtuais@hotmail.com");
+>>>>>>> refs/heads/ModeloAutorizacao
 					this.emailService.enviarHTML(email, principalMB.getCaminhoAplicacao(), principalMB.getCharset());
 					this.emailService.excluir(email);					 
 				 }

@@ -9,91 +9,73 @@
 
 	<h:form id="idFormConteudoTelaPrincipal" styleClass="content">
 		<a4j:outputPanel id="gallery" styleClass="menuAtalho">
-			<a4j:commandLink action="#{principalMB.listarCondominio}"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}">
-				<h:graphicImage title="#{msg['cadastro.condominio']}"
-					url="/imagens/menu_condominio_n.png" />
+			<a4j:commandLink action="#{principalMB.listarCondominio}" rendered="#{loginMB.temAcesso('#{principalMB.listarCondominio}')}">
+				<h:graphicImage title="#{msg['cadastro.condominio']}" url="/imagens/menu_condominio_n.png" />
 				<h:outputLabel value="#{msg['cadastro.condominio']}" />
 			</a4j:commandLink>
 			
-			<a4j:commandLink action="#{principalMB.listarBloco}"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}">
+			<a4j:commandLink action="#{principalMB.listarBloco}" rendered="#{loginMB.temAcesso('#{principalMB.listarBloco}')}">
 				<h:graphicImage title="#{msg['cadastro.bloco']}"
 					url="/imagens/menu_bloco_n.png" />
 				<h:outputLabel value="#{msg['cadastro.bloco']}" />
 			</a4j:commandLink>
 			
-			<a4j:commandLink action="#{principalMB.listarUnidade}"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}">
-				<h:graphicImage title="#{msg['cadastro.unidade']}"
-					url="/imagens/menu_unidade_n.png" />
+			<a4j:commandLink action="#{principalMB.listarUnidade}" rendered="#{loginMB.temAcesso('#{principalMB.listarUnidade}')}">
+				<h:graphicImage title="#{msg['cadastro.unidade']}" url="/imagens/menu_unidade_n.png" />
 				<h:outputLabel value="#{msg['cadastro.unidade']}" />
 			</a4j:commandLink>
 			
-			<a4j:commandLink action="#{principalMB.listarCondomino}"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}">
-				<h:graphicImage title="#{msg['cadastro.condomino']}"
-					url="/imagens/menu_condomino_n.png" />
+			<a4j:commandLink action="#{principalMB.listarCondomino}" rendered="#{loginMB.temAcesso('#{principalMB.listarCondomino}')}">
+				<h:graphicImage title="#{msg['cadastro.condomino']}" url="/imagens/menu_condomino_n.png" />
 				<h:outputLabel value="#{msg['cadastro.condomino']}" />
 			</a4j:commandLink>
 			
 			<a4j:commandLink action="#{principalMB.listarAmbienteCondominio}"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4') and loginMB.sindicoGeralAssociado()}">
-				<h:graphicImage title="#{msg['cadastro.ambiente.condominio']}"
-					url="/imagens/menu_ambiente_condominio_n.png" />
+				rendered="#{loginMB.temAcesso('#{principalMB.listarAmbienteCondominio}') and loginMB.sindicoGeralAssociado()}">
+				<h:graphicImage title="#{msg['cadastro.ambiente.condominio']}" url="/imagens/menu_ambiente_condominio_n.png" />
 				<h:outputLabel value="#{msg['cadastro.ambiente.condominio']}" />
 			</a4j:commandLink>
 			
-			<a4j:commandLink action="#{principalMB.listarAmbienteBloco}"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4') and loginMB.sindicoGeralAssociado()}">
-				<h:graphicImage title="#{msg['cadastro.ambiente.bloco']}"
-					url="/imagens/menu_ambiente_bloco_n.png" />
+			<a4j:commandLink action="#{principalMB.listarAmbienteBloco}" rendered="#{loginMB.temAcesso('#{principalMB.listarAmbienteBloco}') and loginMB.sindicoGeralAssociado()}">
+				<h:graphicImage title="#{msg['cadastro.ambiente.bloco']}" url="/imagens/menu_ambiente_bloco_n.png" />
 				<h:outputLabel value="#{msg['cadastro.ambiente.bloco']}" />
 			</a4j:commandLink>
 			
 			<a4j:commandLink action="#{principalMB.listarFuncionarioCondominio}"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4') and loginMB.sindicoGeralAssociado()}">
-				<h:graphicImage title="#{msg['cadastro.funcionario.condominio']}"
-					url="/imagens/menu_funcionario_condominio_n.png" />
+				rendered="#{loginMB.temAcesso('#{principalMB.listarFuncionarioCondominio}') and loginMB.sindicoGeralAssociado()}">
+				<h:graphicImage title="#{msg['cadastro.funcionario.condominio']}" url="/imagens/menu_funcionario_condominio_n.png" />
 				<h:outputLabel value="#{msg['cadastro.funcionario.condominio']}" />
 			</a4j:commandLink>
 			
 			<a4j:commandLink action="#{principalMB.listarFuncionarioBloco}"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4') and loginMB.sindicoGeralAssociado()}">
-				<h:graphicImage title="#{msg['cadastro.funcionario.bloco']}"
-					url="/imagens/menu_funcionario_bloco_n.png" />
+				rendered="#{loginMB.temAcesso('#{principalMB.listarFuncionarioBloco}') and loginMB.sindicoGeralAssociado()}">
+				<h:graphicImage title="#{msg['cadastro.funcionario.bloco']}" url="/imagens/menu_funcionario_bloco_n.png" />
 				<h:outputLabel value="#{msg['cadastro.funcionario.bloco']}" />
 			</a4j:commandLink>
 			
 			<a4j:commandLink action="#{principalMB.listarReserva}"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,3,4') and loginMB.sindicoGeralAssociado()}">
-				<h:graphicImage title="#{msg['reserva.listar']}"
-					url="/imagens/menu_listar_reservas_n.png" />
+				rendered="#{loginMB.temAcesso('#{principalMB.listarFuncionarioBloco}') and loginMB.sindicoGeralAssociado()}">
+				<h:graphicImage title="#{msg['reserva.listar']}" url="/imagens/menu_listar_reservas_n.png" />
 				<h:outputLabel value="#{msg['reserva.listar']}" />
 			</a4j:commandLink>
 			
 			<a4j:commandLink action="#{principalMB.cadastrarReserva}"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('6') and loginMB.sindicoGeralAssociado()}">
-				<h:graphicImage title="#{msg['reserva.cadastrar']}"
-					url="/imagens/menu_cadastrar_reservas_n.png" />
+				rendered="#{loginMB.temAcesso('#{principalMB.cadastrarReserva}') and loginMB.sindicoGeralAssociado()}">
+				<h:graphicImage title="#{msg['reserva.cadastrar']}" url="/imagens/menu_cadastrar_reservas_n.png" />
 				<h:outputLabel value="#{msg['reserva.cadastrar']}" />
 			</a4j:commandLink>
 			
 			<a4j:commandLink action="#{principalMB.cadastroListarReserva}"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('4,5') and loginMB.sindicoGeralAssociado()}">
-				<h:graphicImage title="#{msg['reserva.cadastrar']}"
-					url="/imagens/menu_cadastrar_reservas_n.png" />
+				rendered="#{loginMB.temAcesso('#{principalMB.cadastroListarReserva}') and loginMB.sindicoGeralAssociado()}">
+				<h:graphicImage title="#{msg['reserva.cadastrar']}" url="/imagens/menu_cadastrar_reservas_n.png" />
 				<h:outputLabel value="#{msg['reserva.cadastrar']}" />
 			</a4j:commandLink>
 			
 			<a4j:commandLink action="#{principalMB.aprovarReserva}"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('2,3,4') and loginMB.sindicoGeralAssociado()}">
-				<h:graphicImage title="#{msg['reserva.aprovar']}"
-					url="/imagens/menu_aprovar_reservas_n.png" />
+				rendered="#{loginMB.temAcesso('#{principalMB.aprovarReserva}') and loginMB.sindicoGeralAssociado()}">
+				<h:graphicImage title="#{msg['reserva.aprovar']}" url="/imagens/menu_aprovar_reservas_n.png" />
 				<h:outputLabel value="#{msg['reserva.aprovar']}" />
 			</a4j:commandLink>
-			
-			
 			
 		</a4j:outputPanel>
 	</h:form>

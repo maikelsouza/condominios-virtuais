@@ -176,7 +176,7 @@
 				<h:panelGrid columns="3">
 					<h:commandButton value="#{msg.botaoAtualizar}"
 						action="#{classificadosMB.atualizarClassificados}" />
-					<h:commandButton value="#{msg.botaoExcluir}">
+					<h:commandButton value="#{msg.botaoExcluir}" id="idBotaoExcluirClassificados" rendered="#{loginMB.temAcessoComponente('formEditaClassificados.idBotaoExcluirClassificados')}">
 						<rich:componentControl target="confirmaExcluirClassificados"
 							operation="show" />
 					</h:commandButton>

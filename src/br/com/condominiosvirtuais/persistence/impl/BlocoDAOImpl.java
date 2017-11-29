@@ -484,6 +484,49 @@ public class BlocoDAOImpl implements BlocoDAO, Serializable{
 		}	
 		return listaIds;		
 	}
+	
+	public List<Bloco> buscarListaBlocosPoIdCondominio(Integer idCondominio) throws SQLException, Exception{			
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(BLOCO);
+		query.append(" WHERE ");
+		query.append(ID_CONDOMINIO);
+		query.append(" = ? ");
+		query.append(" ORDER BY ");
+		query.append(NOME);
+		query.append(";");		
+		Connection con = Conexao.getConexao();
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		List<Bloco> listaBloco = new ArrayList<Bloco>();
+		Bloco bloco = null;
+		try {
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, idCondominio, java.sql.Types.INTEGER);		
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				bloco = new Bloco();
+				bloco.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				bloco.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+				bloco.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
+				listaBloco.add(bloco);
+			}
+		} catch (SQLException e) {		
+			con.rollback();
+			throw e;
+		} catch (Exception e) {
+			con.rollback();
+			throw e;			
+		}finally{
+			try {
+				preparedStatement.close();
+				con.close();				
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);				
+			}
+		}	
+		return listaBloco;
+	}
 
 
 }

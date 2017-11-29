@@ -26,7 +26,7 @@ public class UsuarioServiceImpl implements UsuarioService, Serializable {
 	private EmailUsuarioService emailUsuarioService = null;
 	
 	@Inject
-	private GrupoUsuarioService grupoUsuarioService = null;
+	private GrupoUsuarioService grupoUsuarioService; 
 	
 	@Inject
 	private CondominioService condominioService = null;
@@ -55,7 +55,9 @@ public class UsuarioServiceImpl implements UsuarioService, Serializable {
 			listaCondominio = new ArrayList<Condominio>();
 			usuario = this.usuarioDAO.buscarPorId(email.getIdUsuario());
 			usuario.setListaEmail(this.emailUsuarioService.buscarPorUsuario(usuario));
-			usuario.setGrupoUsuario(this.grupoUsuarioService.buscarPorIdUsuario(usuario.getIdGrupoUsuario()));			
+//TODO: Código comentado em 27/09/2017. Apagar em 180 dias			
+//			usuario.setListaGrupoUsuario(this.grupoUsuarioService.buscarPorIdUsuarioESituacao(usuario.getId(), 
+//					GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));			
 			for (UsuarioCondominio usuarioCondominio : this.usuarioCondominioDAO.buscarListaPorUsuario(usuario)) {
 				Condominio condominio = this.condominioService.buscarPorId(usuarioCondominio.getIdCondominio());
 				listaCondominio.add(condominio);	
@@ -129,6 +131,16 @@ public class UsuarioServiceImpl implements UsuarioService, Serializable {
 	@Override
 	public Usuario buscarSindicoGeralPorCondominio(Condominio condominio) throws SQLException, Exception {
 		return this.usuarioDAO.buscarSindicoGeralPorCondominio(condominio);
+	}
+
+	@Override
+	public void associar(List<Usuario> listaUsuariosAssociados, List<Usuario> listaOriginalUsuariosAssociados, Integer idGrupoUsuario) throws SQLException, Exception {
+		this.usuarioDAO.associarUsuariosGrupoUsuario(listaUsuariosAssociados, listaOriginalUsuariosAssociados, idGrupoUsuario);		
+	}
+	
+	@Override
+	public void desassociar(List<Usuario> listaDeUsuarios, Integer idGrupoUsuario) throws SQLException, Exception {
+		this.usuarioDAO.desassociarUsuariosGrupoUsuario(listaDeUsuarios, idGrupoUsuario);		
 	}
 
 }

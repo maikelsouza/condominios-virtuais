@@ -51,8 +51,7 @@
 							value="#{arquivo}" cacheable="false"
 							style="height:100px;" />
 						<br />
-						<h:commandLink value="#{msg.linkExcluir}"
-							rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}">
+						<h:commandLink id="idLinkExcluirImagem" value="#{msg.linkExcluir}" rendered="#{loginMB.temAcessoComponente('formListaImagem.idLinkExcluirImagem')}">
 							<rich:componentControl target="confirmaExcluirImagem"
 								operation="show" />
 						</h:commandLink>
@@ -74,9 +73,8 @@
 				</rich:dataGrid>
 
 			</rich:panel>
-			<h:commandButton value="#{msg.botaoAnexarImagem}"
-				action="#{arquivoMB.abrirTelaAnexarImagem}" immediate="true"
-				rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4,7')}" />
+			<h:commandButton value="#{msg.botaoAnexarImagem}" action="#{arquivoMB.abrirTelaAnexarImagem}" immediate="true"
+				rendered="#{loginMB.temAcesso('#{arquivoMB.abrirTelaAnexarImagem}')}" />
 		</h:form>
 	</ui:define>
 

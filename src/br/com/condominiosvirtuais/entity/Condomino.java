@@ -8,6 +8,8 @@ package br.com.condominiosvirtuais.entity;
  */
 public class Condomino extends Usuario {
 	
+	private static final long serialVersionUID = 1L;
+
 	private Boolean proprietario;
 	
 	private Long telefoneResidencial;
@@ -68,6 +70,10 @@ public class Condomino extends Usuario {
 	public void setIdUnidade(Integer idUnidade) {
 		this.idUnidade = idUnidade;
 	}
+
+	
+	
+	
 	
 	
 }

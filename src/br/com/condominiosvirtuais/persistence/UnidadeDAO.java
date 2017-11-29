@@ -11,5 +11,7 @@ public interface UnidadeDAO {
 	public abstract Unidade buscarPorId(Integer id, Connection con) throws SQLException, Exception;
 	
 	public abstract List<Integer> buscarListaIdsUnidadesPorIdBloco(Integer idBloco) throws SQLException, Exception;
+	
+	
 
 }

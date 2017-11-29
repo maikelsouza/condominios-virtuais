@@ -28,5 +28,7 @@ public interface CondominioDAO {
     
     public abstract Boolean existeCondominioPorCodigo(Integer codigo) throws SQLException, Exception;  
     
+    public abstract List<Condominio> buscarListaCondominiosPorNome(Condominio condominio) throws SQLException, Exception;
+    
 
 }

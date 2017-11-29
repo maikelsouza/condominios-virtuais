@@ -23,12 +23,13 @@ import br.com.condominiosvirtuais.entity.Agendamento;
 import br.com.condominiosvirtuais.entity.Bloco;
 import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.Condomino;
+import br.com.condominiosvirtuais.entity.GrupoUsuario;
 import br.com.condominiosvirtuais.entity.SindicoProfissional;
 import br.com.condominiosvirtuais.entity.Unidade;
 import br.com.condominiosvirtuais.entity.Usuario;
 import br.com.condominiosvirtuais.enumeration.AgendamentoSituacaoEnum;
 import br.com.condominiosvirtuais.enumeration.AgendamentoTipoEnum;
-import br.com.condominiosvirtuais.enumeration.TipoGrupoUsuarioEnum;
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioTipoUsuarioEnum;
 import br.com.condominiosvirtuais.service.AgendamentoService;
 import br.com.condominiosvirtuais.service.BlocoService;
 import br.com.condominiosvirtuais.service.CondominioService;
@@ -106,7 +107,7 @@ public class AgendamentoMB implements Serializable {
 			this.popularHoraInicialEFinalSabado();
 		}
 		try {
-			if(AplicacaoUtil.getUsuarioAutenticado().getIdGrupoUsuario() == TipoGrupoUsuarioEnum.SINDICO_PROFISSIONAL.getGrupoUsuario()){
+			if(this.tipoUsuarioEhSindicoProfissional(AplicacaoUtil.getUsuarioAutenticado())){
 				this.descobrirCondominioSindicoProfissional();
 			}else{
 				this.descobrirCondominio();
@@ -121,6 +122,15 @@ public class AgendamentoMB implements Serializable {
 			logger.error("", e);
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
 		}	
+	}
+	
+	private Boolean tipoUsuarioEhSindicoProfissional(Usuario usuario){
+		for (GrupoUsuario grupoUsuario : usuario.getListaGrupoUsuario()) {
+			if(grupoUsuario.getTipoUsuario() == GrupoUsuarioTipoUsuarioEnum.SINDICO_PROFISSIONAL.getTipoUsuario()){
+				return Boolean.TRUE;
+			}
+		}
+		return Boolean.FALSE;
 	}
 	
 	
@@ -172,8 +182,11 @@ public class AgendamentoMB implements Serializable {
 					}
 				}
 			}
+<<<<<<< HEAD
 			
 			
+=======
+>>>>>>> refs/heads/ModeloAutorizacao
 			this.agendamentoService.solicitarAgendamento(this.agendamento,this.condominio.getSindicoGeral().getNome(),this.condominio.getSindicoGeral().getEmail().getEmail());
 			this.agendamento = new Agendamento();	
 			this.popularListaMeusAgendamentos();

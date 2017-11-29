@@ -1,13 +1,16 @@
 package br.com.condominiosvirtuais.entity;
 
+import java.io.Serializable;
 
 /**
  * Entidade quer representa o endereço de e-mail de um usuário.
  * @author Maikel Joel de Souza
  * @since 21/02/2013
  */
-public class EmailUsuario {
+public class EmailUsuario implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	private Integer id;
 	
 	private String email;

@@ -83,8 +83,7 @@
 								action="#{ambienteMB.visualizarAmbienteCondominio}"
 								immediate="true" />
 				 				#{' '}
- 							<a4j:commandLink value="#{msg.linkEditar}" render="tableAmbiente"
-								action="#{ambienteMB.editarAmbienteCondominio}" immediate="true" />
+ 							<a4j:commandLink value="#{msg.linkEditar}" render="tableAmbiente" action="#{ambienteMB.editarAmbienteCondominio}" immediate="true" rendered="#{loginMB.temAcesso('#{ambienteMB.editarAmbienteCondominio}')}" />
 						</rich:column>
 						<f:facet name="footer">
               				  <rich:dataScroller for="tableAmbiente"  fastControls="hide" renderIfSinglePage="false" />
@@ -92,8 +91,7 @@
 					</rich:dataTable>
 				</div>
 			</rich:panel>
-			<h:commandButton value="#{msg.botaoCriarNovo}"
-				action="#{ambienteMB.cadastroAmbienteCondominio}" immediate="true" />
+			<h:commandButton value="#{msg.botaoCriarNovo}" action="#{ambienteMB.cadastroAmbienteCondominio}" immediate="true" rendered="#{loginMB.temAcesso('#{ambienteMB.cadastroAmbienteCondominio}')}" />
 		</h:form>
 
 		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />

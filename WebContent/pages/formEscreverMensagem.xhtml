@@ -83,7 +83,7 @@
 				</h:form>
 			</rich:tab>
 			
-			<rich:tab header="#{msg['mensagem.funcionarios']}" id="idTabMensagemFuncionarios" rendered="#{mensagemMB.ehSindicoOuAdmin()}">
+			<rich:tab header="#{msg['mensagem.funcionarios']}" id="idTabMensagemFuncionarios" rendered="#{loginMB.temAcessoAba('formEscreverMensagem.idTabMensagemFuncionarios')}">
 				<h:form id="formEscreverMensagemFuncionarios" styleClass="content">
 					<rich:panel header="#{msg.mensagen}">
 						<h:panelGrid columns="2">

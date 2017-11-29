@@ -20,6 +20,7 @@ import br.com.condominiosvirtuais.service.BlocoService;
 import br.com.condominiosvirtuais.service.CondominioService;
 import br.com.condominiosvirtuais.service.CondominoService;
 import br.com.condominiosvirtuais.service.EmailService;
+import br.com.condominiosvirtuais.service.UnidadeService;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
 import br.com.condominiosvirtuais.util.MensagensEmailUtil;
 import br.com.condominiosvirtuais.vo.CondominoVO;
@@ -36,6 +37,9 @@ public class CondominoServiceImpl implements CondominoService, Serializable{
 	
 	@Inject
 	private BlocoService blocoService = null;
+	
+	@Inject
+	private UnidadeService unidadeService;
 	
 	@Inject
 	private CondominoDAOImpl condominoDAO;
@@ -236,7 +240,7 @@ public class CondominoServiceImpl implements CondominoService, Serializable{
 	
 	public Condomino buscarPorId(Integer id) throws SQLException, Exception {
 		return this.condominoDAO.buscarCondominoPorId(id);
-	}
+	}	
 	
 	public CondominioService getCondominioService() {
 		return condominioService;
@@ -246,6 +250,91 @@ public class CondominoServiceImpl implements CondominoService, Serializable{
 		this.condominioService = condominioService;
 	}
 
+
+	@Override
+	public List<CondominoVO> buscarPorIdsESituacaoSemImagem(Integer idCondominio, Integer situacao) throws SQLException, Exception {
+		List<Condomino> listaCondomino = new ArrayList<Condomino>();
+		List<Unidade> listaUnidade = new ArrayList<Unidade>();
+		List<CondominoVO> listaCondominoVO = new ArrayList<CondominoVO>();
+		CondominoVO condominoVO = null;
+		Unidade unidadeLocal = null;
+		List<Bloco> listaBloco = this.blocoService.buscarListaBlocosPoIdCondominio(idCondominio);
+		for (Bloco bloco : listaBloco) {
+			listaUnidade.addAll(this.unidadeService.buscarListaUnidadesPorBloco(bloco));						
+		}
+		
+		for (Unidade unidade : listaUnidade) {
+			listaCondomino.addAll(this.condominoDAO.buscarPorIdUnidadeESituacaoSemImagem(unidade.getId(), situacao));
+		}	
+		
+		for (Condomino condomino : listaCondomino) {
+			condominoVO = new CondominoVO();
+			condominoVO.setIdCondomino(condomino.getId());
+			condominoVO.setIdUnidade(condomino.getIdUnidade());
+			condominoVO.setNomeCondomino(condomino.getNome());
+			unidadeLocal = this.buscarUnidadePeloId(condomino.getIdUnidade(), listaUnidade);			
+			condominoVO.setNumeroUnidade(unidadeLocal.getNumero());
+			condominoVO.setNomeBloco(this.buscarBlocoPeloId(unidadeLocal.getIdBloco(), listaBloco).getNome());
+			listaCondominoVO.add(condominoVO);
+		}
+
+		return listaCondominoVO;
+	}
+	
+	@Override
+	public List<CondominoVO> buscarPorIdsEidGrupoUsuarioESituacaoSemImagem(Integer idCondominio, Integer idGrupoUsuario, Integer situacao) throws SQLException, Exception {
+		List<Condomino> listaCondomino = new ArrayList<Condomino>();
+		List<Bloco> listaBloco = this.blocoService.buscarListaBlocosPoIdCondominio(idCondominio);
+		List<Unidade> listaUnidade = new ArrayList<Unidade>();
+		List<CondominoVO> listaCondominoVO = new ArrayList<CondominoVO>();
+		CondominoVO condominoVO = null;
+		Unidade unidadeLocal = null;
+		for (Bloco bloco : listaBloco) {
+			listaUnidade.addAll(this.unidadeService.buscarListaUnidadesPorBloco(bloco));
+		}
+		for (Unidade unidade : listaUnidade) {
+			listaCondomino.addAll(this.condominoDAO.buscarPorIdUnidadeEidGrupoUsuarioESituacaoSemImagem(unidade.getId(), idGrupoUsuario, situacao));
+		}	
+		
+		for (Condomino condomino : listaCondomino) {
+			condominoVO = new CondominoVO();
+			condominoVO.setIdCondomino(condomino.getId());
+			condominoVO.setIdUnidade(condomino.getIdUnidade());
+			condominoVO.setNomeCondomino(condomino.getNome());
+			unidadeLocal = this.buscarUnidadePeloId(condomino.getIdUnidade(), listaUnidade);
+			condominoVO.setNumeroUnidade(unidadeLocal.getNumero());
+			condominoVO.setNomeBloco(this.buscarBlocoPeloId(unidadeLocal.getIdBloco(), listaBloco).getNome());
+			listaCondominoVO.add(condominoVO);
+		}
+		return listaCondominoVO;
+	}
+	
+	private Unidade buscarUnidadePeloId(Integer idUnidade, List<Unidade> listaUnidade){
+		Boolean encontrou = Boolean.FALSE;
+		Unidade unidade = null;
+		Iterator<Unidade> iteratorUnidade = listaUnidade.iterator();
+		while (iteratorUnidade.hasNext() && !encontrou) {
+			unidade =  iteratorUnidade.next();
+			if(idUnidade.intValue() == unidade.getId().intValue()){
+				encontrou = Boolean.TRUE; 
+			}
+		}
+		return unidade;
+	}
+	
+	private Bloco buscarBlocoPeloId(Integer idBloco, List<Bloco> listaBloco){
+		Boolean encontrou = Boolean.FALSE;
+		Bloco bloco = null;
+		Iterator<Bloco> iteratorBloco = listaBloco.iterator();
+		while (iteratorBloco.hasNext() && !encontrou) {
+			bloco =  iteratorBloco.next();
+			if(idBloco.intValue() == bloco.getId().intValue()){
+				encontrou = Boolean.TRUE; 
+			}
+		}
+		return bloco;
+	}
+	
 	private void popularCondominoVO(Condominio condominioLocal,
 			CondominoVO condominoVO, Bloco blocoLocal, Unidade unidadeLocal,
 			Condomino condomino) {
@@ -269,7 +358,8 @@ public class CondominoServiceImpl implements CondominoService, Serializable{
 		condominoVO.setTelefoneComercialCondomino(condomino.getTelefoneComercial());
 		condominoVO.setTelefoneResidencialCondomino(condomino.getTelefoneResidencial());
 		condominoVO.setSituacaoCondomino(condomino.getSituacao());
-		condominoVO.setIdGrupoUsuario(condomino.getIdGrupoUsuario());		
+		condominoVO.setListaGrupoUsuario(condomino.getListaGrupoUsuario());		
+//		condominoVO.setIdGrupoUsuario(condomino.getIdGrupoUsuario());		
 	}
 	
 	

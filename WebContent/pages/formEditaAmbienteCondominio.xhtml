@@ -53,14 +53,12 @@
 
 			</rich:panel>
 			<h:panelGrid columns="4">
-				<h:commandButton value="#{msg.botaoAtualizar}"
-					action="#{ambienteMB.atualizarAmbienteCondominio}" />
-				<h:commandButton value="#{msg.botaoExcluir}" immediate="true">
+				<h:commandButton value="#{msg.botaoAtualizar}" action="#{ambienteMB.atualizarAmbienteCondominio}" />
+				<h:commandButton id="idBotaoExcluirCondominio"  value="#{msg.botaoExcluir}" rendered="#{loginMB.temAcessoComponente('formEditaAmbienteCondominio.idBotaoExcluirCondominio')}" immediate="true">
 					<rich:componentControl target="confirmaExcluirAmbienteCondominio"
 						operation="show" />
 				</h:commandButton>
-				<h:commandButton value="#{msg.botaoCancelar}"
-					action="#{ambienteMB.cancelarCadastroAmbienteCondominio}"
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{ambienteMB.cancelarCadastroAmbienteCondominio}"
 					immediate="true" />
 				<h:commandButton value="#{msg.botaoCadastrarItemAmbiente}"
 					action="#{ambienteMB.cadastroItemAmbiente}" immediate="true" />

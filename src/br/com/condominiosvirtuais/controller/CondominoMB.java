@@ -22,12 +22,16 @@ import br.com.condominiosvirtuais.entity.Bloco;
 import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.Condomino;
 import br.com.condominiosvirtuais.entity.EmailUsuario;
+import br.com.condominiosvirtuais.entity.GrupoUsuario;
 import br.com.condominiosvirtuais.entity.Unidade;
 import br.com.condominiosvirtuais.enumeration.AtributoSessaoEnum;
-import br.com.condominiosvirtuais.enumeration.TipoGrupoUsuarioEnum;
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioPadraoEnum;
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioSituacaoEnum;
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioTipoUsuarioEnum;
 import br.com.condominiosvirtuais.enumeration.UsuarioSituacaoEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.service.CondominoService;
+import br.com.condominiosvirtuais.service.GrupoUsuarioService;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
 import br.com.condominiosvirtuais.util.ManagedBeanUtil;
 import br.com.condominiosvirtuais.vo.CondominoVO;
@@ -57,6 +61,9 @@ public class CondominoMB implements  Serializable{
 	
 	@Inject
 	private CondominoService condominoService = null;
+	
+	@Inject
+	private GrupoUsuarioService grupoUsuarioService = null;
 	
 	@Inject
 	private Instance<CondominioMB> condominioMB = null;
@@ -193,7 +200,7 @@ public class CondominoMB implements  Serializable{
 			listaCondominio.add(this.condominio);
 			this.condomino.setListaCondominio(listaCondominio);
 			this.condomino.setIdUnidade(this.unidade.getId());			
-			this.condomino.setIdGrupoUsuario(TipoGrupoUsuarioEnum.CONDOMINO.getGrupoUsuario());
+			this.popularGrupoUsuarioCondomino();
 			this.condomino.getEmail().setPrincipal(Boolean.TRUE);
 			this.condomino.setSituacao(UsuarioSituacaoEnum.ATIVO.getSituacao());			
 			this.condominoService.salvar(this.condomino);
@@ -214,6 +221,17 @@ public class CondominoMB implements  Serializable{
 		}
 	}
 	
+	private void popularGrupoUsuarioCondomino() throws SQLException, Exception{
+		List<GrupoUsuario> listaGrupoUsuario = new ArrayList<GrupoUsuario>();
+		listaGrupoUsuario.addAll(this.grupoUsuarioService.buscarPorIdCondominioEPadraoETipoUsuarioESituacao(this.condominio.getId(),
+				GrupoUsuarioPadraoEnum.SIM.getPadrao(), GrupoUsuarioTipoUsuarioEnum.CONDOMINO.getTipoUsuario(),GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));
+		if(listaGrupoUsuario.isEmpty()){
+			listaGrupoUsuario.add(this.grupoUsuarioService.buscarPorPadraoETipoUsuarioESituacao(GrupoUsuarioPadraoEnum.SIM.getPadrao(), GrupoUsuarioTipoUsuarioEnum.CONDOMINO.getTipoUsuario(),GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));			
+		}
+		this.condomino.setListaGrupoUsuario(listaGrupoUsuario);
+			
+	}
+	
 	public String salvarCondominoPrimeiraVez(){
 		try {
 			if(!this.condomino.getSenha().equals(this.condomino.getConfirmarSenha())){
@@ -228,8 +246,7 @@ public class CondominoMB implements  Serializable{
 			listaCondominio.add(this.condominio);
 			this.condomino.setListaCondominio(listaCondominio);
 			this.condomino.setIdUnidade(this.unidade.getId());
-			// TODO: Após criar a estrutura de grupos de usuários modificar o 5 pela constante. TipoGrupoUsuarioEnum.CONDOMINO.getGrupoUsuario()
-			this.condomino.setIdGrupoUsuario(5);
+			this.popularGrupoUsuarioCondomino();
 			this.condomino.getEmail().setPrincipal(Boolean.TRUE);
 			this.condomino.setSituacao(UsuarioSituacaoEnum.ATIVO.getSituacao());
 			this.condominoService.salvar(this.condomino);			
@@ -283,7 +300,9 @@ public class CondominoMB implements  Serializable{
 			List<Condominio> listaCondominio = new ArrayList<Condominio>();
 			listaCondominio.add(this.condominio);
 			this.condomino.setListaCondominio(listaCondominio);						
-			this.condomino.setIdGrupoUsuario(this.condominoVO.getIdGrupoUsuario());
+			this.condomino.setListaGrupoUsuario(this.condominoVO.getListaGrupoUsuario());
+//TODO: Código comentado em 25/09/2017. Apagar em 180 dias			
+//this.condomino.setIdGrupoUsuario(this.condominoVO.getIdGrupoUsuario());
 			if (!ManagedBeanUtil.validaEmail(this.condomino.getEmail().getEmail())){
 				ManagedBeanUtil.setMensagemErro("msg.condomino.formatoEmailInvalido");
 				return null;

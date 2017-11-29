@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.Conversation;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIInput;
 import javax.faces.component.UISelectItem;
@@ -27,6 +26,7 @@ import br.com.condominiosvirtuais.enumeration.AtributoSessaoEnum;
 import br.com.condominiosvirtuais.enumeration.CondominioSituacaoEnum;
 import br.com.condominiosvirtuais.service.CondominioService;
 import br.com.condominiosvirtuais.service.CondominoService;
+import br.com.condominiosvirtuais.service.GrupoUsuarioService;
 import br.com.condominiosvirtuais.service.UsuarioService;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
 import br.com.condominiosvirtuais.util.ManagedBeanUtil;
@@ -40,14 +40,14 @@ import br.com.condominiosvirtuais.vo.CondominoVO;
  */
 
 @Named @SessionScoped
-public class CondominioMB implements IConversationScopeMB, Serializable{	
+public class CondominioMB implements Serializable{	
 
 	private static final long serialVersionUID = 1L;
 
 	private static Logger logger = Logger.getLogger(CondominioMB.class);
 	
 	@Inject
-	private Conversation conversation;
+	private GrupoUsuarioService grupoUsuarioService = null;
 	
 	private Condominio condominio = null;		
 	
@@ -116,8 +116,13 @@ public class CondominioMB implements IConversationScopeMB, Serializable{
 	}
 	
 	public void pesquisar(ActionEvent event){
-		try {			
-			this.listaDeCondominios = new ListDataModel<Condominio>(this.condominioService.buscarPorNomeESituacao(this.condominio));
+		try {
+			// Caso seja igual a todos
+			if(this.condominio.getSituacao() == 2){
+				this.listaDeCondominios = new ListDataModel<Condominio>(this.condominioService.buscarListaCondominiosPorNome(this.condominio));
+			}else{
+				this.listaDeCondominios = new ListDataModel<Condominio>(this.condominioService.buscarPorNomeESituacao(this.condominio));
+			}
 			if (this.listaDeCondominios.getRowCount() == 0){
 				ManagedBeanUtil.setMensagemInfo("msg.condominio.semCondominios");
 			}		
@@ -155,8 +160,7 @@ public class CondominioMB implements IConversationScopeMB, Serializable{
 	
 	public void limparFiltroCondominio(ActionEvent event){		
 		this.listaDeCondominios = new ListDataModel<Condominio>();
-		this.limpaFormListaCondominio();
-		this.fechaSessao();
+		this.limpaFormListaCondominio();	
 	}
 	
 		
@@ -260,8 +264,8 @@ public class CondominioMB implements IConversationScopeMB, Serializable{
 				this.condominio.setSindicoGeral(sindicoGeral);
 			}else{ // Caso já exista um síndico geral, esse trecho de código modifica o síndico geral
 				this.condominio.getSindicoGeral().setId(this.nomeSindicoGeral.trim().isEmpty() ? -1 : this.idSindicoGeral);			
-			}		
-			
+			}
+						
 			if(this.idSubSindicoGeral != 0){
 				Condomino subSindicoGeral = new Condomino();
 				// Condição que contempla o caso onde o usuário apagou o nome do subsindico. -1 é igual a branco.
@@ -367,7 +371,7 @@ public class CondominioMB implements IConversationScopeMB, Serializable{
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
 		}
 		return listaSICondominios;
-	}
+	}	
 	
 	private void carregarDadosCondominio() throws  SQLException, Exception{
 		this.condominio = this.listaDeCondominios.getRowData();
@@ -396,16 +400,6 @@ public class CondominioMB implements IConversationScopeMB, Serializable{
 		}
 	}
 	
-	@Override
-	public void abreSessao() {
-		ManagedBeanUtil.abreSessao(conversation);		
-	}
-
-	@Override
-	public void fechaSessao() {
-		ManagedBeanUtil.fechaSessao(conversation);		
-	}	
-
 	
 	private void limpaFormListaCondominio(){
 		this.condominio = new Condominio();
@@ -517,15 +511,7 @@ public class CondominioMB implements IConversationScopeMB, Serializable{
 	public void setCondominoService(CondominoService condominoService) {
 		this.condominoService = condominoService;
 	}
-
-	public Conversation getConversation() {
-		return conversation;
-	}
-
-	public void setConversation(Conversation conversation) {
-		this.conversation = conversation;
-	}	
-
+	
 	public Boolean getCondominioPossuiCondominos() {
 		return condominioPossuiCondominos;
 	}

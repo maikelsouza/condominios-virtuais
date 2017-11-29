@@ -20,7 +20,11 @@
 					<h:outputText value="#{msg.listarReservas}" />
 				</f:facet>
 				<h:outputLabel value="Valor do salão de festas: R$ 93,70" style="color: red !important;" rendered="#{reservaMB.reserva.ambiente.id == 3 || reservaMB.reserva.ambiente.id == 4  ? true: false}"/>				
+<<<<<<< HEAD
 				<h:outputLabel value="Valor da churrasqueira: R$ 46,85" style="color: red !important;" rendered="#{reservaMB.reserva.ambiente.id == 5 || reservaMB.reserva.ambiente.id == 6 || reservaMB.reserva.ambiente.id == 7 ? true: false}"/>				
+=======
+				<h:outputLabel value="Valor da churrasqueira: R$ 46,85" style="color: red !important;" rendered="#{reservaMB.reserva.ambiente.id == 5 || reservaMB.reserva.ambiente.id == 6 || reservaMB.reserva.ambiente.id == 7 ? true: false}"/>
+>>>>>>> refs/heads/ModeloAutorizacao
 				<h:outputLabel value="Valor do espaço gourmet: R$ 46,85" style="color: red !important;" rendered="#{reservaMB.reserva.ambiente.id == 13 ? true: false}"/>
 				<h:panelGrid columns="#{reservaMB.idAmbiente == null ? 1: 2}">
 					<h:panelGroup>
@@ -124,10 +128,10 @@
 							<f:facet name="header">
 								<h:outputText value="#{msg.rotuloAcao}" />
 							</f:facet>
-							<a4j:commandLink value="#{msg.linkEditar}" render="tableReserva" rendered="#{reserva.situacao == 'reserva.situacao.2'}"
+							<a4j:commandLink value="#{msg.linkEditar}" render="tableReserva" rendered="#{reserva.situacao == 'reserva.situacao.2' and loginMB.temAcesso('#{reservaMB.editarReserva}')}"
 								action="#{reservaMB.editarReserva}" immediate="true" />								
 							#{' '}								
-							<a4j:commandLink value="#{msg.linkExcluir}" render="tableReserva" immediate="true" >
+							<a4j:commandLink id="idLinkExcluirReserva" value="#{msg.linkExcluir}" render="tableReserva" immediate="true" rendered="#{loginMB.temAcessoComponente('formCadastroListaReserva.idLinkExcluirReserva')}">
 								<rich:componentControl target="confirmaExcluirReserva" operation="show" />
 							</a4j:commandLink>
 							<rich:popupPanel id="confirmaExcluirReserva" autosized="true">

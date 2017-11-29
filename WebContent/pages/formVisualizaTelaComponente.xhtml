@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormVisualizaTelaComponente" styleClass="content formView">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.visualizarComponente}" />
+				</f:facet>
+				<h:panelGrid columns="2">
+					<h:outputLabel value="#{msg['tela.nome']}: " for="idTelaNome" />
+					<h:outputText id="idTelaNome" value="#{telaMB.telaVO.nomeI18nTela}" />
+					<h:outputLabel value="#{msg['tela.descricao']}: " for="idTelaDescricao"/>
+					<h:outputText id="idTelaDescricao" value="#{telaMB.telaVO.descricaoI18nTela}"/>
+				</h:panelGrid>
+				<div></div>
+			</rich:panel>
+			<rich:panel header="#{msg['painelTelaComponente']}">
+				<rich:dataTable id="idListaComponente" var="componente"  value="#{telaMB.listaComponente}" rendered="#{telaMB.listaComponente.rowCount > 0}">
+					<rich:column>
+						<f:facet name="header">
+							<h:outputLabel value="#{msg['componente.nome']}"/>
+						</f:facet>
+						<h:outputText value="#{componente.nomeI18n}" />
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputLabel value="#{msg['componente.descricao']}"/>
+						</f:facet>
+	        			<h:outputText value="#{componente.descricaoI18n}" /> 
+			        </rich:column>
+				</rich:dataTable>
+			</rich:panel>
+			<h:panelGrid columns="2">
+				<h:commandButton value="#{msg.botaoVoltar}" action="#{telaMB.voltarVisualizarTelaComponente}" immediate="true"/>
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{telaMB.cancelarVisualizarTelaComponente}" immediate="true"/>
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

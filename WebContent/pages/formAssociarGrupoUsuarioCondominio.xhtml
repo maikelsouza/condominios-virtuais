@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="idFormAssociarUsuarioCondominio" styleClass="content">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg['grupoUsuario.associarUsuarioCondominio']}" />
+				</f:facet>
+				<h:panelGrid columns="2">
+					<h:outputLabel value="#{msg['grupoUsuario.nome']}:" for="idNomeGrupoUsuario" />
+					<h:outputText id="idNomeGrupoUsuario" value="#{grupoUsuarioMB.grupoUsuario.nome}" />
+					<h:outputLabel value="#{msg['grupoUsuario.descricao']}:" for="idDescricaoGrupoUsuario" />
+					<h:outputText id="idDescricaoGrupoUsuario" value="#{grupoUsuarioMB.grupoUsuario.descricao}" />
+				</h:panelGrid>
+			</rich:panel>
+			<rich:panel header="#{msg['usuario.associarUsuariosGrupoUsuario']}">				
+				<rich:pickList addAllText="#{msg.adicionarTodos}" listWidth="550px" targetCaption="#{msg['usuario.usuariosAssociados']}" sourceCaption="#{msg['usuariosNaoAssociados']}"
+					addText="#{msg.adicionar}" var="usuarioVO" id="idUsuarioVO" removeAllText="#{msg.removerTodos}" removeText="#{msg.remover}" 
+					rendered="true" converter="usuarioVOConversor" value="#{usuarioMB.listaUsuariosAssociados}" label="#{msg['usuario.associarUsuario.label']}">
+					<f:selectItems value="#{usuarioMB.listaUsuariosNaoAssociados}" var="usuarioVO" itemValue="#{usuarioVO}"  itemLabel="#{usuarioVO.nomeUsuario}" />
+					     <rich:column style="width:50%;">
+							<f:facet name="header">#{msg.tipoUsuario}</f:facet>
+							#{usuarioVO.tipoUsuario == 1 ? msg['condomino'] : msg['funcionario']} 
+						</rich:column>
+						<rich:column style="width:10%;">
+							<f:facet name="header">#{msg.bloco}</f:facet>
+							#{usuarioVO.nomeBloco} 
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">#{msg.unidade}</f:facet>
+			        		#{usuarioVO.numeroUnidade}
+			        	</rich:column>
+						<rich:column>
+							<f:facet name="header">#{msg.condomino}</f:facet>
+			        		#{usuarioVO.nomeUsuario}
+			        	</rich:column>
+				</rich:pickList>	
+			</rich:panel>
+			<h:panelGrid columns="2">
+				<h:commandButton value="#{msg.botaoAssociar}" action="#{usuarioMB.associarUsuario}" />
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{usuarioMB.cancelarAssociarUsuario}" immediate="true" />
+			</h:panelGrid>			
+		</h:form>
+	</ui:define>
+
+</ui:composition>

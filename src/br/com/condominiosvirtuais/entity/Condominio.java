@@ -1,6 +1,7 @@
 	
 package br.com.condominiosvirtuais.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,7 +9,10 @@ import java.util.List;
  * @author Maikel Joel de Souza
  * @since 20/02/2013 
  */
-public class Condominio {	
+public class Condominio implements Serializable{	
+
+	
+	private static final long serialVersionUID = 1L;
 
 	private Integer id;
 	
@@ -44,7 +48,7 @@ public class Condominio {
 		this.sindicoGeral = new Usuario();
 		this.subSindicoGeral = new Condomino();
 	}
-		
+	
 	public Integer getId() {	
 		return id;
 	}
@@ -155,7 +159,7 @@ public class Condominio {
 
 	public void setIdEscritorioContabilidade(Integer idEscritorioContabilidade) {
 		this.idEscritorioContabilidade = idEscritorioContabilidade;
-	}
+	}	
 
 	@Override
 	public int hashCode() {

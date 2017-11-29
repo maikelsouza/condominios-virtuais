@@ -17,5 +17,9 @@ public interface CondominoDAO {
 	public abstract List<Condomino> buscarPorIdUnidadeEPagadorSemImagem(Integer idUnidade, Integer pagador) throws SQLException, Exception;
 	
 	public abstract Condomino buscarCondominoPorIdSemImagem(Integer idCondomino, Connection con) throws SQLException, Exception;
+	
+	public abstract List<Condomino>buscarPorIdUnidadeESituacaoSemImagem(Integer idUnidade,  Integer situacao) throws SQLException, Exception;
+	
+	public abstract List<Condomino>buscarPorIdUnidadeEidGrupoUsuarioESituacaoSemImagem(Integer idUnidade, Integer idGrupoUsuario, Integer situacao) throws SQLException, Exception;
 
 }

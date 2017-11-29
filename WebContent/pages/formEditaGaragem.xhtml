@@ -49,9 +49,8 @@
 				<h:panelGrid columns="3">
 					<h:commandButton value="#{msg.botaoAtualizar}"
 						action="#{garagemMB.atualizarGaragem}" />
-					<h:commandButton value="#{msg.botaoExcluir}" immediate="true">
-						<rich:componentControl target="confirmaExcluirGaragem"
-							operation="show" />
+					<h:commandButton value="#{msg.botaoExcluir}" immediate="true" id="idBotaoExcluirGaragem" rendered="#{loginMB.temAcessoComponente('formEditaFuncionarioCondominio.idBotaoExcluirFuncionario')}">
+						<rich:componentControl target="confirmaExcluirGaragem" operation="show" />
 					</h:commandButton>
 					<h:commandButton value="#{msg.botaoCancelar}"
 						action="#{garagemMB.cancelarEditarGaragem}" immediate="true" />

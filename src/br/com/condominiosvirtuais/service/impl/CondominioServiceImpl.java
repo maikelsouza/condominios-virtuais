@@ -140,5 +140,10 @@ public class CondominioServiceImpl implements CondominioService, Serializable{
 		return this.condominioDAO.existeCondominioPorCodigo(codigo);
 	}
 
+	@Override
+	public List<Condominio> buscarListaCondominiosPorNome(Condominio condominio) throws SQLException, Exception {		
+		return this.condominioDAO.buscarListaCondominiosPorNome(condominio);
+	}
+
 
 }

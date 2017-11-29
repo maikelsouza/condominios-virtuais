@@ -52,26 +52,20 @@
 					<h:outputText value="#{msg.listaGaragem}" />
 				</f:facet>
 				<div>
-					<rich:dataTable value="#{garagemMB.listaGaragem}" var="garagem"
-						rowClasses="odd-row, even-row" styleClass="stable"
-						id="tableGaragem" style="width:100%;"
+					<rich:dataTable value="#{garagemMB.listaGaragem}" var="garagem" rowClasses="odd-row, even-row" styleClass="stable" id="tableGaragem" style="width:100%;"
 						rendered="#{garagemMB.listaGaragem.rowCount > 0}">
 						<rich:column sortBy="#{garagem.numero}"
 							sortOrder="#{ordenaGaragemMB.numeroGaragem}">
 							<f:facet name="header">
-								<a4j:commandLink value="#{msg['garagem.numero']}"
-									render="tableGaragem"
-									action="#{ordenaGaragemMB.ordenarPorNumeroGaragem}"
-									immediate="true" />
+								<a4j:commandLink value="#{msg['garagem.numero']}" render="tableGaragem" action="#{ordenaGaragemMB.ordenarPorNumeroGaragem}" immediate="true" />
 							</f:facet>
 							<h:outputText value="#{garagem.numero}" />
 						</rich:column>
-						<rich:column style="width:5%;">
+						<rich:column style="width:5%;" rendered="#{loginMB.temAcesso('#{garagemMB.editarGaragem}')}">
 							<f:facet name="header">
 								<h:outputText value="#{msg.rotuloAcao}" />
 							</f:facet>
-							<a4j:commandLink value="#{msg.linkEditar}" render="tableGaragem"
-								action="#{garagemMB.editarGaragem}" immediate="true" />
+							<a4j:commandLink value="#{msg.linkEditar}" render="tableGaragem" action="#{garagemMB.editarGaragem}" immediate="true" />
 						</rich:column>
 					</rich:dataTable>
 				</div>

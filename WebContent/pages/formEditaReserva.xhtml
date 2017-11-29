@@ -16,8 +16,9 @@
 				<f:facet name="header">
 					<h:outputText value="#{msg.atualizaReserva}" />
 				</f:facet>
-				<h:outputLabel value="Valor do salão de festas: R$ 88,00" style="color: red !important;" rendered="#{reservaMB.reserva.ambiente.id == 3 || reservaMB.reserva.ambiente.id == 4  ? true: false}"/>
-				<h:outputLabel value="Valor da churrasqueira: R$ 44,00" style="color: red !important;" rendered="#{reservaMB.reserva.ambiente.id == 5 || reservaMB.reserva.ambiente.id == 6 || reservaMB.reserva.ambiente.id == 7 ? true: false}"/>
+				<h:outputLabel value="Valor do salão de festas: R$ 93,70" style="color: red !important;" rendered="#{reservaMB.reserva.ambiente.id == 3 || reservaMB.reserva.ambiente.id == 4  ? true: false}"/>				
+				<h:outputLabel value="Valor da churrasqueira: R$ 46,85" style="color: red !important;" rendered="#{reservaMB.reserva.ambiente.id == 5 || reservaMB.reserva.ambiente.id == 6 || reservaMB.reserva.ambiente.id == 7 ? true: false}"/>
+				<h:outputLabel value="Valor do espaço gourmet: R$ 46,85" style="color: red !important;" rendered="#{reservaMB.reserva.ambiente.id == 13 ? true: false}"/>
 				<!-- Os campos condomínio e data soh serão habilitados caso a reserva esteja com status de pendente, ou seja, caso tenha sido aprovada/reprovada nao altera mais-->
 				<h:panelGrid columns="2">
 					<h:panelGroup>

@@ -172,119 +172,270 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 	 * @throws Exception 
 	 * @since 25/12/2012
 	 */
+// TODO: Código comentado em 13/11/2017. Apagar em 180 dias	
+//	public List<Condominio> buscarListaCondominiosPorNomeESituacao(Condominio condominio) throws SQLException, Exception{		
+//		List<UsuarioCondominio> listaUsuarioCondominio = this.usuarioCondominioDAO.get().buscarListaPorUsuario(AplicacaoUtil.getUsuarioAutenticado());		
+//		StringBuffer query = new StringBuffer();
+//		query.append("SELECT * FROM ");
+//		query.append(CONDOMINIO);		
+//		// Se atende esse if considera o caso onde todos os parâmetros são preenchidos
+//		if(!listaUsuarioCondominio.isEmpty()){
+//			query.append(" WHERE ");
+//			query.append(ID);		
+//			query.append(" in (");
+//			for (int i = 1; i <= listaUsuarioCondominio.size(); i++) {
+//				if(i != listaUsuarioCondominio.size()){
+//					query.append("?,");
+//				}
+//			}		
+//			query.append("?)");			
+//			// Caso onde foi considerado ambas as situações(ativa e inativa), logo não precisa de condição 'SITUACAO'  
+//			if(condominio.getSituacao() != 2 ){
+//				query.append(" AND ");	
+//				query.append(SITUACAO);			
+//				query.append(" =  ");	
+//				query.append(condominio.getSituacao().toString());
+//				// Caso onde foi considerado o nome do condomínio
+//				if(condominio.getNome() != null && !condominio.getNome().isEmpty()){
+//					query.append(" AND UPPER(");	
+//					query.append(NOME);
+//					query.append(")");
+//					query.append(" LIKE '");
+//					query.append(condominio.getNome().trim().toUpperCase());
+//					query.append("%'");
+//				}
+//			}else{
+//				if(condominio.getNome() != null && !condominio.getNome().isEmpty()){
+//					query.append(" AND UPPER(");	 
+//					query.append(NOME);
+//					query.append(")");
+//					query.append(" LIKE '");
+//					query.append(condominio.getNome().trim().toUpperCase());
+//					query.append("%'");
+//				}
+//			}
+//		}else{
+//			// Caso onde foi considerado ambas as situações(ativa e inativa), logo não precisa de condição 'SITUACAO'  
+//			if(condominio.getSituacao() != 2 ){	
+//				query.append(" WHERE ");
+//				query.append(SITUACAO);			
+//				query.append(" =  ");	
+//				query.append(condominio.getSituacao().toString());
+//				// Caso onde foi considerado o nome do condomínio
+//				if(condominio.getNome() != null && !condominio.getNome().isEmpty()){
+//					query.append(" AND UPPER(");	
+//					query.append(NOME);
+//					query.append(")");
+//					query.append(" LIKE '");
+//					query.append(condominio.getNome().trim().toUpperCase());
+//					query.append("%'");
+//				}
+//			}else{
+//				if(condominio.getNome() != null && !condominio.getNome().isEmpty()){
+//					query.append(" WHERE ");
+//					query.append(" UPPER(");	
+//					query.append(NOME);
+//					query.append(")");
+//					query.append(" LIKE '");
+//					query.append(condominio.getNome().trim().toUpperCase());
+//					query.append("%'");
+//				}
+//			}
+//		}
+//		query.append(" ORDER BY ");
+//		query.append(NOME);
+//		query.append(";");		
+//		Connection con = Conexao.getConexao();
+//		PreparedStatement preparedStatement = null;
+//		ResultSet resultSet = null;
+//		List<Condominio> listaCondominio = new ArrayList<Condominio>();
+//		Condomino subSindicoGeral = null;
+//		Usuario sindicoGeral = null;
+//		try {
+//			Integer quantidadeInterrogacao = 0;
+//			preparedStatement = con.prepareStatement(query.toString());
+//			Iterator<UsuarioCondominio>  iteratorListaUsuarioCondominio =  listaUsuarioCondominio.iterator();
+//			while(iteratorListaUsuarioCondominio.hasNext()){
+//				UsuarioCondominio usuarioCondominio = iteratorListaUsuarioCondominio.next();
+//				SQLUtil.setValorPpreparedStatement(preparedStatement, ++quantidadeInterrogacao, usuarioCondominio.getIdCondominio(), java.sql.Types.INTEGER);				
+//			}
+//			resultSet = preparedStatement.executeQuery();
+//			while(resultSet.next()){
+//				condominio = new Condominio();
+//				condominio.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+//				condominio.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+//				condominio.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
+//				condominio.setCnpj((Long) SQLUtil.getValorResultSet(resultSet, CNPJ, java.sql.Types.BIGINT));
+//				condominio.setTelefoneCelular((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_CELULAR, java.sql.Types.BIGINT));
+//				condominio.setTelefoneFixo((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_FIXO, java.sql.Types.BIGINT));
+//				sindicoGeral = this.usuarioDAO.get().buscarSindicoGeralPorCondominio(condominio,con);
+//				subSindicoGeral = this.condominoDAO.get().buscarSubSindicoGeralPorCondominio(condominio,con);					
+//				condominio.setSindicoGeral(sindicoGeral);					
+//				condominio.setSubSindicoGeral(subSindicoGeral);
+//				listaCondominio.add(condominio);
+//			}
+//			
+//		} catch (SQLException e) {		
+//			throw e;
+//		} catch (Exception e) {			
+//			throw e;
+//		}finally{
+//			try {
+//				preparedStatement.close();
+//				con.close();				
+//			} catch (SQLException e) {
+//				logger.error("erro sqlstate "+e.getSQLState(), e);				
+//			}
+//		}	
+//		return listaCondominio;
+//	}
+	
+	/**
+	 * Método que pesquisa todos os condomínios, considerando o nome e situação {@link CondominioSituacaoEnum}. Esse método contempla somente os condomínios, <br>
+	 * que o usuário autenticado tem acesso.  
+	 * @param condominio - Parametro que contém: situação (obrigatório) e nome
+	 * @return Lista de Condomínios
+	 *  
+	 * @author Maikel Joel de Souza
+	 * @throws Exception 
+	 * @since 13/11/2017
+	 */
 	public List<Condominio> buscarListaCondominiosPorNomeESituacao(Condominio condominio) throws SQLException, Exception{		
 		List<UsuarioCondominio> listaUsuarioCondominio = this.usuarioCondominioDAO.get().buscarListaPorUsuario(AplicacaoUtil.getUsuarioAutenticado());		
+		List<Condominio> listaCondominio = new ArrayList<Condominio>();
 		StringBuffer query = new StringBuffer();
-		query.append("SELECT * FROM ");
-		query.append(CONDOMINIO);		
-		// Se atende esse if considera o caso onde todos os parâmetros são preenchidos
 		if(!listaUsuarioCondominio.isEmpty()){
+			query.append("SELECT * FROM ");
+			query.append(CONDOMINIO);
 			query.append(" WHERE ");
 			query.append(ID);		
-			query.append(" in (");
-			for (int i = 1; i <= listaUsuarioCondominio.size(); i++) {
-				if(i != listaUsuarioCondominio.size()){
-					query.append("?,");
-				}
-			}		
-			query.append("?)");			
-			// Caso onde foi considerado ambas as situações(ativa e inativa), logo não precisa de condição 'SITUACAO'  
-			if(condominio.getSituacao() != 2 ){
-				query.append(" AND ");	
-				query.append(SITUACAO);			
-				query.append(" =  ");	
-				query.append(condominio.getSituacao().toString());
-				// Caso onde foi considerado o nome do condomínio
-				if(condominio.getNome() != null && !condominio.getNome().isEmpty()){
-					query.append(" AND UPPER(");	
-					query.append(NOME);
-					query.append(")");
-					query.append(" LIKE '");
-					query.append(condominio.getNome().trim().toUpperCase());
-					query.append("%'");
-				}
-			}else{
-				if(condominio.getNome() != null && !condominio.getNome().isEmpty()){
-					query.append(" AND UPPER(");	 
-					query.append(NOME);
-					query.append(")");
-					query.append(" LIKE '");
-					query.append(condominio.getNome().trim().toUpperCase());
-					query.append("%'");
-				}
-			}
-		}else{
-			// Caso onde foi considerado ambas as situações(ativa e inativa), logo não precisa de condição 'SITUACAO'  
-			if(condominio.getSituacao() != 2 ){	
-				query.append(" WHERE ");
-				query.append(SITUACAO);			
-				query.append(" =  ");	
-				query.append(condominio.getSituacao().toString());
-				// Caso onde foi considerado o nome do condomínio
-				if(condominio.getNome() != null && !condominio.getNome().isEmpty()){
-					query.append(" AND UPPER(");	
-					query.append(NOME);
-					query.append(")");
-					query.append(" LIKE '");
-					query.append(condominio.getNome().trim().toUpperCase());
-					query.append("%'");
-				}
-			}else{
-				if(condominio.getNome() != null && !condominio.getNome().isEmpty()){
-					query.append(" WHERE ");
-					query.append(" UPPER(");	
-					query.append(NOME);
-					query.append(")");
-					query.append(" LIKE '");
-					query.append(condominio.getNome().trim().toUpperCase());
-					query.append("%'");
-				}
-			}
-		}
-		query.append(" ORDER BY ");
-		query.append(NOME);
-		query.append(";");		
-		Connection con = Conexao.getConexao();
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		List<Condominio> listaCondominio = new ArrayList<Condominio>();
-		Condomino subSindicoGeral = null;
-		Usuario sindicoGeral = null;
-		try {
-			Integer quantidadeInterrogacao = 0;
-			preparedStatement = con.prepareStatement(query.toString());
-			Iterator<UsuarioCondominio>  iteratorListaUsuarioCondominio =  listaUsuarioCondominio.iterator();
-			while(iteratorListaUsuarioCondominio.hasNext()){
-				UsuarioCondominio usuarioCondominio = iteratorListaUsuarioCondominio.next();
-				SQLUtil.setValorPpreparedStatement(preparedStatement, ++quantidadeInterrogacao, usuarioCondominio.getIdCondominio(), java.sql.Types.INTEGER);				
-			}
-			resultSet = preparedStatement.executeQuery();
-			while(resultSet.next()){
-				condominio = new Condominio();
-				condominio.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
-				condominio.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
-				condominio.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
-				condominio.setCnpj((Long) SQLUtil.getValorResultSet(resultSet, CNPJ, java.sql.Types.BIGINT));
-				condominio.setTelefoneCelular((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_CELULAR, java.sql.Types.BIGINT));
-				condominio.setTelefoneFixo((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_FIXO, java.sql.Types.BIGINT));
-				sindicoGeral = this.usuarioDAO.get().buscarSindicoGeralPorCondominio(condominio,con);
-				subSindicoGeral = this.condominoDAO.get().buscarSubSindicoGeralPorCondominio(condominio,con);					
-				condominio.setSindicoGeral(sindicoGeral);					
-				condominio.setSubSindicoGeral(subSindicoGeral);
-				listaCondominio.add(condominio);
-			}
-			
-		} catch (SQLException e) {		
-			throw e;
-		} catch (Exception e) {			
-			throw e;
-		}finally{
+			query.append(" IN ( ");
+			query.append(SQLUtil.popularInterrocacoes(listaUsuarioCondominio.size()));
+			query.append(" ) ");
+			query.append("AND ");	
+			query.append(SITUACAO);			
+			query.append(" = ? ");
+			query.append("AND ");				
+			query.append(NOME);			
+			query.append(" LIKE ?");
+			query.append(" ORDER BY ");
+			query.append(NOME);
+			query.append(";");	
+			Connection con = Conexao.getConexao();
+			PreparedStatement preparedStatement = null;
+			ResultSet resultSet = null;
+			Condomino subSindicoGeral = null;
+			Usuario sindicoGeral = null;
+			Integer contador = 1;
 			try {
-				preparedStatement.close();
-				con.close();				
-			} catch (SQLException e) {
-				logger.error("erro sqlstate "+e.getSQLState(), e);				
-			}
+				preparedStatement = con.prepareStatement(query.toString());
+				Iterator<UsuarioCondominio>  iteratorListaUsuarioCondominio =  listaUsuarioCondominio.iterator();
+				while(iteratorListaUsuarioCondominio.hasNext()){
+					UsuarioCondominio usuarioCondominio = iteratorListaUsuarioCondominio.next();
+					SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, usuarioCondominio.getIdCondominio(), java.sql.Types.INTEGER);				
+				}
+				SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, condominio.getSituacao(), java.sql.Types.INTEGER);				
+				SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, "%"+condominio.getNome()+"%", java.sql.Types.VARCHAR);				
+				resultSet = preparedStatement.executeQuery();
+				while(resultSet.next()){
+					condominio = new Condominio();
+					condominio.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+					condominio.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+					condominio.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
+					condominio.setCnpj((Long) SQLUtil.getValorResultSet(resultSet, CNPJ, java.sql.Types.BIGINT));
+					condominio.setTelefoneCelular((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_CELULAR, java.sql.Types.BIGINT));
+					condominio.setTelefoneFixo((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_FIXO, java.sql.Types.BIGINT));
+					sindicoGeral = this.usuarioDAO.get().buscarSindicoGeralPorCondominio(condominio,con);
+					subSindicoGeral = this.condominoDAO.get().buscarSubSindicoGeralPorCondominio(condominio,con);					
+					condominio.setSindicoGeral(sindicoGeral);					
+					condominio.setSubSindicoGeral(subSindicoGeral);
+					listaCondominio.add(condominio);
+				}
+			} catch (SQLException e) {		
+				throw e;
+			} catch (Exception e) {			
+				throw e;
+			}finally{
+				try {
+					SQLUtil.closeStatement(preparedStatement);
+					SQLUtil.closeConnection(con);
+				} catch (SQLException e) {
+					logger.error("erro sqlstate "+e.getSQLState(), e);				
+				}
+			}	
+		}	
+		return listaCondominio;
+	}
+	
+	/**
+	 * Método que pesquisa todos os condomínios, considerando o nome. Esse método contempla somente os condomínios, <br>
+	 * que o usuário autenticado tem acesso.  
+	 * @param condominio - Parametro que contém: situação (obrigatório) e nome
+	 * @return Lista de Condomínios
+	 *  
+	 * @author Maikel Joel de Souza
+	 * @throws Exception 
+	 * @since 13/11/2017
+	 */
+	public List<Condominio> buscarListaCondominiosPorNome(Condominio condominio) throws SQLException, Exception{		
+		List<UsuarioCondominio> listaUsuarioCondominio = this.usuarioCondominioDAO.get().buscarListaPorUsuario(AplicacaoUtil.getUsuarioAutenticado());		
+		List<Condominio> listaCondominio = new ArrayList<Condominio>();
+		StringBuffer query = new StringBuffer();
+		if(!listaUsuarioCondominio.isEmpty()){
+			query.append("SELECT * FROM ");
+			query.append(CONDOMINIO);
+			query.append(" WHERE ");
+			query.append(ID);		
+			query.append(" IN ( ");
+			query.append(SQLUtil.popularInterrocacoes(listaUsuarioCondominio.size()));
+			query.append(" ) ");			
+			query.append("AND ");				
+			query.append(NOME);			
+			query.append(" LIKE ?");
+			query.append(" ORDER BY ");
+			query.append(NOME);
+			query.append(";");	
+			Connection con = Conexao.getConexao();
+			PreparedStatement preparedStatement = null;
+			ResultSet resultSet = null;
+			Condomino subSindicoGeral = null;
+			Usuario sindicoGeral = null;
+			Integer contador = 1;
+			try {
+				preparedStatement = con.prepareStatement(query.toString());
+				Iterator<UsuarioCondominio>  iteratorListaUsuarioCondominio =  listaUsuarioCondominio.iterator();
+				while(iteratorListaUsuarioCondominio.hasNext()){
+					UsuarioCondominio usuarioCondominio = iteratorListaUsuarioCondominio.next();
+					SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, usuarioCondominio.getIdCondominio(), java.sql.Types.INTEGER);				
+				}								
+				SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, "%"+condominio.getNome()+"%", java.sql.Types.VARCHAR);				
+				resultSet = preparedStatement.executeQuery();
+				while(resultSet.next()){
+					condominio = new Condominio();
+					condominio.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+					condominio.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+					condominio.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
+					condominio.setCnpj((Long) SQLUtil.getValorResultSet(resultSet, CNPJ, java.sql.Types.BIGINT));
+					condominio.setTelefoneCelular((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_CELULAR, java.sql.Types.BIGINT));
+					condominio.setTelefoneFixo((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_FIXO, java.sql.Types.BIGINT));
+					sindicoGeral = this.usuarioDAO.get().buscarSindicoGeralPorCondominio(condominio,con);
+					subSindicoGeral = this.condominoDAO.get().buscarSubSindicoGeralPorCondominio(condominio,con);					
+					condominio.setSindicoGeral(sindicoGeral);					
+					condominio.setSubSindicoGeral(subSindicoGeral);
+					listaCondominio.add(condominio);
+				}
+			} catch (SQLException e) {		
+				throw e;
+			} catch (Exception e) {			
+				throw e;
+			}finally{
+				try {
+					SQLUtil.closeStatement(preparedStatement);
+					SQLUtil.closeConnection(con);
+				} catch (SQLException e) {
+					logger.error("erro sqlstate "+e.getSQLState(), e);				
+				}
+			}	
 		}	
 		return listaCondominio;
 	}

@@ -116,7 +116,7 @@
 				<rich:popupPanel id="confirmaExcluirTelefonesUteis" autosized="true">
          			#{msg['msg.telefonesUteis.confirmacaoExcluir']}
          			<h:panelGrid columns="2">           	 		
-						<h:commandButton value="#{msg.botaoExcluir}" action="#{telefonesUteisMB.excluirTelefonesUteis}"
+						<h:commandButton value="#{msg.botaoExcluir}" action="#{telefonesUteisMB.excluirTelefonesUteis}" id="idExcluirTelefonesUteis" rendered="#{loginMB.temAcessoComponente('formEditaTelefonesUteis.idExcluirTelefonesUteis')}"
 							onclick=" #{rich:component('confirmaExcluirTelefonesUteis')}.hide();  return true;" />
 						<h:commandButton value="#{msg.botaoCancelar}" onclick="#{rich:component('confirmaExcluirTelefonesUteis')}.hide(); return false;" />	
 					</h:panelGrid>

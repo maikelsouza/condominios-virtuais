@@ -8,7 +8,6 @@ import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
 
-import br.com.condominiosvirtuais.entity.PrestadorServico;
 import br.com.condominiosvirtuais.entity.VisitaPrestadorServico;
 import br.com.condominiosvirtuais.persistence.VisitaPrestadorServicoDAO;
 import br.com.condominiosvirtuais.util.SQLUtil;

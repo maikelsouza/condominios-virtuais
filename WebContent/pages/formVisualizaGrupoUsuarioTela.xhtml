@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<f:metadata>
+			<f:event type="preRenderView" listener="#{telaMB.inicializaVisualizarGrupoUsuarioTelaMB}" />
+		</f:metadata>
+		<h:form id="idFormVisualizaGrupoUsuarioTela" styleClass="content formView">
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="#{msg.visualizarGrupoUsuario}" />
+				</f:facet>
+				<h:panelGrid columns="2">
+					<h:outputLabel value="#{msg['grupoUsuario.nome']}: " for="idGrupoUsuarioNome" />
+					<h:outputText id="idGrupoUsuarioNome" value="#{grupoUsuarioMB.grupoUsuario.nome}" />
+					<h:outputLabel value="#{msg['grupoUsuario.descricao']}: " for="idGrupoUsuarioDescricao"/>
+					<h:outputText id="idGrupoUsuarioDescricao" value="#{grupoUsuarioMB.grupoUsuario.descricao}"/>
+					<h:outputLabel value="#{msg['grupoUsuario.situacao']}: " for="idGrupoUsuarioSituacao" />
+					<h:outputText id="idGrupoUsuarioSituacao" value="#{grupoUsuarioMB.grupoUsuario.situacaoI18n}" />					
+				</h:panelGrid>
+				<div></div>
+			</rich:panel>
+			<rich:panel header="#{msg['painelGruposUsuarioTela']}">
+				<rich:dataTable id="idListaTelas" var="telaVO"  value="#{telaMB.listaTelaVO}" rendered="#{telaMB.listaTelaVO.rowCount > 0}">
+					<rich:column>
+						<f:facet name="header">
+							<h:outputLabel value="#{msg['modulo']}"/>
+						</f:facet>
+						<h:outputText value="#{telaVO.nomeI18nModulo}" /> 
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputLabel value="#{msg['tela.nome']}"/>
+						</f:facet>
+						<h:outputText value="#{telaVO.nomeI18nTela}" /> 
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputLabel value="#{msg['tela.descricao']}"/>
+						</f:facet>
+						<h:outputText value="#{telaVO.descricaoI18nTela}" /> 
+					</rich:column>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="#{msg.rotuloAcao}" />
+						</f:facet>
+						<a4j:commandLink value="#{msg.linkVisualizarAbas}"  action="#{telaMB.visualizarTelaAba}" immediate="true" rendered="#{!telaVO.listaAbasTela.isEmpty()}"/>
+						#{' '}
+						<a4j:commandLink value="#{msg.linkVisualizarComponentes}"  action="#{telaMB.visualizarTelaComponente}" immediate="true" rendered="#{!telaVO.listaComponentesTela.isEmpty()}"/>
+					</rich:column>
+				</rich:dataTable>
+			</rich:panel>
+			<h:panelGrid columns="2">
+				<h:commandButton value="#{msg.botaoVoltar}" action="#{telaMB.voltarVisualizarGrupoUsuarioTela}" immediate="true"/>
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{telaMB.cancelarVisualizarGrupoUsuarioTela}" immediate="true"/>
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

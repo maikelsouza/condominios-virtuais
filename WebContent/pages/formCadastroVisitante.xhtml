@@ -149,8 +149,7 @@
 								<rich:autocomplete id="buscarNomePrestadorServico"
 									autocompleteMethod="#{visitanteMB.buscarListaPrestadorServico}" label="#{msg['visitante.visita.prestadorServico.nome.label']}"
 									var="prestadorServico" onblur="buscarIdPrestadorServico()" required="#{visitanteMB.painelPrestadorServico}" 
-									 minChars="3" fetchValue="#{prestadorServico.id}" onselectitem="buscarIdPrestadorServico()" 
-									value="#{visitanteMB.nomePrestadorServico}">
+									 minChars="3" fetchValue="#{prestadorServico.id}" onselectitem="buscarIdPrestadorServico()"  value="#{visitanteMB.nomePrestadorServico}">
 									#{prestadorServico.nome} 
 								</rich:autocomplete>
 								<h:inputHidden id="idPrestadorServicoNomeHidden" value="#{visitanteMB.idNomePrestadorServico}"  />

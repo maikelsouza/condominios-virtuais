@@ -70,12 +70,9 @@
 				</h:panelGrid>
 			</rich:panel>
 			<h:panelGrid columns="3">
-				<h:commandButton value="#{msg.botaoSalvar}"
-					action="#{unidadeMB.salvarUnidade}" />
-				<h:commandButton value="#{msg.botaoLimpar}"
-					actionListener="#{unidadeMB.limparFiltroUnidade}" immediate="true" />
-				<h:commandButton value="#{msg.botaoCancelar}"
-					action="#{unidadeMB.cancelarCadastroUnidade}" immediate="true" />
+				<h:commandButton value="#{msg.botaoSalvar}" action="#{unidadeMB.salvarUnidade}" />
+				<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{unidadeMB.limparFiltroUnidade}" immediate="true" />
+				<h:commandButton value="#{msg.botaoCancelar}" action="#{unidadeMB.cancelarCadastroUnidade}" immediate="true" />
 			</h:panelGrid>
 		</h:form>
 	</ui:define>

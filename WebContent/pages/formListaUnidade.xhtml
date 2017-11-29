@@ -126,8 +126,8 @@
 									value="#{javax.enterprise.context.conversation.id}" />
 							</h:commandLink>
 				 			#{' '}
- 							<a4j:commandLink value="#{msg.linkEditar}" render="tableUnidade"
-								action="#{unidadeMB.editarUnidade}" immediate="true" />
+ 							<a4j:commandLink value="#{msg.linkEditar}" render="tableUnidade" action="#{unidadeMB.editarUnidade}" 
+ 								immediate="true" rendered="#{loginMB.temAcesso('#{unidadeMB.editarUnidade}')}" />
 						</rich:column>
 						 <f:facet name="footer">
               				  <rich:dataScroller for="tableUnidade"  fastControls="hide" renderIfSinglePage="false"  />
@@ -135,8 +135,7 @@
 					</rich:dataTable>
 				</div>
 			</rich:panel>
-			<h:commandButton value="#{msg.botaoCriarNovo}"
-				action="#{unidadeMB.cadastroUnidade}" immediate="true"></h:commandButton>
+			<h:commandButton value="#{msg.botaoCriarNovo}" action="#{unidadeMB.cadastroUnidade}" rendered="#{loginMB.temAcesso('#{unidadeMB.cadastroUnidade}')}" immediate="true"/>
 		</h:form>
 		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
 		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />

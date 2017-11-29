@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">		
+		<h:form id="idFormListaTelaComponente" styleClass="content">
+			<rich:panel>
+				<f:facet name="header" >
+					<h:outputText value="#{msg.dadosTela}" />
+				</f:facet>
+				<h:panelGrid columns="2">
+					<h:outputLabel value="#{msg['tela.nome']}: " for="idTelaNome" />
+					<h:outputText id="idTelaNome" value="#{telaMB.telaVO.nomeI18nTela}" />
+					<h:outputLabel value="#{msg['tela.descricao']}: " for="idTelaDescricao"/>
+					<h:outputText id="idTelaDescricao" value="#{telaMB.telaVO.descricaoI18nTela}"/>
+				</h:panelGrid>
+				
+				<rich:panel header="#{msg.listaComponentes}">
+				<div>
+					<rich:dataTable value="#{telaMB.listaComponenteVO}" var="componenteVO" rowClasses="odd-row, even-row" rows="20"
+						styleClass="stable" id="tableComponenteVO" style="width:100%;" rendered="true">
+						<rich:column style="text-align: center;">
+							<f:facet name="header">
+							  <h:selectBooleanCheckbox  rendered="true" title="#{msg['todas']}" value="#{telaMB.checadoTodosComponentes}" >
+								 <f:ajax render="tableComponenteVO"  listener="#{telaMB.checarTodosComponentesCheckbox}"/>
+							 </h:selectBooleanCheckbox>
+							</f:facet>
+							<h:selectBooleanCheckbox value="#{componenteVO.checada}" rendered="true" >
+								 <f:ajax render="tableComponenteVO"  listener="#{telaMB.checarComponente}"/>
+							 </h:selectBooleanCheckbox>
+						</rich:column>
+						<rich:column sortBy="#{componenteVO.nomeI18nComponente}" sortOrder="#{ordenaComponenteMB.nomeComponente}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['componente.nome']}" render="tableComponenteVO" action="#{ordenaComponenteMB.ordenarPorNome}" />
+							</f:facet>
+							<h:outputText value="#{componenteVO.nomeI18nComponente}" />
+						</rich:column>
+						<rich:column sortBy="#{componenteVO.descricaoI18nComponente}" sortOrder="#{ordenaComponenteMB.descricaoComponente}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['componente.descricao']}" render="tableComponenteVO" action="#{ordenaComponenteMB.ordenarPorDescricao}" />
+							</f:facet>
+							<h:outputText value="#{componenteVO.descricaoI18nComponente}" />
+						</rich:column>
+						<rich:column sortBy="#{componenteVO.tipoI18nComponente}" sortOrder="#{ordenaComponenteMB.tipoComponente}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['componente.tipo']}" render="tableComponenteVO" action="#{ordenaComponenteMB.ordenarPorTipo}" />
+							</f:facet>
+							<h:outputText value="#{componenteVO.tipoI18nComponente}" />
+						</rich:column>
+						<f:facet name="footer">
+              				<rich:dataScroller for="tableComponenteVO"  fastControls="hide" renderIfSinglePage="false" />
+           				</f:facet>	
+					</rich:dataTable>
+				</div>
+			</rich:panel>
+				
+				<h:panelGrid columns="2" styleClass="msgAsterisco">
+					<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+					<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
+				</h:panelGrid>
+			</rich:panel>
+
+			<h:panelGrid columns="2">
+				<h:commandButton value="#{msg.botaoSalvar}" action="#{telaMB.salvarListaTelaComponente}" />				
+				<h:commandButton value="#{msg.botaoVoltar}" action="#{telaMB.voltarListaTelaComponente}" immediate="true" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

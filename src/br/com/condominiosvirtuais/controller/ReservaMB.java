@@ -316,6 +316,28 @@ public class ReservaMB implements IConversationScopeMB, Serializable{
 	
 	public String atualizarReserva(){
 		try {
+			// TODO: Condição temporária criada para  
+			if(this.condominio.getId() == 8){
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(new Date());
+				calendar.add(Calendar.DAY_OF_YEAR, 30);
+				if(this.reserva.getData().after(calendar.getTime())){
+					FacesMessage facesMessage = new FacesMessage("O período de reserva não pode ser superior a 30 dias de antecedência");
+					facesMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
+					FacesContext context  = FacesContext.getCurrentInstance();
+					context.addMessage(null, facesMessage);
+					return null;
+				}
+				calendar.setTime(new Date());
+				calendar.add(Calendar.HOUR_OF_DAY, 72);
+				if(this.reserva.getData().before(calendar.getTime())){
+					FacesMessage facesMessage = new FacesMessage("O período de reserva deve ser superior a 72 horas");
+					facesMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
+					FacesContext context  = FacesContext.getCurrentInstance();
+					context.addMessage(null, facesMessage);
+					return null;
+				}
+			}
 			this.reservaService.atualizar(this.reserva);
 			this.reserva = new Reserva();
 			this.idAmbiente = null;

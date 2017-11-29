@@ -53,4 +53,14 @@ public class BlocoServiceImpl implements BlocoService, Serializable {
 		this.blocoDAO.popularBloco(bloco);		
 	}
 
+	@Override
+	public List<Integer> buscarListaIdsBlocosPorIdCondominio(Integer idCondominio) throws SQLException, Exception {
+		return blocoDAO.buscarListaIdsBlocosPorIdCondominio(idCondominio);
+	}
+
+	@Override
+	public List<Bloco> buscarListaBlocosPoIdCondominio(Integer idCondominio) throws SQLException, Exception {
+		return this.blocoDAO.buscarListaBlocosPoIdCondominio(idCondominio);
+	}
+
 }

@@ -113,10 +113,8 @@
 				</h:panelGrid>
 			</rich:panel>
 			<h:panelGrid columns="3">
-				<h:commandButton value="#{msg.botaoSalvar}"
-					action="#{receitaDespesaMB.salvarReceitaDespesa}" />
-				<h:commandButton value="#{msg.botaoLimpar}"
-					actionListener="#{receitaDespesaMB.limparCadastroReceitaDespesa}" immediate="false" />
+				<h:commandButton value="#{msg.botaoSalvar}" action="#{receitaDespesaMB.salvarReceitaDespesa}" /> 
+				<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{receitaDespesaMB.limparCadastroReceitaDespesa}" immediate="false" />
 				<h:commandButton value="#{msg.botaoCancelar}" action="#{receitaDespesaMB.cancelarCadastroReceitaDespesa}" immediate="true" />
 				
 			</h:panelGrid>

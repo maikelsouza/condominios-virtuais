@@ -117,8 +117,18 @@ public enum PathTelasAplicacaoEnum {
 	FORM_CADASTRO_PRE_CADASTRO_BOLETO(PREFIXO.getPathTelas()+"formCadastroPreCadastroBoleto.xhtml"),
 	FORM_LISTA_PRE_CADASTRO_BOLETO(PREFIXO.getPathTelas()+"formListaPreCadastroBoleto.xhtml"),
 	FORM_EDITA_PRE_CADASTRO_BOLETO(PREFIXO.getPathTelas()+"formEditaPreCadastroBoleto.xhtml"),
-	FORM_VISUALIZAR_PRE_CADASTRO_BOLETO(PREFIXO.getPathTelas()+"formVisualizaPreCadastroBoleto.xhtml");
-	
+	FORM_VISUALIZAR_PRE_CADASTRO_BOLETO(PREFIXO.getPathTelas()+"formVisualizaPreCadastroBoleto.xhtml"),
+	FORM_LISTA_GRUPO_USUARIO(PREFIXO.getPathTelas()+"formListaGrupoUsuario.xhtml"),
+	FORM_VISUALIZAR_GRUPO_USUARIO(PREFIXO.getPathTelas()+"formVisualizaGrupoUsuarioTela.xhtml"),
+	FORM_VISUALIZAR_ABA_TELA(PREFIXO.getPathTelas()+"formVisualizaTelaAba.xhtml"),
+	FORM_EDITA_ABA_TELA(PREFIXO.getPathTelas()+"formEditaTelaAba.xhtml"),
+	FORM_EDITA_COMPONENTE_TELA(PREFIXO.getPathTelas()+"formEditaTelaComponente.xhtml"),
+	FORM_VISUALIZAR_COMPONENTE_TELA(PREFIXO.getPathTelas()+"formVisualizaTelaComponente.xhtml"),
+	FORM_CADASTRO_GRUPO_USUARIO(PREFIXO.getPathTelas()+"formCadastroGrupoUsuario.xhtml"),
+	FORM_EDITA_GRUPO_USUARIO(PREFIXO.getPathTelas()+"formEditaGrupoUsuario.xhtml"),
+	FORM_LISTA_TELA_ABA(PREFIXO.getPathTelas()+"formListaTelaAba.xhtml"),                                                 
+	FORM_LISTA_TELA_COMPONENTE(PREFIXO.getPathTelas()+"formListaTelaComponente.xhtml");                                                 
+	                                                 
 	
 	
 	PathTelasAplicacaoEnum(String pathTelas){

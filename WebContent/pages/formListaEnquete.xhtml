@@ -145,16 +145,13 @@
 							</h:outputText>
 						</rich:column>
 						<rich:column
-							style="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4') == false ? 'width:5%;' : 'width:10%;'};">
+							style="width:10%;">
 							<f:facet name="header">
 								<h:outputText value="#{msg.rotuloAcao}" />
 							</f:facet>
-							<a4j:commandLink value="#{msg.linkVisualizar}"
-								render="tableEnquete" action="#{enqueteMB.visualizarEnquete}"
-								immediate="true" />
+							<a4j:commandLink value="#{msg.linkVisualizar}" render="tableEnquete" action="#{enqueteMB.visualizarEnquete}" immediate="true" />
 				 				#{' '}
- 							<h:commandLink value="#{msg.linkExcluir}"
-								rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,2,3,4')}">
+ 							<h:commandLink id="idLinkExcluirEnquete" value="#{msg.linkExcluir}" rendered="#{loginMB.temAcessoComponente('formListaEnquete.idLinkExcluirEnquete')}">
 								<rich:componentControl target="confirmaExcluirEnquete"
 									operation="show" />
 							</h:commandLink>
@@ -182,7 +179,7 @@
 					</rich:popupPanel>
 				</div>
 			</rich:panel>
-			<h:commandButton value="#{msg.botaoCriarNovo}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4')}"
+			<h:commandButton value="#{msg.botaoCriarNovo}" rendered="#{loginMB.temAcesso('#{enqueteMB.cadastroEnquete}')}"
 				action="#{enqueteMB.cadastroEnquete}" immediate="true" />
 		</h:form>
 

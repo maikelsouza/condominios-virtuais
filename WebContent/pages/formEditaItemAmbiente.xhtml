@@ -62,7 +62,7 @@
 				<h:panelGrid columns="3">
 					<h:commandButton value="#{msg.botaoAtualizar}"
 						action="#{itemAmbienteMB.atualizarItemAmbiente}" />
-					<h:commandButton value="#{msg.botaoExcluir}" immediate="true">
+					<h:commandButton value="#{msg.botaoExcluir}" immediate="true" id="idBotaoExcluirItemAmbiente" rendered="#{loginMB.temAcessoComponente('formEditaItemAmbiente.idBotaoExcluirItemAmbiente')}">
 						<rich:componentControl target="confirmaExcluirItemAmbiente"
 							operation="show" />
 					</h:commandButton>

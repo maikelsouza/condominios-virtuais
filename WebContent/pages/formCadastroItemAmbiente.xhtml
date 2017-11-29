@@ -92,13 +92,11 @@
 							</f:facet>
 							<h:outputText value="#{itemAmbiente.quantidade}" />
 						</rich:column>
-						<rich:column style="width:5%;">
+						<rich:column style="width:5%;" rendered="#{loginMB.temAcesso('#{itemAmbienteMB.editarItemAmbiente}')}">
 							<f:facet name="header">
 								<h:outputText value="#{msg.rotuloAcao}" />
 							</f:facet>
-							<a4j:commandLink value="#{msg.linkEditar}"
-								render="tableItemAmbiente"
-								action="#{itemAmbienteMB.editarItemAmbiente}" immediate="true" />
+							<a4j:commandLink value="#{msg.linkEditar}" render="tableItemAmbiente" action="#{itemAmbienteMB.editarItemAmbiente}" immediate="true" />
 						</rich:column>
 					</rich:dataTable>
 				</div>

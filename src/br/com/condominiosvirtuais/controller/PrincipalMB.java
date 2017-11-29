@@ -307,7 +307,15 @@ public class PrincipalMB  implements Serializable{
 	}
 	
 	public String listaPreCadastroBoleto(){
-		return "listaPreCadastroBoleto";		        
+		return "listarPreCadastroBoleto";		        
+	}
+	
+	public String listarGrupoUsuario(){
+		return "listarGrupoUsuario";
+	}
+	
+	public String associarGrupoUsuario(){
+		return "associarGrupoUsuario";
 	}
 	
 	

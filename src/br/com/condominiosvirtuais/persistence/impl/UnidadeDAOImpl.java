@@ -112,13 +112,14 @@ public class UnidadeDAOImpl implements UnidadeDAO, Serializable{
 		Unidade unidade = null;
 		try {
 			preparedStatement = con.prepareStatement(query.toString());
-			preparedStatement.setInt(1, bloco.getId());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, bloco.getId(), java.sql.Types.INTEGER);
 			resultSet = preparedStatement.executeQuery();
 			while(resultSet.next()){
 				unidade = new Unidade();
-				unidade.setId(resultSet.getInt(ID));
-				unidade.setTipo(resultSet.getInt(TIPO));	
-				unidade.setNumero(resultSet.getInt(NUMERO));
+				unidade.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				unidade.setTipo((Integer) SQLUtil.getValorResultSet(resultSet, TIPO, java.sql.Types.INTEGER));
+				unidade.setNumero((Integer) SQLUtil.getValorResultSet(resultSet, NUMERO, java.sql.Types.INTEGER));
+				unidade.setIdBloco((Integer) SQLUtil.getValorResultSet(resultSet, ID_BLOCO, java.sql.Types.INTEGER));
 				listaUnidade.add(unidade);
 			}
 		} catch (SQLException e) {
@@ -127,8 +128,8 @@ public class UnidadeDAOImpl implements UnidadeDAO, Serializable{
 			throw e;		
 		}finally{
 			try {
-				preparedStatement.close();
-				con.close();				
+				SQLUtil.closeStatement(preparedStatement);
+				SQLUtil.closeConnection(con);				
 			} catch (SQLException e) {
 				logger.error("erro sqlstate "+e.getSQLState(), e);				
 			}

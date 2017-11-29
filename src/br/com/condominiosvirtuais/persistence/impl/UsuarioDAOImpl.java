@@ -17,12 +17,17 @@ import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Condominio;
 import br.com.condominiosvirtuais.entity.GestorCondominio;
+import br.com.condominiosvirtuais.entity.GrupoUsuario;
 import br.com.condominiosvirtuais.entity.Usuario;
 import br.com.condominiosvirtuais.entity.UsuarioCondominio;
+import br.com.condominiosvirtuais.entity.UsuarioGrupoUsuario;
+import br.com.condominiosvirtuais.enumeration.GrupoUsuarioSituacaoEnum;
 import br.com.condominiosvirtuais.enumeration.TipoGestorCondominioEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
+import br.com.condominiosvirtuais.persistence.GrupoUsuarioDAO;
 import br.com.condominiosvirtuais.persistence.UsuarioCondominioDAO;
 import br.com.condominiosvirtuais.persistence.UsuarioDAO;
+import br.com.condominiosvirtuais.persistence.UsuarioGrupoUsuarioDAO;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
 import br.com.condominiosvirtuais.util.SQLUtil;
 
@@ -52,7 +57,8 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 	
 	private static final String ULTIMO_LOGOUT = "ULTIMO_LOGOUT";
 	
-	private static final String ID_GRUPO_USUARIO = "ID_GRUPO_USUARIO";
+// TODO: Código comentado em 25/09/2017. Apagar em 180 dias	
+//	private static final String ID_GRUPO_USUARIO = "ID_GRUPO_USUARIO";
 	
 	@Inject
 	private Instance<UsuarioCondominioDAO> usuarioCondominioDAO = null;
@@ -65,6 +71,12 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 	
 	@Inject
 	private Instance<GestorCondominioDAOImpl> gestorCondominioDAO = null;
+	
+	@Inject
+	private UsuarioGrupoUsuarioDAO usuarioGrupoUsuarioDAO;
+	
+	@Inject
+	private GrupoUsuarioDAO grupoUsuarioDAO;
 	
 	
 	// Constraint referente a integridade entre uma mensagem e um usuário, ou seja, não será possível excluir um usuário
@@ -132,11 +144,9 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 		query.append(",");
 		query.append(SITUACAO);
 		query.append(",");
-		query.append(ID_GRUPO_USUARIO);
-		query.append(",");
 		query.append(CPF);
 		query.append(") ");
-		query.append("VALUES(?,?,?,?,?,?,?)");
+		query.append("VALUES(?,?,?,?,?,?)");
 		PreparedStatement statement = null;
 		try {			
 			statement = con.prepareStatement(query.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
@@ -145,8 +155,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 			SQLUtil.setValorPpreparedStatement(statement, 3,  AplicacaoUtil.gerarHashMD5(usuario.getSenha()), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement, 4, usuario.getDataNascimento(), java.sql.Types.DATE);
 			SQLUtil.setValorPpreparedStatement(statement, 5, usuario.getSituacao(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement, 6, usuario.getIdGrupoUsuario(), java.sql.Types.INTEGER );
-			SQLUtil.setValorPpreparedStatement(statement, 7, usuario.getCpf(), java.sql.Types.BIGINT);
+			SQLUtil.setValorPpreparedStatement(statement, 6, usuario.getCpf(), java.sql.Types.BIGINT);
 			statement.executeUpdate();
 			ResultSet rs = statement.getGeneratedKeys();
 			rs.next();
@@ -159,7 +168,13 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 				this.usuarioCondominioDAO.get().salvarUsuarioCondominio(usuarioCondominio, con);
 			}
 			usuario.getEmail().setIdUsuario(usuario.getId());
-			this.emailUsuarioDAO.get().salvar(usuario.getEmail(), con);			
+			this.emailUsuarioDAO.get().salvar(usuario.getEmail(), con);
+			for (GrupoUsuario grupoUsuario : usuario.getListaGrupoUsuario()) {
+				UsuarioGrupoUsuario usuarioGrupoUsuario = new UsuarioGrupoUsuario();
+				usuarioGrupoUsuario.setIdUsuario(usuario.getId());
+				usuarioGrupoUsuario.setIdGrupoUsuario(grupoUsuario.getId());
+				this.usuarioGrupoUsuarioDAO.salvar(usuarioGrupoUsuario, con);
+			}
 		} catch (NumberFormatException e) {
 			con.rollback();
 			throw e;
@@ -196,7 +211,8 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 				usuario.setSexo((Integer) SQLUtil.getValorResultSet(resultSet, SEXO, java.sql.Types.INTEGER));
 				usuario.setDataNascimento((Date) SQLUtil.getValorResultSet(resultSet, DATA_NASCIMENTO, java.sql.Types.DATE));
 				usuario.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
-				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
+// TODO: Código comentado em 25/09/2017. Apagar em 180 dias				
+//				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
 				usuario.setSenha(String.valueOf(SQLUtil.getValorResultSet(resultSet, SENHA, java.sql.Types.VARCHAR)));	
 				usuario.setCpf((Long) SQLUtil.getValorResultSet(resultSet, CPF, java.sql.Types.BIGINT));
 				usuario.setEmail(this.emailUsuarioDAO.get().buscarEmailPrincipalPorUsuario(usuario,con));
@@ -244,7 +260,8 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 				usuario.setSexo((Integer) SQLUtil.getValorResultSet(resultSet, SEXO, java.sql.Types.INTEGER));
 				usuario.setDataNascimento((Date) SQLUtil.getValorResultSet(resultSet, DATA_NASCIMENTO, java.sql.Types.DATE));
 				usuario.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
-				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
+// TODO: Código comentado em 25/09/2017. Apagar em 180 dias				
+//				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
 				usuario.setSenha(String.valueOf(SQLUtil.getValorResultSet(resultSet, SENHA, java.sql.Types.VARCHAR)));	
 				usuario.setCpf((Long) SQLUtil.getValorResultSet(resultSet, CPF, java.sql.Types.BIGINT));
 				usuario.setEmail(this.emailUsuarioDAO.get().buscarEmailPrincipalPorUsuario(usuario,con));
@@ -292,7 +309,8 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 				usuario.setSexo((Integer) SQLUtil.getValorResultSet(resultSet, SEXO, java.sql.Types.INTEGER));
 				usuario.setDataNascimento((Date) SQLUtil.getValorResultSet(resultSet, DATA_NASCIMENTO, java.sql.Types.DATE));
 				usuario.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
-				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
+// TODO: Código comentado em 25/09/2017. Apagar em 180 dias				
+//				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
 				usuario.setSenha(String.valueOf(SQLUtil.getValorResultSet(resultSet, SENHA, java.sql.Types.VARCHAR)));
 				usuario.setCpf((Long) SQLUtil.getValorResultSet(resultSet, CPF, java.sql.Types.BIGINT));
 				usuario.setEmail(this.emailUsuarioDAO.get().buscarEmailPrincipalPorUsuario(usuario,con));
@@ -353,7 +371,8 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 				usuario.setSexo((Integer) SQLUtil.getValorResultSet(resultSet, SEXO, java.sql.Types.INTEGER));				
 				usuario.setDataNascimento((Date) SQLUtil.getValorResultSet(resultSet, DATA_NASCIMENTO, java.sql.Types.DATE));
 				usuario.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
-				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
+// TODO: Código comentado em 25/09/2017. Apagar em 180 dias				
+//				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
 				usuario.setCpf((Long) SQLUtil.getValorResultSet(resultSet, CPF, java.sql.Types.BIGINT));
 				usuario.setEmail(this.emailUsuarioDAO.get().buscarEmailPrincipalPorUsuario(usuario));
 				listaUsuarioCondominio = this.usuarioCondominioDAO.get().buscarListaPorUsuario(usuario);
@@ -395,9 +414,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 		query.append(DATA_NASCIMENTO); 
 		query.append(" = ?, ");
 		query.append(SITUACAO); 
-		query.append(" = ?, ");		
-		query.append(ID_GRUPO_USUARIO); 
-		query.append(" = ?, ");	
+		query.append(" = ?, ");
 		query.append(CPF); 
 		query.append(" = ? ");
 		query.append("WHERE ");
@@ -410,9 +427,8 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 			SQLUtil.setValorPpreparedStatement(statement, 2, usuario.getSexo(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 3, usuario.getDataNascimento(), java.sql.Types.DATE);
 			SQLUtil.setValorPpreparedStatement(statement, 4, usuario.getSituacao(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement, 5, usuario.getIdGrupoUsuario(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement, 6, usuario.getCpf(), java.sql.Types.BIGINT);			
-			SQLUtil.setValorPpreparedStatement(statement, 7, usuario.getId(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 5, usuario.getCpf(), java.sql.Types.BIGINT);			
+			SQLUtil.setValorPpreparedStatement(statement, 6, usuario.getId(), java.sql.Types.INTEGER);
 			statement.executeUpdate();					
 		} catch (SQLException e) {
 			con.rollback();
@@ -518,6 +534,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 		Usuario usuario = null;
 		List<UsuarioCondominio> listaUsuarioCondominio = null;
 		List<Condominio> listaCondominio = null;
+		List<GrupoUsuario> listaGrupoUsuario = new ArrayList<GrupoUsuario>();
 		Condominio condominio = null;
 		try {
 			preparedStatement = con.prepareStatement(query.toString());
@@ -533,12 +550,18 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 				usuario.setDataNascimento((Date) SQLUtil.getValorResultSet(resultSet, DATA_NASCIMENTO, java.sql.Types.DATE));
 				usuario.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
 				usuario.setCpf((Long) SQLUtil.getValorResultSet(resultSet, CPF, java.sql.Types.BIGINT));
-				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));					
+//TODO: Código comentado em 25/09/2017. Apagar em 180 dias				
+//				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));					
 				usuario.setEmail(this.emailUsuarioDAO.get().buscarEmailPrincipalPorUsuario(usuario));
 				listaUsuarioCondominio = this.usuarioCondominioDAO.get().buscarListaPorUsuario(usuario);	
 				for (UsuarioCondominio usuarioCondominio : listaUsuarioCondominio) {
 					condominio = this.condominioDAO.get().buscarCondominioPorId(usuarioCondominio.getIdCondominio());
 				}
+				List<UsuarioGrupoUsuario> listaUsuarioGrupoUsuario = this.usuarioGrupoUsuarioDAO.buscarPorIdUsuario(usuario.getId());
+				for (UsuarioGrupoUsuario usuarioGrupoUsuario : listaUsuarioGrupoUsuario) {
+					listaGrupoUsuario.add(this.grupoUsuarioDAO.buscarPorId(usuarioGrupoUsuario.getIdGrupoUsuario(), con, GrupoUsuarioSituacaoEnum.ATIVO.getSituacao()));
+				}
+				usuario.setListaGrupoUsuario(listaGrupoUsuario);
 				listaCondominio.add(condominio);				
 				usuario.setListaCondominio(listaCondominio);				
 			}
@@ -583,7 +606,8 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 				usuario.setSenha(String.valueOf(SQLUtil.getValorResultSet(resultSet, SENHA, java.sql.Types.VARCHAR)));			
 				usuario.setDataNascimento((Date) SQLUtil.getValorResultSet(resultSet, DATA_NASCIMENTO, java.sql.Types.DATE));
 				usuario.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
-				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
+// TODO: Código comentado em 25/09/2017. Apagar em 180 dias				
+//				usuario.setIdGrupoUsuario((Integer) SQLUtil.getValorResultSet(resultSet, ID_GRUPO_USUARIO, java.sql.Types.INTEGER));
 				usuario.setCpf((Long) SQLUtil.getValorResultSet(resultSet, CPF, java.sql.Types.BIGINT));
 				usuario.setEmail(this.emailUsuarioDAO.get().buscarEmailPrincipalPorUsuario(usuario));
 				listaUsuarioCondominio = this.usuarioCondominioDAO.get().buscarListaPorUsuario(usuario);	
@@ -736,6 +760,181 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 			}			
 		}		
 		return usuario;
-	}	
+	}
+
+	@Override
+	public List<Usuario> buscarPorIdsESituacaoSemImagem(List<Integer> listaIdUsuario, Integer situacao)
+			throws SQLException, Exception {
+		SQLUtil.popularInterrocacoes(listaIdUsuario.size());
+		List<Usuario> listaUsuario = new ArrayList<Usuario>();
+		if(!listaIdUsuario.isEmpty()){
+			StringBuffer query = new StringBuffer();
+			query.append("SELECT * FROM ");
+			query.append(USUARIO);
+			query.append(" WHERE ");
+			query.append(ID);
+			query.append(" IN ( ");
+			query.append(SQLUtil.popularInterrocacoes(listaIdUsuario.size()));
+			query.append(" )");
+			query.append(" AND ");
+			query.append(SITUACAO);
+			query.append(" = ?");
+			query.append(" ORDER BY ");
+			query.append(NOME);
+			query.append(";");		
+			Connection con = Conexao.getConexao();
+			PreparedStatement preparedStatement = null;
+			ResultSet resultSet = null;
+			Usuario usuario = null;
+			Integer contador = 1;
+			try {
+				preparedStatement = con.prepareStatement(query.toString());
+				for (Integer idUsuario: listaIdUsuario) {
+					SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, idUsuario, java.sql.Types.INTEGER);
+				}
+				SQLUtil.setValorPpreparedStatement(preparedStatement, contador++, situacao, java.sql.Types.INTEGER);
+				
+				
+				resultSet = preparedStatement.executeQuery();
+				while(resultSet.next()){
+					usuario = new Usuario();
+					usuario.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+					usuario.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+					usuario.setSexo((Integer) SQLUtil.getValorResultSet(resultSet, SEXO, java.sql.Types.INTEGER));
+					usuario.setDataNascimento((Date) SQLUtil.getValorResultSet(resultSet, DATA_NASCIMENTO, java.sql.Types.DATE));
+					usuario.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
+					usuario.setCpf((Long) SQLUtil.getValorResultSet(resultSet, CPF, java.sql.Types.BIGINT));
+					listaUsuario.add(usuario);
+				}
+			}catch (SQLException e) {			
+				throw e;
+			} catch (Exception e) {					
+				throw e;	
+			}finally{
+				try{				
+					SQLUtil.closeStatement(preparedStatement);
+					SQLUtil.closeConnection(con);
+				}catch (SQLException e) {
+					logger.error("erro sqlstate "+e.getSQLState(), e);
+				}
+			}			
+			
+		}
+		return listaUsuario;
+	}
+	
+	@Override
+	public Boolean buscarPorEPopularPeloIdESituacaoSemImagem(Usuario usuario, Integer situacao, Connection con) throws SQLException, Exception {
+		Boolean encontrou = Boolean.FALSE;
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(USUARIO);
+		query.append(" WHERE ");
+		query.append(ID);
+		query.append(" = ? ");
+		query.append(" AND ");
+		query.append(SITUACAO);
+		query.append(" = ? ");			
+		query.append(";");
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;			
+		try {
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, usuario.getId(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 2, situacao, java.sql.Types.INTEGER);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				encontrou = Boolean.TRUE;
+				usuario.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				usuario.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+				usuario.setSexo((Integer) SQLUtil.getValorResultSet(resultSet, SEXO, java.sql.Types.INTEGER));
+				usuario.setDataNascimento((Date) SQLUtil.getValorResultSet(resultSet, DATA_NASCIMENTO, java.sql.Types.DATE));
+				usuario.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
+				usuario.setCpf((Long) SQLUtil.getValorResultSet(resultSet, CPF, java.sql.Types.BIGINT));
+			}
+		}catch (SQLException e) {			
+			throw e;
+		} catch (Exception e) {					
+			throw e;	
+		}
+		return encontrou;
+	}
+	
+	@Override
+	public Boolean buscarPorEPopularPeloIdEGrupoUsuarioESituacaoSemImagem(Usuario usuario, Integer idGrupoUsuario, Integer situacao, Connection con) throws SQLException, Exception {
+		Boolean encontrou = Boolean.FALSE;
+		UsuarioGrupoUsuario usuarioGrupoUsuario = this.usuarioGrupoUsuarioDAO.buscarPorIdGrupoUsuarioEIdUsuario(idGrupoUsuario,usuario.getId(), con);
+		List<Usuario> listaUsuario = new ArrayList<Usuario>();
+			StringBuffer query = new StringBuffer();
+			query.append("SELECT * FROM ");
+			query.append(USUARIO);
+			query.append(" WHERE ");
+			query.append(ID);
+			query.append(" = ? ");			
+			query.append(" AND ");
+			query.append(SITUACAO);
+			query.append(" = ?");
+			query.append(" ORDER BY ");
+			query.append(NOME);
+			query.append(";");					
+			PreparedStatement preparedStatement = null;
+			ResultSet resultSet = null;			
+			try {
+				preparedStatement = con.prepareStatement(query.toString());
+				SQLUtil.setValorPpreparedStatement(preparedStatement, 1, usuarioGrupoUsuario.getIdUsuario(), java.sql.Types.INTEGER);
+				SQLUtil.setValorPpreparedStatement(preparedStatement, 2, situacao, java.sql.Types.INTEGER);
+				resultSet = preparedStatement.executeQuery();
+				while(resultSet.next()){
+					encontrou = Boolean.TRUE;
+					usuario.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+					usuario.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+					usuario.setSexo((Integer) SQLUtil.getValorResultSet(resultSet, SEXO, java.sql.Types.INTEGER));
+					usuario.setDataNascimento((Date) SQLUtil.getValorResultSet(resultSet, DATA_NASCIMENTO, java.sql.Types.DATE));
+					usuario.setSituacao((Integer) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.INTEGER));
+					usuario.setCpf((Long) SQLUtil.getValorResultSet(resultSet, CPF, java.sql.Types.BIGINT));
+					listaUsuario.add(usuario);
+				}
+			}catch (SQLException e) {			
+				throw e;
+			} catch (Exception e) {					
+				throw e;	
+			}
+		return encontrou;
+	}
+
+	@Override
+	public void associarUsuariosGrupoUsuario(List<Usuario> listaUsuariosAssociados, List<Usuario> listaOriginalUsuariosAssociados, Integer idGrupoUsuario)
+			throws SQLException, Exception {
+		UsuarioGrupoUsuario usuarioGrupoUsuario = null;
+		List<UsuarioGrupoUsuario> listaUsuarioGrupoUsuarioAssociados = new ArrayList<UsuarioGrupoUsuario>();
+		List<UsuarioGrupoUsuario> listaUsuarioGrupoUsuarioOriginalAssociados = new ArrayList<UsuarioGrupoUsuario>();
+		for (Usuario usuario : listaUsuariosAssociados) {
+			usuarioGrupoUsuario = new UsuarioGrupoUsuario();
+			usuarioGrupoUsuario.setIdUsuario(usuario.getId());
+			usuarioGrupoUsuario.setIdGrupoUsuario(idGrupoUsuario);
+			listaUsuarioGrupoUsuarioAssociados.add(usuarioGrupoUsuario);			
+		}
+		for (Usuario usuario : listaOriginalUsuariosAssociados) {
+			usuarioGrupoUsuario = new UsuarioGrupoUsuario();
+			usuarioGrupoUsuario.setIdUsuario(usuario.getId());
+			usuarioGrupoUsuario.setIdGrupoUsuario(idGrupoUsuario);
+			listaUsuarioGrupoUsuarioOriginalAssociados.add(usuarioGrupoUsuario);			
+		}
+		this.usuarioGrupoUsuarioDAO.associar(listaUsuarioGrupoUsuarioAssociados,listaUsuarioGrupoUsuarioOriginalAssociados);
+	}
+	
+	@Override
+	public void desassociarUsuariosGrupoUsuario(List<Usuario> listaDeUsuarios, Integer idGrupoUsuario)
+			throws SQLException, Exception {
+		UsuarioGrupoUsuario usuarioGrupoUsuario = null;
+		List<UsuarioGrupoUsuario> listaUsuarioGrupoUsuario = new ArrayList<UsuarioGrupoUsuario>();
+		for (Usuario usuario : listaDeUsuarios) {
+			usuarioGrupoUsuario = new UsuarioGrupoUsuario();
+			usuarioGrupoUsuario.setIdUsuario(usuario.getId());
+			usuarioGrupoUsuario.setIdGrupoUsuario(idGrupoUsuario);
+			listaUsuarioGrupoUsuario.add(usuarioGrupoUsuario);			
+		}
+		this.usuarioGrupoUsuarioDAO.desassociar(listaUsuarioGrupoUsuario);
+	}
 	
 }

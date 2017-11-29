@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/templates/templatePrincipal.xhtml">
+
+	<ui:define name="conteudo">
+		<rich:tabPanel styleClass="content" switchType="client" activeItem="#{grupoUsuarioMB.tabSelecionada}">	
+			<rich:tab header="#{msg['grupoUsuario.condominios']}" id="idTabGrupoUsuarioCondominios" rendered="#{loginMB.temAcessoAba('formAssociarGrupoUsuario.idTabGrupoUsuarioCondominios')}">
+				<h:form id="idFormAssociarUsuario" styleClass="content">                           
+					<rich:panel header="#{msg.filtroCondominiosGrupoUsuario}">
+						<h:panelGrid columns="2">
+							<h:panelGroup>
+								<h:outputLabel value="#{msg['condominio']}:" for="idNome" />
+								<span class="asterisco">*</span>
+							</h:panelGroup>
+							<h:panelGroup>
+								<h:outputLabel value="#{msg['grupoUsuario.situacao']}:" for="idSituacao" />
+								<span class="asterisco">*</span>
+							</h:panelGroup>
+							<h:selectOneMenu id="idNome" value="#{grupoUsuarioMB.idCondominio}" required="true" label="#{msg['condominio.label']}">
+								<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="true" />
+								<f:selectItems value="#{grupoUsuarioMB.listaSICondominios}" />
+							</h:selectOneMenu>
+							<h:selectOneMenu id="idSituacao" value="#{grupoUsuarioMB.situacao}" required="true" label="#{msg['grupoUsuario.situacao.label']}">
+								<f:selectItems value="#{grupoUsuarioMB.listaSISituacao}" />
+							</h:selectOneMenu>
+						</h:panelGrid>
+	
+						<h:panelGrid columns="2" styleClass="msgAsterisco"> 
+							<h:outputLabel value="#{msg.rotuloCamposObrigatorios}" for="idCampoObrigatorio" styleClass="camposObrigatorios" />
+							<h:outputLabel value="*" id="idCampoObrigatorio" styleClass="asterisco" />
+						</h:panelGrid>
+					</rich:panel>
+				<div>
+					<h:panelGrid columns="2">
+						<h:commandButton value="#{msg.botaoPesquisar}" actionListener="#{grupoUsuarioMB.pesquisaGrupoUsuario}" />
+						<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{grupoUsuarioMB.limparFiltroPesquisaGrupoUsuario}" />
+					</h:panelGrid>
+				</div>
+				<rich:panel header="#{msg.listaGrupoUsuario}">
+					<div>
+						<rich:dataTable value="#{grupoUsuarioMB.listaGruposUsuarios}" var="grupoUsuario" rowClasses="odd-row, even-row" rows="10"
+							styleClass="stable" id="tableGrupoUsuario" style="width:100%;" rendered="#{grupoUsuarioMB.listaGruposUsuarios.rowCount > 0}">
+							<rich:column sortBy="#{grupoUsuario.nome}" sortOrder="#{ordenaGrupoUsuarioMB.nomeGrupoUsuario}">
+								<f:facet name="header">
+									<a4j:commandLink value="#{msg['grupoUsuario.nome']}" render="tableGrupoUsuario" action="#{ordenaGrupoUsuarioMB.ordenarPorNomeGrupoUsuario}" />
+								</f:facet>
+								<h:outputText value="#{grupoUsuario.nome}" />
+							</rich:column>
+							<rich:column sortBy="#{grupoUsuario.descricaoLimitado}" sortOrder="#{ordenaGrupoUsuarioMB.descricaoGrupoUsuario}">
+								<f:facet name="header">
+									<a4j:commandLink value="#{msg['grupoUsuario.descricao']}" render="tableGrupoUsuario" action="#{ordenaGrupoUsuarioMB.ordenarPorDescricaoGrupoUsuario}" />
+								</f:facet>
+								<h:outputText value="#{grupoUsuario.descricaoLimitado}" />
+							</rich:column>
+							<rich:column sortBy="#{grupoUsuario.situacao}" sortOrder="#{ordenaGrupoUsuarioMB.situacaoGrupoUsuario}">
+								<f:facet name="header">
+									<a4j:commandLink value="#{msg['grupoUsuario.situacao']}" render="tableGrupoUsuario" action="#{ordenaGrupoUsuarioMB.ordenarPorSituacaoGrupoUsuario}" />
+								</f:facet>
+								<h:outputText value="#{grupoUsuario.situacaoI18n}" />
+							</rich:column>						
+							<rich:column style="width:20%;">
+								<f:facet name="header">
+									<h:outputText value="#{msg.rotuloAcao}" />
+								</f:facet>
+								<h:commandLink value="#{msg.linkAssociarUsuario}" action="#{grupoUsuarioMB.associarUsuarioCondominioGrupoUsuario}" immediate="true"/>
+							</rich:column>
+							<f:facet name="footer">
+	              				<rich:dataScroller for="tableGrupoUsuario"  fastControls="hide" renderIfSinglePage="false" />
+	           				</f:facet>	
+						</rich:dataTable>
+					</div>
+				</rich:panel>
+			</h:form>
+				</rich:tab>
+		</rich:tabPanel>
+
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseover" query="jQuery(this).addClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseout" query="jQuery(this).removeClass('active-row')" />
+	</ui:define>
+
+</ui:composition>

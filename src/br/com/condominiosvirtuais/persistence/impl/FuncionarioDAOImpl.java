@@ -573,7 +573,7 @@ public class FuncionarioDAOImpl implements FuncionarioDAO, Serializable {
 	}
 	
 	@Override
-	public List<Funcionario> buscarPorCondominioSemImagem(Integer idCondominio, Integer situacao) throws SQLException, Exception {
+	public List<Funcionario> buscarPorCondominioESituacaoSemImagem(Integer idCondominio, Integer situacao) throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
 		query.append("SELECT * FROM ");
 		query.append(FUNCIONARIO);
@@ -641,7 +641,51 @@ public class FuncionarioDAOImpl implements FuncionarioDAO, Serializable {
 		this.usuarioDAO.atualizarSenha(funcionario);
 	}
 
-	
-
+	@Override
+	public List<Funcionario> buscarPorIdCondominioEidGrupoUsuarioESituacaoSemImagem(Integer idCondominio,
+			Integer idGrupoUsuario, Integer situacao) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(FUNCIONARIO);
+		query.append(" WHERE ");
+		query.append(ID_CONDOMINIO);		
+		query.append(" = ?");
+		query.append(";");		
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;		
+		Funcionario funcionario = null;		
+		List<Funcionario> listaFuncionario = new ArrayList<Funcionario>();
+		Connection con = Conexao.getConexao();
+		try {
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, idCondominio, java.sql.Types.INTEGER);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){				
+				funcionario = new Funcionario();				
+				funcionario.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				funcionario.setFuncao(String.valueOf(SQLUtil.getValorResultSet(resultSet, FUNCAO, java.sql.Types.VARCHAR)));
+				funcionario.setTelefoneCelular((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_CELULAR, java.sql.Types.BIGINT));
+				funcionario.setTelefoneResidencial((Long) SQLUtil.getValorResultSet(resultSet, TELEFONE_RESIDENCIAL, java.sql.Types.BIGINT));
+				funcionario.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
+				funcionario.setIdConjuntoBloco((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONJUNTO_BLOCO, java.sql.Types.INTEGER));
+				// Caso não tenha econtrado, ou seja, o funcionário está inativo por exemplo, então não add na lista.
+				if(this.usuarioDAO.buscarPorEPopularPeloIdEGrupoUsuarioESituacaoSemImagem(funcionario, idGrupoUsuario, situacao, con)){
+					listaFuncionario.add(funcionario);
+				}
+			}
+		} catch (SQLException e) {							
+			throw e;
+		} catch (Exception e) {					
+			throw e;
+		}finally{
+			try {
+				SQLUtil.closeStatement(preparedStatement);
+				SQLUtil.closeConnection(con);
+			} catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);
+			}
+		}	
+		return listaFuncionario;
+	}
 
 }

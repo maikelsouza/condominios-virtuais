@@ -142,6 +142,18 @@ public enum TipoGrupoUsuarioEnum {
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_PRE_CADASTRO_BOLETO.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_PRE_CADASTRO_BOLETO.getPathTelas());
 			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_PRE_CADASTRO_BOLETO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_GRUPO_USUARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_GRUPO_USUARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_ABA_TELA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_VISUALIZAR_COMPONENTE_TELA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_CADASTRO_GRUPO_USUARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_GRUPO_USUARIO.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_TELA_ABA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_LISTA_TELA_COMPONENTE.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_ABA_TELA.getPathTelas());
+			this.telaAcesso.add(PathTelasAplicacaoEnum.FORM_EDITA_COMPONENTE_TELA.getPathTelas());
+			
+			
 			
 			
 			

@@ -1,5 +1,6 @@
 package br.com.condominiosvirtuais.entity;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -10,8 +11,10 @@ import java.util.List;
  * @author Maikel Joel de Souza
  * @since 20/02/2013
  */
-public class Usuario {
+public class Usuario implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+
 	private Integer id;
 	
 	private String nome;
@@ -40,8 +43,9 @@ public class Usuario {
 	
 	private Long cpf;
  	
-// TODO: Rever essa modelagem idGrupoUsuario. Porque foi criado um idGrupoUsuario e um grupoUsuario	
-	private Integer idGrupoUsuario;
+// TODO: Rever essa modelagem idGrupoUsuario. Porque foi criado um idGrupoUsuario e um grupoUsuario
+// TODO: Código comentado em 20/09/2017. Apagar em 180 dias	
+//	private Integer idGrupoUsuario;
 	
 // TODO: Rever essa modelagem listaEmail e email. Considerar tela, e-mails possível e e-mail principal que será o login.	
 	private List<EmailUsuario> listaEmail;
@@ -54,6 +58,8 @@ public class Usuario {
 	private List<Condominio> listaCondominio;
 	
 	private Integer situacao;
+	
+	private List<GrupoUsuario> listaGrupoUsuario;
 	
 	public Usuario(){
 		this.email = new EmailUsuario();
@@ -156,13 +162,15 @@ public class Usuario {
 		this.dataNascimentoAno = dataNascimentoAno;
 	}	
 
-	public Integer getIdGrupoUsuario() {
-		return idGrupoUsuario;
-	}
+//TODO: Código comentado em 20/09/2017. Apagar em 180 dias	
+//	public Integer getIdGrupoUsuario() {
+//		return idGrupoUsuario;
+//	}
 
-	public void setIdGrupoUsuario(Integer idGrupoUsuario) {
-		this.idGrupoUsuario = idGrupoUsuario;
-	}
+//	TODO: Código comentado em 20/09/2017. Apagar em 180 dias
+//	public void setIdGrupoUsuario(Integer idGrupoUsuario) {
+//		this.idGrupoUsuario = idGrupoUsuario;
+//	}
 
 	public EmailUsuario getEmail() {
 		return email;
@@ -226,7 +234,17 @@ public class Usuario {
 
 	public void setCpf(Long cpf) {
 		this.cpf = cpf;
-	}	
+	}
+
+	public List<GrupoUsuario> getListaGrupoUsuario() {
+		return listaGrupoUsuario;
+	}
+
+	public void setListaGrupoUsuario(List<GrupoUsuario> listaGrupoUsuario) {
+		this.listaGrupoUsuario = listaGrupoUsuario;
+	}
+	
+	
 	
 	
 
