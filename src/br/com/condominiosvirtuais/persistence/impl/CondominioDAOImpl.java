@@ -123,7 +123,7 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 			query.append(" ORDER BY ");
 			query.append(NOME);
 			query.append(";");		
-			Connection con = Conexao.getConexao();
+			Connection con = C3P0DataSource.getInstance().getConnection();
 			PreparedStatement preparedStatement = null;
 			ResultSet resultSet = null;
 			Condominio condominio = null;
@@ -245,7 +245,7 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 //		query.append(" ORDER BY ");
 //		query.append(NOME);
 //		query.append(";");		
-//		Connection con = Conexao.getConexao();
+//		Connection con = C3P0DataSource.getInstance().getConnection();
 //		PreparedStatement preparedStatement = null;
 //		ResultSet resultSet = null;
 //		List<Condominio> listaCondominio = new ArrayList<Condominio>();
@@ -321,7 +321,7 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 			query.append(" ORDER BY ");
 			query.append(NOME);
 			query.append(";");	
-			Connection con = Conexao.getConexao();
+			Connection con = C3P0DataSource.getInstance().getConnection();
 			PreparedStatement preparedStatement = null;
 			ResultSet resultSet = null;
 			Condomino subSindicoGeral = null;
@@ -395,7 +395,7 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 			query.append(" ORDER BY ");
 			query.append(NOME);
 			query.append(";");	
-			Connection con = Conexao.getConexao();
+			Connection con = C3P0DataSource.getInstance().getConnection();
 			PreparedStatement preparedStatement = null;
 			ResultSet resultSet = null;
 			Condomino subSindicoGeral = null;
@@ -458,7 +458,7 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 		query.append(CODIGO);
 		query.append(") ");
 		query.append("VALUES(?,?,?,?,?,?)");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		UsuarioCondominio usuarioCondominio = null;
 		try {
@@ -502,7 +502,7 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 	
 	public void excluirCondominio(Condominio condominio) throws SQLException, BusinessException, Exception{
 		StringBuffer query = new StringBuffer();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {
 			con.setAutoCommit(false);
@@ -566,7 +566,7 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 		query.append("WHERE ");
 		query.append(ID);
 		query.append("= ?");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		List<GestorCondominio> listaGestorCondominio = null;
 		SindicoProfissional sindicoProfissional = null;
@@ -628,7 +628,7 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 		query.append(" WHERE ");
 		query.append(ID);	
 		query.append(" = ?");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		Condominio condominio = null;
@@ -746,7 +746,7 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 	
 	public Condominio buscarPorCondomino(Condomino condomino) throws SQLException, Exception{
 		Condominio condominio = null;
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {
 			Unidade unidade = this.unidadeDAO.get().buscarPorId(condomino.getIdUnidade(), con);
 			Bloco bloco = this.blocoDAO.get().buscarPorId(unidade.getIdBloco(), con);
@@ -803,7 +803,7 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 		query.append(" WHERE ");
 		query.append(CODIGO);	
 		query.append(" = ?");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		try {
 			preparedStatement = con.prepareStatement(query.toString());		
@@ -833,7 +833,7 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 		query.append(" WHERE ");
 		query.append(CODIGO);	
 		query.append(" = ?");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		Condominio condominio = null;
@@ -876,7 +876,7 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 	public void popularCondominio(Condominio condominio) throws SQLException, Exception{		
 		List<Bloco> listaDeBlocos = null;
 		List<Unidade> listaDeUnidades = null;
-		List<Condomino> listaDeCondominos = null;
+		List<Condomino> listaDeCondominos = null;	
 		listaDeBlocos = this.blocoDAO.get().buscarListaBlocosPorCondominioENome(condominio,null);		
 		condominio.setListaBlocos(listaDeBlocos);
 		for (Bloco bloco : listaDeBlocos) {
@@ -889,6 +889,7 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 		}
 	}
 	
+
 	/**
 	 * Método que popula um condomínio, ou seja, recebe um objeto condomínio e "seta" nele todos os blocos, unidades e condôninos desse condomínio. </br>
 	 * sendo que os condôminos estão sem imagem e estão com o status de pagador igual a sim {@link CondominoPagadorEnum}
@@ -949,7 +950,7 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 		query.append(" = ?");
 		query.append(" ORDER BY ");
 		query.append(NOME);
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		Condominio condominio = null;
@@ -998,7 +999,7 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 		query.append(" = ?");
 		query.append(" ORDER BY ");
 		query.append(NOME);
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		Condominio condominio = null;
@@ -1081,7 +1082,7 @@ public class CondominioDAOImpl  implements CondominioDAO, Serializable{
 		query.append(" ORDER BY ");
 		query.append(NOME);		
 		PreparedStatement preparedStatement = null;
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		ResultSet resultSet = null;
 		Condominio condominio = null;
 		List<Condominio> listaDeCondominios = new ArrayList<Condominio>();

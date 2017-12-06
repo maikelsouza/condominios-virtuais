@@ -112,7 +112,7 @@ public class VisitaDAOImpl implements Serializable, VisitaDAO{
 		query.append(ID_CONDOMINIO);		
 		query.append(" = ?");
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;		
 		List<Visita> listaVisitas = new ArrayList<Visita>();
@@ -158,7 +158,7 @@ public class VisitaDAOImpl implements Serializable, VisitaDAO{
 		query.append(ID_VISITANTE);		
 		query.append(" = ?");
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;		
 		List<Visita> listaVisitas = new ArrayList<Visita>();
@@ -315,7 +315,7 @@ public class VisitaDAOImpl implements Serializable, VisitaDAO{
 		query.append(" GROUP BY ");
 		query.append(ID_VISITANTE);
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;		
 		List<Integer> listaIdsVisitantes = new ArrayList<Integer>();
@@ -366,7 +366,7 @@ public class VisitaDAOImpl implements Serializable, VisitaDAO{
 		query.append(" ORDER BY ");
 		query.append(DATA_INICIO);
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;		
 		List<Visita> listaVisitas = new ArrayList<Visita>();

@@ -88,7 +88,7 @@ public class MensagemEnviadaDAOImpl implements MensagemEnviadaDAO, Serializable 
 
 	public void excluir(MensagemEnviada mensagemEnviada) throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		con.setAutoCommit(Boolean.FALSE);
 		UsuariosRecebidosMensagem usuariosRecebidosMensagem = new UsuariosRecebidosMensagem();
@@ -129,7 +129,7 @@ public class MensagemEnviadaDAOImpl implements MensagemEnviadaDAO, Serializable 
 		query.append(DATA);
 		query.append(" DESC");
 		query.append(";");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		List<MensagemEnviada> listaMensagem = new ArrayList<MensagemEnviada>();
 		try {

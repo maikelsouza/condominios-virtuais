@@ -63,7 +63,7 @@ public class ConsumoGasDespesasDAOImpl implements ConsumoGasDespesasDAO, Seriali
 		query.append(") ");
 		query.append("VALUES(?,?)");
 		PreparedStatement statement = null;		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {
 			statement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(statement, 1, consumoGasDespesas.getConsumoMesAtual(), java.sql.Types.DOUBLE);
@@ -146,7 +146,7 @@ public class ConsumoGasDespesasDAOImpl implements ConsumoGasDespesasDAO, Seriali
 		query.append(ID_DESPESAS);
 		query.append(" = ?");		
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;		
 		ConsumoGasDespesas consumoGasDespesas = new ConsumoGasDespesas();

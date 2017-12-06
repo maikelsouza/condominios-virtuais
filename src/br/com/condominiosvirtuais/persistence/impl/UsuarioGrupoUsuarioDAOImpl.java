@@ -37,7 +37,7 @@ public class UsuarioGrupoUsuarioDAOImpl implements UsuarioGrupoUsuarioDAO, Seria
 		query.append(ID_USUARIO);
 		query.append(" = ?");
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;		
 		List<UsuarioGrupoUsuario> listaUsuarioGrupoUsuarios = new ArrayList<UsuarioGrupoUsuario>();
@@ -208,7 +208,7 @@ public class UsuarioGrupoUsuarioDAOImpl implements UsuarioGrupoUsuarioDAO, Seria
 
 	@Override
 	public void associar(List<UsuarioGrupoUsuario> listaUsuarioGrupoUsuario, List<UsuarioGrupoUsuario> listaUsuarioGrupoUsuarioOriginalAssociados) throws SQLException, Exception {
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {			
 			con.setAutoCommit(Boolean.FALSE);
@@ -247,7 +247,7 @@ public class UsuarioGrupoUsuarioDAOImpl implements UsuarioGrupoUsuarioDAO, Seria
 	
 	@Override
 	public void desassociar(List<UsuarioGrupoUsuario> listaUsuarioGrupoUsuario) throws SQLException, Exception {
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {			
 			con.setAutoCommit(Boolean.FALSE);

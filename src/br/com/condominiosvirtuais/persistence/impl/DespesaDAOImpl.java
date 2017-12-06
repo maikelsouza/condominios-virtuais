@@ -76,7 +76,7 @@ private static final long serialVersionUID = 1L;
 		query.append(") ");
 		query.append("VALUES(?,?,?,?,?,?,?,?)");
 		PreparedStatement statement = null;		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {
 			statement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(statement, 1, despesa.getDescricao(), java.sql.Types.VARCHAR);			
@@ -117,7 +117,7 @@ private static final long serialVersionUID = 1L;
 		query.append(" ORDER BY ");
 		query.append(DESCRICAO);
 		query.append(";");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;		
 		List<Despesa> listaDespesa = new ArrayList<Despesa>();
 		try {
@@ -182,7 +182,7 @@ private static final long serialVersionUID = 1L;
 		query.append("WHERE ");
 		query.append(ID);
 		query.append("= ?");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {			
 			statement = con.prepareStatement(query.toString());			
@@ -219,7 +219,7 @@ private static final long serialVersionUID = 1L;
 		query.append(ID);
 		query.append("= ?");
 		PreparedStatement statement = null;
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {
 			statement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(statement, 1, despesa.getId(), java.sql.Types.INTEGER);			

@@ -86,7 +86,7 @@ public class AbaDAOImpl implements AbaDAO, Serializable {
 	
 	@Override
 	public List<Aba> buscarPorIdTela(Integer idTela) throws SQLException, Exception {
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		List<Aba> listaAba = new ArrayList<Aba>();		
 		StringBuffer query = new StringBuffer();
 		query.append("SELECT * FROM ");

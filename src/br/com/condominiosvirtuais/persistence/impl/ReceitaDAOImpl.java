@@ -77,7 +77,7 @@ public class ReceitaDAOImpl implements ReceitaDAO, Serializable {
 		query.append(") ");
 		query.append("VALUES(?,?,?,?,?,?,?,?)");
 		PreparedStatement statement = null;		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {
 			statement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(statement, 1, receita.getDescricao(), java.sql.Types.VARCHAR);			
@@ -118,7 +118,7 @@ public class ReceitaDAOImpl implements ReceitaDAO, Serializable {
 		query.append(" ORDER BY ");
 		query.append(DESCRICAO);
 		query.append(";");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;		
 		List<Receita> listaReceita = new ArrayList<Receita>();
 		try {
@@ -183,7 +183,7 @@ public class ReceitaDAOImpl implements ReceitaDAO, Serializable {
 		query.append("WHERE ");
 		query.append(ID);
 		query.append("= ?");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {			
 			statement = con.prepareStatement(query.toString());			
@@ -220,7 +220,7 @@ public class ReceitaDAOImpl implements ReceitaDAO, Serializable {
 		query.append(ID);
 		query.append("= ?");
 		PreparedStatement statement = null;
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {
 			statement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(statement, 1, receita.getId(), java.sql.Types.INTEGER);			

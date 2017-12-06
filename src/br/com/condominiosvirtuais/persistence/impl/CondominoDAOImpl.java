@@ -77,7 +77,7 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 		query.append("SELECT * FROM ");
 		query.append(CONDOMINO);
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<Condomino> listaCondomino = new ArrayList<Condomino>();
@@ -118,7 +118,7 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 		query.append(ID_UNIDADE);
 		query.append(" = ?");
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<Condomino> listaCondomino = new ArrayList<Condomino>();
@@ -166,7 +166,7 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 		query.append(ID_UNIDADE);
 		query.append(" = ?");
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;	
 		List<Integer> listaIds = new ArrayList<Integer>();
@@ -197,7 +197,7 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 	public void salvarCondomino(Condomino condomino) throws SQLException, Exception{
 		PreparedStatement statement = null;
 		Connection con = null;
-		con = Conexao.getConexao();
+		con = C3P0DataSource.getInstance().getConnection();
 		con.setAutoCommit(false);
 		this.usuarioDAO.salvarUsuario(condomino, con);
 		StringBuffer query = new StringBuffer();
@@ -252,7 +252,7 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 		query.append(ID_UNIDADE);		
 		query.append(" = ?");
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<Condomino> listaCondomino = new ArrayList<Condomino>();
@@ -311,7 +311,7 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 		query.append("WHERE ");
 		query.append(ID);
 		query.append("= ?");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		con.setAutoCommit(false);
 		this.usuarioDAO.atualizarUsuario(condomino, con);
 		PreparedStatement statement = null;
@@ -341,7 +341,7 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 	
 	public void excluirCondomino(Condomino condomino) throws SQLException, BusinessException, Exception{
 		StringBuffer query = new StringBuffer();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		con.setAutoCommit(false);
 		PreparedStatement statement = null;
 		try {
@@ -391,7 +391,7 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 		query.append(ID);		
 		query.append(" = ?");
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;		
 		Condomino condomino = null;
@@ -669,7 +669,7 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 		List<Condomino> listaCondominos = new ArrayList<Condomino>();
 		ResultSet resultSet = null;		
 		Condomino condomino = null;
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {
 			preparedStatement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(preparedStatement, 1,idUnidade, java.sql.Types.INTEGER);
@@ -716,7 +716,7 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 		List<Condomino> listaCondominos = new ArrayList<Condomino>();
 		ResultSet resultSet = null;		
 		Condomino condomino = null;
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {
 			preparedStatement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(preparedStatement, 1,idUnidade, java.sql.Types.INTEGER);
@@ -764,7 +764,7 @@ public class CondominoDAOImpl implements CondominoDAO, Serializable {
 		List<Condomino> listaCondominos = new ArrayList<Condomino>();
 		ResultSet resultSet = null;		
 		Condomino condomino = null;
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {
 			preparedStatement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(preparedStatement, 1,idUnidade, java.sql.Types.INTEGER);

@@ -87,7 +87,7 @@ public class EmailUsuarioDAOImpl implements EmailUsuarioDAO, Serializable{
 		query.append("AND ");
 		query.append(PRINCIPAL);
 		query.append("= ?");		
-		Connection con = Conexao.getConexao();
+		Connection con =C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		EmailUsuario email = null;
@@ -126,7 +126,7 @@ public class EmailUsuarioDAOImpl implements EmailUsuarioDAO, Serializable{
 		query.append(" WHERE ");
 		query.append(EMAIL);
 		query.append(" = ? ");				
-		Connection con = Conexao.getConexao();
+		Connection con =C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		EmailUsuario email = null;
@@ -164,7 +164,7 @@ public class EmailUsuarioDAOImpl implements EmailUsuarioDAO, Serializable{
 		query.append(ID_USUARIO);
 		query.append(" = ? ");
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con =C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<EmailUsuario> listaEmail = new ArrayList<EmailUsuario>();

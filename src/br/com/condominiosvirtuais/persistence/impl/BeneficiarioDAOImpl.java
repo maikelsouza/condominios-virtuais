@@ -50,7 +50,7 @@ public class BeneficiarioDAOImpl implements Serializable, BeneficiarioDAO {
 		PreparedStatement statement = null;
 		Connection con = null;	 
 		try {
-			con = Conexao.getConexao();
+			con = C3P0DataSource.getInstance().getConnection();
 			con.setAutoCommit(Boolean.FALSE);
 			StringBuffer query = new StringBuffer();
 			query.append("INSERT INTO "); 
@@ -93,7 +93,7 @@ public class BeneficiarioDAOImpl implements Serializable, BeneficiarioDAO {
 
 	@Override
 	public List<Beneficiario> buscarPorIdCondominio(Integer idCondominio) throws SQLException, BusinessException, Exception {
-		Connection con = Conexao.getConexao();		
+		Connection con = C3P0DataSource.getInstance().getConnection();		
 		List<Beneficiario> listaBeneficiario = new ArrayList<Beneficiario>();
 		Beneficiario beneficiario = null;
 		StringBuffer query = new StringBuffer();
@@ -169,7 +169,7 @@ public class BeneficiarioDAOImpl implements Serializable, BeneficiarioDAO {
 
 	@Override
 	public void atualizar(Beneficiario beneficiario) throws SQLException, BusinessException, Exception {
-		Connection con = Conexao.getConexao();	
+		Connection con = C3P0DataSource.getInstance().getConnection();	
 		con.setAutoCommit(Boolean.FALSE);
 		this.enderecoDAO.atualizarEnderecoPorId(beneficiario.getEndereco(), con);
 		StringBuffer query = new StringBuffer();
@@ -217,7 +217,7 @@ public class BeneficiarioDAOImpl implements Serializable, BeneficiarioDAO {
 	@Override
 	public void excluir(Beneficiario beneficiario) throws SQLException, BusinessException, Exception {
 		StringBuffer query = new StringBuffer();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		con.setAutoCommit(Boolean.FALSE);
 		PreparedStatement statement = null;
 		try {
@@ -254,7 +254,7 @@ public class BeneficiarioDAOImpl implements Serializable, BeneficiarioDAO {
 
 	@Override
 	public List<Beneficiario> buscarPorIdCondominioESituacao(Integer idCondominio, Boolean situacao) throws SQLException, BusinessException, Exception {
-		Connection con = Conexao.getConexao();		
+		Connection con = C3P0DataSource.getInstance().getConnection();		
 		List<Beneficiario> listaBeneficiario = new ArrayList<Beneficiario>();
 		Beneficiario beneficiario = null;
 		StringBuffer query = new StringBuffer();

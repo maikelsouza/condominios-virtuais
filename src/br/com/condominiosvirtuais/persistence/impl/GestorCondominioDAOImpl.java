@@ -63,7 +63,7 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 		query.append(ID_CONDOMINIO);
 		query.append(" = ? ");		
 		query.append(";");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<GestorCondominio> listaGestorCondominio = new ArrayList<GestorCondominio>();
@@ -464,8 +464,7 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 		query.append(" WHERE ");
 		query.append(ID_BLOCO);
 		query.append(" = ? ");		
-		query.append(";");
-		//Connection con = Conexao.getConexao();
+		query.append(";");		
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<GestorCondominio> listaGestorCondominio = new ArrayList<GestorCondominio>();
@@ -501,7 +500,7 @@ public class GestorCondominioDAOImpl implements GestorCondominioDAO, Serializabl
 		query.append(ID_BLOCO);
 		query.append(" = ? ");		
 		query.append(";");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<GestorCondominio> listaGestorCondominio = new ArrayList<GestorCondominio>();

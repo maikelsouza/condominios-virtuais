@@ -37,7 +37,7 @@ public class ModuloDAOImpl implements Serializable, ModuloDAO {
 		query.append(ID);		
 		query.append(" = ? ");
 		query.append(";");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		Modulo modulo = null;
 		try {
@@ -79,7 +79,7 @@ public class ModuloDAOImpl implements Serializable, ModuloDAO {
 			query.append(SQLUtil.popularInterrocacoes(listaIdsModulo.size()));	
 			query.append(" ) ");
 			query.append(";");
-			Connection con = Conexao.getConexao();
+			Connection con = C3P0DataSource.getInstance().getConnection();
 			PreparedStatement preparedStatement = null;
 			Integer contador = 1;
 			try {

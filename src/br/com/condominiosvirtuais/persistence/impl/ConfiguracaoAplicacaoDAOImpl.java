@@ -33,7 +33,7 @@ public class ConfiguracaoAplicacaoDAOImpl implements ConfiguracaoAplicacaoDAO, S
 		query.append(CONFIGURACAO_APLICACAO);		
 		query.append(";");
 		PreparedStatement preparedStatement = null;
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		ResultSet resultSet = null;
 		Map<String, String> mapConfiguraçaoAplicacao = new HashMap<String, String>();
 		try {

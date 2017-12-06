@@ -62,6 +62,10 @@ public class BlocoDAOImpl implements BlocoDAO, Serializable{
 	private Instance<GestorCondominioDAOImpl> gestorCondominioDAO = null;	
 	
 	
+	
+	
+
+	
 	/**
 	 * Método que pesquisa todos os blocos de um condomínio e seu nome.
 	 * @param condominio - Parâmetro que contém o id do condomínio pesquisado
@@ -92,7 +96,7 @@ public class BlocoDAOImpl implements BlocoDAO, Serializable{
 		query.append(" ORDER BY ");
 		query.append(NOME);
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<Bloco> listaBloco = new ArrayList<Bloco>();
@@ -134,7 +138,7 @@ public class BlocoDAOImpl implements BlocoDAO, Serializable{
 	}
 	
 	public void salvarBloco(Bloco bloco) throws SQLException, BusinessException, Exception{
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		StringBuffer query = new StringBuffer();
 		query.append("INSERT INTO "); 
 		query.append(BLOCO);
@@ -170,7 +174,7 @@ public class BlocoDAOImpl implements BlocoDAO, Serializable{
 	
 	public void salvarBlocoEmLote(List<Bloco> listaBlocos) throws SQLException, Exception{
 		PreparedStatement statement = null;
-		Connection con = Conexao.getConexao();		
+		Connection con = C3P0DataSource.getInstance().getConnection();		
 		try {			
 			StringBuffer query = new StringBuffer();
 			query.append("INSERT INTO "); 
@@ -204,7 +208,7 @@ public class BlocoDAOImpl implements BlocoDAO, Serializable{
 	
 	public void atualizarBloco(Bloco bloco) throws SQLException, BusinessException, Exception{
 		StringBuffer query = new StringBuffer();
-		Connection con = Conexao.getConexao();		
+		Connection con = C3P0DataSource.getInstance().getConnection();		
 		query.append("UPDATE ");
 		query.append(BLOCO);
 		query.append(" SET ");
@@ -249,7 +253,7 @@ public class BlocoDAOImpl implements BlocoDAO, Serializable{
 	
 	public void excluirBloco(Bloco bloco ) throws SQLException, BusinessException, Exception{
 		StringBuffer query = new StringBuffer();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {			
 			query.append("DELETE FROM ");
@@ -308,7 +312,7 @@ public class BlocoDAOImpl implements BlocoDAO, Serializable{
 		query.append(" WHERE ");
 		query.append(ID);
 		query.append(" = ?");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		Bloco bloco = null;
@@ -415,7 +419,7 @@ public class BlocoDAOImpl implements BlocoDAO, Serializable{
 			unidade.setListaCondominos(listaDeCondominos);
 		}
 		
-	}	
+	}
 	
 	private void salvarGestoresBloco(Bloco bloco, Connection con) throws SQLException, Exception {
 		// Persiste o Síndico do bloco - Caso o bloco possua Síndico
@@ -457,7 +461,7 @@ public class BlocoDAOImpl implements BlocoDAO, Serializable{
 		query.append(ID_CONDOMINIO);
 		query.append(" = ? ");
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<Integer> listaIds = new ArrayList<Integer>();
@@ -495,7 +499,7 @@ public class BlocoDAOImpl implements BlocoDAO, Serializable{
 		query.append(" ORDER BY ");
 		query.append(NOME);
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<Bloco> listaBloco = new ArrayList<Bloco>();

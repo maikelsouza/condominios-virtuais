@@ -45,7 +45,7 @@ public class ConsumoGasUnidadeDAOImpl implements ConsumoGasUnidadeDAO, Serializa
 		query.append(MES_ANO_REFERENCIA);
 		query.append(" = ?");		
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<ConsumoGasUnidade> listaConsumoGasUnidade = new ArrayList<ConsumoGasUnidade>();
@@ -90,7 +90,7 @@ public class ConsumoGasUnidadeDAOImpl implements ConsumoGasUnidadeDAO, Serializa
 		query.append(ID_UNIDADE);
 		query.append(" = ?");		
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;		
 		ConsumoGasUnidade consumoGasUnidade = null;
@@ -136,7 +136,7 @@ public class ConsumoGasUnidadeDAOImpl implements ConsumoGasUnidadeDAO, Serializa
 		query.append(") ");
 		query.append("VALUES(?,?,?)");
 		PreparedStatement statement = null;		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {
 			statement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(statement, 1, consumoGasUnidade.getConsumoMesAtual(), java.sql.Types.DOUBLE);			

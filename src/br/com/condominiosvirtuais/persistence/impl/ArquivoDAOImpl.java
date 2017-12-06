@@ -198,7 +198,7 @@ public class ArquivoDAOImpl implements ArquivoDAO, Serializable {
 	
 	@Override
 	public void salvarArquivoCondomino(Arquivo arquivo) throws FileNotFoundException, IOException, SQLException, Exception {
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;	 		
 		try {
 			StringBuffer query = new StringBuffer();
@@ -398,7 +398,7 @@ public class ArquivoDAOImpl implements ArquivoDAO, Serializable {
 		query.append("WHERE ");
 		query.append(ID);
 		query.append("= ?");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {			
 			statement = con.prepareStatement(query.toString());
@@ -432,7 +432,7 @@ public class ArquivoDAOImpl implements ArquivoDAO, Serializable {
 
 	@Override
 	public void salvarArquivoCondominio(Arquivo arquivo) throws FileNotFoundException, IOException, SQLException, Exception{
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;	 		
 		try {
 			StringBuffer query = new StringBuffer();
@@ -517,7 +517,7 @@ public class ArquivoDAOImpl implements ArquivoDAO, Serializable {
 		query.append("WHERE ");
 		query.append(ID);
 		query.append("= ?");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {			
 			statement = con.prepareStatement(query.toString());
@@ -566,7 +566,7 @@ public class ArquivoDAOImpl implements ArquivoDAO, Serializable {
 
 	@Override
 	public void salvarArquivoFuncionarioCondominio(Arquivo arquivo) throws FileNotFoundException, IOException, SQLException, Exception {
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;	 		
 		try {
 			StringBuffer query = new StringBuffer();
@@ -748,7 +748,7 @@ public class ArquivoDAOImpl implements ArquivoDAO, Serializable {
 
 	@Override
 	public void salvarArquivoFuncionarioConjuntoBloco(Arquivo arquivo) throws FileNotFoundException, IOException, SQLException, Exception {
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;	 		
 		try {
 			StringBuffer query = new StringBuffer();
@@ -836,7 +836,7 @@ public class ArquivoDAOImpl implements ArquivoDAO, Serializable {
 		query.append("WHERE ");
 		query.append(ID);
 		query.append("= ?");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {			
 			statement = con.prepareStatement(query.toString());
@@ -904,7 +904,7 @@ public class ArquivoDAOImpl implements ArquivoDAO, Serializable {
 		query.append("WHERE ");
 		query.append(ID);
 		query.append("= ?");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {			
 			statement = con.prepareStatement(query.toString());
@@ -1005,7 +1005,7 @@ public class ArquivoDAOImpl implements ArquivoDAO, Serializable {
 	public List<Arquivo> buscarArquivoPorTiposEIdCondominio(List<String> listaTipoArquivos, Integer idCondominio) throws FileNotFoundException, IOException, SQLException, Exception {
 		PreparedStatement statement = null;
 		List<Arquivo> listaArquivo = new ArrayList<Arquivo>();
-		Connection con = Conexao.getConexao();		
+		Connection con = C3P0DataSource.getInstance().getConnection();		
 		try {
 			StringBuffer query = new StringBuffer();
 			query.append("SELECT * FROM ");
@@ -1131,7 +1131,7 @@ public class ArquivoDAOImpl implements ArquivoDAO, Serializable {
 	
 	@Override
 	public void excluirArquivoCondominio(Arquivo arquivo) throws  SQLException, Exception {
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;	 		
 		try {
 			StringBuffer query = new StringBuffer();

@@ -95,7 +95,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 		query.append("SELECT * FROM ");
 		query.append(USUARIO);
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<Usuario> listaUsuario = new ArrayList<Usuario>();
@@ -440,7 +440,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 	}
 	
 	public void atualizarUsuario(Usuario usuario) throws SQLException, Exception{
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		con.setAutoCommit(false);
 		this.usuarioCondominioDAO.get().excluirPorUsuario(usuario, con);		
 		for (Condominio condominio : usuario.getListaCondominio()) {
@@ -530,7 +530,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 		query.append(" = ?");		
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		Usuario usuario = null;
 		List<UsuarioCondominio> listaUsuarioCondominio = null;
 		List<Condominio> listaCondominio = null;
@@ -639,7 +639,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 		query.append(ID);
 		query.append(" = ? ");		
 		PreparedStatement statement = null;
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {			
 			statement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(statement, 1, AplicacaoUtil.gerarHashMD5(usuario.getSenha()), java.sql.Types.VARCHAR);
@@ -671,7 +671,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 		query.append(ID);
 		query.append(" = ? ");		
 		PreparedStatement statement = null;
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {			
 			statement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(statement, 1, usuario.getUltimoLogin(), java.sql.Types.TIMESTAMP);
@@ -704,7 +704,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 		query.append(ID);
 		query.append(" = ? ");		
 		PreparedStatement statement = null;
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {			
 			statement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(statement, 1, usuario.getUltimoLogout(), java.sql.Types.TIMESTAMP);
@@ -747,7 +747,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 	public Usuario buscarSindicoGeralPorCondominio(Condominio condominio) throws SQLException, Exception{
 		Usuario usuario = null;
 		Boolean encontrou = Boolean.FALSE;   
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		List<GestorCondominio> listaDeGestorCondominio = this.gestorCondominioDAO.get().buscarListaGestoresCondominioPorCondominio(condominio,con);
 		Integer indice = 0;
 		while (encontrou == Boolean.FALSE && indice < listaDeGestorCondominio.size()){
@@ -782,7 +782,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Serializable{
 			query.append(" ORDER BY ");
 			query.append(NOME);
 			query.append(";");		
-			Connection con = Conexao.getConexao();
+			Connection con = C3P0DataSource.getInstance().getConnection();
 			PreparedStatement preparedStatement = null;
 			ResultSet resultSet = null;
 			Usuario usuario = null;

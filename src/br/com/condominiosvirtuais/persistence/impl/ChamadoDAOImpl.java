@@ -59,7 +59,7 @@ public class ChamadoDAOImpl implements ChamadoDAO, Serializable {
 
 	@Override
 	public void salvar(Chamado chamado) throws SQLException, Exception {
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		StringBuffer query = new StringBuffer();
 		query.append("INSERT INTO "); 
 		query.append(CHAMADO);
@@ -117,7 +117,7 @@ public class ChamadoDAOImpl implements ChamadoDAO, Serializable {
 	@Override
 	public void excluir(Integer idChamado) throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {			
 			query.append("DELETE FROM ");
@@ -155,7 +155,7 @@ public class ChamadoDAOImpl implements ChamadoDAO, Serializable {
 		query.append(" ORDER BY ");
 		query.append(DATA_ABERTURA);
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<Chamado> listaChamados = new ArrayList<Chamado>();
@@ -206,7 +206,7 @@ public class ChamadoDAOImpl implements ChamadoDAO, Serializable {
 		query.append(" ORDER BY ");
 		query.append(DATA_ABERTURA);
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<Chamado> listaChamados = new ArrayList<Chamado>();
@@ -256,7 +256,7 @@ public class ChamadoDAOImpl implements ChamadoDAO, Serializable {
 		query.append(" ORDER BY ");
 		query.append(DATA_ABERTURA);
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<Chamado> listaChamados = new ArrayList<Chamado>();
@@ -299,7 +299,7 @@ public class ChamadoDAOImpl implements ChamadoDAO, Serializable {
 	@Override
 	public void atualizarStatus(Integer idChamado, Integer status) throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
-		Connection con = Conexao.getConexao();		
+		Connection con = C3P0DataSource.getInstance().getConnection();		
 		query.append("UPDATE ");
 		query.append(CHAMADO);
 		query.append(" SET ");
@@ -331,7 +331,7 @@ public class ChamadoDAOImpl implements ChamadoDAO, Serializable {
 	@Override
 	public void fecharChamado(Integer idChamado, Date dataFechamento, String comentario) throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
-		Connection con = Conexao.getConexao();		
+		Connection con = C3P0DataSource.getInstance().getConnection();		
 		query.append("UPDATE ");
 		query.append(CHAMADO);
 		query.append(" SET ");

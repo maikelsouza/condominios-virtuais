@@ -66,7 +66,7 @@ public class MeioPagamentoDAOImpl implements MeioPagamentoDAO, Serializable {
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;		
 		MeioPagamento meioPagamento = null;
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		List<MeioPagamento> listaMeioPagamento = new ArrayList<MeioPagamento>();
 		try {
 			preparedStatement = con.prepareStatement(query.toString());						

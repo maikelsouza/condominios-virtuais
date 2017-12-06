@@ -49,7 +49,7 @@ public class TelefonesUteisDAOImpl implements TelefonesUteisDAO, Serializable {
 		query.append(" = ? ");			
 		query.append("ORDER BY ");
 		query.append(NOME);	
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;		
 		TelefonesUteis telefonesUteis = null;
@@ -107,7 +107,7 @@ public class TelefonesUteisDAOImpl implements TelefonesUteisDAO, Serializable {
 		query.append(") ");
 		query.append("VALUES(?,?,?,?,?,?,?)");
 		PreparedStatement statement = null;		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {			
 			statement = con.prepareStatement(query.toString());			
 			SQLUtil.setValorPpreparedStatement(statement, 1, telefonesUteis.getNome(), java.sql.Types.VARCHAR);
@@ -135,7 +135,7 @@ public class TelefonesUteisDAOImpl implements TelefonesUteisDAO, Serializable {
 	@Override
 	public void excluir(TelefonesUteis linksUteis) throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {			
 			query.append("DELETE FROM ");
@@ -183,7 +183,7 @@ public class TelefonesUteisDAOImpl implements TelefonesUteisDAO, Serializable {
 		query.append(" WHERE ");
 		query.append(ID);
 		query.append("= ?");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {
 			statement = con.prepareStatement(query.toString());

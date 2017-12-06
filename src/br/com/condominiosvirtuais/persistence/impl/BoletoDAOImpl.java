@@ -85,7 +85,7 @@ public class BoletoDAOImpl implements BoletoDAO, Serializable {
 	public void salvar(Boleto boleto) throws SQLException, Exception {
 		PreparedStatement statement = null;
 		Connection con = null;
-		con = Conexao.getConexao();
+		con = C3P0DataSource.getInstance().getConnection();
 		StringBuffer query = new StringBuffer();
 		query.append("INSERT INTO "); 
 		query.append(BOLETO); 
@@ -157,7 +157,7 @@ public class BoletoDAOImpl implements BoletoDAO, Serializable {
 	@Override
 	public void excluirPorId(Integer idBoleto) throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {			
 			query.append("DELETE FROM ");
@@ -196,7 +196,7 @@ public class BoletoDAOImpl implements BoletoDAO, Serializable {
 		query.append(" ORDER BY ");
 		query.append(VENCIMENTO);
 		query.append(" DESC;");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<Boleto> listaBoleto = new ArrayList<Boleto>();
@@ -267,7 +267,7 @@ public class BoletoDAOImpl implements BoletoDAO, Serializable {
 		query.append(VENCIMENTO);
 		query.append(" DESC ");
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<Boleto> listaBoleto = new ArrayList<Boleto>();
@@ -335,7 +335,7 @@ public class BoletoDAOImpl implements BoletoDAO, Serializable {
 		query.append(" WHERE ");
 		query.append(ID);
 		query.append("= ?");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {
 			statement = con.prepareStatement(query.toString());
@@ -375,7 +375,7 @@ public class BoletoDAOImpl implements BoletoDAO, Serializable {
 		query.append(" ORDER BY ");
 		query.append(VENCIMENTO);
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<Boleto> listaBoleto = new ArrayList<Boleto>();
@@ -450,7 +450,7 @@ public class BoletoDAOImpl implements BoletoDAO, Serializable {
 		query.append(VENCIMENTO);
 		query.append(" DESC ");
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<Boleto> listaBoleto = new ArrayList<Boleto>();

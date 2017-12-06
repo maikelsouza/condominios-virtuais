@@ -40,7 +40,7 @@ public class ContadorDAOImpl implements ContadorDAO, Serializable {
 		PreparedStatement statement = null;
 		Connection con = null;		
 		try {
-			con = Conexao.getConexao();
+			con = C3P0DataSource.getInstance().getConnection();
 			con.setAutoCommit(Boolean.FALSE);			
 			this.usuarioDAO.salvarUsuario(contador, con);
 			StringBuffer query = new StringBuffer();
@@ -112,7 +112,7 @@ public class ContadorDAOImpl implements ContadorDAO, Serializable {
 		query.append(ID_ESCRITORIO_CONTABILIDADE);
 		query.append(" = ?");		
 		PreparedStatement preparedStatement = null;		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		List<Contador> listaContador = new ArrayList<Contador>();
 		try {
 			preparedStatement = con.prepareStatement(query.toString());
@@ -148,7 +148,7 @@ public class ContadorDAOImpl implements ContadorDAO, Serializable {
 
 	@Override
 	public void atualizar(Contador contador) throws SQLException, Exception {
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		this.usuarioDAO.atualizarUsuario(contador, con);
 		StringBuffer query = new StringBuffer();
 		query.append("UPDATE ");
@@ -189,7 +189,7 @@ public class ContadorDAOImpl implements ContadorDAO, Serializable {
 		query.append(ID);
 		query.append(" = ?");		
 		PreparedStatement preparedStatement = null;		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		Contador contador = null;
 		try {
 			preparedStatement = con.prepareStatement(query.toString());

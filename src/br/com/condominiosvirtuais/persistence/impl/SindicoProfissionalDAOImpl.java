@@ -62,7 +62,7 @@ public class SindicoProfissionalDAOImpl implements SindicoProfissionalDAO, Seria
 		GestorCondominio gestorCondominio = null;
 		List<GrupoUsuario> listaGrupoUsuario = null;
 		try {
-			con = Conexao.getConexao();
+			con = C3P0DataSource.getInstance().getConnection();
 			con.setAutoCommit(Boolean.FALSE);
 			this.usuarioDAO.salvarUsuario(sindicoProfissional,con);
 			StringBuffer query = new StringBuffer();
@@ -129,7 +129,7 @@ public class SindicoProfissionalDAOImpl implements SindicoProfissionalDAO, Seria
 		List<SindicoProfissional> listaSindicoProfissional = new ArrayList<SindicoProfissional>(); 
 		SindicoProfissional sindicoProfissional = null;
 		try {
-			con = Conexao.getConexao();
+			con = C3P0DataSource.getInstance().getConnection();
 			StringBuffer query = new StringBuffer();
 			query.append("SELECT * FROM "); 
 			query.append(SINDICO_PROFISSIONAL);
@@ -173,7 +173,7 @@ public class SindicoProfissionalDAOImpl implements SindicoProfissionalDAO, Seria
 	@Override
 	public void atualizar(SindicoProfissional sindicoProfissional) throws SQLException, Exception {
 		GestorCondominio gestorCondominio = null;
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		con.setAutoCommit(Boolean.FALSE);
 		this.usuarioDAO.atualizarUsuario(sindicoProfissional, con);
 		StringBuffer query = new StringBuffer();
@@ -233,7 +233,7 @@ public class SindicoProfissionalDAOImpl implements SindicoProfissionalDAO, Seria
 		ResultSet resultSet = null;
 		SindicoProfissional sindicoProfissional = null;
 		try {
-			con = Conexao.getConexao();
+			con = C3P0DataSource.getInstance().getConnection();
 			StringBuffer query = new StringBuffer();
 			query.append("SELECT * FROM "); 
 			query.append(SINDICO_PROFISSIONAL);
@@ -273,9 +273,8 @@ public class SindicoProfissionalDAOImpl implements SindicoProfissionalDAO, Seria
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		SindicoProfissional sindicoProfissional = null;
-		Connection con = Conexao.getConexao();
-		try {
-			con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
+		try {			
 			StringBuffer query = new StringBuffer();
 			query.append("SELECT * FROM "); 
 			query.append(SINDICO_PROFISSIONAL);

@@ -120,7 +120,7 @@ public class PrestadorServicoDAOImpl implements Serializable, PrestadorServicoDA
 		query.append(NOME);
 		query.append(") LIKE ?");
 		query.append(";");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;		
 		List<PrestadorServico> listaPrestadorServico = new ArrayList<PrestadorServico>();
 		try {

@@ -68,7 +68,7 @@ public class VeiculoDAOImpl implements VeiculoDAO, Serializable {
 
 	@Override
 	public void salvar(Veiculo veiculo) throws SQLException, BusinessException, Exception {
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		StringBuffer query = new StringBuffer();
 		query.append("INSERT INTO "); 
 		query.append(VEICULO);
@@ -118,7 +118,7 @@ public class VeiculoDAOImpl implements VeiculoDAO, Serializable {
 	@Override
 	public void excluir(Veiculo veiculo) throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {
 			query.append("DELETE FROM ");
@@ -145,7 +145,7 @@ public class VeiculoDAOImpl implements VeiculoDAO, Serializable {
 	
 	@Override
 	public void atualizar(Veiculo veiculo) throws SQLException, BusinessException, Exception {
-		Connection con = Conexao.getConexao();	
+		Connection con = C3P0DataSource.getInstance().getConnection();	
 		StringBuffer query = new StringBuffer();
 		query.append("UPDATE ");
 		query.append(VEICULO);
@@ -204,7 +204,7 @@ public class VeiculoDAOImpl implements VeiculoDAO, Serializable {
 		query.append(ID_CONDOMINO);		
 		query.append(" = ?");		
 		query.append(";");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		Veiculo veiculo = null;
 		Garagem garagem = null;
@@ -262,7 +262,7 @@ public class VeiculoDAOImpl implements VeiculoDAO, Serializable {
 		query.append(ID_GARAGEM);
 		query.append(" = ?");
 		query.append(";");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		Veiculo veiculoBase = null;
 		Garagem garagem = null;
@@ -344,7 +344,7 @@ public class VeiculoDAOImpl implements VeiculoDAO, Serializable {
 		query.append(" ORDER BY ");
 		query.append(NOME);
 		query.append(";");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		Veiculo veiculo = null;
 		Garagem garagem = null;
@@ -424,7 +424,7 @@ public class VeiculoDAOImpl implements VeiculoDAO, Serializable {
 		query.append(" ORDER BY ");
 		query.append(PLACA);
 		query.append(";");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		Veiculo veiculo = null;
 		Garagem garagem = null;
@@ -498,7 +498,7 @@ public class VeiculoDAOImpl implements VeiculoDAO, Serializable {
 			query.append(pontoInterrogacao);
 			query.append(") ");
 			query.append(";");
-			Connection con = Conexao.getConexao();
+			Connection con = C3P0DataSource.getInstance().getConnection();
 			PreparedStatement preparedStatement = null;
 			Veiculo veiculo = null;
 			Garagem garagem = null;

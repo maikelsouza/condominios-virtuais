@@ -37,7 +37,7 @@ public class UsuarioCondominioDAOImpl implements UsuarioCondominioDAO, Serializa
 		query.append(ID_USUARIO);
 		query.append(" = ? ");		
 		query.append(";");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<UsuarioCondominio> listaUsuarioCondominio = new ArrayList<UsuarioCondominio>();

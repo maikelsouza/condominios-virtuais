@@ -90,7 +90,7 @@ public class TelaDAOImpl implements TelaDAO, Serializable {
 	@Override
 	public List<Tela> buscarPorIdGrupoUsuario(Integer idGrupoUsuario) throws SQLException, Exception {
 		List<Tela> listaTela = new ArrayList<Tela>();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		try {
 			// Busca a lista de telas associadas a um grupo de usuário
@@ -149,7 +149,7 @@ public class TelaDAOImpl implements TelaDAO, Serializable {
 		query.append("SELECT * FROM ");
 		query.append(TELA);
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		Tela tela = null;

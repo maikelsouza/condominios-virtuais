@@ -69,7 +69,7 @@ public class ConjuntoBlocoDAOImpl implements ConjuntoBlocoDAO, Serializable {
 		query.append(") ");
 		query.append("VALUES(?)");		
 		PreparedStatement statement = null;
-		Connection con = Conexao.getConexao();		
+		Connection con = C3P0DataSource.getInstance().getConnection();		
 		try {
 			con.setAutoCommit(false);
 			statement = con.prepareStatement(query.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
@@ -113,7 +113,7 @@ public class ConjuntoBlocoDAOImpl implements ConjuntoBlocoDAO, Serializable {
 		query.append(ID);
 		query.append(" = ?");		
 		PreparedStatement statement = null;
-		Connection con = Conexao.getConexao();		
+		Connection con = C3P0DataSource.getInstance().getConnection();		
 		try {
 			con.setAutoCommit(false);
 			statement = con.prepareStatement(query.toString());				
@@ -229,7 +229,7 @@ public class ConjuntoBlocoDAOImpl implements ConjuntoBlocoDAO, Serializable {
 		ConjuntoBloco conjuntoBloco = null;
 		List<BlocoConjuntoBloco> listaBlocoConjuntoBlocos = null;
 		List<TipoConjuntoBloco> listaTipoConjuntoBlocos = null;
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {			
 			preparedStatement = con.prepareStatement(query.toString());			
 			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, idConjuntoBloco, java.sql.Types.INTEGER);
@@ -259,7 +259,7 @@ public class ConjuntoBlocoDAOImpl implements ConjuntoBlocoDAO, Serializable {
 	}
 	
 	public void excluir(ConjuntoBloco conjuntoBloco) throws SQLException, BusinessException, Exception {		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;				
 		try {
 			con.setAutoCommit(false);		
@@ -304,7 +304,7 @@ public class ConjuntoBlocoDAOImpl implements ConjuntoBlocoDAO, Serializable {
 		query.append(TIPO);
 		query.append(" = ? ");		
 		query.append(";");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		ConjuntoBloco conjuntoBloco = null;

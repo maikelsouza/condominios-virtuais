@@ -41,7 +41,7 @@ public class BancoDAOImpl implements BancoDAO, Serializable {
 		query.append(" ORDER BY ");
 		query.append(NOME);
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<Banco> listaBanco = new ArrayList<Banco>();
@@ -81,7 +81,7 @@ public class BancoDAOImpl implements BancoDAO, Serializable {
 		query.append(" ORDER BY ");
 		query.append(NOME);
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<Banco> listaBanco = new ArrayList<Banco>();

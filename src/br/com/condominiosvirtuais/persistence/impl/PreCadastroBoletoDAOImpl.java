@@ -59,7 +59,7 @@ public class PreCadastroBoletoDAOImpl implements PreCadastroBoletoDAO, Serializa
 	public void salvar(PreCadastroBoleto preCadastroBoleto) throws SQLException, Exception {
 		PreparedStatement statement = null;
 		Connection con = null;
-		con = Conexao.getConexao();
+		con = C3P0DataSource.getInstance().getConnection();
 		StringBuffer query = new StringBuffer();
 		query.append("INSERT INTO "); 
 		query.append(PRE_CADASTRO_BOLETO); 
@@ -113,7 +113,7 @@ public class PreCadastroBoletoDAOImpl implements PreCadastroBoletoDAO, Serializa
 	@Override
 	public void excluirPorId(Integer idPreCadastroBoleto) throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {			
 			query.append("DELETE FROM ");
@@ -164,7 +164,7 @@ public class PreCadastroBoletoDAOImpl implements PreCadastroBoletoDAO, Serializa
 		query.append(" WHERE ");
 		query.append(ID);
 		query.append("= ?");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {
 			statement = con.prepareStatement(query.toString());
@@ -203,7 +203,7 @@ public class PreCadastroBoletoDAOImpl implements PreCadastroBoletoDAO, Serializa
 		query.append(ID_CONDOMINIO);
 		query.append(" = ?");
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<PreCadastroBoleto> listaPreCadastroBoleto = new ArrayList<PreCadastroBoleto>();
@@ -253,7 +253,7 @@ public class PreCadastroBoletoDAOImpl implements PreCadastroBoletoDAO, Serializa
 		query.append(PRINCIPAL);
 		query.append(" = ?");
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;		
 		PreCadastroBoleto preCadastroBoleto = null;

@@ -61,7 +61,7 @@ public class ClassificadosDAOImpl implements ClassificadosDAO, Serializable {
 		query.append(" ORDER BY ");
 		query.append(TITULO);
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;		
 		Classificados classificados = null;
@@ -115,7 +115,7 @@ public class ClassificadosDAOImpl implements ClassificadosDAO, Serializable {
 		query.append(" ORDER BY ");
 		query.append(TITULO);
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;		
 		Classificados classificados = null;		
@@ -178,7 +178,7 @@ public class ClassificadosDAOImpl implements ClassificadosDAO, Serializable {
 		query.append(ID_USUARIO); 
 		query.append(") ");		
 		query.append("VALUES(?,?,?,?,?,?,?,?)");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;		
 		try {
 			con.setAutoCommit(false);
@@ -218,7 +218,7 @@ public class ClassificadosDAOImpl implements ClassificadosDAO, Serializable {
 	@Override
 	public void excluir(Classificados classificados) throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {
 			query.append("DELETE FROM ");
@@ -273,7 +273,7 @@ public class ClassificadosDAOImpl implements ClassificadosDAO, Serializable {
 		query.append("WHERE ");
 		query.append(ID);
 		query.append("= ?");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {
 			con.setAutoCommit(false);
@@ -360,7 +360,7 @@ public class ClassificadosDAOImpl implements ClassificadosDAO, Serializable {
 		query.append(DATA_EXPIRA);		
 		query.append(" <= ?");		
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;		
 		Classificados classificados = null;		
@@ -408,7 +408,7 @@ public class ClassificadosDAOImpl implements ClassificadosDAO, Serializable {
 		query.append(DATA_EXPIRA);		
 		query.append(" = ?");		
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;		
 		Classificados classificados = null;		

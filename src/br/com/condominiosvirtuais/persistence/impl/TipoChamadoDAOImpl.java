@@ -72,7 +72,7 @@ public class TipoChamadoDAOImpl implements TipoChamadoDAO, Serializable{
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;		
 		TipoChamado tipoChamado = null;
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		List<TipoChamado> listaTipoChamado = new ArrayList<TipoChamado>();
 		try {
 			preparedStatement = con.prepareStatement(query.toString());						

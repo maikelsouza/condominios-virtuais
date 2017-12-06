@@ -97,7 +97,7 @@ public class ReservaDAOImpl implements ReservaDAO, Serializable {
 		query.append(") ");
 		query.append("VALUES(?,?,?,?,?,?)");
 		PreparedStatement statement = null;		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {
 			statement = con.prepareStatement(query.toString());
 			// Condição criada para garantir a validação caso apresente um bug no calendário, que já faz essa validação 
@@ -130,7 +130,7 @@ public class ReservaDAOImpl implements ReservaDAO, Serializable {
 	
 	public void excluir(Reserva reserva) throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
-		Connection con = Conexao.getConexao();		
+		Connection con = C3P0DataSource.getInstance().getConnection();		
 		PreparedStatement statement = null;
 		try {
 			con.setAutoCommit(Boolean.FALSE);
@@ -170,7 +170,7 @@ public class ReservaDAOImpl implements ReservaDAO, Serializable {
 		query.append(" DESC, ");
 		query.append(SITUACAO);
 		query.append(";");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		List<Reserva> listaReserva = new ArrayList<Reserva>();
 		try {
@@ -228,7 +228,7 @@ public class ReservaDAOImpl implements ReservaDAO, Serializable {
 		query.append(" WHERE ");
 		query.append(ID);
 		query.append("= ?");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {
 			statement = con.prepareStatement(query.toString());
@@ -271,7 +271,7 @@ public class ReservaDAOImpl implements ReservaDAO, Serializable {
 		query.append(" WHERE ");
 		query.append(ID);
 		query.append("= ?");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {
 			statement = con.prepareStatement(query.toString());
@@ -304,7 +304,7 @@ public class ReservaDAOImpl implements ReservaDAO, Serializable {
 		query.append(" WHERE ");
 		query.append(ID);
 		query.append("= ?");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {
 			statement = con.prepareStatement(query.toString());
@@ -331,7 +331,7 @@ public class ReservaDAOImpl implements ReservaDAO, Serializable {
 	public List<Reserva> buscarPorCondominioETipo(Condominio condominio, String tipo) throws SQLException, Exception {
 // TODO: Passar conexão para os métodos 	
 		List<Reserva> listaReserva = new ArrayList<Reserva>();		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		List<Ambiente> listaAmbiente = this.ambienteDAO.get().buscarPorCondominioENomeAmbiente(condominio,null);
 		if(!listaAmbiente.isEmpty()){			
 			StringBuffer query = new StringBuffer();
@@ -433,7 +433,7 @@ public class ReservaDAOImpl implements ReservaDAO, Serializable {
 	public List<Reserva> buscarPorCondominioESituacoesEAteData(Condominio condominio, List<String> listaSituacao, Date data) throws SQLException, Exception {
 		// TODO: Passar conexão para os métodos 	
 				List<Reserva> listaReserva = new ArrayList<Reserva>();		
-				Connection con = Conexao.getConexao();
+				Connection con = C3P0DataSource.getInstance().getConnection();
 				List<Ambiente> listaAmbiente = this.ambienteDAO.get().buscarPorCondominioENomeAmbiente(condominio,null);
 				// Caso não exista um ambiente cadastrado no condomínio, então a consulta de ambiente não será realizada
 				if (listaAmbiente.size() > 0){
@@ -548,7 +548,7 @@ public class ReservaDAOImpl implements ReservaDAO, Serializable {
 	public List<Reserva> buscarPorCondominio(Condominio condominio) throws SQLException, Exception {
 		// TODO: Passar conexão para os métodos 	
 			List<Reserva> listaReserva = new ArrayList<Reserva>();			
-			Connection con = Conexao.getConexao();
+			Connection con = C3P0DataSource.getInstance().getConnection();
 			List<Ambiente> listaAmbiente = this.ambienteDAO.get().buscarPorCondominioENomeAmbiente(condominio,null);
 			if(!listaAmbiente.isEmpty()){
 				StringBuffer query = new StringBuffer();
@@ -664,7 +664,7 @@ public class ReservaDAOImpl implements ReservaDAO, Serializable {
 		query.append(SITUACAO);
 		query.append(" = ? )");
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		List<Reserva> listaReserva = new ArrayList<Reserva>();
 		try {
@@ -746,7 +746,7 @@ public class ReservaDAOImpl implements ReservaDAO, Serializable {
 		query.append(" WHERE ");
 		query.append(ID);
 		query.append("= ?");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {
 			statement = con.prepareStatement(query.toString());
@@ -787,7 +787,7 @@ public class ReservaDAOImpl implements ReservaDAO, Serializable {
 		query.append(SQLUtil.popularInterrocacoes(listaSituacoes.size()));
 		query.append(" )");
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		List<Reserva> listaReserva = new ArrayList<Reserva>();
 		Integer contador = 3;

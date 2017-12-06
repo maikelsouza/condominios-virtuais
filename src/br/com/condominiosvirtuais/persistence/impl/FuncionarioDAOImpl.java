@@ -66,7 +66,7 @@ public class FuncionarioDAOImpl implements FuncionarioDAO, Serializable {
 		PreparedStatement statement = null;
 		Connection con = null;		
 		try {
-			con = Conexao.getConexao();
+			con = C3P0DataSource.getInstance().getConnection();
 			con.setAutoCommit(false);
 			Funcionario funcionario = (Funcionario) tipoConjuntoBloco;
 			this.usuarioDAO.salvarUsuario(funcionario, con);
@@ -163,7 +163,7 @@ public class FuncionarioDAOImpl implements FuncionarioDAO, Serializable {
 		query.append(ID_CONDOMINIO);		
 		query.append(" = ?");
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;		
 		Funcionario funcionario = null;
@@ -206,7 +206,7 @@ public class FuncionarioDAOImpl implements FuncionarioDAO, Serializable {
 	
 	public void excluir(Funcionario funcionario) throws SQLException, Exception {		
 		StringBuffer query = new StringBuffer();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {		
 			con.setAutoCommit(false);
@@ -265,7 +265,7 @@ public class FuncionarioDAOImpl implements FuncionarioDAO, Serializable {
 		query.append(" WHERE ");
 		query.append(ID);
 		query.append("= ?");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {
 			con.setAutoCommit(false);
@@ -301,7 +301,7 @@ public class FuncionarioDAOImpl implements FuncionarioDAO, Serializable {
 		Connection con = null;			
 		List<Funcionario> listaFuncionarios = null;
 		try {				
-			con = Conexao.getConexao();
+			con = C3P0DataSource.getInstance().getConnection();
 			List<BlocoConjuntoBloco> listaBlocoConjuntoBloco = this.blocoConjuntoBlocoDAO.buscarPorIdBloco(bloco.getId(),con);
 			//this.conjuntoBlocoDAO = new ConjuntoBlocoDAOImpl(this);		
 			listaFuncionarios = new ArrayList<Funcionario>();		
@@ -384,7 +384,7 @@ public class FuncionarioDAOImpl implements FuncionarioDAO, Serializable {
 		ResultSet resultSet = null;		
 		Funcionario funcionario = null;		
 		List<Funcionario> listaFuncionario = new ArrayList<Funcionario>();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {
 			preparedStatement = con.prepareStatement(query.toString());
 			preparedStatement.setInt(1, idConjuntoBloco);
@@ -495,7 +495,7 @@ public class FuncionarioDAOImpl implements FuncionarioDAO, Serializable {
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<Funcionario> listaFuncionario = new ArrayList<Funcionario>();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		Funcionario funcionario = null;
 		try {
 			preparedStatement = con.prepareStatement(query.toString());
@@ -585,7 +585,7 @@ public class FuncionarioDAOImpl implements FuncionarioDAO, Serializable {
 		ResultSet resultSet = null;		
 		Funcionario funcionario = null;		
 		List<Funcionario> listaFuncionario = new ArrayList<Funcionario>();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {
 			preparedStatement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, idCondominio, java.sql.Types.INTEGER);
@@ -655,7 +655,7 @@ public class FuncionarioDAOImpl implements FuncionarioDAO, Serializable {
 		ResultSet resultSet = null;		
 		Funcionario funcionario = null;		
 		List<Funcionario> listaFuncionario = new ArrayList<Funcionario>();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {
 			preparedStatement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, idCondominio, java.sql.Types.INTEGER);

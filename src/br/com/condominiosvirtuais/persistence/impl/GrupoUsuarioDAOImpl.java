@@ -94,7 +94,7 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 		query.append(" WHERE ");
 		query.append(ID);
 		query.append(" = ?");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		GrupoUsuario grupoUsuario = null;		
@@ -132,7 +132,7 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 
 	@Override
 	public void excluir(Integer idGrupoUsuario) throws SQLException,BusinessException, Exception {
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		StringBuffer query = new StringBuffer();
 		con.setAutoCommit(Boolean.FALSE);
 		PreparedStatement statement = null;
@@ -192,7 +192,7 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 		query.append(") ");
 		query.append("VALUES(?,?,?,?,?,?,?,?)");
 		PreparedStatement statement = null;		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		con.setAutoCommit(Boolean.FALSE);
 		Integer idGrupoUsuario = 0;
 		try {		
@@ -260,7 +260,7 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 		query.append(" WHERE ");
 		query.append(ID);
 		query.append(" = ?");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		con.setAutoCommit(Boolean.FALSE);
 		PreparedStatement statement = null;
 		try {
@@ -309,7 +309,7 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 		query.append(" = ?");
 		query.append(" ORDER BY ");
 		query.append(NOME);
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		List<GrupoUsuario> listaGrupoUsuario = new ArrayList<GrupoUsuario>();
@@ -358,7 +358,7 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 		query.append(" = ?");
 		query.append(" ORDER BY ");
 		query.append(NOME);
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		List<GrupoUsuario> listaGrupoUsuario = new ArrayList<GrupoUsuario>();
@@ -504,7 +504,7 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 		query.append(" AND ");
 		query.append(SITUACAO);
 		query.append(" = ?");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		List<GrupoUsuario> listaGrupoUsuario = new ArrayList<GrupoUsuario>();
@@ -569,7 +569,7 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 		query.append(" AND ");
 		query.append(ID_SINDICO_PROFISSIONAL);
 		query.append(" IS NULL");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		GrupoUsuario grupoUsuario = null;		
@@ -625,7 +625,7 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 		query.append(" AND ");
 		query.append(SITUACAO);
 		query.append(" = ? ");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		GrupoUsuario grupoUsuario = null;		
@@ -742,7 +742,7 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 			query.append(" IS NULL");
 			query.append(" ORDER BY ");
 			query.append(NOME);
-			Connection con = Conexao.getConexao();
+			Connection con = C3P0DataSource.getInstance().getConnection();
 			PreparedStatement statement = null;
 			ResultSet resultSet = null;	
 			GrupoUsuario grupoUsuario = null;		
@@ -806,7 +806,7 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 			query.append(" IS NULL");
 			query.append(" ORDER BY ");
 			query.append(NOME);
-			Connection con = Conexao.getConexao();
+			Connection con = C3P0DataSource.getInstance().getConnection();
 			PreparedStatement statement = null;
 			ResultSet resultSet = null;	
 			GrupoUsuario grupoUsuario = null;		
@@ -851,7 +851,7 @@ public class GrupoUsuarioDAOImpl implements GrupoUsuarioDAO, Serializable {
 //	@Override
 //	public List<GrupoUsuario> buscarPorIdUsuarioESituacao(Integer idUsuario, Boolean situacao)
 //			throws SQLException, Exception {
-//		Connection con = Conexao.getConexao();
+//		Connection con = C3P0DataSource.getInstance().getConnection();
 //		List<GrupoUsuario> listaGrupoUsuario = new ArrayList<GrupoUsuario>();
 //		PreparedStatement statement = null;
 //		ResultSet resultSet = null;

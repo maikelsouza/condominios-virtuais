@@ -181,12 +181,7 @@ public class AgendamentoMB implements Serializable {
 						}
 					}
 				}
-			}
-<<<<<<< HEAD
-			
-			
-=======
->>>>>>> refs/heads/ModeloAutorizacao
+			}			
 			this.agendamentoService.solicitarAgendamento(this.agendamento,this.condominio.getSindicoGeral().getNome(),this.condominio.getSindicoGeral().getEmail().getEmail());
 			this.agendamento = new Agendamento();	
 			this.popularListaMeusAgendamentos();

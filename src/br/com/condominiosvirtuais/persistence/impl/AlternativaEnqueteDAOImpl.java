@@ -145,7 +145,7 @@ public class AlternativaEnqueteDAOImpl implements AlternativaEnqueteDAO, Seriali
 		ResultSet resultSet = null;		
 		AlternativaEnquete alternativaEnquete = null;
 		List<AlternativaEnquete> listaAlternativaEnquete = new ArrayList<AlternativaEnquete>();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {
 			preparedStatement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, idEnquete, java.sql.Types.INTEGER);
@@ -215,7 +215,7 @@ public class AlternativaEnqueteDAOImpl implements AlternativaEnqueteDAO, Seriali
 
 	@Override
 	public void votar(AlternativaEnquete alternativaEnquete) throws SQLException, BusinessException, Exception {		
-		Connection con = Conexao.getConexao();		
+		Connection con = C3P0DataSource.getInstance().getConnection();		
 		StringBuffer querySetVariavel = new StringBuffer();
 		StringBuffer queryUpdate = new StringBuffer();
 		querySetVariavel.append("Set @TOTALVOTOMAISUM = ");

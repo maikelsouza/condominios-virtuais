@@ -41,7 +41,7 @@ public class EmailDAOImpl implements EmailDAO, Serializable {
 		PreparedStatement statement = null;
 		Connection con = null;		
 		try {
-			con = Conexao.getConexao();
+			con = C3P0DataSource.getInstance().getConnection();
 			StringBuffer query = new StringBuffer();
 			query.append("INSERT INTO "); 
 			query.append(EMAIL); 
@@ -84,7 +84,7 @@ public class EmailDAOImpl implements EmailDAO, Serializable {
 
 	public void excluir(Email email) throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {			
 			query.append("DELETE FROM ");
@@ -111,7 +111,7 @@ public class EmailDAOImpl implements EmailDAO, Serializable {
 
 	public List<Email> busca(Integer limite) throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		List<Email> listaEmail = null;
 		try {			

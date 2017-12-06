@@ -58,7 +58,7 @@ public class ContaBancariaDAOImpl implements ContaBancariaDAO, Serializable {
 		PreparedStatement statement = null;
 		Connection con = null;
 		try {
-			con = Conexao.getConexao();
+			con = C3P0DataSource.getInstance().getConnection();
 			StringBuffer query = new StringBuffer();
 			query.append("INSERT INTO "); 
 			query.append(CONTA_BANCARIA); 
@@ -103,7 +103,7 @@ public class ContaBancariaDAOImpl implements ContaBancariaDAO, Serializable {
 
 	@Override
 	public List<ContaBancaria> buscarPorIdCondominio(Integer idCondominio) throws SQLException, Exception {
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		List<ContaBancaria> listaContaBancaria = new ArrayList<ContaBancaria>();
 		ContaBancaria contaBancaria = null;
 		StringBuffer query = new StringBuffer();
@@ -183,7 +183,7 @@ public class ContaBancariaDAOImpl implements ContaBancariaDAO, Serializable {
 
 	@Override
 	public void atualizar(ContaBancaria contaBancaria) throws SQLException, Exception {
-		Connection con = Conexao.getConexao();		
+		Connection con = C3P0DataSource.getInstance().getConnection();		
 		StringBuffer query = new StringBuffer();
 		query.append("UPDATE ");
 		query.append(CONTA_BANCARIA);
@@ -234,7 +234,7 @@ public class ContaBancariaDAOImpl implements ContaBancariaDAO, Serializable {
 
 	@Override
 	public void excluir(ContaBancaria contaBancaria) throws SQLException, BusinessException, Exception {
-		Connection con = Conexao.getConexao();		
+		Connection con = C3P0DataSource.getInstance().getConnection();		
 		PreparedStatement statement = null;		
 		try {
 			StringBuffer query = new StringBuffer();
@@ -269,7 +269,7 @@ public class ContaBancariaDAOImpl implements ContaBancariaDAO, Serializable {
 
 	@Override
 	public List<ContaBancaria> buscarPorIdCondominioESituacao(Integer idCondominio, Boolean situacao) throws SQLException, Exception {
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		List<ContaBancaria> listaContaBancaria = new ArrayList<ContaBancaria>();
 		ContaBancaria contaBancaria = null;
 		StringBuffer query = new StringBuffer();

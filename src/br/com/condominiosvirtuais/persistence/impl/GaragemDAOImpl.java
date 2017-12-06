@@ -55,7 +55,7 @@ public class GaragemDAOImpl implements GaragemDAO, Serializable {
 	
 	@Override
 	public void salvar(Garagem garagem) throws SQLException, BusinessException, Exception {
-		Connection con = Conexao.getConexao();		
+		Connection con = C3P0DataSource.getInstance().getConnection();		
 		if(this.existeGaragemMesmoNumeroCondominio(garagem, con)){
 			throw new BusinessException("msg.garagem.salvarMesmoNumeroCondominio"); 
 		}
@@ -121,7 +121,7 @@ public class GaragemDAOImpl implements GaragemDAO, Serializable {
 	@Override
 	public void excluir(Garagem garagem) throws SQLException, BusinessException, Exception  {
 		StringBuffer query = new StringBuffer();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {
 			query.append("DELETE FROM ");
@@ -152,7 +152,7 @@ public class GaragemDAOImpl implements GaragemDAO, Serializable {
 
 	@Override
 	public void atualizar(Garagem garagem) throws SQLException, BusinessException, Exception {
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		if(this.existeGaragemMesmoNumeroCondominio(garagem, con)){
 			throw new BusinessException("msg.garagem.salvarMesmoNumeroCondominio");
 		}
@@ -223,7 +223,7 @@ public class GaragemDAOImpl implements GaragemDAO, Serializable {
 		query.append(" ORDER BY ");
 		query.append(NUMERO);
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;		
 		Garagem garagem = null;		
@@ -352,7 +352,7 @@ public class GaragemDAOImpl implements GaragemDAO, Serializable {
 		query.append(NUMERO);		
 		query.append(") LIKE ?");		
 		query.append(";");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;		
 		Garagem garagem = null;		
 		Integer contador = 1;

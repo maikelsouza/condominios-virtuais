@@ -60,7 +60,7 @@ public class VisitanteDAOImpl implements Serializable, VisitanteDAO {
 		query.append(") ");
 		query.append("VALUES(?,?,?,?)");
 		PreparedStatement statement = null;		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		con.setAutoCommit(Boolean.FALSE);
 		try {			
 			statement = con.prepareStatement(query.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
@@ -108,7 +108,7 @@ public class VisitanteDAOImpl implements Serializable, VisitanteDAO {
 		query.append(NOME);
 		query.append(") LIKE ?");
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;		
 		List<Visitante> listaVisitantes = new ArrayList<Visitante>();
@@ -163,7 +163,7 @@ public class VisitanteDAOImpl implements Serializable, VisitanteDAO {
 		query.append(") ");
 		query.append("VALUES(?,?,?,?)");
 		PreparedStatement statement = null;		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		con.setAutoCommit(Boolean.FALSE);
 		try {			
 			statement = con.prepareStatement(query.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
@@ -217,7 +217,7 @@ public class VisitanteDAOImpl implements Serializable, VisitanteDAO {
 		query.append(ID);
 		query.append("= ?");		
 		PreparedStatement statement = null;
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		con.setAutoCommit(Boolean.FALSE);
 		try {
 			statement = con.prepareStatement(query.toString());			
@@ -270,7 +270,7 @@ public class VisitanteDAOImpl implements Serializable, VisitanteDAO {
 		query.append(ID);
 		query.append("= ?");		
 		PreparedStatement statement = null;
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		con.setAutoCommit(Boolean.FALSE);
 		try {
 			statement = con.prepareStatement(query.toString());			
@@ -319,7 +319,7 @@ public class VisitanteDAOImpl implements Serializable, VisitanteDAO {
 		query.append(") ");
 		query.append("VALUES(?,?,?,?)");
 		PreparedStatement statement = null;		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		con.setAutoCommit(Boolean.FALSE);
 		try {			
 			statement = con.prepareStatement(query.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
@@ -372,7 +372,7 @@ public class VisitanteDAOImpl implements Serializable, VisitanteDAO {
 		query.append(ID);
 		query.append("= ?");		
 		PreparedStatement statement = null;
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		con.setAutoCommit(Boolean.FALSE);
 		try {
 			statement = con.prepareStatement(query.toString());			
@@ -417,7 +417,7 @@ public class VisitanteDAOImpl implements Serializable, VisitanteDAO {
 		query.append(" ORDER BY ");
 		query.append(NOME);
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		Visitante visitante = null;		

@@ -58,7 +58,7 @@ public class DespesasDAOImpl implements DespesasDAO, Serializable {
 		query.append(ID);
 		query.append("= ?");
 		PreparedStatement statement = null;
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {
 			statement = con.prepareStatement(query.toString());
 			this.consumoGasDespesasDAO.excluir(despesas.getConsumoGasDespesas(), con);
@@ -98,7 +98,7 @@ public class DespesasDAOImpl implements DespesasDAO, Serializable {
 		query.append(ID);
 		query.append("= ?");
 		PreparedStatement statement = null;
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {
 			statement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(statement, 1, despesas.getDescricao(), java.sql.Types.VARCHAR);
@@ -144,7 +144,7 @@ public class DespesasDAOImpl implements DespesasDAO, Serializable {
 		query.append(ID);
 		query.append("= ?");
 		PreparedStatement statement = null;
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {
 			statement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(statement, 1, despesas.getDescricao(), java.sql.Types.VARCHAR);
@@ -190,7 +190,7 @@ public class DespesasDAOImpl implements DespesasDAO, Serializable {
 		query.append(ID);
 		query.append("= ?");
 		PreparedStatement statement = null;
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {
 			statement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(statement, 1, despesas.getDescricao(), java.sql.Types.VARCHAR);
@@ -234,7 +234,7 @@ public class DespesasDAOImpl implements DespesasDAO, Serializable {
 		query.append(ID);
 		query.append("= ?");
 		PreparedStatement statement = null;
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {
 			statement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(statement, 1, despesas.getDescricao(), java.sql.Types.VARCHAR);
@@ -276,7 +276,7 @@ public class DespesasDAOImpl implements DespesasDAO, Serializable {
 		query.append(") ");
 		query.append("VALUES(?,?,?,?,?)");
 		PreparedStatement statement = null;		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {
 			statement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(statement, 1, despesas.getDescricao(), java.sql.Types.VARCHAR);			
@@ -318,7 +318,7 @@ public class DespesasDAOImpl implements DespesasDAO, Serializable {
 		query.append(") ");
 		query.append("VALUES(?,?,?,?,?)");
 		PreparedStatement statement = null;		
-		Connection con = Conexao.getConexao();		
+		Connection con = C3P0DataSource.getInstance().getConnection();		
 		try {
 			statement = con.prepareStatement(query.toString(),PreparedStatement.RETURN_GENERATED_KEYS);
 			SQLUtil.setValorPpreparedStatement(statement, 1, despesas.getDescricao(), java.sql.Types.VARCHAR);			
@@ -364,7 +364,7 @@ public class DespesasDAOImpl implements DespesasDAO, Serializable {
 		query.append(") ");
 		query.append("VALUES(?,?,?,?,?)");
 		PreparedStatement statement = null;		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {
 			statement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(statement, 1, despesas.getDescricao(), java.sql.Types.VARCHAR);			
@@ -401,7 +401,7 @@ public class DespesasDAOImpl implements DespesasDAO, Serializable {
 		query.append(MES_ANO_REFERENCIA);
 		query.append(" = ?");		
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<Despesas> listaDespesas = new ArrayList<Despesas>();
@@ -450,7 +450,7 @@ public class DespesasDAOImpl implements DespesasDAO, Serializable {
 		query.append(MES_ANO_REFERENCIA);
 		query.append(" = ?");		
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<Despesas> listaDespesas = new ArrayList<Despesas>();
@@ -502,7 +502,7 @@ public class DespesasDAOImpl implements DespesasDAO, Serializable {
 		query.append(TIPO);
 		query.append(" = ?");	
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;		
 		Despesas despesas = null;

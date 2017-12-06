@@ -152,7 +152,7 @@ public class ResponsavelObraDAOImpl implements ResponsavelObraDAO, Serializable 
 		query.append(" ORDER BY ");
 		query.append(NOME);
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		ResponsavelObra responsavelObra = null;
@@ -200,7 +200,7 @@ public class ResponsavelObraDAOImpl implements ResponsavelObraDAO, Serializable 
 		query.append(" ORDER BY ");
 		query.append(NOME);
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		ResponsavelObra responsavelObra = null;

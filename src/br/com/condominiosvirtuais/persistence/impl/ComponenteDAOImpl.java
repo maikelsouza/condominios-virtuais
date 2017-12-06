@@ -47,7 +47,7 @@ public class ComponenteDAOImpl implements ComponenteDAO, Serializable {
 
 	@Override
 	public List<Componente> buscarPorIdTela(Integer idTela) throws SQLException, Exception {
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		List<Componente> listaComponente = new ArrayList<Componente>();
 			StringBuffer query = new StringBuffer();
 			query.append("SELECT * FROM ");

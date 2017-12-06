@@ -277,7 +277,7 @@ public class LoginMB implements Serializable{
 	 * Esse deverá ser removido após criar os grupos de usuários e suas autorizações.
 	 * @return True: - Exibe - False: Não exibe 
 	 */
-<<<<<<< HEAD
+
 	public Boolean exibeMenuEscreverMensagemQuintaDoHorto(){
 		Boolean exibeMenuEscreverMensagem = Boolean.TRUE;
 		for (Condominio condominio : this.usuario.getListaCondominio()) {
@@ -317,15 +317,8 @@ public class LoginMB implements Serializable{
 		}		
 		return exibeMenuArquivo;
 	}
-=======
-//	public Boolean exibeMenuListaReservaQuintaDoHorto(){
-//		Boolean exibeMenuArquivo = Boolean.FALSE;
-//		if(this.usuario.getId() == 368 || this.usuario.getId() == 369 || this.usuario.getId() == 425 || this.usuario.getId() == 469){
-//			exibeMenuArquivo = Boolean.TRUE;
-//		}		
-//		return exibeMenuArquivo;
-//	}
->>>>>>> refs/heads/ModeloAutorizacao
+
+
 	
 	public Boolean sindicoGeralAssociado(){
 		Boolean sindicoGeralAssociado = Boolean.TRUE;

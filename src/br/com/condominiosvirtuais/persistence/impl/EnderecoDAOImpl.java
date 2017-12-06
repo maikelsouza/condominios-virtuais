@@ -97,7 +97,7 @@ public class EnderecoDAOImpl implements EnderecoDAO, Serializable {
 		query.append(" WHERE ");
 		query.append(ID_CONDOMINIO);
 		query.append(" = ?");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		Endereco endereco = null;

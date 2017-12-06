@@ -73,7 +73,7 @@ public class AmbienteDAOImpl implements AmbienteDAO, Serializable {
 
 	public void excluir(Ambiente ambiente) throws SQLException, BusinessException, Exception {	
 		StringBuffer query = new StringBuffer();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {
 			con.setAutoCommit(Boolean.FALSE);
@@ -122,7 +122,7 @@ public class AmbienteDAOImpl implements AmbienteDAO, Serializable {
 		query.append(" WHERE ");
 		query.append(ID);
 		query.append("= ?");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {
 			statement = con.prepareStatement(query.toString());
@@ -156,7 +156,7 @@ public class AmbienteDAOImpl implements AmbienteDAO, Serializable {
 		query.append(ID);		
 		query.append(" = ?");
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;		
 		Ambiente ambiente = null;
@@ -201,7 +201,7 @@ public class AmbienteDAOImpl implements AmbienteDAO, Serializable {
 			query.append("%'");
 		}
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;		
 		Ambiente ambiente = null;
@@ -277,7 +277,7 @@ public class AmbienteDAOImpl implements AmbienteDAO, Serializable {
 		ResultSet resultSet = null;		
 		Ambiente ambiente = null;
 		List<Ambiente> listaAmbientes = new ArrayList<Ambiente>();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {			
 			preparedStatement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(preparedStatement,1, condominio.getId(), java.sql.Types.INTEGER);			
@@ -312,7 +312,7 @@ public class AmbienteDAOImpl implements AmbienteDAO, Serializable {
 		Connection con = null;			
 		List<Ambiente> listaAmbientes = null;		
 		try {				
-			con = Conexao.getConexao();
+			con = C3P0DataSource.getInstance().getConnection();
 			List<BlocoConjuntoBloco> listaBlocoConjuntoBloco = this.blocoConjuntoBlocoDAO.buscarPorIdBloco(bloco.getId(),con);
 			//this.conjuntoBlocoDAO = new ConjuntoBlocoDAOImpl(this);		
 			listaAmbientes = new ArrayList<Ambiente>();		
@@ -394,7 +394,7 @@ public class AmbienteDAOImpl implements AmbienteDAO, Serializable {
 		ResultSet resultSet = null;		
 		Ambiente ambiente = null;		
 		List<Ambiente> listaAmbiente = new ArrayList<Ambiente>();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {
 			preparedStatement = con.prepareStatement(query.toString());
 			preparedStatement.setInt(1, idConjuntoBloco);
@@ -438,7 +438,7 @@ public class AmbienteDAOImpl implements AmbienteDAO, Serializable {
 		query.append(") ");
 		query.append("VALUES(?,?,?)");
 		PreparedStatement statement = null;		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {			
 			statement = con.prepareStatement(query.toString());			
 			SQLUtil.setValorPpreparedStatement(statement, 1, ambiente.getNome(), java.sql.Types.VARCHAR);
@@ -560,7 +560,7 @@ public class AmbienteDAOImpl implements AmbienteDAO, Serializable {
 	 */
 	public List<Ambiente> buscarPorCondomino(Condomino condomino) throws SQLException, Exception {	
 		// Esse método faz a união dos ambientes associados ao condomínio e a un(s) conjunto de blocos o condômino tem acesso. 
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		ResultSet resultSet = null;		
 		Ambiente ambienteCondominio = null;	
 		Ambiente ambienteConjuntoBloco = null;

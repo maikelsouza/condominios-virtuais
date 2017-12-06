@@ -52,7 +52,7 @@ public class ObraDAOImpl implements ObraDAO, Serializable {
 
 	@Override
 	public void salvarObraESalvaResponsavelObra(Obra obra) throws SQLException, Exception {
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		Integer idObra;
 		Integer idResponsavelObra;
 		ObraResponsavelObra obraResponsavelObra = new ObraResponsavelObra();
@@ -114,7 +114,7 @@ public class ObraDAOImpl implements ObraDAO, Serializable {
 
 	@Override
 	public void salvarObraEAtualizarResponsavel(Obra obra) throws SQLException, Exception {
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		Integer idObra;
 		ObraResponsavelObra obraResponsavelObra = new ObraResponsavelObra();
 		con.setAutoCommit(Boolean.FALSE);
@@ -192,7 +192,7 @@ public class ObraDAOImpl implements ObraDAO, Serializable {
 		query.append(" DESC, ");
 		query.append(NOME);
 		query.append(";");		
-		Connection con = Conexao.getConexao();		
+		Connection con = C3P0DataSource.getInstance().getConnection();		
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		Obra obra = null;
@@ -235,7 +235,7 @@ public class ObraDAOImpl implements ObraDAO, Serializable {
 	@Override
 	public void excluir(Integer idObra) throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		con.setAutoCommit(Boolean.FALSE);
 		PreparedStatement statement = null;
 		this.obraResponsavelObraDAO.excluirPodIdObra(idObra, con);
@@ -291,7 +291,7 @@ public class ObraDAOImpl implements ObraDAO, Serializable {
 		query.append(ID);
 		query.append("= ?");		
 		PreparedStatement statement = null;		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		con.setAutoCommit(Boolean.FALSE);
 		try {
 			statement = con.prepareStatement(query.toString());			
@@ -352,7 +352,7 @@ public class ObraDAOImpl implements ObraDAO, Serializable {
 		query.append(ID);
 		query.append("= ?");		
 		PreparedStatement statement = null;		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		con.setAutoCommit(Boolean.FALSE);
 		try {
 			statement = con.prepareStatement(query.toString());			

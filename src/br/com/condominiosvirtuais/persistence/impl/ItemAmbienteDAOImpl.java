@@ -41,7 +41,7 @@ public class ItemAmbienteDAOImpl implements ItemAmbienteDAO, Serializable {
 		query.append(" = ?");
 		query.append(" ORDER BY ");
 		query.append(NOME);
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<ItemAmbiente> listaItemAmbiente = new ArrayList<ItemAmbiente>();
@@ -87,7 +87,7 @@ public class ItemAmbienteDAOImpl implements ItemAmbienteDAO, Serializable {
 		query.append(") ");
 		query.append("VALUES(?,?,?)");
 		PreparedStatement statement = null;
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {			
 			statement = con.prepareStatement(query.toString());
 			statement.setString(1,itemAmbiente.getNome());
@@ -118,7 +118,7 @@ public class ItemAmbienteDAOImpl implements ItemAmbienteDAO, Serializable {
 		query.append(ID);
 		query.append(" = ?");
 		PreparedStatement statement = null;
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {
 			statement = con.prepareStatement(query.toString());
 			statement.setInt(1,itemAmbiente.getId());					
@@ -171,7 +171,7 @@ public class ItemAmbienteDAOImpl implements ItemAmbienteDAO, Serializable {
 		query.append(ID);
 		query.append(" = ?");		
 		PreparedStatement statement = null;
-		Connection con = Conexao.getConexao();		
+		Connection con = C3P0DataSource.getInstance().getConnection();		
 		try {			
 			statement = con.prepareStatement(query.toString());
 			statement.setString(1,itemAmbiente.getNome());	

@@ -67,7 +67,7 @@ public class MensagemRecebidaDAOImpl implements MensagemRecebidaDAO, Serializabl
 		query.append(") ");
 		query.append("VALUES(?,?,?,?,?,?)");
 		PreparedStatement statement = null;		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		con.setAutoCommit(Boolean.FALSE);
 		try {			
 			statement = con.prepareStatement(query.toString());
@@ -105,7 +105,7 @@ public class MensagemRecebidaDAOImpl implements MensagemRecebidaDAO, Serializabl
 
 	public void excluir(MensagemRecebida mensagemRecebida) throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {			
 			query.append("DELETE FROM ");
@@ -141,7 +141,7 @@ public class MensagemRecebidaDAOImpl implements MensagemRecebidaDAO, Serializabl
 		query.append(DATA);
 		query.append(" DESC");
 		query.append(";");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		List<MensagemRecebida> listaMensagem = new ArrayList<MensagemRecebida>();
 		try {
@@ -203,7 +203,7 @@ public class MensagemRecebidaDAOImpl implements MensagemRecebidaDAO, Serializabl
 		query.append(" WHERE ");
 		query.append(ID);
 		query.append("= ?");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {
 			statement = con.prepareStatement(query.toString());
@@ -240,7 +240,7 @@ public class MensagemRecebidaDAOImpl implements MensagemRecebidaDAO, Serializabl
 		query.append(" WHERE ");
 		query.append(ID);
 		query.append("= ?");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {
 			statement = con.prepareStatement(query.toString());
@@ -281,7 +281,7 @@ public class MensagemRecebidaDAOImpl implements MensagemRecebidaDAO, Serializabl
 		query.append(") ");
 		query.append("VALUES(?,?,?,?,?,?)");
 		PreparedStatement statement = null;		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		con.setAutoCommit(Boolean.FALSE);
 		List<Usuario> listaUsuarioDestinatarios = new ArrayList<Usuario>();
 		try {			

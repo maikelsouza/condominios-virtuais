@@ -42,7 +42,7 @@ public class TarifaGasDAOImpl implements TarifaGasDAO, Serializable {
 		query.append(ID_CONDOMINIO);
 		query.append(" = ?");		
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;		
 		TarifaGas tarifaGas = null;

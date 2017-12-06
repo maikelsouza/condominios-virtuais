@@ -53,7 +53,7 @@ public class EnqueteDAOImpl implements EnqueteDAO, Serializable {
 		PreparedStatement statement = null;
 		Connection con = null;		
 		try {
-			con = Conexao.getConexao();
+			con = C3P0DataSource.getInstance().getConnection();
 			con.setAutoCommit(Boolean.FALSE);
 			StringBuffer query = new StringBuffer();
 			query.append("INSERT INTO "); 
@@ -112,7 +112,7 @@ public class EnqueteDAOImpl implements EnqueteDAO, Serializable {
 		query.append(" ORDER BY ");
 		query.append(PERGUNTA);		
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<Enquete> listaEnquete = new ArrayList<Enquete>();
@@ -158,7 +158,7 @@ public class EnqueteDAOImpl implements EnqueteDAO, Serializable {
 		query.append(" ORDER BY ");
 		query.append(PERGUNTA);
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<Enquete> listaEnquete = new ArrayList<Enquete>();
@@ -206,7 +206,7 @@ public class EnqueteDAOImpl implements EnqueteDAO, Serializable {
 		query.append(" ORDER BY ");
 		query.append(PERGUNTA);
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<Enquete> listaEnquete = new ArrayList<Enquete>();
@@ -244,7 +244,7 @@ public class EnqueteDAOImpl implements EnqueteDAO, Serializable {
 	@Override
 	public void excluir(Enquete enquete) throws SQLException, BusinessException, Exception {
 		StringBuffer query = new StringBuffer();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {
 			con.setAutoCommit(false);		

@@ -44,6 +44,8 @@ public class UnidadeDAOImpl implements UnidadeDAO, Serializable{
 	
 	@Inject
 	private Instance<GaragemDAO> garagemDAO;
+	
+	
 		
 	public List<Unidade> buscarListaUnidadesPorBlocoETipo(Bloco bloco, Integer tipo) throws SQLException, Exception{		
 		StringBuffer query = new StringBuffer();
@@ -61,7 +63,7 @@ public class UnidadeDAOImpl implements UnidadeDAO, Serializable{
 		query.append(" ORDER BY ");
 		query.append(NUMERO);
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<Unidade> listaUnidade = new ArrayList<Unidade>();
@@ -95,6 +97,8 @@ public class UnidadeDAOImpl implements UnidadeDAO, Serializable{
 		return listaUnidade;
 	}
 	
+
+	
 	public List<Unidade> buscarListaUnidadesPorBloco(Bloco bloco) throws SQLException, Exception{		
 		StringBuffer query = new StringBuffer();
 		query.append("SELECT * FROM ");
@@ -105,7 +109,7 @@ public class UnidadeDAOImpl implements UnidadeDAO, Serializable{
 		query.append(" ORDER BY ");
 		query.append(NUMERO);
 		query.append(";");		
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<Unidade> listaUnidade = new ArrayList<Unidade>();
@@ -144,7 +148,7 @@ public class UnidadeDAOImpl implements UnidadeDAO, Serializable{
 		query.append(" WHERE ");
 		query.append(ID_BLOCO);
 		query.append(" = ? ");			
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<Integer> listaIds = new ArrayList<Integer>();
@@ -184,7 +188,7 @@ public class UnidadeDAOImpl implements UnidadeDAO, Serializable{
 		query.append(ID_BLOCO); 
 		query.append(") ");
 		query.append("VALUES(?,?,?)");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {			
 			statement = con.prepareStatement(query.toString());
@@ -212,7 +216,7 @@ public class UnidadeDAOImpl implements UnidadeDAO, Serializable{
 	
 	public void salvarUnidadeEmLote(List<Unidade> listaUnidades) throws SQLException, BusinessException, Exception{
 		PreparedStatement statement = null;
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		try {			
 			StringBuffer query = new StringBuffer();
 			query.append("INSERT INTO "); 
@@ -265,7 +269,7 @@ public class UnidadeDAOImpl implements UnidadeDAO, Serializable{
 		query.append("WHERE ");
 		query.append(ID);
 		query.append("= ?");
-		Connection con = Conexao.getConexao();
+		Connection con =C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		try {			
 			statement = con.prepareStatement(query.toString());
@@ -295,7 +299,7 @@ public class UnidadeDAOImpl implements UnidadeDAO, Serializable{
 	
 	public void excluirUnidade(Unidade unidade) throws SQLException, BusinessException, Exception {
 		StringBuffer query = new StringBuffer();
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement statement = null;
 		con.setAutoCommit(Boolean.FALSE);
 		try {			
@@ -367,7 +371,7 @@ public class UnidadeDAOImpl implements UnidadeDAO, Serializable{
 		query.append(ID);
 		query.append(" = ? ");		
 		query.append(";");
-		Connection con = Conexao.getConexao();
+		Connection con = C3P0DataSource.getInstance().getConnection();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		Unidade unidade = null;
