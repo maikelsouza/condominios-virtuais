@@ -3,6 +3,7 @@ package br.com.condominiosvirtuais.persistence.impl;
 import java.beans.PropertyVetoException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
@@ -21,24 +22,24 @@ public class C3P0DataSource {
 	 private C3P0DataSource() throws PropertyVetoException {
 		 this.comboPooledDataSource = new ComboPooledDataSource();
 	     this.comboPooledDataSource.setDriverClass("com.mysql.jdbc.Driver");
-//	     this.comboPooledDataSource.setJdbcUrl("jdbc:mysql://localhost:3306/condvirtuais");
-	     //this.comboPooledDataSource.setJdbcUrl("jdbc:mysql://179.188.20.59:3306/condvirtuais");
-	     this.comboPooledDataSource.setJdbcUrl("jdbc:mysql://179.188.20.249:3306/condvirtuais");
+	     this.comboPooledDataSource.setJdbcUrl("jdbc:mysql://localhost:3306/condvirtuais");	    
+	    // this.comboPooledDataSource.setJdbcUrl("jdbc:mysql://179.188.20.249:3306/condvirtuais");
 	     this.comboPooledDataSource.setUser("aplicacao");
 	     this.comboPooledDataSource.setPassword("mkl862");	 
 	     this.comboPooledDataSource.setMaxPoolSize(30);
 	     this.comboPooledDataSource.setMinPoolSize(10);
-	     this.comboPooledDataSource.setInitialPoolSize(10);
+	     this.comboPooledDataSource.setMaxIdleTime(60*60*6);
 	 }  
 	 
 	 public static C3P0DataSource getInstance() throws PropertyVetoException {
+		
 	      if (dataSource == null)
 	         dataSource = new C3P0DataSource();
 	      return dataSource;
 	   }
 
-	   public Connection getConnection() throws SQLException {
-	      return comboPooledDataSource.getConnection();
+	   public Connection getConnection() throws SQLException  { 
+			return comboPooledDataSource.getConnection();		
 	   }
 	     
 }
