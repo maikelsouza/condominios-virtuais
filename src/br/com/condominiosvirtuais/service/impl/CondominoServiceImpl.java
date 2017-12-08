@@ -183,7 +183,7 @@ public class CondominoServiceImpl implements CondominoService, Serializable{
 						// Situação onde foi selecionado uma unidade específica. (true - Foi selecinado) 
 						if(unidade != null && unidade.getId() != 0){
 							// Condição que garante que somente os condôminos de um determinado bloco e unidade serão retornados.
-							if(unidadeLocal.getId() == unidade.getId()){
+							if(unidadeLocal.getId().intValue() == unidade.getId().intValue()){
 								for (Condomino condomino : unidadeLocal.getListaCondominos()) {
 									condominoVO = new CondominoVO();
 									this.popularCondominoVO(condominioLocal, condominoVO,
