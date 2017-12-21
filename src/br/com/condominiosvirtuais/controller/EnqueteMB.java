@@ -28,7 +28,7 @@ import br.com.condominiosvirtuais.service.EnqueteService;
 import br.com.condominiosvirtuais.util.ManagedBeanUtil;
 
 @Named @SessionScoped
-public class EnqueteMB implements IConversationScopeMB, Serializable{
+public class EnqueteMB implements  Serializable{
 	
 	private static final long serialVersionUID = 1L;
 
@@ -249,17 +249,9 @@ public class EnqueteMB implements IConversationScopeMB, Serializable{
 
 	public String voltarVizualizarEnquete(){
 		return "voltar";
-	}
-	
-	@Override
-	public void abreSessao() {
-		ManagedBeanUtil.abreSessao(conversation);		
-	}
-
-	@Override
-	public void fechaSessao() {
-		ManagedBeanUtil.fechaSessao(conversation);		
 	}	
+
+
 	private void criarPopularEnquete(){
 		this.enquete = new Enquete();
 		this.enquete.setDataCriacao(new Date());

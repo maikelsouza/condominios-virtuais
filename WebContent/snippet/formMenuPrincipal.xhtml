@@ -168,22 +168,22 @@
 				<rich:menuItem label="#{msg['receitaDespesa.listarReceitaDespesa']}" action="#{principalMB.listarReceitaDespesa}" rendered="#{loginMB.temAcesso('#{principalMB.listarReceitaDespesa}')}"/>
 			</rich:menuGroup>	
 			<!-- Conta Bancária, beneficiário, pré cadastro boleto e cadastro de boleto estão com rendered = false. Aguardar voltar para a funcionalidade Cadastro boleto para exibir novamente e apagar esse comentário. Data 04/04/2017 -->
-			<rich:menuGroup label="#{msg.contaBancaria}" rendered="false">
-				<rich:menuItem label="#{msg['contaBancaria.cadastrarContaBancaria']}" action="#{principalMB.cadastrarContaBancaria}" rendered="false" />
-				<rich:menuItem label="#{msg['contaBancaria.listarContaBancaria']}" action="#{principalMB.listarContaBancaria}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,7') and loginMB.exibeMenuFinanceiro()}"/>			
+			<rich:menuGroup label="#{msg.contaBancaria}" rendered="#{loginMB.temAcesso('#{principalMB.cadastrarContaBancaria}','#{principalMB.listarContaBancaria}')}">
+				<rich:menuItem label="#{msg['contaBancaria.cadastrarContaBancaria']}" action="#{principalMB.cadastrarContaBancaria}" rendered="#{loginMB.temAcesso('#{principalMB.cadastrarContaBancaria}')}" />
+				<rich:menuItem label="#{msg['contaBancaria.listarContaBancaria']}" action="#{principalMB.listarContaBancaria}" rendered="#{loginMB.temAcesso('#{principalMB.listarContaBancaria}')}"/>			
 			</rich:menuGroup>
-			<rich:menuGroup label="#{msg.beneficiario}" rendered="false">
-				<rich:menuItem label="#{msg['beneficiario.cadastrarBeneficiario']}" action="#{principalMB.cadastrarBeneficiario}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,7') and loginMB.exibeMenuFinanceiro()}"/>
-				<rich:menuItem label="#{msg['beneficiario.listarBeneficiario']}" action="#{principalMB.listarBeneficiario}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,7') and loginMB.exibeMenuFinanceiro()}"/>
+			<rich:menuGroup label="#{msg.beneficiario}" rendered="#{loginMB.temAcesso('#{principalMB.cadastrarBeneficiario}','#{principalMB.listarBeneficiario}')}">
+				<rich:menuItem label="#{msg['beneficiario.cadastrarBeneficiario']}" action="#{principalMB.cadastrarBeneficiario}" rendered="#{loginMB.temAcesso('#{principalMB.cadastrarBeneficiario}')}"/>
+				<rich:menuItem label="#{msg['beneficiario.listarBeneficiario']}" action="#{principalMB.listarBeneficiario}" rendered="#{loginMB.temAcesso('#{principalMB.listarBeneficiario}')}"/>
 			</rich:menuGroup>
-				<rich:menuGroup label="#{msg.preCadastroBoleto}" rendered="false">
-				<rich:menuItem label="#{msg['preCadastroBoleto.cadastarPreCadastroBoleto']}" action="#{principalMB.cadastroPreCadastroBoleto}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4,5') and loginMB.exibeMenuFinanceiro()}"/>
-				<rich:menuItem label="#{msg['preCadastroBoleto.listaPreCadastroBoleto']}" action="#{principalMB.listaPreCadastroBoleto}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4,5') and loginMB.exibeMenuFinanceiro()}"/>
+			<rich:menuGroup label="#{msg.preCadastroBoleto}" rendered="#{loginMB.temAcesso('#{principalMB.cadastroPreCadastroBoleto}','#{principalMB.listaPreCadastroBoleto}')}">
+				<rich:menuItem label="#{msg['preCadastroBoleto.cadastarPreCadastroBoleto']}" action="#{principalMB.cadastroPreCadastroBoleto}" rendered="#{loginMB.temAcesso('#{principalMB.cadastroPreCadastroBoleto}')}"/>
+				<rich:menuItem label="#{msg['preCadastroBoleto.listaPreCadastroBoleto']}" action="#{principalMB.listaPreCadastroBoleto}" rendered="#{loginMB.temAcesso('#{principalMB.listaPreCadastroBoleto}')}"/>
 			</rich:menuGroup>
-			<rich:menuGroup label="#{msg.boleto}" rendered="false">
-				<rich:menuItem label="#{msg['boleto.gerarBoleto']}" action="#{principalMB.gerarBoleto}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,7') and loginMB.exibeMenuFinanceiro()}"/>
-				<rich:menuItem label="#{msg['boleto.listarBoleto']}" action="#{principalMB.listarBoleto}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,3,4,7') and loginMB.exibeMenuFinanceiro()}"/>
-				<rich:menuItem label="#{msg['boleto.meusBoletos']}" action="#{principalMB.meusBoletos}" rendered="#{loginMB.usuarioLogadoPertenceUmDosGrupos('1,4,5') and loginMB.exibeMenuFinanceiro()}"/>				
+			<rich:menuGroup label="#{msg.boleto}" rendered="#{loginMB.temAcesso('#{principalMB.gerarBoleto}','#{principalMB.listarBoleto}','#{principalMB.meusBoletos}')}">
+				<rich:menuItem label="#{msg['boleto.gerarBoleto']}" action="#{principalMB.gerarBoleto}" rendered="#{loginMB.temAcesso('#{principalMB.gerarBoleto}')}"/>
+				<rich:menuItem label="#{msg['boleto.listarBoleto']}" action="#{principalMB.listarBoleto}" rendered="#{loginMB.temAcesso('#{principalMB.listarBoleto}')}"/>
+				<rich:menuItem label="#{msg['boleto.meusBoletos']}" action="#{principalMB.meusBoletos}" rendered="#{loginMB.temAcesso('#{principalMB.meusBoletos}')}"/>				
 			</rich:menuGroup>	
 								
 		</rich:dropDownMenu>

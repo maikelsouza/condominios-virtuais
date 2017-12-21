@@ -8,10 +8,7 @@
 	xmlns:rich="http://richfaces.org/rich"
 	template="/templates/templatePrincipal.xhtml">
 
-	<ui:define name="conteudo">
-		<f:metadata>
-			<f:event type="preRenderView" listener="#{enqueteMB.abreSessao}" />
-		</f:metadata>
+	<ui:define name="conteudo">		
 		<h:form id="idFormListaEnquete" styleClass="content">
 			<rich:panel>
 				<f:facet name="header">
