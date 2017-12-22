@@ -6,11 +6,15 @@ public class Beneficiario implements Cloneable{
 	
 	private String nome;
 	
+	private String razaoSocial;
+	
+	private String NomeFantasia;
+	
 	private Long cprf;	
 	
 	private Integer idCondominio;
 	
-	private Boolean situacao;
+	private Boolean situacao;	
 	
 	private Endereco endereco;
 	
@@ -32,6 +36,22 @@ public class Beneficiario implements Cloneable{
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}	
+
+	public String getRazaoSocial() {
+		return razaoSocial;
+	}
+
+	public void setRazaoSocial(String razaoSocial) {
+		this.razaoSocial = razaoSocial;
+	}
+
+	public String getNomeFantasia() {
+		return NomeFantasia;
+	}
+
+	public void setNomeFantasia(String nomeFantasia) {
+		NomeFantasia = nomeFantasia;
 	}
 
 	public Integer getIdCondominio() {

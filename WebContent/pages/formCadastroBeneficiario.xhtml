@@ -35,6 +35,18 @@
 					</h:selectOneMenu>					
 					<h:inputText id="idNome" value="#{beneficiarioMB.beneficiario.nome}" required="true" label="#{msg['beneficiario.nome.label']}"/>
 					<h:inputText id="idCprf" value="#{beneficiarioMB.beneficiario.cprf}" required="true" label="#{msg['beneficiario.cprf.label']}"/>
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['beneficiario.razaoSocial']}:" for="idRazaoSocial" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					
+					<h:outputLabel value="#{msg['beneficiario.nomeFantasia']}:" for="idNomeFantasia" />								
+					<h:outputLabel value="" />
+					
+					<h:inputText id="idRazaoSocial" value="#{beneficiarioMB.beneficiario.razaoSocial}" required="true" label="#{msg['beneficiario.razaoSocial.label']}" size=""/>
+					<h:inputText id="idNomeFantasia" value="#{beneficiarioMB.beneficiario.nomeFantasia}"  label="#{msg['beneficiario.nomeFantasia.label']}"/>
+					
 				 </h:panelGrid>	
 				
 				 

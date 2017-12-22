@@ -60,6 +60,18 @@
 							</f:facet>
 							<h:outputText value="#{beneficiario.nome}" />
 						</rich:column>
+						<rich:column sortBy="#{beneficiario.razaoSocial}" sortOrder="#{ordenaBeneficiarioMB.razaoSocialBeneficiario}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['beneficiario.razaoSocial']}" render="tableBeneficiario" action="#{ordenaBeneficiarioMB.ordenarPorRazaoSocial}" />									          
+							</f:facet>
+							<h:outputText value="#{beneficiario.razaoSocial}" />
+						</rich:column>
+						<rich:column sortBy="#{beneficiario.nomeFantasia}" sortOrder="#{ordenaBeneficiarioMB.nomeFantasiaBeneficiario}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['beneficiario.nomeFantasia']}" render="tableBeneficiario" action="#{ordenaBeneficiarioMB.ordenarPorNomeFantasia}" />									          
+							</f:facet>
+							<h:outputText value="#{beneficiario.nomeFantasia}" />
+						</rich:column>
 						<rich:column sortBy="#{beneficiario.situacao}" sortOrder="#{ordenaBeneficiarioMB.situacaoBeneficiario}">
 							<f:facet name="header">
 								<a4j:commandLink value="#{msg['beneficiario.situacao']}" render="tableBeneficiario" action="#{ordenaBeneficiarioMB.ordenarPorSituacao}" />
