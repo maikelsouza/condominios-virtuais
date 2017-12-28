@@ -48,16 +48,13 @@
 						<span class="asterisco">*</span>
 					</h:panelGroup>
 					
-					<h:panelGroup>
-						<h:outputLabel value="#{msg['contaBancaria.token']}:" for="idToken" />						
-						<span class="asterisco">*</span>
-					</h:panelGroup>					
-										
+					<h:outputLabel value="#{msg['contaBancaria.token']}:" for="idToken" />
+															
 					<h:inputText id="idNumero" value="#{contaBancariaMB.contaBancaria.numero}" required="true" label="#{msg['contaBancaria.numero.label']}"/>
 										
 					<h:inputText id="idCarteira" value="#{contaBancariaMB.contaBancaria.carteira}" required="true" label="#{msg['contaBancaria.carteira.label']}"/>
 					
-					<h:inputText id="idToken" value="#{contaBancariaMB.contaBancaria.token}" required="true" label="#{msg['contaBancaria.token.label']}" size="50"/>
+					<h:inputText id="idToken" value="#{contaBancariaMB.contaBancaria.token}" label="#{msg['contaBancaria.token.label']}" size="50"/>
 					
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['contaBancaria.situacao']}:" for="idSituacao" />						

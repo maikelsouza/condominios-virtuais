@@ -93,8 +93,8 @@ public class ContaBancariaDAOImpl implements ContaBancariaDAO, Serializable {
 			throw e;
 		}finally{
 			try {
-				statement.close();
-				con.close();				
+				SQLUtil.closeStatement(statement);
+				SQLUtil.closeConnection(con);				
 			} catch (SQLException e) {
 				logger.error("erro sqlstate "+e.getSQLState(), e);
 			}

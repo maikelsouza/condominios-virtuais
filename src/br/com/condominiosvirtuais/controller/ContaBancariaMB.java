@@ -8,6 +8,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Instance;
+import javax.faces.context.FacesContext;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
@@ -17,12 +18,15 @@ import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Banco;
 import br.com.condominiosvirtuais.entity.ContaBancaria;
+import br.com.condominiosvirtuais.entity.TipoTitulo;
 import br.com.condominiosvirtuais.enumeration.BancoSituacaoEnum;
 import br.com.condominiosvirtuais.enumeration.ContaBancariaSituacaoEnum;
+import br.com.condominiosvirtuais.enumeration.TipoTituloSituacaoEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.service.BancoService;
 import br.com.condominiosvirtuais.service.CondominioService;
 import br.com.condominiosvirtuais.service.ContaBancariaService;
+import br.com.condominiosvirtuais.service.TipoTituloService;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
 import br.com.condominiosvirtuais.util.ManagedBeanUtil;
 
@@ -45,11 +49,16 @@ public class ContaBancariaMB implements Serializable {
 	@Inject
 	private CondominioService condominioService;
 	
+	@Inject
+	private TipoTituloService tipoTituloService;
+	
 	private List<SelectItem> listaSIBancos = null;
 	
 	private List<SelectItem> listaSISituacao = null;
 	
-	private List<SelectItem> listaSICondominios = null;	
+	private List<SelectItem> listaSICondominios = null;
+	
+	private List<SelectItem> listaSITipoTitulo = null;	
 	
 	private ContaBancaria contaBancaria = null;
 	
@@ -57,7 +66,7 @@ public class ContaBancariaMB implements Serializable {
 	
 	private String nomeCondominio;
 	
-	private Integer situacaoContaBancaria;
+	private Integer situacaoContaBancaria = -1;
 	
 	
 	
@@ -70,7 +79,8 @@ public class ContaBancariaMB implements Serializable {
 		try {
 			this.listaSICondominios = this.condominioMB.get().buscarListaCondominiosAtivos();
 			this.popularListaSiBancos();
-			this.popularListaSiSituacao();			
+			this.popularListaSiSituacao();		
+			this.popularListaSiTipoTitulo();
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
@@ -81,9 +91,10 @@ public class ContaBancariaMB implements Serializable {
 	}
 	
 	public String salvar(){
-		try {
+		try {			
 			this.contaBancaria.setSituacao(Boolean.TRUE);
 			this.contaBancariaService.salvar(this.contaBancaria);
+			this.contaBancaria = new ContaBancaria();			
 			this.pesquisar();			
 			ManagedBeanUtil.setMensagemInfo("msg.contaBancaria.salvaSucesso");
 		} catch (SQLException e) {
@@ -215,6 +226,16 @@ public class ContaBancariaMB implements Serializable {
 		this.listaSISituacao.add(new SelectItem(ContaBancariaSituacaoEnum.INATIVA.getSituacao(), AplicacaoUtil.i18n("contaBancaria.situacao.0")));
 	}
 	
+	private void popularListaSiTipoTitulo() throws SQLException, Exception{
+		this.listaSITipoTitulo = new ArrayList<SelectItem>();
+		System.out.println(FacesContext.getCurrentInstance().getExternalContext().getRequestLocale());
+		List<TipoTitulo> listaTipoTitulo = tipoTituloService.buscarPorSituacao(TipoTituloSituacaoEnum.ATIVO.getSituacao());
+		for (TipoTitulo tipoTitulo : listaTipoTitulo) {
+			this.listaSITipoTitulo.add(new SelectItem(tipoTitulo.getId(), tipoTitulo.getNome()));
+		}
+		
+	}
+	
 	
 
 	public List<SelectItem> getListaSIBancos() {
@@ -271,6 +292,16 @@ public class ContaBancariaMB implements Serializable {
 
 	public void setSituacaoContaBancaria(Integer situacaoContaBancaria) {
 		this.situacaoContaBancaria = situacaoContaBancaria;
-	}		
+	}
+
+	public List<SelectItem> getListaSITipoTitulo() {
+		return listaSITipoTitulo;
+	}
+
+	public void setListaSITipoTitulo(List<SelectItem> listaSITipoTitulo) {
+		this.listaSITipoTitulo = listaSITipoTitulo;
+	}
+	
+	
 
 }

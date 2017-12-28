@@ -18,8 +18,11 @@ public class ContaBancaria implements Cloneable {
 	
 	private String token;
 	
+	private ConfiguracaoPadraoContaBancaria configuracaoPadraoContaBancaria;
+	
 	public ContaBancaria(){
 		this.banco = new Banco();
+		this.configuracaoPadraoContaBancaria = new ConfiguracaoPadraoContaBancaria();
 	}
 
 	public Integer getId() {
@@ -85,8 +88,16 @@ public class ContaBancaria implements Cloneable {
 
 	public void setToken(String token) {
 		this.token = token;
-	}	
+	}		
 	
+	public ConfiguracaoPadraoContaBancaria getConfiguracaoPadraoContaBancaria() {
+		return configuracaoPadraoContaBancaria;
+	}
+
+	public void setConfiguracaoPadraoContaBancaria(ConfiguracaoPadraoContaBancaria configuracaoPadraoContaBancaria) {
+		this.configuracaoPadraoContaBancaria = configuracaoPadraoContaBancaria;
+	}
+
 	public ContaBancaria clone() throws CloneNotSupportedException{
         return (ContaBancaria) super.clone();
 	}	
