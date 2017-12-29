@@ -8,7 +8,7 @@ public class TipoTitulo {
 	
 	private String nome;
 	
-	private Boolean situacao;
+	private Boolean situacao;	
 
 	public Integer getId() {
 		return id;
@@ -41,7 +41,7 @@ public class TipoTitulo {
 	public void setSituacao(Boolean situacao) {
 		this.situacao = situacao;
 	}
-	
-	
+
+
 
 }

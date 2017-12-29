@@ -115,5 +115,10 @@ public abstract class AplicacaoUtil {
 		return zeros+numero;
 	}
 	
+	public static Locale getLocale(){
+		FacesContext context = FacesContext.getCurrentInstance();
+		return context.getViewRoot().getLocale();
+	}
+	
 
 }

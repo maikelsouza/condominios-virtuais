@@ -3,6 +3,7 @@ package br.com.condominiosvirtuais.persistence.impl;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
@@ -94,6 +95,45 @@ public class ConfiguracaoPadraoContaBancariaDAOImpl implements ConfiguracaoPadra
 			con.rollback();
 			throw e;	
 		}
+	}
+
+	@Override
+	public ConfiguracaoPadraoContaBancaria buscarPorIdContaBancaria(Integer idContaBancaria, Connection con)
+			throws SQLException, BusinessException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(CONFIGURACAO_PADRAO_CONTA_BANCARIA);
+		query.append(" WHERE ");
+		query.append(ID_CONTA_BANCARIA);
+		query.append(" = ?");
+		query.append(";");		
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		ConfiguracaoPadraoContaBancaria configuracaoPadraoContaBancaria = null;
+		try {
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, idContaBancaria, java.sql.Types.INTEGER);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				configuracaoPadraoContaBancaria = new ConfiguracaoPadraoContaBancaria();
+				configuracaoPadraoContaBancaria.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				configuracaoPadraoContaBancaria.setMulta((Double) SQLUtil.getValorResultSet(resultSet, MULTA, java.sql.Types.DOUBLE));
+				configuracaoPadraoContaBancaria.setJurosAoDia((Double) SQLUtil.getValorResultSet(resultSet, JUROS_AO_DIA, java.sql.Types.DOUBLE));
+				configuracaoPadraoContaBancaria.setDiasSemCobrarJurosAposVencimento((Integer) SQLUtil.getValorResultSet(resultSet, DIAS_SEM_COBRAR_JUROS_APOS_VENCIMENTO,
+						java.sql.Types.INTEGER));
+				configuracaoPadraoContaBancaria.setDiasConcederDescontoAteVencimento((Integer) SQLUtil.getValorResultSet(resultSet, DIAS_CONCEDER_DESCONTO_ATE_VENCIMENTO,
+						java.sql.Types.INTEGER));
+				configuracaoPadraoContaBancaria.setDesconto((Double) SQLUtil.getValorResultSet(resultSet, INSTRUCAO_PADRAO,java.sql.Types.VARCHAR));
+				configuracaoPadraoContaBancaria.setAceite((Boolean) SQLUtil.getValorResultSet(resultSet, ACEITE, java.sql.Types.BOOLEAN));
+				configuracaoPadraoContaBancaria.setIdContaBancaria((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONTA_BANCARIA, java.sql.Types.INTEGER));
+				configuracaoPadraoContaBancaria.setIdTipoTitulo((Integer) SQLUtil.getValorResultSet(resultSet, ID_TIPO_TITULO, java.sql.Types.INTEGER));
+			}
+		} catch (SQLException e) {
+			throw e;
+		} catch (Exception e) {
+			throw e;
+		}
+		return configuracaoPadraoContaBancaria;
 	}	
 	
 }

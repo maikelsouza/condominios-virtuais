@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import br.com.condominiosvirtuais.entity.ContaBancaria;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.persistence.BancoDAO;
+import br.com.condominiosvirtuais.persistence.ConfiguracaoPadraoContaBancariaDAO;
 import br.com.condominiosvirtuais.persistence.ContaBancariaDAO;
 import br.com.condominiosvirtuais.util.SQLUtil;
 
@@ -52,6 +53,9 @@ public class ContaBancariaDAOImpl implements ContaBancariaDAO, Serializable {
     
     @Inject
     private BancoDAO bancoDAO;
+    
+    @Inject
+    private ConfiguracaoPadraoContaBancariaDAO configuracaoPadraoContaBancariaDAO;
 
 	@Override
 	public void salvar(ContaBancaria contaBancaria) throws SQLException, Exception {
@@ -72,21 +76,23 @@ public class ContaBancariaDAOImpl implements ContaBancariaDAO, Serializable {
 			query.append(CARTEIRA);
 			query.append(",");
 			query.append(SITUACAO);
-			query.append(",");
-			query.append(TOKEN);
-			query.append(",");
+			query.append(",");			
 			query.append(ID_CONDOMINIO);
 			query.append(") ");
-			query.append("VALUES(?,?,?,?,?,?,?)");
-			statement = con.prepareStatement(query.toString());
+			query.append("VALUES(?,?,?,?,?,?)");
+			statement = con.prepareStatement(query.toString(),PreparedStatement.RETURN_GENERATED_KEYS);
 			SQLUtil.setValorPpreparedStatement(statement, 1, contaBancaria.getNumero(),java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement, 2, contaBancaria.getAgencia(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement, 3, contaBancaria.getBanco().getId(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 4, contaBancaria.getCarteira(), java.sql.Types.VARCHAR);
-			SQLUtil.setValorPpreparedStatement(statement, 5, contaBancaria.getSituacao(), java.sql.Types.BOOLEAN);
-			SQLUtil.setValorPpreparedStatement(statement, 6, contaBancaria.getToken(), java.sql.Types.VARCHAR);
-			SQLUtil.setValorPpreparedStatement(statement, 7, contaBancaria.getIdCondominio(), java.sql.Types.INTEGER);
-			statement.execute();
+			SQLUtil.setValorPpreparedStatement(statement, 5, contaBancaria.getSituacao(), java.sql.Types.BOOLEAN);			
+			SQLUtil.setValorPpreparedStatement(statement, 6, contaBancaria.getIdCondominio(), java.sql.Types.INTEGER);
+			statement.executeUpdate();
+			ResultSet rs = statement.getGeneratedKeys();
+			rs.next();
+			contaBancaria.getConfiguracaoPadraoContaBancaria().setIdContaBancaria(rs.getInt(1));
+			this.configuracaoPadraoContaBancariaDAO.salvar(contaBancaria.getConfiguracaoPadraoContaBancaria(), con);
+			
 		} catch (SQLException e) {
 			throw e;
 		} catch (Exception e) {
@@ -128,7 +134,8 @@ public class ContaBancariaDAOImpl implements ContaBancariaDAO, Serializable {
 				contaBancaria.setCarteira(String.valueOf(SQLUtil.getValorResultSet(resultSet,CARTEIRA, java.sql.Types.VARCHAR)));
 				contaBancaria.setSituacao((Boolean) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.BOOLEAN));
 				contaBancaria.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
-				contaBancaria.setBanco(this.bancoDAO.buscarPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_BANCO, java.sql.Types.INTEGER),con));				
+				contaBancaria.setBanco(this.bancoDAO.buscarPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_BANCO, java.sql.Types.INTEGER),con));
+				contaBancaria.setConfiguracaoPadraoContaBancaria(this.configuracaoPadraoContaBancariaDAO.buscarPorIdContaBancaria(contaBancaria.getId(), con));				
 				listaContaBancaria.add(contaBancaria);
 			}
 		} catch (SQLException e) {

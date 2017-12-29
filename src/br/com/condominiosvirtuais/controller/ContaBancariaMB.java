@@ -8,7 +8,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Instance;
-import javax.faces.context.FacesContext;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
@@ -227,11 +226,10 @@ public class ContaBancariaMB implements Serializable {
 	}
 	
 	private void popularListaSiTipoTitulo() throws SQLException, Exception{
-		this.listaSITipoTitulo = new ArrayList<SelectItem>();
-		System.out.println(FacesContext.getCurrentInstance().getExternalContext().getRequestLocale());
+		this.listaSITipoTitulo = new ArrayList<SelectItem>();		
 		List<TipoTitulo> listaTipoTitulo = tipoTituloService.buscarPorSituacao(TipoTituloSituacaoEnum.ATIVO.getSituacao());
 		for (TipoTitulo tipoTitulo : listaTipoTitulo) {
-			this.listaSITipoTitulo.add(new SelectItem(tipoTitulo.getId(), tipoTitulo.getNome()));
+			this.listaSITipoTitulo.add(new SelectItem(tipoTitulo.getId(), tipoTitulo.getSigla() + " - " +tipoTitulo.getNome()));
 		}
 		
 	}

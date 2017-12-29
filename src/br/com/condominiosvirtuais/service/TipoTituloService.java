@@ -7,6 +7,8 @@ import br.com.condominiosvirtuais.entity.TipoTitulo;
 
 public interface TipoTituloService {
 	
+	
 	public abstract List<TipoTitulo> buscarPorSituacao(Boolean situacao) throws SQLException, Exception;
+	
 
 }
