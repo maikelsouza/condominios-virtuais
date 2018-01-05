@@ -4,17 +4,17 @@ public class ConfiguracaoPadraoContaBancaria {
 	
 	private Integer id;
 	
-	private Double multa;
+	private Double multa = 0.000;
 	
-	private Double jurosAoDia;
+	private Double jurosAoDia = 0.000;
 	
-	private Integer diasSemCobrarJurosAposVencimento;
+	private Integer diasSemCobrarJurosAposVencimento = 0;
 	
 	private Boolean permitirEmitirBoletoSemValor;
 	
-	private Double desconto;
+	private Double desconto = 0.000;
 	
-	private Integer diasConcederDescontoAteVencimento;
+	private Integer diasConcederDescontoAteVencimento = 0;
 	
 	private String instrucaoPadrao;
 	
@@ -23,6 +23,8 @@ public class ConfiguracaoPadraoContaBancaria {
 	private Integer idContaBancaria;
 	
 	private Boolean aceite;
+	
+	private String siglaMaisNomeTipoTitulo;
 
 	public Integer getId() {
 		return id;
@@ -110,7 +112,15 @@ public class ConfiguracaoPadraoContaBancaria {
 
 	public void setIdContaBancaria(Integer idContaBancaria) {
 		this.idContaBancaria = idContaBancaria;
-	}	
+	}
+
+	public String getSiglaMaisNomeTipoTitulo() {
+		return siglaMaisNomeTipoTitulo;
+	}
+
+	public void setSiglaMaisNomeTipoTitulo(String siglaMaisNomeTipoTitulo) {
+		this.siglaMaisNomeTipoTitulo = siglaMaisNomeTipoTitulo;
+	}
 	
 
 }

@@ -34,6 +34,8 @@ public class BeneficiarioDAOImpl implements Serializable, BeneficiarioDAO {
     
     private static final String NOME_FANTASIA = "NOME_FANTASIA";    
     
+    private static final String TIPO_DOCUMENTO = "TIPO_DOCUMENTO";
+    
     private static final String CPRF = "CPRF";
     
     private static final String SITUACAO = "SITUACAO";
@@ -70,8 +72,10 @@ public class BeneficiarioDAOImpl implements Serializable, BeneficiarioDAO {
 			query.append(RAZAO_SOCIAL); 
 			query.append(",");
 			query.append(NOME_FANTASIA); 
+			query.append(",");
+			query.append(TIPO_DOCUMENTO); 
 			query.append(") ");
-			query.append("VALUES(?,?,?,?,?,?)");
+			query.append("VALUES(?,?,?,?,?,?,?)");
 			statement = con.prepareStatement(query.toString(),PreparedStatement.RETURN_GENERATED_KEYS);			
 			SQLUtil.setValorPpreparedStatement(statement, 1, beneficiario.getNome(),java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement, 2, beneficiario.getCprf(), java.sql.Types.BIGINT);
@@ -79,6 +83,7 @@ public class BeneficiarioDAOImpl implements Serializable, BeneficiarioDAO {
 			SQLUtil.setValorPpreparedStatement(statement, 4, beneficiario.getIdCondominio(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 5, beneficiario.getRazaoSocial(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement, 6, beneficiario.getNomeFantasia(), java.sql.Types.VARCHAR);
+			SQLUtil.setValorPpreparedStatement(statement, 7, beneficiario.getTipoDocumento(), java.sql.Types.INTEGER);
 			statement.execute();
 			ResultSet rs = statement.getGeneratedKeys(); 
 			rs.next();
@@ -126,6 +131,7 @@ public class BeneficiarioDAOImpl implements Serializable, BeneficiarioDAO {
 				beneficiario.setNomeFantasia(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME_FANTASIA, java.sql.Types.VARCHAR)));
 				beneficiario.setCprf((Long) (SQLUtil.getValorResultSet(resultSet, CPRF, java.sql.Types.BIGINT)));
 				beneficiario.setSituacao((Boolean) (SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.BOOLEAN)));
+				beneficiario.setTipoDocumento((Integer) SQLUtil.getValorResultSet(resultSet, TIPO_DOCUMENTO, java.sql.Types.INTEGER));
 				beneficiario.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
 				beneficiario.setEndereco(this.enderecoDAO.buscarEnderecoPorIdBeneficiario(beneficiario.getId(), con));								
 				listaBeneficiario.add(beneficiario);
@@ -169,6 +175,7 @@ public class BeneficiarioDAOImpl implements Serializable, BeneficiarioDAO {
 				beneficiario.setNomeFantasia(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME_FANTASIA, java.sql.Types.VARCHAR)));
 				beneficiario.setCprf((Long) (SQLUtil.getValorResultSet(resultSet, CPRF, java.sql.Types.BIGINT)));
 				beneficiario.setSituacao((Boolean) (SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.BOOLEAN)));
+				beneficiario.setTipoDocumento((Integer) SQLUtil.getValorResultSet(resultSet, TIPO_DOCUMENTO, java.sql.Types.INTEGER));
 				beneficiario.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
 				beneficiario.setEndereco(this.enderecoDAO.buscarEnderecoPorIdBeneficiario(beneficiario.getId(), con));	
 			}
@@ -200,6 +207,8 @@ public class BeneficiarioDAOImpl implements Serializable, BeneficiarioDAO {
 		query.append(RAZAO_SOCIAL);
 		query.append(" = ?, ");		
 		query.append(NOME_FANTASIA);
+		query.append(" = ?, ");		
+		query.append(TIPO_DOCUMENTO);
 		query.append(" = ? ");		
 		query.append("WHERE ");
 		query.append(ID);
@@ -213,7 +222,8 @@ public class BeneficiarioDAOImpl implements Serializable, BeneficiarioDAO {
 			SQLUtil.setValorPpreparedStatement(statement, 4, beneficiario.getIdCondominio(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 5, beneficiario.getRazaoSocial(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement, 6, beneficiario.getNomeFantasia(), java.sql.Types.VARCHAR);
-			SQLUtil.setValorPpreparedStatement(statement, 7, beneficiario.getId(), java.sql.Types.INTEGER);			
+			SQLUtil.setValorPpreparedStatement(statement, 7, beneficiario.getTipoDocumento(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 8, beneficiario.getId(), java.sql.Types.INTEGER);			
 			statement.executeUpdate();
 			con.commit();
 		} catch (SQLException e) {							
@@ -302,6 +312,7 @@ public class BeneficiarioDAOImpl implements Serializable, BeneficiarioDAO {
 				beneficiario.setCprf((Long) (SQLUtil.getValorResultSet(resultSet, CPRF, java.sql.Types.BIGINT)));
 				beneficiario.setSituacao((Boolean) (SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.BOOLEAN)));
 				beneficiario.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
+				beneficiario.setTipoDocumento((Integer) SQLUtil.getValorResultSet(resultSet, TIPO_DOCUMENTO, java.sql.Types.INTEGER));
 				beneficiario.setEndereco(this.enderecoDAO.buscarEnderecoPorIdBeneficiario(beneficiario.getId(), con));								
 				listaBeneficiario.add(beneficiario);
 			}

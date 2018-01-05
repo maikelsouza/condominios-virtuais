@@ -14,7 +14,9 @@ public class Beneficiario implements Cloneable{
 	
 	private Integer idCondominio;
 	
-	private Boolean situacao;	
+	private Boolean situacao;
+	
+	private Integer tipoDocumento;	
 	
 	private Endereco endereco;
 	
@@ -86,6 +88,14 @@ public class Beneficiario implements Cloneable{
 		this.endereco = endereco;
 	}
 	
+	public Integer getTipoDocumento() {
+		return tipoDocumento;
+	}
+
+	public void setTipoDocumento(Integer tipoDocumento) {
+		this.tipoDocumento = tipoDocumento;
+	}
+
 	public Beneficiario clone() throws CloneNotSupportedException{
         return (Beneficiario) super.clone();
 	}

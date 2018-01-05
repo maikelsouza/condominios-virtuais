@@ -63,6 +63,7 @@ public class ContaBancariaDAOImpl implements ContaBancariaDAO, Serializable {
 		Connection con = null;
 		try {
 			con = C3P0DataSource.getInstance().getConnection();
+			con.setAutoCommit(Boolean.FALSE);
 			StringBuffer query = new StringBuffer();
 			query.append("INSERT INTO "); 
 			query.append(CONTA_BANCARIA); 
@@ -92,7 +93,7 @@ public class ContaBancariaDAOImpl implements ContaBancariaDAO, Serializable {
 			rs.next();
 			contaBancaria.getConfiguracaoPadraoContaBancaria().setIdContaBancaria(rs.getInt(1));
 			this.configuracaoPadraoContaBancariaDAO.salvar(contaBancaria.getConfiguracaoPadraoContaBancaria(), con);
-			
+			con.commit();
 		} catch (SQLException e) {
 			throw e;
 		} catch (Exception e) {
@@ -191,6 +192,7 @@ public class ContaBancariaDAOImpl implements ContaBancariaDAO, Serializable {
 	@Override
 	public void atualizar(ContaBancaria contaBancaria) throws SQLException, Exception {
 		Connection con = C3P0DataSource.getInstance().getConnection();		
+		con.setAutoCommit(Boolean.FALSE);
 		StringBuffer query = new StringBuffer();
 		query.append("UPDATE ");
 		query.append(CONTA_BANCARIA);
@@ -224,6 +226,8 @@ public class ContaBancariaDAOImpl implements ContaBancariaDAO, Serializable {
 			SQLUtil.setValorPpreparedStatement(statement, 7, contaBancaria.getIdCondominio(), java.sql.Types.INTEGER);
 			SQLUtil.setValorPpreparedStatement(statement, 8, contaBancaria.getId(), java.sql.Types.INTEGER);
 			statement.executeUpdate();
+			this.configuracaoPadraoContaBancariaDAO.atualizar(contaBancaria.getConfiguracaoPadraoContaBancaria(), con);
+			con.commit();
 		} catch (SQLException e) {		
 			throw e;
 		}catch (Exception e) {
@@ -242,8 +246,10 @@ public class ContaBancariaDAOImpl implements ContaBancariaDAO, Serializable {
 	@Override
 	public void excluir(ContaBancaria contaBancaria) throws SQLException, BusinessException, Exception {
 		Connection con = C3P0DataSource.getInstance().getConnection();		
+		con.setAutoCommit(Boolean.FALSE);
 		PreparedStatement statement = null;		
 		try {
+			this.configuracaoPadraoContaBancariaDAO.excluir(contaBancaria.getConfiguracaoPadraoContaBancaria().getId(), con);
 			StringBuffer query = new StringBuffer();
 			query.append("DELETE FROM ");
 			query.append(CONTA_BANCARIA);
@@ -253,6 +259,7 @@ public class ContaBancariaDAOImpl implements ContaBancariaDAO, Serializable {
 			statement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(statement, 1, contaBancaria.getId(), java.sql.Types.INTEGER);
 			statement.executeUpdate();
+			con.commit();
 		} catch (SQLException e) {
 			if (e.getMessage().contains(FK_BOLETO_ID_CONTA_BANCARIA_CONTA_BANCARIA_ID)){
 				throw new BusinessException("msg.contaBancaria.excluirBoletoAssociado");
@@ -305,7 +312,8 @@ public class ContaBancariaDAOImpl implements ContaBancariaDAO, Serializable {
 				contaBancaria.setToken(String.valueOf(SQLUtil.getValorResultSet(resultSet,TOKEN, java.sql.Types.VARCHAR)));
 				contaBancaria.setSituacao((Boolean) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.BOOLEAN));
 				contaBancaria.setIdCondominio((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONDOMINIO, java.sql.Types.INTEGER));
-				contaBancaria.setBanco(this.bancoDAO.buscarPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_BANCO, java.sql.Types.INTEGER),con));				
+				contaBancaria.setBanco(this.bancoDAO.buscarPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_BANCO, java.sql.Types.INTEGER),con));
+				contaBancaria.setConfiguracaoPadraoContaBancaria(this.configuracaoPadraoContaBancariaDAO.buscarPorIdContaBancaria(contaBancaria.getId(), con));
 				listaContaBancaria.add(contaBancaria);
 			}
 		} catch (SQLException e) {

@@ -57,21 +57,29 @@
 					<h:panelGrid columns="3" >
 						<h:outputLabel value="#{msg['contaBancaria.configuracaoPadraoContaBancaria.multa']}:" for="idMulta" />
 						<h:outputLabel value="#{msg['contaBancaria.configuracaoPadraoContaBancaria.jurosAoDia']}:" for="idJurosAoDia" />						
-						<h:outputLabel value="#{msg['contaBancaria.configuracaoPadraoContaBancaria.diasSemCobrarJurosAposVencimento']}:" for="idDiasSemCobrarJurosAposVencimento" />
-						
-						<h:inputText id="idMulta" value="#{contaBancariaMB.contaBancaria.configuracaoPadraoContaBancaria.multa}" label="#{msg['contaBancaria.configuracaoPadraoContaBancaria.multa.label']}"/>					
-						<h:inputText id="idJurosAoDia" value="#{contaBancariaMB.contaBancaria.configuracaoPadraoContaBancaria.jurosAoDia}" label="#{msg['contaBancaria.configuracaoPadraoContaBancaria.jurosAoDia.label']}"/>
+						<h:outputLabel value="#{msg['contaBancaria.configuracaoPadraoContaBancaria.diasSemCobrarJurosAposVencimento']}:" for="idDiasSemCobrarJurosAposVencimento" />						
+						<h:inputText id="idMulta" value="#{contaBancariaMB.multaConfiguracaoPadraoContaBancaria}" label="#{msg['contaBancaria.configuracaoPadraoContaBancaria.multa.label']}" validatorMessage="#{msg['msg.contaBancaria.configuracaoPadraoContaBancaria.multa.padrao']}">
+							<f:validateRegex pattern="(\d)*,\d{1,4}+" for="idMulta" />
+							
+ 						</h:inputText>					
+						<h:inputText id="idJurosAoDia" value="#{contaBancariaMB.jurosAoDiaConfiguracaoPadraoContaBancaria}" 
+							label="#{msg['contaBancaria.configuracaoPadraoContaBancaria.jurosAoDia.label']}" validatorMessage="#{msg['msg.contaBancaria.configuracaoPadraoContaBancaria.jurosAoDia.padrao']}">
+							<f:validateRegex pattern="(\d)*,\d{1,4}+" for="idJurosAoDia" />
+						</h:inputText>	
 						<h:panelGroup>
 							<h:inputText id="idDiasSemCobrarJurosAposVencimento" value="#{contaBancariaMB.contaBancaria.configuracaoPadraoContaBancaria.diasSemCobrarJurosAposVencimento}"  label="#{msg['contaBancaria.configuracaoPadraoContaBancaria.diasSemCobrarJurosAposVencimento.label']}" />
 							<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
 						</h:panelGroup>	
 						
 						
-						<h:outputLabel value="#{msg['contaBancaria.configuracaoPadraoContaBancaria.desconto']}:" for="idDesconto" />						
+						<h:outputLabel value="#{msg['contaBancaria.configuracaoPadraoContaBancaria.desconto']}:" for="idDesconto" />
+						
 						<h:outputLabel value="#{msg['contaBancaria.configuracaoPadraoContaBancaria.diasConcederDescontoAteVencimento']}:" for="idDiasConcederDescontoAteVencimento" />
 						<h:outputLabel value="#{msg['contaBancaria.configuracaoPadraoContaBancaria.instrucaoPadrao']}:" for="idInstrucaoPadrao" />
 										
-						<h:inputText id="idDesconto" value="#{contaBancariaMB.contaBancaria.configuracaoPadraoContaBancaria.desconto}"  label="#{msg['contaBancaria.configuracaoPadraoContaBancaria.desconto.label']}"/>
+						<h:inputText id="idDesconto" value="#{contaBancariaMB.descontoConfiguracaoPadraoContaBancaria}"  label="#{msg['contaBancaria.configuracaoPadraoContaBancaria.desconto.label']}" validatorMessage="#{msg['msg.contaBancaria.configuracaoPadraoContaBancaria.desconto.padrao']}">
+							<f:validateRegex pattern="(\d)*,\d{1,4}+" for="idDesconto" />
+						</h:inputText>	
 						<h:panelGroup>
 							<h:inputText id="idDiasConcederDescontoAteVencimento" value="#{contaBancariaMB.contaBancaria.configuracaoPadraoContaBancaria.diasConcederDescontoAteVencimento}"  label="#{msg['contaBancaria.configuracaoPadraoContaBancaria.diasConcederDescontoAteVencimento.label']}" />
 							<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
@@ -85,8 +93,7 @@
 						</h:panelGroup>						
 						<h:outputLabel value="#{msg['contaBancaria.configuracaoPadraoContaBancaria.aceite']}:" for="idAceite" />
 						
-						
-						
+												
 						<h:selectOneMenu id="idPermitirEmitirBoletoSemValor" value="#{contaBancariaMB.contaBancaria.configuracaoPadraoContaBancaria.permitirEmitirBoletoSemValor}"
 							defaultLabel="#{msg['contaBancaria.configuracaoPadraoContaBancaria.permitirEmitirBoletoSemValor.DefaultLabel']}" label="#{msg['contaBancaria.configuracaoPadraoContaBancaria.permitirEmitirBoletoSemValor.label']}">
 							<f:selectItem itemLabel="#{msg.sim}" itemValue="#{true}"/>

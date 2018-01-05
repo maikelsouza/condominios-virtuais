@@ -26,7 +26,6 @@ import br.com.condominiosvirtuais.enumeration.AtributoSessaoEnum;
 import br.com.condominiosvirtuais.enumeration.CondominioSituacaoEnum;
 import br.com.condominiosvirtuais.service.CondominioService;
 import br.com.condominiosvirtuais.service.CondominoService;
-import br.com.condominiosvirtuais.service.GrupoUsuarioService;
 import br.com.condominiosvirtuais.service.UsuarioService;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
 import br.com.condominiosvirtuais.util.ManagedBeanUtil;
@@ -45,10 +44,7 @@ public class CondominioMB implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	private static Logger logger = Logger.getLogger(CondominioMB.class);
-	
-	@Inject
-	private GrupoUsuarioService grupoUsuarioService = null;
-	
+		
 	private Condominio condominio = null;		
 	
 	private CondominoVO condominoVO = null;	
@@ -135,17 +131,20 @@ public class CondominioMB implements Serializable{
 		}
 	}
 	
-	public String pesquisarPorCodigo(){
-		String retorno = null;
+	public String pesquisarPorCodigo(){		
 		Boolean existeCondominio = Boolean.FALSE;
 		try {				
 			existeCondominio = this.condominioService.existeCondominioPorCodigo(this.condominio.getCodigo());
 			if (existeCondominio == Boolean.FALSE){
-				ManagedBeanUtil.setMensagemInfo("msg.condominio.condominioCodigoNaoEncontrado");
+				ManagedBeanUtil.setMensagemErro("msg.condominio.condominioCodigoNaoEncontrado");
+				return null;
 			}else{
 				this.condominio = this.condominioService.buscarPorCodigo(this.condominio.getCodigo());
-				ManagedBeanUtil.getSession(true).setAttribute(AtributoSessaoEnum.CONDOMINIO.getAtributo(), this.condominio);
-				retorno = "cadastroCondominoPrimeiraVez";
+				if(this.condominio.getSituacao() == CondominioSituacaoEnum.INATIVO.getSituacao()){
+					ManagedBeanUtil.setMensagemErro("msg.condominio.situacao.inativo");
+					return null;		
+				}
+				ManagedBeanUtil.getSession(true).setAttribute(AtributoSessaoEnum.CONDOMINIO.getAtributo(), this.condominio);				
 			}
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
@@ -154,7 +153,7 @@ public class CondominioMB implements Serializable{
 			logger.error("", e);
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
 		}
-		return retorno;
+		return "cadastroCondominoPrimeiraVez";
 	}
 	
 	
