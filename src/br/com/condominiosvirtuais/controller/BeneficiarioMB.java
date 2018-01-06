@@ -47,7 +47,7 @@ public class BeneficiarioMB implements Serializable {
 	
 	private String nomeCondominio;
 	
-	private Integer situacaoBeneficiario;
+	private Integer situacaoBeneficiario = -1;
 	
 	private List<SelectItem> listaSISituacao = null;
 	
@@ -162,6 +162,7 @@ public class BeneficiarioMB implements Serializable {
 	}
 	
 	public String cadastroBeneficiario(){
+		this.beneficiario = new Beneficiario();
 		return "cadastrar";
 	}	
 	              

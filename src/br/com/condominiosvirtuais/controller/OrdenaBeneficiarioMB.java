@@ -23,6 +23,8 @@ public class OrdenaBeneficiarioMB implements Serializable {
 	
 	private SortOrder nomeFantasiaBeneficiario = SortOrder.unsorted;
 	
+	private SortOrder tipoDocumentoBeneficiario = SortOrder.unsorted;
+	
 	
 	
 	public void ordenarPorNome(){
@@ -30,6 +32,7 @@ public class OrdenaBeneficiarioMB implements Serializable {
 		this.setSituacaoBeneficiario(SortOrder.unsorted);
 		this.setNomeFantasiaBeneficiario(SortOrder.unsorted);
 		this.setRazaoSocialBeneficiario(SortOrder.unsorted);
+		this.setTipoDocumentoBeneficiario(SortOrder.unsorted);
 		if (this.nomeBeneficiario.equals(SortOrder.ascending)) {
 			 this.setNomeBeneficiario(SortOrder.descending);
 		} else {
@@ -42,6 +45,7 @@ public class OrdenaBeneficiarioMB implements Serializable {
 		this.setSituacaoBeneficiario(SortOrder.unsorted);
 		this.setNomeFantasiaBeneficiario(SortOrder.unsorted);
 		this.setRazaoSocialBeneficiario(SortOrder.unsorted);
+		this.setTipoDocumentoBeneficiario(SortOrder.unsorted);
 		if (this.cprfBeneficiario.equals(SortOrder.ascending)) {
 			 this.setCprfBeneficiario(SortOrder.descending);
 		} else {
@@ -54,6 +58,7 @@ public class OrdenaBeneficiarioMB implements Serializable {
 		this.setCprfBeneficiario(SortOrder.unsorted);
 		this.setNomeFantasiaBeneficiario(SortOrder.unsorted);
 		this.setRazaoSocialBeneficiario(SortOrder.unsorted);
+		this.setTipoDocumentoBeneficiario(SortOrder.unsorted);
 		if (this.situacaoBeneficiario.equals(SortOrder.ascending)) {
 			this.setSituacaoBeneficiario(SortOrder.descending);
 		} else {
@@ -78,10 +83,24 @@ public class OrdenaBeneficiarioMB implements Serializable {
 		this.setCprfBeneficiario(SortOrder.unsorted);
 		this.setSituacaoBeneficiario(SortOrder.unsorted);
 		this.setRazaoSocialBeneficiario(SortOrder.unsorted);
+		this.setTipoDocumentoBeneficiario(SortOrder.unsorted);
 		if (this.nomeFantasiaBeneficiario.equals(SortOrder.ascending)) {
 			this.setNomeFantasiaBeneficiario(SortOrder.descending);
 		} else {
 			this.setNomeFantasiaBeneficiario(SortOrder.ascending);
+		}
+	}
+	
+	public void ordenarPorTipoDocumento(){
+		this.setNomeBeneficiario(SortOrder.unsorted);
+		this.setCprfBeneficiario(SortOrder.unsorted);
+		this.setSituacaoBeneficiario(SortOrder.unsorted);
+		this.setRazaoSocialBeneficiario(SortOrder.unsorted);		
+		this.setNomeFantasiaBeneficiario(SortOrder.unsorted);
+		if (this.tipoDocumentoBeneficiario.equals(SortOrder.ascending)) {
+			this.setTipoDocumentoBeneficiario(SortOrder.descending);
+		} else {
+			this.setTipoDocumentoBeneficiario(SortOrder.ascending);
 		}
 	}	
 
@@ -123,6 +142,14 @@ public class OrdenaBeneficiarioMB implements Serializable {
 
 	public void setNomeFantasiaBeneficiario(SortOrder nomeFantasiaBeneficiario) {
 		this.nomeFantasiaBeneficiario = nomeFantasiaBeneficiario;
+	}
+
+	public SortOrder getTipoDocumentoBeneficiario() {
+		return tipoDocumentoBeneficiario;
+	}
+
+	public void setTipoDocumentoBeneficiario(SortOrder tipoDocumentoBeneficiario) {
+		this.tipoDocumentoBeneficiario = tipoDocumentoBeneficiario;
 	}
 	
 

@@ -23,7 +23,9 @@
 						<h:outputText value="#{beneficiarioMB.beneficiario.razaoSocial}"  id="idRazaoSocial"/>
 						<h:outputLabel value="#{msg['beneficiario.nomeFantasia']}:" for="idNomeFantasia" />						
 						<h:outputText value="#{beneficiarioMB.beneficiario.nomeFantasia}"  id="idNomeFantasia"/>
-						<h:outputLabel value="#{msg['beneficiario.cprf']}:" for="idCprf" />						
+						<h:outputLabel value="#{msg['beneficiario.tipoDocumento']}:" for="idTipoDocumento" />						
+						<h:outputText value="#{beneficiarioMB.beneficiario.tipoDocumento == 1 ? msg['beneficiario.cpf'] : msg['beneficiario.cnpj']}"  id="idTipoDocumento"/>
+						<h:outputLabel value="#{msg['beneficiario.documento']}:" for="idCprf" />						
 						<h:outputText value="#{beneficiarioMB.beneficiario.cprf}"  id="idCprf"/>
 						<h:outputLabel value="#{msg['beneficiario.situacao']}:" for="idSituacao" />						
 						<h:outputText value="#{beneficiarioMB.beneficiario.situacao == true ? msg['beneficiario.situacao.1'] : msg['beneficiario.situacao.0']}"  id="idSituacao"/>

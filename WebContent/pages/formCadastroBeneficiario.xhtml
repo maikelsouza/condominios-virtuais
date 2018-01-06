@@ -38,14 +38,14 @@
 									
 					<h:inputText id="idNome" value="#{beneficiarioMB.beneficiario.nome}" required="true" label="#{msg['beneficiario.nome.label']}"/>
 					
-					<h:selectOneMenu id="idEhCpf" value="#{beneficiarioMB.beneficiario.tipoDocumento}" required="true">
+					<h:selectOneMenu id="idTipoDocumento" value="#{beneficiarioMB.beneficiario.tipoDocumento}" required="true">
 						<f:selectItem itemLabel="#{msg['beneficiario.cnpj']}" itemValue="0"/>
 						<f:selectItem itemLabel="#{msg['beneficiario.cpf']}" itemValue="1"/>
 						<f:ajax  render="idCpfCnpj"  />
 					</h:selectOneMenu>	
 					
 					<h:panelGroup>
-						<h:outputLabel id="idCpfCnpj" value="#{beneficiarioMB.beneficiario.tipoDocumento == 1 ? msg['beneficiario.cpf'] : msg['beneficiario.cnpj']} :" for="idCprf" />						
+						<h:outputLabel id="idCpfCnpj" value="#{beneficiarioMB.beneficiario.tipoDocumento == 1 ? msg['beneficiario.cpf'] : msg['beneficiario.cnpj']}:" for="idCprf" />						
 						<span class="asterisco">*</span>						
 					</h:panelGroup>	
 					
