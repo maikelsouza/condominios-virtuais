@@ -455,8 +455,7 @@ public class BoletoMB  implements Serializable{
 		PreCadastroBoleto preCadastroBoleto = this.preCadastroBoletoService.buscarPorIdCondominioEPrincipal(this.boleto.getIdCondominio(), Boolean.TRUE);
 		if(preCadastroBoleto != null){
 			this.boleto.getBeneficiario().setId(preCadastroBoleto.getBeneficiario().getId());
-			this.boleto.getContaBancaria().setId(preCadastroBoleto.getContaBancaria().getId());			
-			this.boleto.setTitulo(preCadastroBoleto.getTitulo());
+			this.boleto.getContaBancaria().setId(preCadastroBoleto.getContaBancaria().getId());
 			this.boleto.setInstrucao1(preCadastroBoleto.getInstrucao1());
 			this.boleto.setInstrucao2(preCadastroBoleto.getInstrucao2());
 			this.boleto.setInstrucao3(preCadastroBoleto.getInstrucao3());

@@ -4,9 +4,9 @@ public class PreCadastroBoleto {
 	
 	private Integer id;
 	
-	private Integer diaMesVencimento;
+	private String nome;
 	
-	private String titulo;	
+	private Integer diaMesVencimento;	
 		
 	private String instrucao1;
 	
@@ -33,6 +33,14 @@ public class PreCadastroBoleto {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}	
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public Integer getDiaMesVencimento() {
@@ -41,14 +49,6 @@ public class PreCadastroBoleto {
 
 	public void setDiaMesVencimento(Integer diaMesVencimento) {
 		this.diaMesVencimento = diaMesVencimento;
-	}
-
-	public String getTitulo() {
-		return titulo;
-	}
-
-	public void setTitulo(String titulo) {
-		this.titulo = titulo;
 	}
 
 	public String getInstrucao1() {

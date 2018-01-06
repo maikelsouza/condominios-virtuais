@@ -42,6 +42,12 @@
 				<div>
 					<rich:dataTable value="#{preCadastroBoletoMB.listaPreCadastroBoletos}" var="preCadastroBoleto" rowClasses="odd-row, even-row" styleClass="stable"
 						id="tablePreCadastroBoleto" style="width:100%;" rows="10" rendered="#{preCadastroBoletoMB.listaPreCadastroBoletos.rowCount > 0}">
+						<rich:column sortBy="#{preCadastroBoleto.nome}" sortOrder="#{ordenaPreCadastroBoletoMB.nome}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['preCadastroBoleto.nome']}" render="tablePreCadastroBoleto" action="#{ordenaPreCadastroBoletoMB.ordenarPorNome}" />									          
+							</f:facet>							
+							<h:outputText value="#{preCadastroBoleto.nome}" />
+						</rich:column>
 						<rich:column sortBy="#{preCadastroBoleto.contaBancaria.banco.nome}" sortOrder="#{ordenaPreCadastroBoletoMB.nomeBanco}">
 							<f:facet name="header">
 								<a4j:commandLink value="#{msg['preCadastroBoleto.contaBancaria.banco.nome']}" render="tablePreCadastroBoleto" action="#{ordenaPreCadastroBoletoMB.ordenarPorNomeBanco}" />									          

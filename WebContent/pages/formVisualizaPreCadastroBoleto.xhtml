@@ -15,14 +15,14 @@
 					<h:outputText value="#{msg.visualizaPreCadastroBoleto}" />
 				</f:facet>
 				<h:panelGrid columns="2">
+					<h:outputLabel value="#{msg['preCadastroBoleto.nome']}:" for="idNome" />						
+					<h:outputText id="idNome" value="#{preCadastroBoletoMB.preCadastroBoleto.nome}" />			
 					<h:outputLabel value="#{msg['preCadastroBoleto.contaBancaria']}:" for="idContaBancaria" />	
 					<h:outputText id="idContaBancaria" value="#{preCadastroBoletoMB.preCadastroBoleto.contaBancaria.banco.nome}" />					
 					<h:outputLabel value="#{msg['preCadastroBoleto.beneficiario']}:" for="idBeneficiario" />						
 					<h:outputText id="idBeneficiario" value="#{preCadastroBoletoMB.preCadastroBoleto.beneficiario.nome}" />
                     <h:outputLabel value="#{msg['preCadastroBoleto.diaMesVencimento']}:" for="idDiaMesVencimento" />						
 					<h:outputText id="idDiaMesVencimento" value="#{preCadastroBoletoMB.preCadastroBoleto.diaMesVencimento}" />
-					<h:outputLabel value="#{msg['preCadastroBoleto.titulo']}:" for="idTitulo" />						
-					<h:outputText id="idTitulo" value="#{preCadastroBoletoMB.preCadastroBoleto.titulo}" />			
 					<h:outputLabel value="#{msg['preCadastroBoleto.principal']}:" for="idPrincipal" />						
 					<h:outputText id="idPrincipal" value="#{preCadastroBoletoMB.preCadastroBoleto.principal  == true ? msg['sim'] : msg['nao']}" />			
 					<h:outputLabel value="#{msg['preCadastroBoleto.instrucao1']}:" for="idInstrucao1" rendered="#{preCadastroBoletoMB.preCadastroBoleto.instrucao1 != '' and preCadastroBoletoMB.preCadastroBoleto.instrucao1 != null}"/>

@@ -15,18 +15,23 @@
 					<h:outputText value="#{msg.editaPreCadastroBoleto}" />
 				</f:facet>
 				<h:panelGrid columns="3" >
+				
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['preCadastroBoleto.nome']}:" for="idNome" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>		
+				
 					<h:panelGroup>
 						<h:outputLabel value="#{msg.condominio}:" for="idCondominio" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
+					
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['preCadastroBoleto.contaBancaria']}:" for="idContaBancaria" />						
 						<span class="asterisco">*</span>
 					</h:panelGroup>
-					<h:panelGroup>
-						<h:outputLabel value="#{msg['preCadastroBoleto.beneficiario']}:" for="idBeneficiario" />						
-						<span class="asterisco">*</span>
-					</h:panelGroup>
+					
+					<h:inputText id="idNome" value="#{preCadastroBoletoMB.preCadastroBoleto.nome}" label="#{msg['preCadastroBoleto.nome.label']}" size="30" />
                     									        
 					<h:selectOneMenu id="idCondominio" value="#{preCadastroBoletoMB.preCadastroBoleto.idCondominio}" defaultLabel="#{msg['condominio.DefaultLabel']}" required="true" label="#{msg['condominio.label']}">
 						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="true" />
@@ -39,12 +44,6 @@
 						<f:selectItem itemLabel="#{msg['preCadastroBoleto.contaBancaria.DefaultLabel']}" noSelectionOption="true" />
 						<f:selectItems value="#{preCadastroBoletoMB.listaSIContasBancarias}" />
 					</h:selectOneMenu>
-										
-					<h:selectOneMenu id="idBeneficiario" value="#{preCadastroBoletoMB.preCadastroBoleto.beneficiario.id}"
-						defaultLabel="#{msg['preCadastroBoleto.beneficiario.DefaultLabel']}" required="true" label="#{msg['preCadastroBoleto.beneficiario.label']}">						                     
-						<f:selectItem itemLabel="#{msg['preCadastroBoleto.beneficiario.DefaultLabel']}" noSelectionOption="true" />
-						<f:selectItems value="#{preCadastroBoletoMB.listaSIBeneficiarios}" />
-					</h:selectOneMenu>
 					
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['preCadastroBoleto.diaMesVencimento']}:" for="idDiaMesVencimento" />						
@@ -52,33 +51,34 @@
 					</h:panelGroup>
 					
 					<h:panelGroup>
-						<h:outputLabel value="#{msg['preCadastroBoleto.titulo']}:" for="idTitulo" />						
+						<h:outputLabel value="#{msg['preCadastroBoleto.beneficiario']}:" for="idBeneficiario" />						
 						<span class="asterisco">*</span>
-					</h:panelGroup>	
+					</h:panelGroup>
 					
 					<h:outputLabel value="#{msg['preCadastroBoleto.instrucao1']}:" for="idInstrucao1" />
+										
+					<h:selectOneMenu id="idBeneficiario" value="#{preCadastroBoletoMB.preCadastroBoleto.beneficiario.id}"
+						defaultLabel="#{msg['preCadastroBoleto.beneficiario.DefaultLabel']}" required="true" label="#{msg['preCadastroBoleto.beneficiario.label']}">						                     
+						<f:selectItem itemLabel="#{msg['preCadastroBoleto.beneficiario.DefaultLabel']}" noSelectionOption="true" />
+						<f:selectItems value="#{preCadastroBoletoMB.listaSIBeneficiarios}" />
+					</h:selectOneMenu>
 					
 					<h:selectOneMenu id="idDiaMesVencimento" value="#{preCadastroBoletoMB.preCadastroBoleto.diaMesVencimento}"
 						defaultLabel="#{msg['preCadastroBoleto.diaMesVencimento.DefaultLabel']}" required="true" label="#{msg['preCadastroBoleto.diaMesVencimento.label']}">						                     
 						<f:selectItem itemLabel="#{msg['preCadastroBoleto.diaMesVencimento.DefaultLabel']}" noSelectionOption="true" />
 						<f:selectItems value="#{preCadastroBoletoMB.listaSIDiaMesVencimento}" />
-					</h:selectOneMenu>
-					
-					<h:selectOneMenu id="idTitulo" value="#{preCadastroBoletoMB.preCadastroBoleto.titulo}"
-						defaultLabel="#{msg['preCadastroBoleto.titulo.DefaultLabel']}" required="true" label="#{msg['preCadastroBoleto.titulo.label']}">						                     
-						<f:selectItem itemLabel="#{msg['preCadastroBoleto.titulo.DefaultLabel']}" noSelectionOption="true" />
-						<f:selectItems value="#{preCadastroBoletoMB.listaSITitulos}" />
-					</h:selectOneMenu>
-					
+					</h:selectOneMenu>					
+				
 					<h:inputText id="idInstrucao1" value="#{preCadastroBoletoMB.preCadastroBoleto.instrucao1}" label="#{msg['preCadastroBoleto.idInstrucao1.label']}" size="30"/>	
-									
 					
-					<h:outputLabel value="#{msg['preCadastroBoleto.instrucao2']}:" for="idInstrucao2" />		
+					<h:outputLabel value="#{msg['preCadastroBoleto.instrucao2']}:" for="idInstrucao2" />
+							
 					<h:outputLabel value="#{msg['preCadastroBoleto.instrucao3']}:" for="idInstrucao3" />
+					
 					<h:outputLabel value=""/>
 					
-					
 					<h:inputText id="idInstrucao2" value="#{preCadastroBoletoMB.preCadastroBoleto.instrucao2}" label="#{msg['preCadastroBoleto.idInstrucao2.label']}" size="30" />
+					
 					<h:inputText id="idInstrucao3" value="#{preCadastroBoletoMB.preCadastroBoleto.instrucao3}" label="#{msg['preCadastroBoleto.idInstrucao3.label']}" size="30"/>
 					
 				 </h:panelGrid>	
