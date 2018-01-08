@@ -81,6 +81,13 @@ public class LoginMB implements Serializable{
 			for (String mensagem: condominiosSemSindicoGeral){
 				ManagedBeanUtil.setMensagemWarn("msg.condominio.semSindicoGeral"," : "+mensagem);	
 			}
+			
+			if(!this.existeCondominioAtivo(this.usuario.getListaCondominio())){
+				ManagedBeanUtil.setMensagemErro("msg.condominio.situacao.inativo");
+				this.autenticado = Boolean.FALSE;
+				return null;
+			}
+			
 			this.salvarDataHoraLogin();			
 		}catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
@@ -223,6 +230,14 @@ public class LoginMB implements Serializable{
 //		return exibeMenuFianceiro;
 //	}    
 	
+	private Boolean existeCondominioAtivo(List<Condominio> listaCondominio){
+//		for (Condominio condominio : listaCondominio) {
+//			if(condominio.getSituacao() == CondominioSituacaoEnum.ATIVO.getSituacao()){
+//				return Boolean.TRUE;
+//			}
+//		}
+		return Boolean.FALSE;
+	}
 	
 	/**
 	 * FIXME: Método criado para atender o condomínio Quinta do Horto (id 19)
