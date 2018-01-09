@@ -26,6 +26,7 @@ import br.com.condominiosvirtuais.entity.Email;
 import br.com.condominiosvirtuais.entity.GrupoUsuario;
 import br.com.condominiosvirtuais.entity.Usuario;
 import br.com.condominiosvirtuais.enumeration.AtributoSessaoEnum;
+import br.com.condominiosvirtuais.enumeration.CondominioSituacaoEnum;
 import br.com.condominiosvirtuais.enumeration.UsuarioSituacaoEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.service.EmailService;
@@ -231,11 +232,11 @@ public class LoginMB implements Serializable{
 //	}    
 	
 	private Boolean existeCondominioAtivo(List<Condominio> listaCondominio){
-//		for (Condominio condominio : listaCondominio) {
-//			if(condominio.getSituacao() == CondominioSituacaoEnum.ATIVO.getSituacao()){
-//				return Boolean.TRUE;
-//			}
-//		}
+		for (Condominio condominio : listaCondominio) {
+			if(condominio.getSituacao() == CondominioSituacaoEnum.ATIVO.getSituacao()){
+				return Boolean.TRUE;
+			}
+		}
 		return Boolean.FALSE;
 	}
 	
