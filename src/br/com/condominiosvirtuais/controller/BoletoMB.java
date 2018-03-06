@@ -96,6 +96,8 @@ public class BoletoMB  implements Serializable{
 	private List<SelectItem> listaSITitulos;
 	
 	private List<SelectItem> listaSIPago;
+
+	private List<SelectItem> listaSIPreCadastroBoleto;
 	
 	private ListDataModel<Boleto> listaBoletos;
 	
@@ -105,6 +107,8 @@ public class BoletoMB  implements Serializable{
 	
 	private List<ContaBancaria> listaContaBancaria;
 	
+	private List<PreCadastroBoleto> listaPreCadastroBoleto;
+	
 	private Boleto boleto;	
 	
 	private Date dataVencimentoDe;
@@ -112,6 +116,8 @@ public class BoletoMB  implements Serializable{
 	private Date dataVencimentoAte;
 	
 	private Integer tipoPagoBoleto = -1;
+	
+	private Integer idPreCadastroBoleto;
 	
 	
 	
@@ -285,6 +291,7 @@ public class BoletoMB  implements Serializable{
 		this.dataVencimentoDe = null;
 		this.dataVencimentoAte = null;
 		this.tipoPagoBoleto = -1;
+		this.idPreCadastroBoleto = -1;
 		this.listaBoletos = new ListDataModel<Boleto>();
 	}
 	
@@ -292,6 +299,7 @@ public class BoletoMB  implements Serializable{
 		this.boleto = new Boleto();
 		this.listaMeusBoletos = new ListDataModel<Boleto>();
 		this.tipoPagoBoleto = -1;
+		this.idPreCadastroBoleto = -1;
 	}
 	
 	public String geraBoleto(){
@@ -308,6 +316,7 @@ public class BoletoMB  implements Serializable{
 			this.popularContasBancarias();			
 			this.buscarPagador();
 			this.popularBoleto();
+			this.popularListaPreCadastroBoleto();
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
@@ -452,8 +461,9 @@ public class BoletoMB  implements Serializable{
 	
 	
 	private void popularBoleto() throws SQLException, Exception{
-		PreCadastroBoleto preCadastroBoleto = this.preCadastroBoletoService.buscarPorIdCondominioEPrincipal(this.boleto.getIdCondominio(), Boolean.TRUE);
+		PreCadastroBoleto preCadastroBoleto = this.preCadastroBoletoService.buscarPorIdCondominioPrincipal(this.boleto.getIdCondominio());
 		if(preCadastroBoleto != null){
+			this.idPreCadastroBoleto = preCadastroBoleto.getId();
 			this.boleto.getBeneficiario().setId(preCadastroBoleto.getBeneficiario().getId());
 			this.boleto.getContaBancaria().setId(preCadastroBoleto.getContaBancaria().getId());
 			this.boleto.setInstrucao1(preCadastroBoleto.getInstrucao1());
@@ -472,11 +482,49 @@ public class BoletoMB  implements Serializable{
 			}
 			this.boleto.setVencimento(vencimentoCalendar.getTime());			
 		}else{
+			this.idPreCadastroBoleto = -1;
 			this.boleto.setTitulo(null);
 			this.boleto.setInstrucao1(null);
 			this.boleto.setInstrucao2(null);
 			this.boleto.setInstrucao3(null);
 			this.boleto.setVencimento(null);
+		}
+	}
+	
+	public void popularBoletoComPreCadastroBoleto() throws SQLException, Exception{
+		PreCadastroBoleto preCadastroBoleto = null;
+		Boolean encontrou = Boolean.FALSE;
+		Iterator<PreCadastroBoleto> iteratorPreCadastroBoleto = this.listaPreCadastroBoleto.iterator();
+		while (!encontrou || iteratorPreCadastroBoleto.hasNext()) {
+			preCadastroBoleto = iteratorPreCadastroBoleto.next();
+			if (this.idPreCadastroBoleto.intValue() == preCadastroBoleto.getId().intValue()){
+				encontrou = Boolean.TRUE;
+				this.boleto.getBeneficiario().setId(preCadastroBoleto.getBeneficiario().getId());
+				this.boleto.getContaBancaria().setId(preCadastroBoleto.getContaBancaria().getId());
+				this.boleto.setInstrucao1(preCadastroBoleto.getInstrucao1());
+				this.boleto.setInstrucao2(preCadastroBoleto.getInstrucao2());
+				this.boleto.setInstrucao3(preCadastroBoleto.getInstrucao3());
+				
+				Date dataVencimento = new Date();
+				Calendar vencimentoCalendar = GregorianCalendar.getInstance();
+				vencimentoCalendar.setTime(dataVencimento);
+				
+				Integer ultimoDiaMesAtual = vencimentoCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+				if(preCadastroBoleto.getDiaMesVencimento() > ultimoDiaMesAtual){
+					vencimentoCalendar.set(Calendar.DAY_OF_MONTH,ultimoDiaMesAtual);			
+				}else{
+					vencimentoCalendar.set(Calendar.DAY_OF_MONTH,preCadastroBoleto.getDiaMesVencimento());
+				}
+				this.boleto.setVencimento(vencimentoCalendar.getTime());			
+			}
+		}
+	}
+	
+	private void popularListaPreCadastroBoleto() throws SQLException, Exception{
+		this.listaPreCadastroBoleto = this.preCadastroBoletoService.buscarPorIdCondominio(this.boleto.getIdCondominio());
+		this.listaSIPreCadastroBoleto = new ArrayList<SelectItem>();
+		for (PreCadastroBoleto preCadastroBoleto : listaPreCadastroBoleto) {
+			this.listaSIPreCadastroBoleto.add(new SelectItem(preCadastroBoleto.getId(), preCadastroBoleto.getNome()));
 		}
 	}
 	
@@ -665,7 +713,22 @@ public class BoletoMB  implements Serializable{
 
 	public void setListaMeusBoletos(ListDataModel<Boleto> listaMeusBoletos) {
 		this.listaMeusBoletos = listaMeusBoletos;
+	}
+
+	public List<SelectItem> getListaSIPreCadastroBoleto() {
+		return listaSIPreCadastroBoleto;
+	}
+
+	public void setListaSIPreCadastroBoleto(List<SelectItem> listaSIPreCadastroBoleto) {
+		this.listaSIPreCadastroBoleto = listaSIPreCadastroBoleto;
+	}
+
+	public Integer getIdPreCadastroBoleto() {
+		return idPreCadastroBoleto;
+	}
+
+	public void setIdPreCadastroBoleto(Integer idPreCadastroBoleto) {
+		this.idPreCadastroBoleto = idPreCadastroBoleto;
 	}	
-	
 
 }

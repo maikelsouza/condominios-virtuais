@@ -254,7 +254,7 @@ public class PreCadastroBoletoDAOImpl implements PreCadastroBoletoDAO, Serializa
 	}
 	
 	@Override
-	public PreCadastroBoleto buscarPorIdCondominioEPrincipal(Integer idCondominio, Boolean principal) throws SQLException, Exception {
+	public List<PreCadastroBoleto> buscarPorIdCondominioEPrincipal(Integer idCondominio, Boolean principal) throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
 		query.append("SELECT * FROM ");
 		query.append(PRE_CADASTRO_BOLETO);
@@ -269,6 +269,7 @@ public class PreCadastroBoletoDAOImpl implements PreCadastroBoletoDAO, Serializa
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;		
 		PreCadastroBoleto preCadastroBoleto = null;
+		List<PreCadastroBoleto> listaPreCadastroBoleto = new ArrayList<PreCadastroBoleto>();
 		try {
 			preparedStatement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, idCondominio, java.sql.Types.INTEGER);			
@@ -285,7 +286,8 @@ public class PreCadastroBoletoDAOImpl implements PreCadastroBoletoDAO, Serializa
 				preCadastroBoleto.setInstrucao3(String.valueOf(SQLUtil.getValorResultSet(resultSet, INSTRUCAO3, java.sql.Types.VARCHAR)));
 				preCadastroBoleto.setPrincipal((Boolean) SQLUtil.getValorResultSet(resultSet, PRINCIPAL, java.sql.Types.BOOLEAN));
 				preCadastroBoleto.setBeneficiario(this.beneficiarioDAO.get().buscarPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_BENEFICIARIO, java.sql.Types.INTEGER), con));				
-				preCadastroBoleto.setContaBancaria(this.contaBancariaDAO.get().buscarPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONTA_BANCARIA, java.sql.Types.INTEGER), con));								
+				preCadastroBoleto.setContaBancaria(this.contaBancariaDAO.get().buscarPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONTA_BANCARIA, java.sql.Types.INTEGER), con));
+				listaPreCadastroBoleto.add(preCadastroBoleto);
 			}
 		} catch (SQLException e) {					
 			throw e;
@@ -299,7 +301,40 @@ public class PreCadastroBoletoDAOImpl implements PreCadastroBoletoDAO, Serializa
 				logger.error("erro sqlstate "+e.getSQLState(), e);
 			}
 		}
-		return preCadastroBoleto;
+		return listaPreCadastroBoleto;
+	}
+
+	@Override
+	public void atualizarPrincipal(Integer id, Boolean principal) throws SQLException, BusinessException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("UPDATE ");
+		query.append(PRE_CADASTRO_BOLETO);
+		query.append(" SET ");
+		query.append(PRINCIPAL);
+		query.append("= ? ");		
+		query.append(" WHERE ");
+		query.append(ID);
+		query.append("= ?");
+		Connection con = C3P0DataSource.getInstance().getConnection();
+		PreparedStatement statement = null;
+		try {
+			statement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(statement, 1, principal, java.sql.Types.BOOLEAN);
+			SQLUtil.setValorPpreparedStatement(statement, 2, id, java.sql.Types.INTEGER);			
+			statement.executeUpdate();			
+		}catch (SQLException e) {
+			throw e;	
+		} catch (Exception e) {					
+			throw e;	
+		}finally{
+			try{				
+				statement.close();
+				con.close();				
+			}catch (SQLException e) {
+				logger.error("erro sqlstate "+e.getSQLState(), e);
+		    }
+		}		
+		
 	}
 
 }

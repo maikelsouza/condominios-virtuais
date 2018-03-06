@@ -1,5 +1,4 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -19,19 +18,24 @@
 						<h:outputLabel value="#{msg.condominio}:" for="idCondominio" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
+										
+					<h:outputLabel value="#{msg.preCadastroBoleto}:" for="idPreCadastroBoleto" />						
+					
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['boleto.contaBancaria']}:" for="idContaBancaria" />						
 						<span class="asterisco">*</span>
-					</h:panelGroup>
-					<h:panelGroup>
-						<h:outputLabel value="#{msg['boleto.beneficiario']}:" for="idBeneficiario" />						
-						<span class="asterisco">*</span>
-					</h:panelGroup>
+					</h:panelGroup>					
                     									        
 					<h:selectOneMenu id="idCondominio" value="#{boletoMB.boleto.idCondominio}" defaultLabel="#{msg['condominio.DefaultLabel']}" required="true" label="#{msg['condominio.label']}">
 						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="true" />
 						<f:selectItems value="#{boletoMB.listaSICondominios}" />
-						<f:ajax listener="#{boletoMB.popularBeneficariosEContasBancarias}" render="idContaBancaria idBeneficiario idVencimento idPagador idInstrucao1 idInstrucao2 idInstrucao3"/>
+						<f:ajax listener="#{boletoMB.popularBeneficariosEContasBancarias}" render="idContaBancaria idBeneficiario idVencimento idPagador idInstrucao1 idInstrucao2 idInstrucao3 idPreCadastroBoleto"/>
+					</h:selectOneMenu>
+					
+					<h:selectOneMenu id="idPreCadastroBoleto" value="#{boletoMB.idPreCadastroBoleto}">
+						<f:selectItem itemLabel="#{msg['preCadastroBoleto.DefaultLabel']}" noSelectionOption="true" />
+						<f:selectItems value="#{boletoMB.listaSIPreCadastroBoleto}" />
+						<f:ajax listener="#{boletoMB.popularBoletoComPreCadastroBoleto}" render="idContaBancaria idBeneficiario idVencimento idPagador idInstrucao1 idInstrucao2 idInstrucao3"/>
 					</h:selectOneMenu>
 										
 					<h:selectOneMenu id="idContaBancaria" value="#{boletoMB.boleto.contaBancaria.id}"
@@ -39,12 +43,11 @@
 						<f:selectItem itemLabel="#{msg['boleto.contaBancaria.DefaultLabel']}" noSelectionOption="true" />						
 						<f:selectItems value="#{boletoMB.listaSIContasBancarias}" />
 					</h:selectOneMenu>
-										
-					<h:selectOneMenu id="idBeneficiario" value="#{boletoMB.boleto.beneficiario.id}"
-						defaultLabel="#{msg['boleto.beneficiario.DefaultLabel']}" required="true" label="#{msg['boleto.beneficiario.label']}">						                     
-						<f:selectItem itemLabel="#{msg['boleto.beneficiario.DefaultLabel']}" noSelectionOption="true" />
-						<f:selectItems value="#{boletoMB.listaSIBeneficiarios}" />
-					</h:selectOneMenu>	
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['boleto.beneficiario']}:" for="idBeneficiario" />						
+						<span class="asterisco">*</span>
+					</h:panelGroup>
 					
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['boleto.pagador']}:" for="idPagador" />
@@ -54,13 +57,13 @@
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['boleto.vencimento']}:" for="idVencimento" />						
 						<span class="asterisco">*</span>
-					</h:panelGroup>
-					
-					<h:panelGroup>
-						<h:outputLabel value="#{msg['boleto.documento']}:" for="idDocumento" />						
-						<span class="asterisco">*</span>
-					</h:panelGroup>	
-						
+					</h:panelGroup>					
+										
+					<h:selectOneMenu id="idBeneficiario" value="#{boletoMB.boleto.beneficiario.id}"
+						defaultLabel="#{msg['boleto.beneficiario.DefaultLabel']}" required="true" label="#{msg['boleto.beneficiario.label']}">						                     
+						<f:selectItem itemLabel="#{msg['boleto.beneficiario.DefaultLabel']}" noSelectionOption="true" />
+						<f:selectItems value="#{boletoMB.listaSIBeneficiarios}" />
+					</h:selectOneMenu>						
 					
 					<h:selectOneMenu id="idPagador" value="#{boletoMB.boleto.condominoVO.id}"
 						defaultLabel="#{msg['boleto.pagador.DefaultLabel']}" required="true" label="#{msg['boleto.pagador.label']}">
@@ -72,32 +75,39 @@
 					<rich:calendar value="#{boletoMB.boleto.vencimento}" id="idVencimento" locale="#{msg.locale}" popup="true" mode="ajax"
 						label="#{msg['boleto.vencimento.label']}" datePattern="#{msg['formatoData']}" cellWidth="24px" cellHeight="22px"
 						style="width:200px" required="true"  boundaryDatesMode="scroll" showFooter="false">
-					</rich:calendar>
+					</rich:calendar>					
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['boleto.documento']}:" for="idDocumento" />						
+						<span class="asterisco">*</span>
+					</h:panelGroup>	
+					
+					<h:outputLabel value="#{msg['boleto.instrucao1']}:" for="idInstrucao1" />			
+					
+					<h:outputLabel value="#{msg['boleto.instrucao2']}:" for="idInstrucao2" />
 					
 					<h:inputText id="idDocumento" value="#{boletoMB.boleto.documento}" label="#{msg['boleto.documento.label']}"
 						required="true" validatorMessage="#{msg['msg.boleto.documento.label']}"/>
-									
-					<h:outputLabel value="#{msg['boleto.instrucao1']}:" for="idInstrucao1" />
-					<h:outputLabel value="#{msg['boleto.instrucao2']}:" for="idInstrucao2" />		
-					<h:outputLabel value="#{msg['boleto.instrucao3']}:" for="idInstrucao3" />
 					
 					<h:inputText id="idInstrucao1" value="#{boletoMB.boleto.instrucao1}" label="#{msg['boleto.idInstrucao1.label']}" size="30"/>
-					<h:inputText id="idInstrucao2" value="#{boletoMB.boleto.instrucao2}" label="#{msg['boleto.idInstrucao2.label']}" size="30" />
-					<h:inputText id="idInstrucao3" value="#{boletoMB.boleto.instrucao3}" label="#{msg['boleto.idInstrucao3.label']}" size="30"/>					
+					
+					<h:inputText id="idInstrucao2" value="#{boletoMB.boleto.instrucao2}" label="#{msg['boleto.idInstrucao2.label']}" size="30" />				
+							
+					<h:outputLabel value="#{msg['boleto.instrucao3']}:" for="idInstrucao3" />
 					
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['boleto.valor']}:" for="idValor" />						
 						<span class="asterisco">*</span>
-					</h:panelGroup>						
+					</h:panelGroup>		
+					
 					<h:outputLabel value="" />
-					<h:outputLabel value="" />
+					
+					<h:inputText id="idInstrucao3" value="#{boletoMB.boleto.instrucao3}" label="#{msg['boleto.idInstrucao3.label']}" size="30"/>	
 					
 					<h:inputText id="idValor" value="#{boletoMB.boleto.valor}" label="#{msg['boleto.valor.label']}" required="true" >
 						<f:validateDoubleRange minimum="0" for="idValor" />
 						<f:convertNumber pattern="#{msg.formatoMoeda}" />
 					</h:inputText>
-					
-					
 					
 				 </h:panelGrid>	
 			</rich:panel>	 	

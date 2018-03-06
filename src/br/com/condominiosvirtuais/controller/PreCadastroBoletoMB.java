@@ -154,6 +154,25 @@ public class PreCadastroBoletoMB implements Serializable {
 		}
 	}
 	
+	public void editarTornarPrincipalPreCadastroBoleto(){
+		try{
+			this.preCadastroBoleto = this.listaPreCadastroBoletos.getRowData();
+			this.preCadastroBoletoService.tornarPrincipal(this.preCadastroBoleto);
+			this.pesquisar();
+			ManagedBeanUtil.setMensagemInfo("msg.preCadastroBoleto.principalAtualizadoSucesso");
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (BusinessException e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}
+		//return "atualizarPrincipal";
+	}
+	
 	public String cadastroPreCadastroBoleto(){
 		this.preCadastroBoleto = new PreCadastroBoleto();
 		return "cadastrar";
