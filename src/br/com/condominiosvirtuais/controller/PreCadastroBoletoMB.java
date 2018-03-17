@@ -169,8 +169,7 @@ public class PreCadastroBoletoMB implements Serializable {
 		} catch (Exception e) {
 			logger.error("", e);
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
-		}
-		//return "atualizarPrincipal";
+		}		
 	}
 	
 	public String cadastroPreCadastroBoleto(){
@@ -229,7 +228,7 @@ public class PreCadastroBoletoMB implements Serializable {
 		List<ContaBancaria> listaContaBancaria = this.contaBancariaService.buscarPorIdCondominioESituacao(this.preCadastroBoleto.getIdCondominio(),Boolean.TRUE);
 		this.listaSIContasBancarias = new ArrayList<SelectItem>();
 		for (ContaBancaria contaBancaria : listaContaBancaria) {
-			this.listaSIContasBancarias.add(new SelectItem(contaBancaria.getId(), contaBancaria.getAgencia() + " " + contaBancaria.getNumero()));
+			this.listaSIContasBancarias.add(new SelectItem(contaBancaria.getId(), contaBancaria.getDescricao()));
 		}			
 		
 	}	

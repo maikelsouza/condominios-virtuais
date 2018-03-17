@@ -57,6 +57,16 @@
 					<h:selectOneRadio id="idSituacao" value="#{contaBancariaMB.situacaoContaBancaria}" required="true" label="#{msg['contaBancaria.situacao.label']}">
 						<f:selectItems value="#{contaBancariaMB.listaSISituacao}" />
 					</h:selectOneRadio>
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['contaBancaria.descricao']}:" for="idDescricao" />						
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					
+					<h:outputLabel value=""/>
+					<h:outputLabel value="" />
+					
+					<h:inputText id="idDescricao" value="#{contaBancariaMB.contaBancaria.descricao}" required="true" label="#{msg['contaBancaria.descricao.label']}" size="40"/>
 				 </h:panelGrid> 
 			</rich:panel>
 			

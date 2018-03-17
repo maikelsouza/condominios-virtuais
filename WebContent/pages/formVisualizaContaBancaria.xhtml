@@ -25,6 +25,8 @@
 				    <h:outputText id="idNumero" value="#{contaBancariaMB.contaBancaria.numero}"  />
 					<h:outputLabel value="#{msg['contaBancaria.carteira']}:" for="idCarteira" />
 					<h:outputText id="idCarteira" value="#{contaBancariaMB.contaBancaria.carteira}"  />
+					<h:outputLabel value="#{msg['contaBancaria.descricao']}:" for="idDescricao" />
+					<h:outputText id="idDescricao" value="#{contaBancariaMB.contaBancaria.descricao}"  />
 					<h:outputLabel value="#{msg['contaBancaria.situacao']}:" for="idSituacao" />
 					<h:outputText id="idSituacao" value="#{contaBancariaMB.contaBancaria.situacao == true ? msg['contaBancaria.situacao.1'] : msg['contaBancaria.situacao.0']}"  />
 					<h:outputLabel value="#{msg['contaBancaria.configuracaoPadraoContaBancaria.multa']}:" for="idMulta" rendered="#{contaBancariaMB.contaBancaria.configuracaoPadraoContaBancaria.multa != 0.0}"/>
