@@ -16,15 +16,19 @@ public class ConfiguracaoPadraoContaBancaria {
 	
 	private Integer diasConcederDescontoAteVencimento = 0;
 	
-	private String instrucaoPadrao;
+	private String instrucaoPadrao;	
 	
-	private Integer idTipoTitulo;
+	private TipoTitulo tipoTitulo;
 	
 	private Integer idContaBancaria;
 	
 	private Boolean aceite;
 	
 	private String siglaMaisNomeTipoTitulo;
+	
+	public ConfiguracaoPadraoContaBancaria(){
+		this.tipoTitulo = new TipoTitulo();
+	}
 
 	public Integer getId() {
 		return id;
@@ -98,14 +102,6 @@ public class ConfiguracaoPadraoContaBancaria {
 		this.aceite = aceite;
 	}
 
-	public Integer getIdTipoTitulo() {
-		return idTipoTitulo;
-	}
-
-	public void setIdTipoTitulo(Integer idTipoTitulo) {
-		this.idTipoTitulo = idTipoTitulo;
-	}
-
 	public Integer getIdContaBancaria() {
 		return idContaBancaria;
 	}
@@ -121,6 +117,13 @@ public class ConfiguracaoPadraoContaBancaria {
 	public void setSiglaMaisNomeTipoTitulo(String siglaMaisNomeTipoTitulo) {
 		this.siglaMaisNomeTipoTitulo = siglaMaisNomeTipoTitulo;
 	}
-	
+
+	public TipoTitulo getTipoTitulo() {
+		return tipoTitulo;
+	}
+
+	public void setTipoTitulo(TipoTitulo tipoTitulo) {
+		this.tipoTitulo = tipoTitulo;
+	}	
 
 }

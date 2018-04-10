@@ -88,7 +88,7 @@ public class CondominoServiceImpl implements CondominoService, Serializable{
 			for (Unidade unidade : bloco.getListaUnidade()) {
 				for (Condomino condomino : unidade.getListaCondominos()) {
 					condominoVO = new CondominoVO();
-					condominoVO.setId(condomino.getId());
+					condominoVO.setId(condomino.getId());					
 					condominoVO.setNomeBloco(bloco.getNome());
 					condominoVO.setNumeroUnidade(unidade.getNumero());
 					condominoVO.setNomeCondomino(condomino.getNome());

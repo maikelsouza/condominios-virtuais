@@ -124,9 +124,50 @@
 				<h:commandButton value="#{msg.botaoLimpar}" actionListener="#{boletoMB.limparGerarBoleto}" />
 				<h:commandButton value="#{msg.botaoCancelar}" action="#{boletoMB.cancelarGerarBoleto}" immediate="true" />
 			</h:panelGrid>	
+		
+			<rich:panel header="#{msg.listaMsgErro}">				
+				<div>
+					<rich:dataTable value="#{boletoMB.listaErros}" var="erro" rowClasses="odd-row, even-row" styleClass="stable"
+						id="tableErro" style="width:100%;" rows="10" rendered="#{boletoMB.listaErros.rowCount > 0}">
+						<rich:column>
+							<f:facet name="header">
+								<h:outputLabel value="#{msg['erro.mensagemErro']}:" for="idMensagemErro" />									          
+							</f:facet>
+							<h:outputText id="idMensagemErro" value="#{erro.mensagemErro}" />
+						</rich:column>						
+						<rich:column>
+							<f:facet name="header">
+								<h:outputLabel value="#{msg['erro.nomeBloco']}:" for="idNomeBloco" />
+							</f:facet>
+							<h:outputText id="idNomeBloco" value="#{erro.nomeBloco}" />
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:outputLabel value="#{msg['erro.numeroUnidade']}:" for="idNumeroUnidade" />
+							</f:facet>
+							<h:outputText id="idNumeroUnidade" value="#{erro.numeroUnidade}" />
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:outputLabel value="#{msg['erro.variavel01MensagemErro']}:" for="idVariavel01MensagemErro" />
+							</f:facet>
+							<h:outputText id="idVariavel01MensagemErro" value="#{erro.variavelMensagemErro}" />
+						</rich:column>
+					</rich:dataTable>	
+						
+							
+				</div>
+			</rich:panel>			
+		</h:form>
+
+		<rich:jQuery selector=".stable tr:odd" query="addClass('odd-row')" />
+		<rich:jQuery selector=".stable tr:even" query="addClass('even-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseover" query="jQuery(this).addClass('active-row')" />
+		<rich:jQuery selector=".stable tr" event="mouseout" query="jQuery(this).removeClass('active-row')" />
+		
 			
 			
-		</h:form>		
+			
 		
 	</ui:define>
 

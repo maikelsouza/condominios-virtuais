@@ -1,5 +1,6 @@
 package br.com.condominiosvirtuais.persistence;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -9,4 +10,6 @@ public interface TipoTituloDAO {
 
 	
 	public abstract List<TipoTitulo> buscarPorSituacao(Boolean situacao) throws SQLException, Exception;
+	
+	public abstract TipoTitulo buscarPorId(Integer id, Connection con) throws SQLException, Exception;
 }

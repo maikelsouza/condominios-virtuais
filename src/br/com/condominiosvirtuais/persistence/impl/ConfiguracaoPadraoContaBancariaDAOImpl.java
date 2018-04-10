@@ -6,11 +6,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.inject.Inject;
+
 import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.ConfiguracaoPadraoContaBancaria;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.persistence.ConfiguracaoPadraoContaBancariaDAO;
+import br.com.condominiosvirtuais.persistence.TipoTituloDAO;
 import br.com.condominiosvirtuais.util.SQLUtil;
 
 public class ConfiguracaoPadraoContaBancariaDAOImpl implements ConfiguracaoPadraoContaBancariaDAO, Serializable {
@@ -47,6 +50,9 @@ public class ConfiguracaoPadraoContaBancariaDAOImpl implements ConfiguracaoPadra
 	
 	private static final String  FK_CONFIG_PADRAO_CONTA_BANC_ID_TIPO_TITULO_TIPO_TITULO_ID = "FK_CONFIG_PADRAO_CONTA_BANC_ID_TIPO_TITULO_TIPO_TITULO_ID";
 
+	@Inject
+	private TipoTituloDAO tipoTituloDAO; 
+	
 	@Override
 	public void salvar(ConfiguracaoPadraoContaBancaria configuracaoPadraoContaBancaria, Connection con) throws SQLException, BusinessException, Exception {		
 		StringBuffer query = new StringBuffer();
@@ -86,7 +92,7 @@ public class ConfiguracaoPadraoContaBancariaDAOImpl implements ConfiguracaoPadra
 			SQLUtil.setValorPpreparedStatement(statement, 7, configuracaoPadraoContaBancaria.getInstrucaoPadrao(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement, 8, configuracaoPadraoContaBancaria.getAceite(), java.sql.Types.BOOLEAN);
 			SQLUtil.setValorPpreparedStatement(statement, 9, configuracaoPadraoContaBancaria.getIdContaBancaria(), java.sql.Types.INTEGER);
-			SQLUtil.setValorPpreparedStatement(statement, 10, configuracaoPadraoContaBancaria.getIdTipoTitulo(), java.sql.Types.INTEGER);
+			SQLUtil.setValorPpreparedStatement(statement, 10, configuracaoPadraoContaBancaria.getTipoTitulo().getId(), java.sql.Types.INTEGER);
 			statement.executeUpdate();
 		}catch (SQLException e) {
 			con.rollback();
@@ -128,7 +134,7 @@ public class ConfiguracaoPadraoContaBancariaDAOImpl implements ConfiguracaoPadra
 				configuracaoPadraoContaBancaria.setAceite((Boolean) SQLUtil.getValorResultSet(resultSet, ACEITE, java.sql.Types.BOOLEAN));
 				configuracaoPadraoContaBancaria.setPermitirEmitirBoletoSemValor((Boolean) SQLUtil.getValorResultSet(resultSet, PERMITIR_EMITIR_BOLETO_SEM_VALOR, java.sql.Types.BOOLEAN));
 				configuracaoPadraoContaBancaria.setIdContaBancaria((Integer) SQLUtil.getValorResultSet(resultSet, ID_CONTA_BANCARIA, java.sql.Types.INTEGER));
-				configuracaoPadraoContaBancaria.setIdTipoTitulo((Integer) SQLUtil.getValorResultSet(resultSet, ID_TIPO_TITULO, java.sql.Types.INTEGER));
+				configuracaoPadraoContaBancaria.setTipoTitulo(this.tipoTituloDAO.buscarPorId((Integer) SQLUtil.getValorResultSet(resultSet, ID_TIPO_TITULO, java.sql.Types.INTEGER), con));
 			}
 		} catch (SQLException e) {
 			throw e;
@@ -182,7 +188,7 @@ public class ConfiguracaoPadraoContaBancariaDAOImpl implements ConfiguracaoPadra
 			SQLUtil.setValorPpreparedStatement(statement,7, configuracaoPadraoContaBancaria.getInstrucaoPadrao(), java.sql.Types.VARCHAR);
 			SQLUtil.setValorPpreparedStatement(statement,8, configuracaoPadraoContaBancaria.getAceite(), java.sql.Types.BOOLEAN);
 			SQLUtil.setValorPpreparedStatement(statement,9, configuracaoPadraoContaBancaria.getIdContaBancaria(), java.sql.Types.INTEGER);			
-			SQLUtil.setValorPpreparedStatement(statement,10, configuracaoPadraoContaBancaria.getIdTipoTitulo(), java.sql.Types.INTEGER);			
+			SQLUtil.setValorPpreparedStatement(statement,10, configuracaoPadraoContaBancaria.getTipoTitulo().getId(), java.sql.Types.INTEGER);			
 			SQLUtil.setValorPpreparedStatement(statement,11, configuracaoPadraoContaBancaria.getId(), java.sql.Types.INTEGER);			
 			statement.executeUpdate();
 			con.commit();

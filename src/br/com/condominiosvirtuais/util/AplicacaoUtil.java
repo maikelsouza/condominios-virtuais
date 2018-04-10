@@ -100,7 +100,7 @@ public abstract class AplicacaoUtil {
 	}
 	
 	public static String formatarCpf(Long cpf){
-		String cpfString = String.valueOf(cpf);
+		String cpfString = cpf != null ? String.valueOf(cpf) : "0";
 		cpfString = AplicacaoUtil.completaZerosAEsquerta(cpfString, 11);
 		String cpfStringRetorno = cpfString.substring(0, 3) + "." + cpfString.substring(3, 6) + "." + cpfString.substring(6,9) + "-" + cpfString.substring(9,cpfString.length());	
 		return cpfStringRetorno;

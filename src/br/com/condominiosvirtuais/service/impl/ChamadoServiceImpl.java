@@ -40,11 +40,6 @@ public class ChamadoServiceImpl implements ChamadoService, Serializable {
 		Condomino sindicoGeral = this.condominoService.buscarSindicoGeralPorCondominio(chamado.getCondominio());
 		email.setPara(sindicoGeral.getEmail().getEmail());
 		email.setAssunto(AplicacaoUtil.i18n("msg.chamado.abertura.assunto"));
-// TODO Código comentado em 05/08/20016. Apagar em 90 dias		
-//		Object[] parametros = new Object[2];
-//		parametros[0] = sindicoGeral.getNome();
-//		parametros[1] = chamado.getNome();
-//		email.setMensagem(AplicacaoUtil.i18n("msg.aberturaChamado.mensagem", parametros));
 		email.setMensagem(MensagensEmailUtil.aberturaChamado(chamado, sindicoGeral.getNome()));
 		this.emailService.salvar(email);
 	}

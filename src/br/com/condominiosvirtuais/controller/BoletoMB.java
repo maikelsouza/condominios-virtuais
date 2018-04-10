@@ -40,6 +40,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import br.com.condominiosvirtuais.entity.Beneficiario;
 import br.com.condominiosvirtuais.entity.Boleto;
 import br.com.condominiosvirtuais.entity.ContaBancaria;
+import br.com.condominiosvirtuais.entity.Erro;
 import br.com.condominiosvirtuais.entity.PreCadastroBoleto;
 import br.com.condominiosvirtuais.enumeration.ArquivoExtensaoEnum;
 import br.com.condominiosvirtuais.enumeration.ConfiguracaoAplicacaoEnum;
@@ -103,6 +104,8 @@ public class BoletoMB  implements Serializable{
 	
 	private ListDataModel<Boleto> listaMeusBoletos;
 	
+	private ListDataModel<Erro> listaErros;
+	
 	private List<Beneficiario> listaBeneficiarios;
 	
 	private List<ContaBancaria> listaContaBancaria;
@@ -118,6 +121,8 @@ public class BoletoMB  implements Serializable{
 	private Integer tipoPagoBoleto = -1;
 	
 	private Integer idPreCadastroBoleto;
+
+	private List<Erro> listaErro = null;
 	
 	
 	
@@ -129,6 +134,7 @@ public class BoletoMB  implements Serializable{
 	@PostConstruct
 	public void iniciarBoletoMB(){
 		this.listaSICondominios = this.condominioMB.get().buscarListaCondominiosAtivos();
+		this.listaErros = new ListDataModel<Erro>();
 		this.popularTitulos();
 		this.popularPago();
 	}
@@ -139,33 +145,62 @@ public class BoletoMB  implements Serializable{
 				ManagedBeanUtil.setMensagemErro("msg.boleto.vencimentoMenorEmissao");
 				return null;
 			}else{
+				Integer idCondomino = this.boleto.getCondominoVO().getId(); 
+				this.listaErro = new ArrayList<Erro>();
 				this.boleto.setPago(Boolean.FALSE);
 				this.popularBeneficiario();
 				this.popularContasBancaria();
-				if(this.boleto.getCondominoVO().getId() == -1){
+				
+				if(idCondomino == -1){
+					if (this.listaSIPagadores.isEmpty()){
+						ManagedBeanUtil.setMensagemErro("msg.boleto.semPagadorCadastrado");
+						return null;
+					}
 					for (SelectItem pagador : this.listaSIPagadores) {
 						this.boleto.getCondominoVO().setId((Integer) pagador.getValue());
 						this.popularPagador();
-						this.criarBoleto();						
-						this.boletoService.salvar(this.boleto);
+						if(this.validarDadosBoleto()){
+							this.criarBoleto();
+							this.boletoService.salvar(this.boleto);
+						}						
 					}					
 				}else{
 					this.popularPagador();
-					this.criarBoleto();
-					this.boletoService.salvar(this.boleto);					
+					if (this.validarDadosBoleto()){
+						this.criarBoleto();
+						this.boletoService.salvar(this.boleto);
+					}									
 				}
 				if(this.dataVencimentoDe == null || this.dataVencimentoAte == null){
 					this.popularPesquisaDataVencimento();
-				}				 
-				this.pesquisar();				
-				ManagedBeanUtil.setMensagemInfo("msg.boleto.geradoSucesso");				
+				}	
+				this.listaErros = new ListDataModel<Erro>(this.listaErro);
+				if (idCondomino == -1){
+					if (this.listaErros.getRowCount() == 0){
+						ManagedBeanUtil.setMensagemInfo("msg.boleto.geradoSucesso");
+					}else if (this.listaErros.getRowCount() == this.listaSIPagadores.size()){
+						ManagedBeanUtil.setMensagemErro("msg.boleto.naoGeradoSucesso");
+						return null;
+					}else{
+						ManagedBeanUtil.setMensagemWarn("msg.boleto.geradoSucessoMasComErro");
+						return null;
+					}
+				}else{
+					if (this.listaErros.getRowCount() == 0){
+						ManagedBeanUtil.setMensagemInfo("msg.boleto.geradoSucesso");
+					}else{
+						ManagedBeanUtil.setMensagemErro("msg.boleto.naoGeradoSucesso");
+						return null;
+					}					
+				}
+				this.pesquisar();
 			}
 		}catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
 			return null;
 		} catch (BusinessException e) {
-			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao",e.getVariavelNaoI18n() != null ? e.getVariavelNaoI18n() : "");
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao",e.getCause() != null ? e.getCause().getMessage() : "");
 			logger.error("", e);			
 			return null;
 		} catch (Exception e) {
@@ -360,13 +395,39 @@ public class BoletoMB  implements Serializable{
 		responseServlet.flushBuffer();
 		FacesContext.getCurrentInstance().responseComplete();		
 	}
+	
+	private Boolean validarDadosBoleto(){
+		Boolean boletoValido = Boolean.TRUE;
+		Erro erro = null;		
+		String cpf = AplicacaoUtil.formatarCpf(this.boleto.getCondominoVO().getCpfCondomino());
+		if (!AplicacaoUtil.validaExpressaoRegular("(^\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}$)", cpf)){
+			erro = new Erro();
+			erro.setMensagemErro(AplicacaoUtil.i18n("msg.boleto.boletoNaoGeradoCpfPagadorInvalido"));
+			erro.setVariavelMensagemErro(this.boleto.getCondominoVO().getNomeCondomino());			
+			erro.setNomeBloco(this.boleto.getCondominoVO().getNomeBloco());
+			erro.setNumeroUnidade(this.boleto.getCondominoVO().getNumeroUnidade());
+			this.listaErro.add(erro);			
+			boletoValido = Boolean.FALSE;
+		}if(cpf.equals("000.000.000-00") || cpf.equals("111.111.111-11") || cpf.equals("222.222.222-22") || cpf.equals("333.333.333-33")
+			 ||	cpf.equals("444.444.444-44") || cpf.equals("555.555.555-55") || cpf.equals("666.666.666-66") || cpf.equals("777.777.777-77")
+			 || cpf.equals("888.888.888-88") || cpf.equals("999.999.999-99")){
+			erro = new Erro();
+			erro.setMensagemErro(AplicacaoUtil.i18n("msg.boleto.boletoNaoGeradoCpfPagadorInvalido"));
+			erro.setVariavelMensagemErro(this.boleto.getCondominoVO().getNomeCondomino());			
+			erro.setNomeBloco(this.boleto.getCondominoVO().getNomeBloco());
+			erro.setNumeroUnidade(this.boleto.getCondominoVO().getNumeroUnidade());
+			this.listaErro.add(erro);
+			boletoValido = Boolean.FALSE;
+		}
+		return boletoValido;
+	}
 		
 		
 	private void criarBoleto() throws JsonProcessingException, IOException, BusinessException, Exception{
 		
 		Form formBoleto = new Form();
 		formBoleto.param("boleto.conta.token",this.boleto.getContaBancaria().getToken());
-		System.out.println("Banco: " + this.boleto.getContaBancaria().getBanco().getNome());
+		System.out.println("Banco: " + this.boleto.getContaBancaria().getConfiguracaoPadraoContaBancaria().getTipoTitulo().getSigla());
 		System.out.println("Token: " + this.boleto.getContaBancaria().getToken());
 
 		formBoleto.param("boleto.emissao", AplicacaoUtil.formatarData(AplicacaoUtil.i18n("formatoDataBoletoCloud"), this.boleto.getEmissao()));
@@ -388,31 +449,14 @@ public class BoletoMB  implements Serializable{
 		formBoleto.param("boleto.instrucao",this.boleto.getInstrucao2());
 		formBoleto.param("boleto.instrucao",this.boleto.getInstrucao3());
 		
-// TODO: Código comentado em 29/03/2017. Apagar em 180 dias		
-//		formBoleto.param("boleto.conta.banco",this.boleto.getContaBancaria().getBanco().getCodigo());
-//		formBoleto.param("boleto.conta.agencia",this.boleto.getContaBancaria().getAgencia());
-//		formBoleto.param("boleto.conta.numero",this.boleto.getContaBancaria().getNumero());
-//		formBoleto.param("boleto.conta.carteira",this.boleto.getContaBancaria().getCarteira());
-//		formBoleto.param("boleto.beneficiario.nome",this.boleto.getBeneficiario().getNome());
-//		formBoleto.param("boleto.beneficiario.cprf",AplicacaoUtil.formatarCnpj(this.boleto.getBeneficiario().getCprf()));
-//		formBoleto.param("boleto.beneficiario.endereco.cep",AplicacaoUtil.formatarCep(this.boleto.getBeneficiario().getEndereco().getCep()));
-//		formBoleto.param("boleto.beneficiario.endereco.uf",this.boleto.getBeneficiario().getEndereco().getUf());
-//		formBoleto.param("boleto.beneficiario.endereco.localidade",this.boleto.getBeneficiario().getEndereco().getCidade());
-//		formBoleto.param("boleto.beneficiario.endereco.bairro",this.boleto.getBeneficiario().getEndereco().getBairro());
-//		formBoleto.param("boleto.beneficiario.endereco.logradouro",this.boleto.getBeneficiario().getEndereco().getEndereco());
-//		formBoleto.param("boleto.beneficiario.endereco.numero",String.valueOf(this.boleto.getBeneficiario().getEndereco().getNumero()));
-//		formBoleto.param("boleto.beneficiario.endereco.complemento",this.boleto.getBeneficiario().getEndereco().getComplemento());
-//		formBoleto.param("boleto.numero",this.boleto.getNumero());
+
 		
 		
 		Response response = ClientBuilder.newClient().target("https://sandbox.boletocloud.com/api/v1").path("/boletos")
 				.register(HttpAuthenticationFeature.basic(configuracaoAplicacaoService.getConfiguracoes().get(ConfiguracaoAplicacaoEnum.TOKEN_BOLETO_CLOUD.getChave()),"token"))
 				.request(MediaType.WILDCARD).post(Entity.form(formBoleto));
 		
-//		Response response = ClientBuilder.newClient().target("https://sandbox.boletocloud.com/api/v1/boletos").path("DUSCnyu7Wd1MOlaVgGnPpbXbcjs1e6j2PoGXJwrpwck=")
-//				.register(HttpAuthenticationFeature.basic(configuracaoAplicacaoService.getConfiguracoes().get(ConfiguracaoAplicacaoEnum.TOKEN_BOLETO_CLOUD.getChave()),"token"))
-//				.request(MediaType.WILDCARD).get();
-		
+
 		
 		if (response.getStatus() != Status.CREATED.getStatusCode()){			
 			String entityResponse = response.readEntity(String.class);
@@ -729,6 +773,16 @@ public class BoletoMB  implements Serializable{
 
 	public void setIdPreCadastroBoleto(Integer idPreCadastroBoleto) {
 		this.idPreCadastroBoleto = idPreCadastroBoleto;
+	}
+
+	public ListDataModel<Erro> getListaErros() {
+		return listaErros;
+	}
+
+	public void setListaErros(ListDataModel<Erro> listaErros) {
+		this.listaErros = listaErros;
 	}	
+	
+	
 
 }

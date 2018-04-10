@@ -29,7 +29,7 @@ public class TipoTituloDAOImpl implements TipoTituloDAO, Serializable {
 	private static final String NOME = "NOME";
 	
 	private static final String SITUACAO = "SITUACAO";
-
+	
 	@Override
 	public List<TipoTitulo> buscarPorSituacao(Boolean situacao) throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
@@ -68,6 +68,36 @@ public class TipoTituloDAOImpl implements TipoTituloDAO, Serializable {
 		    }
 		}
 		return listaTipoTitulo;		
+	}
+
+	@Override
+	public TipoTitulo buscarPorId(Integer id, Connection con) throws SQLException, Exception {
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT * FROM ");
+		query.append(TIPO_TITULO);
+		query.append(" WHERE ");
+		query.append(ID);		
+		query.append(" = ?");
+		query.append(";");
+		PreparedStatement preparedStatement = null;
+		TipoTitulo tipoTitulo = null;
+		try {
+			preparedStatement = con.prepareStatement(query.toString());
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, id, java.sql.Types.INTEGER);			
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){				
+				tipoTitulo = new TipoTitulo();				
+				tipoTitulo.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
+				tipoTitulo.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
+				tipoTitulo.setSigla(String.valueOf(SQLUtil.getValorResultSet(resultSet, SIGLA, java.sql.Types.VARCHAR)));				
+				tipoTitulo.setSituacao((Boolean) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.BOOLEAN));
+			}		
+		} catch (SQLException e) {			
+			throw e;
+		} catch (Exception e) {					
+			throw e;
+		}
+		return tipoTitulo;		
 	}
 
 }

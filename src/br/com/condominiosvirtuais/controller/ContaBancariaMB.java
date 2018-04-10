@@ -259,7 +259,7 @@ public class ContaBancariaMB implements Serializable {
 		Integer index = 0;
 		while(!encontrou){
 			selectItem  = this.listaSITipoTitulo.get(index++);
-			if(this.contaBancaria.getConfiguracaoPadraoContaBancaria().getIdTipoTitulo().intValue() == ((Integer) selectItem.getValue()).intValue()){
+			if(this.contaBancaria.getConfiguracaoPadraoContaBancaria().getTipoTitulo().getId().intValue() == ((Integer) selectItem.getValue()).intValue()){
 				this.contaBancaria.getConfiguracaoPadraoContaBancaria().setSiglaMaisNomeTipoTitulo(selectItem.getLabel());
 				encontrou = Boolean.TRUE;
 			}

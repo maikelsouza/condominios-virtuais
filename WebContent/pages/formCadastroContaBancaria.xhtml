@@ -104,7 +104,7 @@
 							<f:selectItem itemLabel="#{msg.nao}" itemValue="#{false}"/>
 						</h:selectOneMenu>	
 											
-						<h:selectOneMenu id="idTipoTitulo" value="#{contaBancariaMB.contaBancaria.configuracaoPadraoContaBancaria.idTipoTitulo}"
+						<h:selectOneMenu id="idTipoTitulo" value="#{contaBancariaMB.contaBancaria.configuracaoPadraoContaBancaria.tipoTitulo.id}"
 							defaultLabel="#{msg['contaBancaria.configuracaoPadraoContaBancaria.tipoTitulo.DefaultLabel']}" required="true" label="#{msg['contaBancaria.configuracaoPadraoContaBancaria.tipoTitulo.label']}">
 							<f:selectItems value="#{contaBancariaMB.listaSITipoTitulo}" />
 						</h:selectOneMenu>
