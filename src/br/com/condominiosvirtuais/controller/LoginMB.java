@@ -96,8 +96,6 @@ public class LoginMB implements Serializable{
 				return null;
 			}
 			
-
-			
 			this.salvarDataHoraLogin();			
 		}catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
@@ -298,51 +296,21 @@ public class LoginMB implements Serializable{
 //		return exibeMenuArquivo;
 //	}
 	
-	/**
-	 * FIXME: Método criado para atender o condomínio Quinta do Horto (id 19)
-	 * Esse deverá ser removido após criar os grupos de usuários e suas autorizações.
-	 * @return True: - Exibe - False: Não exibe 
-	 */
-
-	public Boolean exibeMenuEscreverMensagemQuintaDoHorto(){
-		Boolean exibeMenuEscreverMensagem = Boolean.TRUE;
-		for (Condominio condominio : this.usuario.getListaCondominio()) {
-			if (condominio.getId() == 19){ // Caso seja o condomínio Quinta do Horto, então não deve exibir a opção de escrever mensagens para os condôminos
-				exibeMenuEscreverMensagem = Boolean.FALSE;
-				// id usuário síndico  José de Oliveira Júnior
-				if(this.usuario.getId() == 236 || this.usuario.getId() == 1){
-					exibeMenuEscreverMensagem = Boolean.TRUE;
-				}
-			}			
-		}
-		return exibeMenuEscreverMensagem;
-	}
+	
 	
 	/**
 	 * FIXME: Método criado para atender o condomínio Quinta do Horto (id 19)
 	 * Esse deverá ser removido após criar os grupos de usuários e suas autorizações.
 	 * @return True: - Exibe - False: Não exibe 
 	 */
-	public Boolean exibeMenuArquivoContadorQuintaDoHorto(){
-		Boolean exibeMenuArquivo = Boolean.FALSE;
-		if(this.usuario.getId() == 365){
-			exibeMenuArquivo = Boolean.TRUE;
-		}		
-		return exibeMenuArquivo;
-	}
-	
-	/**
-	 * FIXME: Método criado para atender o condomínio Quinta do Horto (id 19)
-	 * Esse deverá ser removido após criar os grupos de usuários e suas autorizações.
-	 * @return True: - Exibe - False: Não exibe 
-	 */
-	public Boolean exibeMenuListaReservaQuintaDoHorto(){
-		Boolean exibeMenuArquivo = Boolean.FALSE;
-		if(this.usuario.getId() == 368 || this.usuario.getId() == 369 || this.usuario.getId() == 425 || this.usuario.getId() == 469 || this.usuario.getId() == 514){
-			exibeMenuArquivo = Boolean.TRUE;
-		}		
-		return exibeMenuArquivo;
-	}
+// TODO: Código comentado em 11/04/2018. Apagar em 180 dias	
+//	public Boolean exibeMenuListaReservaQuintaDoHorto(){
+//		Boolean exibeMenuArquivo = Boolean.FALSE;
+//		if(this.usuario.getId() == 368 || this.usuario.getId() == 369 || this.usuario.getId() == 425 || this.usuario.getId() == 469 || this.usuario.getId() == 514){
+//			exibeMenuArquivo = Boolean.TRUE;
+//		}		
+//		return exibeMenuArquivo;
+//	}
 
 
 	

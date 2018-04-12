@@ -21,7 +21,7 @@ public class C3P0DataSource {
 	 private C3P0DataSource() throws PropertyVetoException {
 		 this.comboPooledDataSource = new ComboPooledDataSource();
 	     this.comboPooledDataSource.setDriverClass("com.mysql.jdbc.Driver");
-	     //this.comboPooledDataSource.setJdbcUrl("jdbc:mysql://localhost:3306/condvirtuais");	    
+	   //  this.comboPooledDataSource.setJdbcUrl("jdbc:mysql://localhost:3306/condvirtuais");	    
 	     this.comboPooledDataSource.setJdbcUrl("jdbc:mysql://179.188.20.249:3306/condvirtuais");
 	     this.comboPooledDataSource.setUser("aplicacao");
 	     this.comboPooledDataSource.setPassword("mkl862");	 
