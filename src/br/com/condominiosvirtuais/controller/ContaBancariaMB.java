@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -245,7 +246,7 @@ public class ContaBancariaMB implements Serializable {
 	
 	private void popularListaSiTipoTitulo() throws SQLException, Exception{
 		this.listaSITipoTitulo = new ArrayList<SelectItem>();		
-		List<TipoTitulo> listaTipoTitulo = tipoTituloService.buscarPorSituacao(TipoTituloSituacaoEnum.ATIVO.getSituacao());
+		List<TipoTitulo> listaTipoTitulo = tipoTituloService.buscarPorSituacao(TipoTituloSituacaoEnum.ATIVO.getSituacao(), AplicacaoUtil.getLocale().toString());
 		for (TipoTitulo tipoTitulo : listaTipoTitulo) {
 			this.listaSITipoTitulo.add(new SelectItem(tipoTitulo.getId(), tipoTitulo.getSigla() + " - " +tipoTitulo.getNome()));
 		}		

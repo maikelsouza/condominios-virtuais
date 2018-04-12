@@ -19,7 +19,7 @@ INSERT INTO TELA VALUES
 (DEFAULT,'formMeusBoletos','formMeusBoletosDescricao','formMeusBoletos.xhtml',17);
 
 
-          
+-- Inserts não forma feitos nessa versão, pois essas telas não serão exibidas nessa versão.          
 INSERT INTO GRUPO_USUARIO_TELA VALUES 
 (DEFAULT,1,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formCadastroContaBancaria.xhtml')),
 (DEFAULT,1,(SELECT ID FROM TELA WHERE NOME_ARQUIVO = 'formListaContaBancaria.xhtml')),
@@ -132,38 +132,38 @@ CREATE TABLE IF NOT EXISTS CONFIGURACAO_PADRAO_CONTA_BANCARIA(
 );
 
 INSERT INTO TIPO_TITULO VALUES
-(DEFAULT,'AP','Apólice de Seguro',1),
-(DEFAULT,'CC','Cartão de Crédito',1),
-(DEFAULT,'CH','Cheque',1),
-(DEFAULT,'CPR','Cédula de Produto RuraL',1),
-(DEFAULT,'DAE','Dívida Ativa de Estado',1),
-(DEFAULT,'DAM','Dívida Ativa de Município',1),
-(DEFAULT,'DAU','Dívida Ativa da União',1),
-(DEFAULT,'DD','Documento de Dívida',1),
-(DEFAULT,'DM','Duplicata Mercantil',1),
-(DEFAULT,'DMI','Duplicata Mercantil para Indicação',1),
-(DEFAULT,'DR','Duplicata Rural',1),
-(DEFAULT,'DS','Duplicata de Serviço',1),
-(DEFAULT,'DSI','Duplicata de Serviço para Indicação',1),
-(DEFAULT,'EC','Encargos Condominiais',1),
-(DEFAULT,'FAT','Fatura',1),
-(DEFAULT,'LC','Letra de Câmbio',1),
-(DEFAULT,'ME','Mensalidade Escolar',1),
-(DEFAULT,'NCC','Nota de Crédito Comercial',1),
-(DEFAULT,'NCE','Nota de Crédito à Exportação',1),
-(DEFAULT,'NCI','Nota de Crédito Industrial',1),
-(DEFAULT,'NCR','Nota de Crédito Rural',1),
-(DEFAULT,'ND','Nota de Débito',1),
-(DEFAULT,'NF','Nota Fiscal',1),
-(DEFAULT,'NP','Nota Promissória',1),
-(DEFAULT,'NPR','Nota Promissória Rural',1),
-(DEFAULT,'NS','Nota de Seguro',1),
-(DEFAULT,'O','Outros',1),
-(DEFAULT,'PC','Parcela de Consórcio',1),
-(DEFAULT,'RC','Recibo',1),
-(DEFAULT,'TM','Triplicata Mercantil',1),
-(DEFAULT,'TS','Triplicata de Serviço',1),
-(DEFAULT,'W','Warrant',1);
+(DEFAULT,'AP','Apólice de Seguro',1,'pt_BR'),
+(DEFAULT,'CC','Cartão de Crédito',1,'pt_BR'),
+(DEFAULT,'CH','Cheque',1,'pt_BR'),
+(DEFAULT,'CPR','Cédula de Produto RuraL',1,'pt_BR'),
+(DEFAULT,'DAE','Dívida Ativa de Estado',1,'pt_BR'),
+(DEFAULT,'DAM','Dívida Ativa de Município',1,'pt_BR'),
+(DEFAULT,'DAU','Dívida Ativa da União',1,'pt_BR'),
+(DEFAULT,'DD','Documento de Dívida',1,'pt_BR'),
+(DEFAULT,'DM','Duplicata Mercantil',1,'pt_BR'),
+(DEFAULT,'DMI','Duplicata Mercantil para Indicação',1,'pt_BR'),
+(DEFAULT,'DR','Duplicata Rural',1,'pt_BR'),
+(DEFAULT,'DS','Duplicata de Serviço',1,'pt_BR'),
+(DEFAULT,'DSI','Duplicata de Serviço para Indicação',1,'pt_BR'),
+(DEFAULT,'EC','Encargos Condominiais',1,'pt_BR'),
+(DEFAULT,'FAT','Fatura',1,'pt_BR'),
+(DEFAULT,'LC','Letra de Câmbio',1,'pt_BR'),
+(DEFAULT,'ME','Mensalidade Escolar',1,'pt_BR'),
+(DEFAULT,'NCC','Nota de Crédito Comercial',1,'pt_BR'),
+(DEFAULT,'NCE','Nota de Crédito à Exportação',1,'pt_BR'),
+(DEFAULT,'NCI','Nota de Crédito Industrial',1,'pt_BR'),
+(DEFAULT,'NCR','Nota de Crédito Rural',1,'pt_BR'),
+(DEFAULT,'ND','Nota de Débito',1,'pt_BR'),
+(DEFAULT,'NF','Nota Fiscal',1,'pt_BR'),
+(DEFAULT,'NP','Nota Promissória',1,'pt_BR'),
+(DEFAULT,'NPR','Nota Promissória Rural',1,'pt_BR'),
+(DEFAULT,'NS','Nota de Seguro',1,'pt_BR'),
+(DEFAULT,'O','Outros',1,'pt_BR'),
+(DEFAULT,'PC','Parcela de Consórcio',1,'pt_BR'),
+(DEFAULT,'RC','Recibo',1,'pt_BR'),
+(DEFAULT,'TM','Triplicata Mercantil',1,'pt_BR'),
+(DEFAULT,'TS','Triplicata de Serviço',1,'pt_BR'),
+(DEFAULT,'W','Warrant',1,'pt_BR');
 
 UPDATE CONDOMINIO SET SITUACAO = 0 WHERE ID IN (8,19);
 

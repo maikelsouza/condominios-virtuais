@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Locale;
 
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -27,6 +28,8 @@ public class Classe2ParaTeste {
 		/*
 		 * Dados para criação do boleto
 		 */
+		
+		System.out.println(AplicacaoUtil.getLocale().toString());
 		
 		Form formData = new Form();
 		formData.param("boleto.conta.banco","237");

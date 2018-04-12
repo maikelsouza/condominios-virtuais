@@ -1,5 +1,12 @@
 package br.com.condominiosvirtuais.entity;
 
+/**
+ * Entidade que representa um tipo de título que tem uma Conta Bancaria 
+ * {@link ContaBancaria} e {@link ConfiguracaoPadraoContaBancaria}
+ * 
+ * @author Maikel Joel de Souza
+ * @since 11/04/2018
+ */
 public class TipoTitulo {
 	
 	private Integer id;
@@ -9,6 +16,9 @@ public class TipoTitulo {
 	private String nome;
 	
 	private Boolean situacao;	
+	
+	// Atributo criado para cadatrar os tipos de título de acordo com o pais.
+	private String locale;
 
 	public Integer getId() {
 		return id;
@@ -42,6 +52,12 @@ public class TipoTitulo {
 		this.situacao = situacao;
 	}
 
+	public String getLocale() {
+		return locale;
+	}
 
+	public void setLocale(String locale) {
+		this.locale = locale;
+	}
 
 }

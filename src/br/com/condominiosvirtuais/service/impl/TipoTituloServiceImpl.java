@@ -18,8 +18,8 @@ public class TipoTituloServiceImpl implements TipoTituloService, Serializable {
 	private TipoTituloDAO tipoTituloDAO;
 
 	@Override
-	public List<TipoTitulo> buscarPorSituacao(Boolean situacao) throws SQLException, Exception {
-		return tipoTituloDAO.buscarPorSituacao(situacao);
+	public List<TipoTitulo> buscarPorSituacao(Boolean situacao, String locale) throws SQLException, Exception {
+		return tipoTituloDAO.buscarPorSituacao(situacao, locale);
 	}
 
 }

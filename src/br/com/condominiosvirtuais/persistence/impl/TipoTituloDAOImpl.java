@@ -30,13 +30,18 @@ public class TipoTituloDAOImpl implements TipoTituloDAO, Serializable {
 	
 	private static final String SITUACAO = "SITUACAO";
 	
+	private static final String LOCALE = "LOCALE";
+	
 	@Override
-	public List<TipoTitulo> buscarPorSituacao(Boolean situacao) throws SQLException, Exception {
+	public List<TipoTitulo> buscarPorSituacao(Boolean situacao, String locale) throws SQLException, Exception {
 		StringBuffer query = new StringBuffer();
 		query.append("SELECT * FROM ");
 		query.append(TIPO_TITULO);
 		query.append(" WHERE ");
 		query.append(SITUACAO);		
+		query.append(" = ?");
+		query.append(" AND ");
+		query.append(LOCALE);
 		query.append(" = ?");
 		query.append(";");
 		Connection con = C3P0DataSource.getInstance().getConnection();
@@ -46,13 +51,14 @@ public class TipoTituloDAOImpl implements TipoTituloDAO, Serializable {
 		try {
 			preparedStatement = con.prepareStatement(query.toString());
 			SQLUtil.setValorPpreparedStatement(preparedStatement, 1, situacao, java.sql.Types.BOOLEAN);			
+			SQLUtil.setValorPpreparedStatement(preparedStatement, 2, locale, java.sql.Types.VARCHAR);			
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while(resultSet.next()){				
 				tipoTitulo = new TipoTitulo();				
 				tipoTitulo.setId((Integer) SQLUtil.getValorResultSet(resultSet, ID, java.sql.Types.INTEGER));
 				tipoTitulo.setNome(String.valueOf(SQLUtil.getValorResultSet(resultSet, NOME, java.sql.Types.VARCHAR)));
 				tipoTitulo.setSigla(String.valueOf(SQLUtil.getValorResultSet(resultSet, SIGLA, java.sql.Types.VARCHAR)));				
-				tipoTitulo.setSituacao((Boolean) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.BOOLEAN));
+				tipoTitulo.setSituacao((Boolean) SQLUtil.getValorResultSet(resultSet, SITUACAO, java.sql.Types.BOOLEAN));				
 				listaTipoTitulo.add(tipoTitulo);
 			}		
 		} catch (SQLException e) {			

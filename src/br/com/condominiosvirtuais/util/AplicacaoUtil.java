@@ -101,12 +101,12 @@ public abstract class AplicacaoUtil {
 	
 	public static String formatarCpf(Long cpf){
 		String cpfString = cpf != null ? String.valueOf(cpf) : "0";
-		cpfString = AplicacaoUtil.completaZerosAEsquerta(cpfString, 11);
+		cpfString = AplicacaoUtil.completaZerosAEsquerda(cpfString, 11);
 		String cpfStringRetorno = cpfString.substring(0, 3) + "." + cpfString.substring(3, 6) + "." + cpfString.substring(6,9) + "-" + cpfString.substring(9,cpfString.length());	
 		return cpfStringRetorno;
 	}
 	
-	public static String completaZerosAEsquerta(String numero, Integer tamanho){
+	public static String completaZerosAEsquerda(String numero, Integer tamanho){
 		Integer tamanhoMenosTamanhoNumero = tamanho - numero.length();
 		String zeros = "";
 		for (int i = 0; i < tamanhoMenosTamanhoNumero; i++) {
