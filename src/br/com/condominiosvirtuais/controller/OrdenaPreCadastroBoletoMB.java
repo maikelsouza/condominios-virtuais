@@ -13,6 +13,8 @@ public class OrdenaPreCadastroBoletoMB implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
+	private SortOrder nome = SortOrder.unsorted;
+	
 	private SortOrder nomeBanco = SortOrder.unsorted;
 	
 	private SortOrder nomeBeneficiario = SortOrder.unsorted;
@@ -27,6 +29,7 @@ public class OrdenaPreCadastroBoletoMB implements Serializable {
 		this.setNomeBeneficiario(SortOrder.unsorted);			
 		this.setDiaMesVencimento(SortOrder.unsorted);
 		this.setPrincipal(SortOrder.unsorted);
+		this.setNome(SortOrder.unsorted);
 		if (this.nomeBanco.equals(SortOrder.ascending)) {
 			 this.setNomeBanco(SortOrder.descending);
 		} else {
@@ -34,7 +37,20 @@ public class OrdenaPreCadastroBoletoMB implements Serializable {
 		}
 	}
 	
+	public void ordenarPorNome(){
+		this.setNomeBeneficiario(SortOrder.unsorted);			
+		this.setDiaMesVencimento(SortOrder.unsorted);
+		this.setPrincipal(SortOrder.unsorted);
+		this.setNomeBanco(SortOrder.unsorted);		
+		if (this.nome.equals(SortOrder.ascending)) {
+			this.setNome(SortOrder.descending);
+		} else {
+			this.setNome(SortOrder.ascending);
+		}
+	}
+	
 	public void ordenarPorNomeBeneficiario(){
+		this.setNome(SortOrder.unsorted);
 		this.setNomeBanco(SortOrder.unsorted);			
 		this.setDiaMesVencimento(SortOrder.unsorted);
 		this.setPrincipal(SortOrder.unsorted);
@@ -49,6 +65,7 @@ public class OrdenaPreCadastroBoletoMB implements Serializable {
 		this.setNomeBanco(SortOrder.unsorted);
 		this.setNomeBeneficiario(SortOrder.unsorted);
 		this.setPrincipal(SortOrder.unsorted);
+		this.setNome(SortOrder.unsorted);
 		if (this.diaMesVencimento.equals(SortOrder.ascending)) {
 			this.setDiaMesVencimento(SortOrder.descending);
 		} else {
@@ -60,6 +77,7 @@ public class OrdenaPreCadastroBoletoMB implements Serializable {
 		this.setNomeBanco(SortOrder.unsorted);
 		this.setNomeBeneficiario(SortOrder.unsorted);
 		this.setDiaMesVencimento(SortOrder.unsorted);
+		this.setNome(SortOrder.unsorted);
 		if (this.principal.equals(SortOrder.ascending)) {
 			this.setPrincipal(SortOrder.descending);
 		} else {
@@ -97,6 +115,16 @@ public class OrdenaPreCadastroBoletoMB implements Serializable {
 
 	public void setPrincipal(SortOrder principal) {
 		this.principal = principal;
-	}	
+	}
+
+	public SortOrder getNome() {
+		return nome;
+	}
+
+	public void setNome(SortOrder nome) {
+		this.nome = nome;
+	}
+	
+	
 
 }

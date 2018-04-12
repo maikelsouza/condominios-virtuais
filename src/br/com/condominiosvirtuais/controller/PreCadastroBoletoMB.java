@@ -39,9 +39,7 @@ public class PreCadastroBoletoMB implements Serializable {
 	
 	private List<SelectItem> listaSIBeneficiarios;
 	
-	private List<SelectItem> listaSIDiaMesVencimento;
-	
-	private List<SelectItem> listaSITitulos;	
+	private List<SelectItem> listaSIDiaMesVencimento;	
 	
 	private ListDataModel<PreCadastroBoleto> listaPreCadastroBoletos;
 	
@@ -65,8 +63,7 @@ public class PreCadastroBoletoMB implements Serializable {
 	@PostConstruct
 	public void iniciarPreCadastroBoletoMB(){
 		this.listaSICondominios = this.condominioMB.get().buscarListaCondominiosAtivos();
-		this.popularDiaMesVencimento();
-		this.popularTitulos();		
+		this.popularDiaMesVencimento();				
 	}
 	
 	public String salvar(){
@@ -77,9 +74,9 @@ public class PreCadastroBoletoMB implements Serializable {
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
-		} catch (BusinessException e) {
-			logger.error("", e);
+		} catch (BusinessException e) {			
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+			return null;
 		} catch (Exception e) {
 			logger.error("", e);
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
@@ -95,9 +92,9 @@ public class PreCadastroBoletoMB implements Serializable {
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
-		} catch (BusinessException e) {
-			logger.error("", e);
+		} catch (BusinessException e) {			
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+			return null;
 		} catch (Exception e) {
 			logger.error("", e);
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
@@ -157,7 +154,26 @@ public class PreCadastroBoletoMB implements Serializable {
 		}
 	}
 	
+	public void editarTornarPrincipalPreCadastroBoleto(){
+		try{
+			this.preCadastroBoleto = this.listaPreCadastroBoletos.getRowData();
+			this.preCadastroBoletoService.tornarPrincipal(this.preCadastroBoleto);
+			this.pesquisar();
+			ManagedBeanUtil.setMensagemInfo("msg.preCadastroBoleto.principalAtualizadoSucesso");
+		} catch (SQLException e) {
+			logger.error("erro sqlstate "+e.getSQLState(), e);	
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (BusinessException e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		} catch (Exception e) {
+			logger.error("", e);
+			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
+		}		
+	}
+	
 	public String cadastroPreCadastroBoleto(){
+		this.preCadastroBoleto = new PreCadastroBoleto();
 		return "cadastrar";
 	}
 	
@@ -212,18 +228,10 @@ public class PreCadastroBoletoMB implements Serializable {
 		List<ContaBancaria> listaContaBancaria = this.contaBancariaService.buscarPorIdCondominioESituacao(this.preCadastroBoleto.getIdCondominio(),Boolean.TRUE);
 		this.listaSIContasBancarias = new ArrayList<SelectItem>();
 		for (ContaBancaria contaBancaria : listaContaBancaria) {
-			this.listaSIContasBancarias.add(new SelectItem(contaBancaria.getId(), contaBancaria.getAgencia() + " " + contaBancaria.getNumero()));
+			this.listaSIContasBancarias.add(new SelectItem(contaBancaria.getId(), contaBancaria.getDescricao()));
 		}			
 		
-	}
-	
-	private void popularTitulos(){
-		String[] titulos = {"AP", "CC", "CH", "CPR", "DAE", "DAM", "DAU", "DD", "DM", "DMI", "DR", "DS", "DSI", "EC", "FAT", "LC", "ME", "NCC", "NCE", "NCI", "NCR", "ND", "NF", "NP", "NPR", "NS", "O", "PC", "RC", "TM", "TS", "W"};
-		this.listaSITitulos = new ArrayList<SelectItem>();
-		for (String string : titulos) {
-			this.listaSITitulos.add(new SelectItem(string, string));			
-		}
-	}
+	}	
 	
 	public PreCadastroBoleto getPreCadastroBoleto() {
 		return preCadastroBoleto;
@@ -265,14 +273,6 @@ public class PreCadastroBoletoMB implements Serializable {
 		this.listaSIDiaMesVencimento = listaSIDiaMesVencimento;
 	}
 	
-	public List<SelectItem> getListaSITitulos() {
-		return listaSITitulos;
-	}
-
-	public void setListaSITitulos(List<SelectItem> listaSITitulos) {
-		this.listaSITitulos = listaSITitulos;
-	}
-
 	public ListDataModel<PreCadastroBoleto> getListaPreCadastroBoletos() {
 		return listaPreCadastroBoletos;
 	}

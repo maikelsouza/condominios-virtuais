@@ -60,17 +60,35 @@
 							</f:facet>
 							<h:outputText value="#{beneficiario.nome}" />
 						</rich:column>
+						<rich:column sortBy="#{beneficiario.razaoSocial}" sortOrder="#{ordenaBeneficiarioMB.razaoSocialBeneficiario}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['beneficiario.razaoSocial']}" render="tableBeneficiario" action="#{ordenaBeneficiarioMB.ordenarPorRazaoSocial}" />									          
+							</f:facet>
+							<h:outputText value="#{beneficiario.razaoSocial}" />
+						</rich:column>
+						<rich:column sortBy="#{beneficiario.nomeFantasia}" sortOrder="#{ordenaBeneficiarioMB.nomeFantasiaBeneficiario}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['beneficiario.nomeFantasia']}" render="tableBeneficiario" action="#{ordenaBeneficiarioMB.ordenarPorNomeFantasia}" />									          
+							</f:facet>
+							<h:outputText value="#{beneficiario.nomeFantasia}" />
+						</rich:column>												
+						<rich:column sortBy="#{beneficiario.tipoDocumento}" sortOrder="#{ordenaBeneficiarioMB.tipoDocumentoBeneficiario}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['beneficiario.tipoDocumento']}" render="tableBeneficiario" action="#{ordenaBeneficiarioMB.ordenarPorTipoDocumento}" />
+							</f:facet>
+							<h:outputText value="#{beneficiario.tipoDocumento == 1 ? msg['beneficiario.cpf'] : msg['beneficiario.cnpj']}" />
+						</rich:column>						
+						<rich:column sortBy="#{beneficiario.cprf}" sortOrder="#{ordenaBeneficiarioMB.cprfBeneficiario}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['beneficiario.documento']}" render="tableBeneficiario" action="#{ordenaBeneficiarioMB.ordenarPorCprf}" />
+							</f:facet>
+							<h:outputText value="#{beneficiario.cprf}" />
+						</rich:column>
 						<rich:column sortBy="#{beneficiario.situacao}" sortOrder="#{ordenaBeneficiarioMB.situacaoBeneficiario}">
 							<f:facet name="header">
 								<a4j:commandLink value="#{msg['beneficiario.situacao']}" render="tableBeneficiario" action="#{ordenaBeneficiarioMB.ordenarPorSituacao}" />
 							</f:facet>
 							<h:outputText value="#{beneficiario.situacao == true ? msg['beneficiario.situacao.1'] : msg['beneficiario.situacao.0']}" />
-						</rich:column>						
-						<rich:column sortBy="#{beneficiario.cprf}" sortOrder="#{ordenaBeneficiarioMB.cprfBeneficiario}">
-							<f:facet name="header">
-								<a4j:commandLink value="#{msg['beneficiario.cprf']}" render="tableBeneficiario" action="#{ordenaBeneficiarioMB.ordenarPorCprf}" />
-							</f:facet>
-							<h:outputText value="#{beneficiario.cprf}" />
 						</rich:column>						
 						<rich:column style="#{loginMB.temAcesso('#{beneficiarioMB.editaBeneficiario}') == false ? 'width:5%;' : 'width:10%;'}">
 							<f:facet name="header">

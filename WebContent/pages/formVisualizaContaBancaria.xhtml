@@ -9,7 +9,7 @@
 	template="/templates/templatePrincipal.xhtml">
 
 	<ui:define name="conteudo">		
-		<h:form id="idFormVisualizaContaBancaria" styleClass="content">
+		<h:form id="idFormVisualizaContaBancaria" styleClass="content formView">
 			<rich:panel>
 				<f:facet name="header">
 					<h:outputText value="#{msg.visualizaContaBancaria}" />
@@ -25,8 +25,30 @@
 				    <h:outputText id="idNumero" value="#{contaBancariaMB.contaBancaria.numero}"  />
 					<h:outputLabel value="#{msg['contaBancaria.carteira']}:" for="idCarteira" />
 					<h:outputText id="idCarteira" value="#{contaBancariaMB.contaBancaria.carteira}"  />
+					<h:outputLabel value="#{msg['contaBancaria.descricao']}:" for="idDescricao" />
+					<h:outputText id="idDescricao" value="#{contaBancariaMB.contaBancaria.descricao}"  />
 					<h:outputLabel value="#{msg['contaBancaria.situacao']}:" for="idSituacao" />
 					<h:outputText id="idSituacao" value="#{contaBancariaMB.contaBancaria.situacao == true ? msg['contaBancaria.situacao.1'] : msg['contaBancaria.situacao.0']}"  />
+					<h:outputLabel value="#{msg['contaBancaria.configuracaoPadraoContaBancaria.multa']}:" for="idMulta" rendered="#{contaBancariaMB.contaBancaria.configuracaoPadraoContaBancaria.multa != 0.0}"/>
+					<h:outputText id="idMulta" value="#{contaBancariaMB.multaConfiguracaoPadraoContaBancaria}" rendered="#{contaBancariaMB.contaBancaria.configuracaoPadraoContaBancaria.multa != 0.0}" />
+					<h:outputLabel value="#{msg['contaBancaria.configuracaoPadraoContaBancaria.jurosAoDia']}:" for="idJurosAoDia" rendered="#{contaBancariaMB.contaBancaria.configuracaoPadraoContaBancaria.jurosAoDia != 0.0}"/>
+					<h:outputText id="idJurosAoDia" value="#{contaBancariaMB.jurosAoDiaConfiguracaoPadraoContaBancaria}" rendered="#{contaBancariaMB.contaBancaria.configuracaoPadraoContaBancaria.jurosAoDia != 0.0}" />
+					<h:outputLabel value="#{msg['contaBancaria.configuracaoPadraoContaBancaria.desconto']}:" for="idDesconto" rendered="#{contaBancariaMB.contaBancaria.configuracaoPadraoContaBancaria.desconto != 0.0}"/>
+					<h:outputText id="idDesconto" value="#{contaBancariaMB.descontoConfiguracaoPadraoContaBancaria}" rendered="#{contaBancariaMB.contaBancaria.configuracaoPadraoContaBancaria.desconto != 0.0}" />
+					<h:outputLabel value="#{msg['contaBancaria.configuracaoPadraoContaBancaria.diasSemCobrarJurosAposVencimento']}:" for="idDiasSemCobrarJurosAposVencimento" rendered="#{contaBancariaMB.contaBancaria.configuracaoPadraoContaBancaria.diasSemCobrarJurosAposVencimento != 0}"/>
+					<h:outputText id="idDiasSemCobrarJurosAposVencimento" value="#{contaBancariaMB.contaBancaria.configuracaoPadraoContaBancaria.diasSemCobrarJurosAposVencimento}" rendered="#{contaBancariaMB.contaBancaria.configuracaoPadraoContaBancaria.diasSemCobrarJurosAposVencimento != 0}" />
+					<h:outputLabel value="#{msg['contaBancaria.configuracaoPadraoContaBancaria.diasConcederDescontoAteVencimento']}:" for="idDiasConcederDescontoAteVencimento" rendered="#{contaBancariaMB.contaBancaria.configuracaoPadraoContaBancaria.diasConcederDescontoAteVencimento != 0}"/>
+					<h:outputText id="idDiasConcederDescontoAteVencimento" value="#{contaBancariaMB.contaBancaria.configuracaoPadraoContaBancaria.diasConcederDescontoAteVencimento}" rendered="#{contaBancariaMB.contaBancaria.configuracaoPadraoContaBancaria.diasConcederDescontoAteVencimento != 0}" />
+					<h:outputLabel value="#{msg['contaBancaria.configuracaoPadraoContaBancaria.instrucaoPadrao']}:" for="idInstrucaoPadrao" rendered="#{contaBancariaMB.contaBancaria.configuracaoPadraoContaBancaria.instrucaoPadrao.isEmpty() == false}"/>
+					<h:outputText id="idInstrucaoPadrao" value="#{contaBancariaMB.contaBancaria.configuracaoPadraoContaBancaria.instrucaoPadrao}" rendered="#{contaBancariaMB.contaBancaria.configuracaoPadraoContaBancaria.instrucaoPadrao.isEmpty() == false}" />
+					<h:outputLabel value="#{msg['contaBancaria.configuracaoPadraoContaBancaria.tipoTitulo']}:" for="idSiglaMaisNomeTipoTitulo" />
+					<h:outputText id="idSiglaMaisNomeTipoTitulo" value="#{contaBancariaMB.contaBancaria.configuracaoPadraoContaBancaria.siglaMaisNomeTipoTitulo}"/>
+					<h:outputLabel value="#{msg['contaBancaria.configuracaoPadraoContaBancaria.aceite']}:" for="idAceite" />
+					<h:outputText id="idAceite" value="#{contaBancariaMB.contaBancaria.configuracaoPadraoContaBancaria.aceite ? msg['contaBancaria.configuracaoPadraoContaBancaria.aceite.1'] : msg['contaBancaria.configuracaoPadraoContaBancaria.aceite.0']}"/>					
+					<h:outputLabel value="#{msg['contaBancaria.configuracaoPadraoContaBancaria.permitirEmitirBoletoSemValor']}:" for="idPermitirEmitirBoletoSemValor" />
+					<h:outputText id="idPermitirEmitirBoletoSemValor" value="#{contaBancariaMB.contaBancaria.configuracaoPadraoContaBancaria.permitirEmitirBoletoSemValor ? msg['contaBancaria.configuracaoPadraoContaBancaria.permitirEmitirBoletoSemValor.1'] : msg['contaBancaria.configuracaoPadraoContaBancaria.permitirEmitirBoletoSemValor.0']}"/>
+					
+					
 				 </h:panelGrid> 
 			</rich:panel>			
 			

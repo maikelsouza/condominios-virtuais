@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -17,13 +18,17 @@ import org.apache.log4j.Logger;
 
 import br.com.condominiosvirtuais.entity.Banco;
 import br.com.condominiosvirtuais.entity.ContaBancaria;
+import br.com.condominiosvirtuais.entity.TipoTitulo;
 import br.com.condominiosvirtuais.enumeration.BancoSituacaoEnum;
 import br.com.condominiosvirtuais.enumeration.ContaBancariaSituacaoEnum;
+import br.com.condominiosvirtuais.enumeration.TipoTituloSituacaoEnum;
 import br.com.condominiosvirtuais.exception.BusinessException;
 import br.com.condominiosvirtuais.service.BancoService;
 import br.com.condominiosvirtuais.service.CondominioService;
 import br.com.condominiosvirtuais.service.ContaBancariaService;
+import br.com.condominiosvirtuais.service.TipoTituloService;
 import br.com.condominiosvirtuais.util.AplicacaoUtil;
+import br.com.condominiosvirtuais.util.CalculoUtil;
 import br.com.condominiosvirtuais.util.ManagedBeanUtil;
 
 @Named @SessionScoped
@@ -45,11 +50,16 @@ public class ContaBancariaMB implements Serializable {
 	@Inject
 	private CondominioService condominioService;
 	
+	@Inject
+	private TipoTituloService tipoTituloService;
+	
 	private List<SelectItem> listaSIBancos = null;
 	
 	private List<SelectItem> listaSISituacao = null;
 	
-	private List<SelectItem> listaSICondominios = null;	
+	private List<SelectItem> listaSICondominios = null;
+	
+	private List<SelectItem> listaSITipoTitulo = null;	
 	
 	private ContaBancaria contaBancaria = null;
 	
@@ -57,20 +67,26 @@ public class ContaBancariaMB implements Serializable {
 	
 	private String nomeCondominio;
 	
-	private Integer situacaoContaBancaria;
+	private Integer situacaoContaBancaria = -1;
+	
+	private String multaConfiguracaoPadraoContaBancaria = "0,0000";
+	
+	private String jurosAoDiaConfiguracaoPadraoContaBancaria = "0,0000";
+	
+	private String descontoConfiguracaoPadraoContaBancaria = "0,0000";
 	
 	
 	
-	public ContaBancariaMB(){
-		this.contaBancaria = new ContaBancaria();		
-	}
-	
+
 	@PostConstruct
 	public void iniciarContaBancariaMB(){
 		try {
+			this.contaBancaria = new ContaBancaria();
 			this.listaSICondominios = this.condominioMB.get().buscarListaCondominiosAtivos();
 			this.popularListaSiBancos();
-			this.popularListaSiSituacao();			
+			this.popularListaSiSituacao();		
+			this.popularListaSiTipoTitulo();
+			this.zerarCamposPercentuais();
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
@@ -81,8 +97,9 @@ public class ContaBancariaMB implements Serializable {
 	}
 	
 	public String salvar(){
-		try {
+		try {			
 			this.contaBancaria.setSituacao(Boolean.TRUE);
+			this.setarValoresPercentuaisNoBean();			
 			this.contaBancariaService.salvar(this.contaBancaria);
 			this.pesquisar();			
 			ManagedBeanUtil.setMensagemInfo("msg.contaBancaria.salvaSucesso");
@@ -118,10 +135,12 @@ public class ContaBancariaMB implements Serializable {
 		}		
 	}
 	
-	public String visualizarContaBancaria(){
+	public String visualizarContaBancaria(){		
 		this.contaBancaria = this.listaContasBancarias.getRowData();
 		try {
-			this.nomeCondominio = this.condominioService.buscarPorId(this.contaBancaria.getIdCondominio()).getNome();
+			this.nomeCondominio = this.condominioService.buscarPorId(this.contaBancaria.getIdCondominio()).getNome();			
+			this.popularSiglaNomeTipoTitulo();
+			this.setarValoresPercentuaisNaString();
 		} catch (SQLException e) {
 			logger.error("erro sqlstate "+e.getSQLState(), e);	
 			ManagedBeanUtil.setMensagemErro(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : "msg.erro.executarOperacao");
@@ -134,7 +153,8 @@ public class ContaBancariaMB implements Serializable {
 	
 	public String atualizar(){
 		try {
-			this.contaBancaria.setSituacao(this.situacaoContaBancaria == ContaBancariaSituacaoEnum.ATIVA.getSituacao() ? Boolean.TRUE : Boolean.FALSE);		
+			this.contaBancaria.setSituacao(this.situacaoContaBancaria == ContaBancariaSituacaoEnum.ATIVA.getSituacao() ? Boolean.TRUE : Boolean.FALSE);
+			this.setarValoresPercentuaisNoBean();
 			this.contaBancariaService.atualizar(this.contaBancaria);
 			this.pesquisar();
 			ManagedBeanUtil.setMensagemInfo("msg.contaBancaria.atualizarSucesso");
@@ -169,14 +189,15 @@ public class ContaBancariaMB implements Serializable {
 	}
 	
 	public String editaContaBancaria(){
-		this.contaBancaria = this.listaContasBancarias.getRowData();
-		this.situacaoContaBancaria = this.contaBancaria.getSituacao() == Boolean.TRUE ? ContaBancariaSituacaoEnum.ATIVA.getSituacao() : ContaBancariaSituacaoEnum.INATIVA.getSituacao(); 
+		this.contaBancaria = this.listaContasBancarias.getRowData();		
+		this.situacaoContaBancaria = this.contaBancaria.getSituacao() == Boolean.TRUE ? ContaBancariaSituacaoEnum.ATIVA.getSituacao() : ContaBancariaSituacaoEnum.INATIVA.getSituacao();
+		this.setarValoresPercentuaisNaString();
 		return "editar";
 	}
 	
 	public String cancelarContaBancaria(){
 		return "cancelar";
-	}
+	}	
 	
 	public String voltarContaBancaria(){
 		return "voltar";
@@ -191,14 +212,22 @@ public class ContaBancariaMB implements Serializable {
 	}
 	
 	public String cadastroContaBancaria(){
+		this.contaBancaria = new ContaBancaria();
+		this.zerarCamposPercentuais();
 		return "cadastrar";
 	}
 	
 	public void limparFiltroContaBancaria(){
 		this.contaBancaria = new ContaBancaria();
+		this.zerarCamposPercentuais();
 		this.listaContasBancarias = new ListDataModel<ContaBancaria>();
 	}
 	
+	public void zerarCamposPercentuais(){
+		this.multaConfiguracaoPadraoContaBancaria = "0,0000";
+		this.jurosAoDiaConfiguracaoPadraoContaBancaria = "0,0000";
+		this.descontoConfiguracaoPadraoContaBancaria = "0,0000";
+	}
 
 	private void popularListaSiBancos() throws SQLException, Exception{
 		this.listaSIBancos = new ArrayList<SelectItem>();
@@ -215,7 +244,40 @@ public class ContaBancariaMB implements Serializable {
 		this.listaSISituacao.add(new SelectItem(ContaBancariaSituacaoEnum.INATIVA.getSituacao(), AplicacaoUtil.i18n("contaBancaria.situacao.0")));
 	}
 	
+	private void popularListaSiTipoTitulo() throws SQLException, Exception{
+		this.listaSITipoTitulo = new ArrayList<SelectItem>();		
+		List<TipoTitulo> listaTipoTitulo = tipoTituloService.buscarPorSituacao(TipoTituloSituacaoEnum.ATIVO.getSituacao(), AplicacaoUtil.getLocale().toString());
+		for (TipoTitulo tipoTitulo : listaTipoTitulo) {
+			this.listaSITipoTitulo.add(new SelectItem(tipoTitulo.getId(), tipoTitulo.getSigla() + " - " +tipoTitulo.getNome()));
+		}		
+	}
 	
+		
+	
+	private void popularSiglaNomeTipoTitulo(){
+		Boolean encontrou = Boolean.FALSE;
+		SelectItem selectItem = null;
+		Integer index = 0;
+		while(!encontrou){
+			selectItem  = this.listaSITipoTitulo.get(index++);
+			if(this.contaBancaria.getConfiguracaoPadraoContaBancaria().getTipoTitulo().getId().intValue() == ((Integer) selectItem.getValue()).intValue()){
+				this.contaBancaria.getConfiguracaoPadraoContaBancaria().setSiglaMaisNomeTipoTitulo(selectItem.getLabel());
+				encontrou = Boolean.TRUE;
+			}
+		}		
+	}
+	
+	private void setarValoresPercentuaisNoBean(){
+		this.contaBancaria.getConfiguracaoPadraoContaBancaria().setMulta(CalculoUtil.setScala(this.multaConfiguracaoPadraoContaBancaria.replace(',', '.'), 4));
+		this.contaBancaria.getConfiguracaoPadraoContaBancaria().setJurosAoDia(CalculoUtil.setScala(this.jurosAoDiaConfiguracaoPadraoContaBancaria.replace(',', '.'), 4));
+		this.contaBancaria.getConfiguracaoPadraoContaBancaria().setDesconto(CalculoUtil.setScala(this.descontoConfiguracaoPadraoContaBancaria.replace(',', '.'), 4));
+	}
+	
+	private void setarValoresPercentuaisNaString(){
+		this.multaConfiguracaoPadraoContaBancaria = String.valueOf(this.contaBancaria.getConfiguracaoPadraoContaBancaria().getMulta()).replace('.',','); 
+		this.jurosAoDiaConfiguracaoPadraoContaBancaria = String.valueOf(this.contaBancaria.getConfiguracaoPadraoContaBancaria().getJurosAoDia()).replace('.',','); 
+		this.descontoConfiguracaoPadraoContaBancaria = String.valueOf(this.contaBancaria.getConfiguracaoPadraoContaBancaria().getDesconto()).replace('.',',');
+	}
 
 	public List<SelectItem> getListaSIBancos() {
 		return listaSIBancos;
@@ -271,6 +333,38 @@ public class ContaBancariaMB implements Serializable {
 
 	public void setSituacaoContaBancaria(Integer situacaoContaBancaria) {
 		this.situacaoContaBancaria = situacaoContaBancaria;
+	}
+
+	public List<SelectItem> getListaSITipoTitulo() {
+		return listaSITipoTitulo;
+	}
+
+	public void setListaSITipoTitulo(List<SelectItem> listaSITipoTitulo) {
+		this.listaSITipoTitulo = listaSITipoTitulo;
+	}
+
+	public String getMultaConfiguracaoPadraoContaBancaria() {
+		return multaConfiguracaoPadraoContaBancaria;
+	}
+
+	public void setMultaConfiguracaoPadraoContaBancaria(String multaConfiguracaoPadraoContaBancaria) {
+		this.multaConfiguracaoPadraoContaBancaria = multaConfiguracaoPadraoContaBancaria;
+	}
+
+	public String getJurosAoDiaConfiguracaoPadraoContaBancaria() {
+		return jurosAoDiaConfiguracaoPadraoContaBancaria;
+	}
+
+	public void setJurosAoDiaConfiguracaoPadraoContaBancaria(String jurosAoDiaConfiguracaoPadraoContaBancaria) {
+		this.jurosAoDiaConfiguracaoPadraoContaBancaria = jurosAoDiaConfiguracaoPadraoContaBancaria;
+	}
+
+	public String getDescontoConfiguracaoPadraoContaBancaria() {
+		return descontoConfiguracaoPadraoContaBancaria;
+	}
+
+	public void setDescontoConfiguracaoPadraoContaBancaria(String descontoConfiguracaoPadraoContaBancaria) {
+		this.descontoConfiguracaoPadraoContaBancaria = descontoConfiguracaoPadraoContaBancaria;
 	}		
 
 }

@@ -42,6 +42,12 @@
 				<div>
 					<rich:dataTable value="#{preCadastroBoletoMB.listaPreCadastroBoletos}" var="preCadastroBoleto" rowClasses="odd-row, even-row" styleClass="stable"
 						id="tablePreCadastroBoleto" style="width:100%;" rows="10" rendered="#{preCadastroBoletoMB.listaPreCadastroBoletos.rowCount > 0}">
+						<rich:column sortBy="#{preCadastroBoleto.nome}" sortOrder="#{ordenaPreCadastroBoletoMB.nome}">
+							<f:facet name="header">
+								<a4j:commandLink value="#{msg['preCadastroBoleto.nome']}" render="tablePreCadastroBoleto" action="#{ordenaPreCadastroBoletoMB.ordenarPorNome}" />									          
+							</f:facet>							
+							<h:outputText value="#{preCadastroBoleto.nome}" />
+						</rich:column>
 						<rich:column sortBy="#{preCadastroBoleto.contaBancaria.banco.nome}" sortOrder="#{ordenaPreCadastroBoletoMB.nomeBanco}">
 							<f:facet name="header">
 								<a4j:commandLink value="#{msg['preCadastroBoleto.contaBancaria.banco.nome']}" render="tablePreCadastroBoleto" action="#{ordenaPreCadastroBoletoMB.ordenarPorNomeBanco}" />									          
@@ -66,13 +72,15 @@
 							</f:facet>
 							<h:outputText value="#{preCadastroBoleto.principal == true ? msg['sim'] : msg['nao']}" />
 						</rich:column>
-						<rich:column>
+						<rich:column style="width:20%;">
 							<f:facet name="header">
 								<h:outputText value="#{msg.rotuloAcao}" />
 							</f:facet>
 							<h:commandLink value="#{msg.linkVisualizar}" render="tablePreCadastroBoleto" action="#{preCadastroBoletoMB.visualizarPreCadastroBoleto}" immediate="false"  />
 				 			#{' '}                                                                           
  							<h:commandLink value="#{msg.linkEditar}" render="tablePreCadastroBoleto" action="#{preCadastroBoletoMB.editarPreCadastroBoleto}" immediate="false" rendered="#{loginMB.temAcesso('#{preCadastroBoletoMB.editarPreCadastroBoleto}')}" />
+				 			#{' '}                                                                           
+ 							<h:commandLink value="#{msg.linkTornarPrincipal}" render="tablePreCadastroBoleto" action="#{preCadastroBoletoMB.editarTornarPrincipalPreCadastroBoleto}" immediate="false" rendered="#{loginMB.temAcesso('#{preCadastroBoletoMB.editarPreCadastroBoleto}') and preCadastroBoleto.principal == false}" />
 						</rich:column>
 					</rich:dataTable>	
 						

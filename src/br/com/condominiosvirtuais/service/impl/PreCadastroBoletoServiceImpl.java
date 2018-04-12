@@ -45,9 +45,24 @@ public class PreCadastroBoletoServiceImpl implements PreCadastroBoletoService, S
 	}
 
 	@Override
-	public PreCadastroBoleto buscarPorIdCondominioEPrincipal(Integer idCondominio, Boolean principal)
+	public PreCadastroBoleto buscarPorIdCondominioPrincipal(Integer idCondominio)
 			throws SQLException, Exception {		
-		return this.preCadastroBoletoDAO.buscarPorIdCondominioEPrincipal(idCondominio, principal);
+		List<PreCadastroBoleto> listaPreCadastroBoleto = this.preCadastroBoletoDAO.buscarPorIdCondominioEPrincipal(idCondominio, Boolean.TRUE);
+		return !listaPreCadastroBoleto.isEmpty() ? listaPreCadastroBoleto.get(0) : null;  
+	}
+
+	@Override
+	public void tornarPrincipal(PreCadastroBoleto preCadastroBoleto) throws SQLException, Exception {
+		List<PreCadastroBoleto> listaPrecadastroBoleto = 
+				this.preCadastroBoletoDAO.buscarPorIdCondominio(preCadastroBoleto.getIdCondominio());
+		for (PreCadastroBoleto preCadastroBoletoBanco : listaPrecadastroBoleto) {
+			if(preCadastroBoleto.getId().intValue() == preCadastroBoletoBanco.getId().intValue()){
+				this.preCadastroBoletoDAO.atualizarPrincipal(preCadastroBoleto.getId(), Boolean.TRUE);
+			}else if(preCadastroBoletoBanco.getPrincipal()){
+				this.preCadastroBoletoDAO.atualizarPrincipal(preCadastroBoletoBanco.getId(), Boolean.FALSE);
+			}
+		}
+		
 	}
 
 }

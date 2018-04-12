@@ -82,12 +82,21 @@ public class LoginMB implements Serializable{
 			for (String mensagem: condominiosSemSindicoGeral){
 				ManagedBeanUtil.setMensagemWarn("msg.condominio.semSindicoGeral"," : "+mensagem);	
 			}
+
 			
 			if(!this.existeCondominioAtivo(this.usuario.getListaCondominio())){
 				ManagedBeanUtil.setMensagemErro("msg.condominio.situacao.inativo");
 				this.autenticado = Boolean.FALSE;
 				return null;
 			}
+
+			if(!this.existeCondominioAtivo(this.usuario.getListaCondominio())){
+				ManagedBeanUtil.setMensagemErro("msg.condominio.situacao.inativo");
+				this.autenticado = Boolean.FALSE;
+				return null;
+			}
+			
+
 			
 			this.salvarDataHoraLogin();			
 		}catch (SQLException e) {
@@ -104,7 +113,7 @@ public class LoginMB implements Serializable{
 		}
 		return "logar";
 	}
-	
+		
 	/**
 	 * Método de desloga o usuário, direcionando ele para a tela de login.
 	 */
@@ -212,6 +221,7 @@ public class LoginMB implements Serializable{
 		}
 		return Boolean.FALSE;
 	}
+	
 	
 	/**
 	 * FIXME: Método criado para não exibir o menu financeiro.

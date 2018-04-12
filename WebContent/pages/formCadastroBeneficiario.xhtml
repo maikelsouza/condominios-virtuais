@@ -19,22 +19,52 @@
 						<h:outputLabel value="#{msg.condominio}:" for="idCondominio" />
 						<span class="asterisco">*</span>
 					</h:panelGroup>
+					
 					<h:panelGroup>
 						<h:outputLabel value="#{msg['beneficiario.nome']}:" for="idNome" />						
 						<span class="asterisco">*</span>
 					</h:panelGroup>
+					
 					<h:panelGroup>
-						<h:outputLabel value="#{msg['beneficiario.cprf']}:" for="idCprf" />						
-						<span class="asterisco">*</span>
-					</h:panelGroup>
+						<h:outputLabel value="#{msg['beneficiario.tipoDocumento']} :" for="idTipoDocumento" />						
+						<span class="asterisco">*</span>						
+					</h:panelGroup>	
 									
 					<h:selectOneMenu id="idCondominio" value="#{beneficiarioMB.beneficiario.idCondominio}"
 						defaultLabel="#{msg['condominio.DefaultLabel']}" required="true" label="#{msg['condominio.label']}">
 						<f:selectItem itemLabel="#{msg['condominio.DefaultLabel']}" noSelectionOption="true" />
 						<f:selectItems value="#{beneficiarioMB.listaSICondominios}" />
-					</h:selectOneMenu>					
+					</h:selectOneMenu>	
+									
 					<h:inputText id="idNome" value="#{beneficiarioMB.beneficiario.nome}" required="true" label="#{msg['beneficiario.nome.label']}"/>
-					<h:inputText id="idCprf" value="#{beneficiarioMB.beneficiario.cprf}" required="true" label="#{msg['beneficiario.cprf.label']}"/>
+					
+					<h:selectOneMenu id="idTipoDocumento" value="#{beneficiarioMB.beneficiario.tipoDocumento}" required="true">
+						<f:selectItem itemLabel="#{msg['beneficiario.cnpj']}" itemValue="0"/>
+						<f:selectItem itemLabel="#{msg['beneficiario.cpf']}" itemValue="1"/>
+						<f:ajax  render="idCpfCnpj"  />
+					</h:selectOneMenu>	
+					
+					<h:panelGroup>
+						<h:outputLabel id="idCpfCnpj" value="#{beneficiarioMB.beneficiario.tipoDocumento == 1 ? msg['beneficiario.cpf'] : msg['beneficiario.cnpj']}:" for="idCprf" />						
+						<span class="asterisco">*</span>						
+					</h:panelGroup>	
+					
+					<h:panelGroup>
+						<h:outputLabel value="#{msg['beneficiario.razaoSocial']}:" for="idRazaoSocial" />
+						<span class="asterisco">*</span>
+					</h:panelGroup>
+					
+					<h:outputLabel value="#{msg['beneficiario.nomeFantasia']}:" for="idNomeFantasia" />	
+
+
+					<h:panelGroup>
+						<h:inputText id="idCprf" value="#{beneficiarioMB.beneficiario.cprf}" required="true" label="#{msg['beneficiario.cprf.label']}"/>
+						<h:outputLabel value="#{msg['somenteNumeros']}" styleClass="confFontRotuloAjuda" />
+					</h:panelGroup>
+					
+					<h:inputText id="idRazaoSocial" value="#{beneficiarioMB.beneficiario.razaoSocial}" required="true" label="#{msg['beneficiario.razaoSocial.label']}" size="30"/>
+					<h:inputText id="idNomeFantasia" value="#{beneficiarioMB.beneficiario.nomeFantasia}"  label="#{msg['beneficiario.nomeFantasia.label']}"/>
+					
 				 </h:panelGrid>	
 				
 				 

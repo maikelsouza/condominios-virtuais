@@ -15,6 +15,8 @@ public interface PreCadastroBoletoService {
 	
 	public abstract List<PreCadastroBoleto> buscarPorIdCondominio(Integer idCondominio) throws SQLException, Exception;
 	
-	public abstract PreCadastroBoleto buscarPorIdCondominioEPrincipal(Integer idCondominio, Boolean principal) throws SQLException, Exception;
+	public abstract PreCadastroBoleto buscarPorIdCondominioPrincipal(Integer idCondominio) throws SQLException, Exception;
+	
+	public abstract void tornarPrincipal(PreCadastroBoleto preCadastroBoleto) throws SQLException, Exception;
 
 }

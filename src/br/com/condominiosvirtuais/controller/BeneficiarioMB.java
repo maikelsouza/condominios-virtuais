@@ -47,12 +47,12 @@ public class BeneficiarioMB implements Serializable {
 	
 	private String nomeCondominio;
 	
-	private Integer situacaoBeneficiario;
+	private Integer situacaoBeneficiario = -1;
 	
 	private List<SelectItem> listaSISituacao = null;
 	
 	public BeneficiarioMB(){
-		this.beneficiario = new Beneficiario();
+		this.beneficiario = new Beneficiario();		
 	}
 	
 	@PostConstruct
@@ -162,6 +162,7 @@ public class BeneficiarioMB implements Serializable {
 	}
 	
 	public String cadastroBeneficiario(){
+		this.beneficiario = new Beneficiario();
 		return "cadastrar";
 	}	
 	              
@@ -225,9 +226,6 @@ public class BeneficiarioMB implements Serializable {
 
 	public void setListaSISituacao(List<SelectItem> listaSISituacao) {
 		this.listaSISituacao = listaSISituacao;
-	}	
+	}
 	
-	
-	
-
 }

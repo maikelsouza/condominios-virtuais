@@ -16,10 +16,15 @@ public class ContaBancaria implements Cloneable {
 	
 	private Boolean situacao;
 	
+	private String descricao;
+	
 	private String token;
+	
+	private ConfiguracaoPadraoContaBancaria configuracaoPadraoContaBancaria;
 	
 	public ContaBancaria(){
 		this.banco = new Banco();
+		this.configuracaoPadraoContaBancaria = new ConfiguracaoPadraoContaBancaria();
 	}
 
 	public Integer getId() {
@@ -78,6 +83,14 @@ public class ContaBancaria implements Cloneable {
 	public void setSituacao(Boolean situacao) {
 		this.situacao = situacao;
 	}
+	
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
 
 	public String getToken() {
 		return token;
@@ -85,8 +98,16 @@ public class ContaBancaria implements Cloneable {
 
 	public void setToken(String token) {
 		this.token = token;
-	}	
+	}		
 	
+	public ConfiguracaoPadraoContaBancaria getConfiguracaoPadraoContaBancaria() {
+		return configuracaoPadraoContaBancaria;
+	}
+
+	public void setConfiguracaoPadraoContaBancaria(ConfiguracaoPadraoContaBancaria configuracaoPadraoContaBancaria) {
+		this.configuracaoPadraoContaBancaria = configuracaoPadraoContaBancaria;
+	}
+
 	public ContaBancaria clone() throws CloneNotSupportedException{
         return (ContaBancaria) super.clone();
 	}	

@@ -242,6 +242,7 @@ public class CondominoMB implements  Serializable{
 				ManagedBeanUtil.setMensagemErro("msg.condomino.formatoEmailInvalido");
 				return null;
 			}
+			
 			List<Condominio> listaCondominio = new ArrayList<Condominio>();
 			listaCondominio.add(this.condominio);
 			this.condomino.setListaCondominio(listaCondominio);
