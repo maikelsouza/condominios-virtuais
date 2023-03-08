@@ -19,7 +19,7 @@ INSERT INTO CONFIGURACAO_APLICACAO VALUES ('usuario_email','contato@condominiosv
 INSERT INTO CONFIGURACAO_APLICACAO VALUES ('mail.smtp.auth','true');
 INSERT INTO CONFIGURACAO_APLICACAO VALUES ('mail.smtp.port','465');
 INSERT INTO CONFIGURACAO_APLICACAO VALUES ('qtd_envio_email_lote','10');
-INSERT INTO CONFIGURACAO_APLICACAO VALUES ('senha_email','mkl86233');
+INSERT INTO CONFIGURACAO_APLICACAO VALUES ('senha_email','xxxxxxx');
 INSERT INTO CONFIGURACAO_APLICACAO VALUES ('endereco_arquivos','D://Condominios Virtuais/arquivos');
 INSERT INTO CONFIGURACAO_APLICACAO VALUES ('endereco_email_admin_aplicacao','contato@condominiosvirtuais.com.br');
 
